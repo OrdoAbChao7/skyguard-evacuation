@@ -1,0 +1,22 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+# 运行时数据（每次运行重新生成）
+data/audit/
+data/admin_config.json
+data/*.json
+
+# 环境变量与密钥
+.env
+.env.*
+!.env.example
+
+# 前端构建产物
+frontend/dist/
+frontend/node_modules/
+
+# 临时与日志
+*.log
+.DS_Store
+Thumbs.db

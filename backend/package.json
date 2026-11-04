@@ -1,0 +1,36 @@
+{
+  "name": "skyguard-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SkyGuard — 应急疏散辅助决策原型（后端）",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/**/*.test.ts",
+    "test:safety": "tsx --test tests/safety/*.test.ts",
+    "demo:safety": "tsx scripts/skyguard-demo.ts",
+    "bench:safety": "tsx scripts/skyguard-benchmark.ts --iterations 30 --out ../evaluation/performance.json",
+    "e2e:server": "tsx scripts/skyguard-e2e-server.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
