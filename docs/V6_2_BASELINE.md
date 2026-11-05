@@ -33,6 +33,8 @@ sha256sum -c evaluation/v62/BASELINE_SHA256 --quiet
 
 - 退出码 0 表示 151 个文件全部未变。
 - 已有证据清单另由 `npx tsx backend/scripts/evidence-manifest.ts --verify` 校验（46/46）。
+- `verify:evidence` 对文本文件同时接受 LF 与 CRLF 归一后的哈希，适配 Windows/Linux checkout；
+  `sha256sum -c` 是严格字节比较，不作为跨平台 CI 门禁。
 - V6.1 独立冻结：`evaluation/v61/FREEZE.sha256`（raw 实验，不含派生 verification）。
 
 ## 4. 复现命令

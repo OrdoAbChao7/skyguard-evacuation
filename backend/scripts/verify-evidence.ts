@@ -141,10 +141,32 @@ for (const summary of c62.results) {
 
 // V6.1 冻结哈希
 const freeze = JSON.parse(fs.readFileSync(path.join(V62, 'freeze_v61.json'), 'utf8')) as any;
+function normalizedHashes(buffer: Buffer): string[] {
+  const raw = crypto.createHash('sha256').update(buffer).digest('hex');
+  const text = buffer.toString('utf8');
+  const LF = String.fromCharCode(10);
+  const CRLF = String.fromCharCode(13, 10);
+  const lfText = text.split(CRLF).join(LF);
+  const crlfText = lfText.split(LF).join(CRLF);
+  const lf = crypto.createHash('sha256').update(lfText).digest('hex');
+  const crlf = crypto.createHash('sha256').update(crlfText).digest('hex');
+  return [raw, lf, crlf];
+}
 for (const file of freeze.files) {
   const full = path.join(ROOT, file.path);
-  const hash = fs.existsSync(full) ? crypto.createHash('sha256').update(fs.readFileSync(full)).digest('hex') : null;
-  check(`freeze/${file.path}`, file.sha256, hash, hash === file.sha256);
+  if (!fs.existsSync(full)) {
+    check(`freeze/${file.path}`, file.sha256, null, false);
+    continue;
+  }
+  const hashes = normalizedHashes(fs.readFileSync(full));
+  const matched = hashes.includes(file.sha256);
+  check(
+    `freeze/${file.path}`,
+    file.sha256,
+    hashes[0],
+    matched,
+    matched && hashes[0] !== file.sha256 ? 'matched after LF/CRLF normalization' : undefined,
+  );
 }
 
 // V6.2 报告关键数字
