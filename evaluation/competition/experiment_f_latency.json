@@ -1,0 +1,35 @@
+{
+  "config": {
+    "note": "本机单进程计算延迟；不含网络、前端渲染与真实硬件推理。"
+  },
+  "summary": {
+    "planning": {
+      "iterations": 30,
+      "mean_ms": 0.199,
+      "p50_ms": 0.175,
+      "p95_ms": 0.377,
+      "max_ms": 0.509
+    },
+    "validation": {
+      "iterations": 30,
+      "mean_ms": 0.045,
+      "p50_ms": 0.038,
+      "p95_ms": 0.098,
+      "max_ms": 0.107
+    },
+    "dashboard": {
+      "iterations": 20,
+      "mean_ms": 0.132,
+      "p50_ms": 0.098,
+      "p95_ms": 0.234,
+      "max_ms": 0.472
+    },
+    "agent": {
+      "iterations": 10,
+      "mean_ms": 2.905,
+      "p50_ms": 2.513,
+      "p95_ms": 5.663,
+      "max_ms": 5.663
+    }
+  }
+}

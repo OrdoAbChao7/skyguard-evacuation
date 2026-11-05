@@ -1,0 +1,175 @@
+{
+  "config": {
+    "loops": 20,
+    "note": "进程内闭环：异常观测 → Agent → 审批 → 派发 → 接单 → 执行 → 反馈 → 重新评估；全部为模拟数据。"
+  },
+  "loops": [
+    {
+      "loop": 0,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 37,
+      "error": null
+    },
+    {
+      "loop": 1,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 26,
+      "error": null
+    },
+    {
+      "loop": 2,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 26,
+      "error": null
+    },
+    {
+      "loop": 3,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 22,
+      "error": null
+    },
+    {
+      "loop": 4,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 29,
+      "error": null
+    },
+    {
+      "loop": 5,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 25,
+      "error": null
+    },
+    {
+      "loop": 6,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 23,
+      "error": null
+    },
+    {
+      "loop": 7,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 24,
+      "error": null
+    },
+    {
+      "loop": 8,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 25,
+      "error": null
+    },
+    {
+      "loop": 9,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 24,
+      "error": null
+    },
+    {
+      "loop": 10,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 24,
+      "error": null
+    },
+    {
+      "loop": 11,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 25,
+      "error": null
+    },
+    {
+      "loop": 12,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 25,
+      "error": null
+    },
+    {
+      "loop": 13,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 23,
+      "error": null
+    },
+    {
+      "loop": 14,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 26,
+      "error": null
+    },
+    {
+      "loop": 15,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 25,
+      "error": null
+    },
+    {
+      "loop": 16,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 26,
+      "error": null
+    },
+    {
+      "loop": 17,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 27,
+      "error": null
+    },
+    {
+      "loop": 18,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 25,
+      "error": null
+    },
+    {
+      "loop": 19,
+      "success": true,
+      "transitions_correct": true,
+      "feedback_ingested": true,
+      "duration_ms": 26,
+      "error": null
+    }
+  ],
+  "summary": {
+    "loops": 20,
+    "successes": 20,
+    "success_rate": 1,
+    "transitions_correct": 20,
+    "mean_duration_ms": 25.65
+  }
+}

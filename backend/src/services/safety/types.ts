@@ -11,7 +11,7 @@ export const PROVENANCE = ['measured', 'calibrated', 'estimated', 'uncalibrated'
 export type Provenance = (typeof PROVENANCE)[number];
 
 /** 观测来源：模拟数据 / 离线视频 / 实时视频。三者在前端必须可区分。 */
-export const OBSERVATION_SOURCE = ['simulation', 'recorded_video', 'live_video'] as const;
+export const OBSERVATION_SOURCE = ['simulation', 'recorded_video', 'live_video', 'csv_replay', 'field_report', 'uav_observation'] as const;
 export type ObservationSource = (typeof OBSERVATION_SOURCE)[number];
 
 export const CORRIDOR_STATUS = ['open', 'closed', 'unknown'] as const;
@@ -84,6 +84,8 @@ export const RegionSchema = z.object({
     roi: z.object({ x: z.number(), y: z.number(), w: z.number(), h: z.number() }).optional(),
     calibration_status: z.enum(PROVENANCE),
     calibration_version: z.string().min(1),
+    /** 摄像头运行状态（可选；缺省时由最近观测推断）。 */
+    status: z.enum(['online', 'offline', 'degraded', 'unknown']).optional(),
   }),
   source: z.string().min(1),
   verified: z.boolean(),
@@ -372,6 +374,128 @@ export const SimulationBaselineSchema = z.record(
 );
 export type SimulationBaseline = z.infer<typeof SimulationBaselineSchema>;
 
+// ---------------------------------------------------------------------------
+// 场馆、规则、工作人员与调查策略（MVP 场景适配层）
+// ---------------------------------------------------------------------------
+
+export const STAFF_STATUS = ['available', 'busy', 'off_duty'] as const;
+export type StaffStatus = (typeof STAFF_STATUS)[number];
+
+export const STAFF_ROLE = ['crowd_control', 'security', 'medical', 'uav_operator', 'supervisor'] as const;
+export type StaffRole = (typeof STAFF_ROLE)[number];
+
+export const StaffMemberSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  role: z.enum(STAFF_ROLE),
+  region_id: z.string().min(1),
+  status: z.enum(STAFF_STATUS),
+  skills: z.array(z.string()).default([]),
+  /** 仅用于演示的工作员登录码；真实部署必须换成正式身份系统。 */
+  access_code: z.string().min(4).optional(),
+  source: z.string().min(1),
+  verified: z.boolean().default(false),
+});
+export type StaffMember = z.infer<typeof StaffMemberSchema>;
+
+export const VenueRuleSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  text: z.string().min(1),
+  category: z.enum(['safety', 'operations', 'approval', 'uav', 'staffing', 'data']),
+  mandatory: z.boolean().default(false),
+  source: z.string().min(1),
+});
+export type VenueRule = z.infer<typeof VenueRuleSchema>;
+
+export const UavUnitSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  status: z.enum(['available', 'busy', 'offline', 'unknown']),
+  source: z.string().min(1),
+  verified: z.boolean().default(false),
+});
+export type UavUnit = z.infer<typeof UavUnitSchema>;
+
+export const VenueSchema = z.object({
+  name: z.string().min(1),
+  kind: z.string().min(1),
+  description: z.string().optional(),
+  rules: z.array(VenueRuleSchema).default([]),
+  uav_units: z.array(UavUnitSchema).default([]),
+  /** 本场景允许 Agent 调用的工具名；缺省表示全部启用。 */
+  enabled_tools: z.array(z.string()).optional(),
+});
+export type Venue = z.infer<typeof VenueSchema>;
+
+export const INVESTIGATION_KIND = [
+  'camera_query',
+  'staff_check',
+  'uav_request',
+  'history_query',
+  'prediction',
+] as const;
+export type InvestigationKind = (typeof INVESTIGATION_KIND)[number];
+
+export const INVESTIGATION_OUTCOME = [
+  'signal_normal',
+  'signal_congested',
+  'inconclusive',
+  'unavailable',
+] as const;
+export type InvestigationOutcome = (typeof INVESTIGATION_OUTCOME)[number];
+
+export const InvestigationActionSchema = z.object({
+  id: z.string().min(1),
+  kind: z.enum(INVESTIGATION_KIND),
+  label: z.string().min(1),
+  /** 固定调查策略使用的优先级，数字越小越先调查。 */
+  priority: z.number().int().positive(),
+  time_cost_minutes: z.number().nonnegative(),
+  /** 归一化资源成本 0~1。 */
+  resource_cost: z.number().min(0).max(1),
+  failure_probability: z.number().min(0).max(1),
+  base_availability: z.enum(['available', 'unavailable', 'degraded']).default('available'),
+  detects: z.array(z.string()).default([]),
+  source: z.string().min(1),
+});
+export type InvestigationAction = z.infer<typeof InvestigationActionSchema>;
+
+export const InvestigationHypothesisSchema = z.object({
+  id: z.string().min(1),
+  label: z.string().min(1),
+  description: z.string().min(1),
+  prior: z.number().min(0).max(1),
+});
+
+export const InvestigationPolicySchema = z.object({
+  model_version: z.string().min(1),
+  provenance: z.string().min(1),
+  hypotheses: z.array(InvestigationHypothesisSchema).min(2),
+  outcomes: z.array(z.enum(INVESTIGATION_OUTCOME)).min(2),
+  /** action.kind -> hypothesis -> outcome -> P(outcome | hypothesis, action) */
+  likelihoods: z.record(z.record(z.record(z.number().min(0).max(1)))),
+  /** hypothesis -> decision -> loss */
+  loss_matrix: z.record(z.record(z.number().min(0))),
+  decisions: z.array(z.string().min(1)).min(1),
+  weights: z.object({
+    risk_reduction: z.number().nonnegative(),
+    information_gain: z.number().nonnegative(),
+    time_cost: z.number().nonnegative(),
+    resource_cost: z.number().nonnegative(),
+    failure: z.number().nonnegative(),
+  }),
+  normalization: z.object({
+    max_time_minutes: z.number().positive(),
+    max_resource_cost: z.number().positive(),
+  }),
+  actions: z.array(InvestigationActionSchema).min(1),
+  /** VoI 低于该值即停止调查、转人工。 */
+  stop_threshold: z.number(),
+  max_investigations: z.number().int().positive().max(6),
+});
+export type InvestigationPolicy = z.infer<typeof InvestigationPolicySchema>;
+
 export const SafetyScenarioSchema = z.object({
   scenario_id: z.string().min(1),
   name: z.string().min(1),
@@ -387,5 +511,11 @@ export const SafetyScenarioSchema = z.object({
   map: ScenarioMapSchema.optional(),
   /** "写入模拟观测"按钮的基线（可选）。 */
   simulation_baseline: SimulationBaselineSchema.optional(),
+  /** 场馆元信息、管理规则与无人机资源（可选）。 */
+  venue: VenueSchema.optional(),
+  /** 工作人员名册（可选；人员与位置为演示数据时必须标记来源）。 */
+  staff: z.array(StaffMemberSchema).default([]),
+  /** 主动调查（VoI）策略（可选）。 */
+  investigation: InvestigationPolicySchema.optional(),
 });
 export type SafetyScenario = z.infer<typeof SafetyScenarioSchema>;

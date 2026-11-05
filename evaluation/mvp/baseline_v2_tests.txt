@@ -1,0 +1,171 @@
+
+> skyguard@0.1.0 test
+> npm run test --prefix backend && npm test --prefix frontend
+
+
+> skyguard-backend@0.1.0 test
+> tsx --test tests/**/*.test.ts
+
+✔ 信息缺口下 Agent 通过 VoI 创建现场核查与无人机请求 (114.1244ms)
+✔ 人工反馈写回观测后 Agent 不再重复调查，并生成疏导工单 (178.8698ms)
+✔ 正常数据下 Agent 不发起调查也不创建工单 (154.2576ms)
+✔ 工具注册表强制角色权限与参数校验 (37.9823ms)
+✔ 健康探测成功后 AgentArts 模式执行平台选择的工具 (223.6851ms)
+✔ 健康探测失败时明确失败，不回退伪装为已连接 (55.2142ms)
+✔ 缺少配置时明确保持 LOCAL_DEMO (1.5984ms)
+✔ 健康探测成功才标记 AGENTARTS_CONNECTED (117.0834ms)
+✔ 健康探测失败不会伪装为已连接 (12.5218ms)
+✔ 工具决策契约：接受 decision 包裹与扁平结构 (36.2353ms)
+✔ HTTP 错误、非 JSON 与超时都显式失败 (87.6495ms)
+✔ CSV 回放解析支持标准列与来源列 (3.2071ms)
+✔ CSV 缺少必需列或行格式错误时显式报错 (1.5927ms)
+✔ 回放数据引用未知区域时拒绝加载 (15.9773ms)
+✔ 回放游标与完成状态正确推进 (42.2712ms)
+✔ JSON 与 CSV 文件回放可用 (34.0069ms)
+✔ 摄像头健康状态区分无观测、低置信与在线 (14.3549ms)
+✔ MCP Server 暴露 15 个工具并执行权限校验 (2688.3899ms)
+[auth] 未设置 SECRET_KEY/JWT_SECRET，正在使用开发默认密钥（勿用于生产）。
+[0mPOST /api/v1/auth/login [32m200[0m 67.446 ms - 248[0m
+[0mPOST /api/v1/mvp/reset [32m200[0m 12.797 ms - 18[0m
+[0mPOST /api/v1/safety/observations/simulate [32m201[0m 11.369 ms - 3216[0m
+[0mPOST /api/v1/safety/observations [32m201[0m 3.435 ms - 391[0m
+[0mGET /api/v1/safety/status [32m200[0m 12.454 ms - 20454[0m
+[0mPOST /api/v1/mvp/agent/runs [32m201[0m 19.183 ms - 22866[0m
+[0mGET /api/v1/mvp/work-orders?status=PENDING_APPROVAL [32m200[0m 0.733 ms - 1586[0m
+[0mPOST /api/v1/mvp/work-orders/WO-2CFF3059/approve [32m200[0m 3.645 ms - 1074[0m
+[0mPOST /api/v1/mvp/work-orders/WO-2CFF3059/assign [32m200[0m 3.268 ms - 1235[0m
+[0mPOST /api/v1/mvp/auth/staff-login [32m200[0m 1.065 ms - 459[0m
+[0mPOST /api/v1/mvp/work-orders/WO-2CFF3059/accept [32m200[0m 1.194 ms - 1383[0m
+[0mPOST /api/v1/mvp/work-orders/WO-2CFF3059/start [32m200[0m 1.638 ms - 1531[0m
+[0mPOST /api/v1/mvp/work-orders/WO-2CFF3059/complete [32m200[0m 9.800 ms - 1836[0m
+[0mPOST /api/v1/mvp/work-orders/WO-118BFB4F/approve [32m200[0m 1.033 ms - 967[0m
+[0mPOST /api/v1/mvp/work-orders/WO-118BFB4F/assign [32m200[0m 1.392 ms - 1128[0m
+[0mPOST /api/v1/mvp/auth/staff-login [32m200[0m 0.342 ms - 459[0m
+[0mPOST /api/v1/mvp/work-orders/WO-118BFB4F/accept [32m200[0m 1.416 ms - 1276[0m
+[0mPOST /api/v1/mvp/work-orders/WO-118BFB4F/start [32m200[0m 0.970 ms - 1424[0m
+[0mPOST /api/v1/mvp/work-orders/WO-118BFB4F/complete [32m200[0m 2.700 ms - 1729[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.805 ms - 27311[0m
+[0mGET /api/v1/mvp/dashboard [32m200[0m 1.732 ms - 70428[0m
+[0mGET /api/v1/safety/audit?limit=100 [32m200[0m 0.559 ms - 15963[0m
+✔ HTTP 闭环：低置信观测 → Agent → 审批 → 派发 → 执行 → 反馈 → 重新评估 (905.7608ms)
+[0mPOST /api/v1/mvp/agent/runs [33m401[0m 0.396 ms - 33[0m
+[0mPOST /api/v1/auth/login [32m200[0m 44.136 ms - 248[0m
+[0mPOST /api/v1/mvp/reset [32m200[0m 2.591 ms - 18[0m
+[0mPOST /api/v1/mvp/auth/staff-login [32m200[0m 0.764 ms - 459[0m
+[0mPOST /api/v1/mvp/work-orders/WO-NOT-EXIST/approve [33m403[0m 0.473 ms - 80[0m
+[0mPOST /api/v1/mvp/tools/submit_worker_feedback [33m400[0m 0.706 ms - 250[0m
+✔ HTTP 权限：未登录不能运行 Agent，staff 不能审批，Agent 不能反馈 (74.3038ms)
+✔ 人员推荐按技能、状态与通道距离排序 (39.27ms)
+✔ 员工不足时明确返回 shortage 而不是伪造推荐 (10.7769ms)
+✔ Agent 不能审批工单，只有管理员可以 (30.6257ms)
+✔ 工单状态机拒绝跳跃，并完整走到 COMPLETED (30.1682ms)
+✔ 工作人员只能操作指派给本人的工单 (17.0648ms)
+✔ 拒绝工单必须填写审批意见 (17.7377ms)
+✔ 不可用人员不会被派发 (14.5286ms)
+✔ 线性上升序列预测为上升趋势且区间包住预测值 (76.4766ms)
+✔ 数据不足时明确标记 insufficient 并回退最近有效观测 (12.7568ms)
+✔ 低置信度观测被排除在预测输入之外 (22.7057ms)
+✔ 未知区域预测抛错 (6.2686ms)
+✔ 先验概率归一且熵大于 0 (47.2606ms)
+✔ 全部动作可用时按 VoI 排序并给出可解释分解 (18.9282ms)
+✔ 所有动作不可用时停止调查并给出原因 (8.0346ms)
+✔ 达到最大调查轮次后停止 (8.9674ms)
+✔ 阈值提高后低收益调查被停止 (6.769ms)
+✔ 拥堵证据按贝叶斯更新提高高危假设后验 (5.4475ms)
+✔ 固定优先级策略按配置顺序选择首个可用动作 (3.2785ms)
+✔ T01 正常场景：生成可行方案并通过独立校验，进入 NORMAL (52.4252ms)
+✔ T02 区域密度快速上升触发风险评估 (11.8967ms)
+✔ T03 B 出口关闭：自动重规划并通过校验，进入 REROUTE (26.9844ms)
+✔ T04 B 出口关闭且剩余容量不足：进入 REJECT 并给出未解决需求 (15.5319ms)
+✔ T05 候选路线使用已关闭通道必须被拒绝 (1.9994ms)
+✔ T06 容量未知的通道不得当作无限容量 (1.7472ms)
+✔ T10 出口接收流量超过容量必须被拒绝 (1.0287ms)
+✔ T12 LLM 生成的违规方案被独立校验器拒绝且不会成为已发布方案 (9.211ms)
+✔ T07 观测过期：进入 DEGRADED 且不发布新路线 (9.2789ms)
+✔ T08 观测置信度不足：按规则降级 (9.1376ms)
+✔ T13 推理服务异常：记录故障并执行降级策略 (9.0002ms)
+✔ T09 路网断开且无可行方案：不得生成虚假的完整疏散方案 (11.0766ms)
+✔ T11 规划过程中约束版本变化：旧规划结果不得直接发布 (8.7912ms)
+✔ T15 事件解除后旧路线不得自动恢复，必须重新规划并通过校验 (14.2224ms)
+[auth] 未设置 SECRET_KEY/JWT_SECRET，正在使用开发默认密钥（勿用于生产）。
+[0mGET /api/v1/safety/status [32m200[0m 10.574 ms - 11745[0m
+[0mPOST /api/v1/safety/plan/recompute [33m401[0m 13.737 ms - 33[0m
+[0mPOST /api/v1/safety/plan/recompute [33m403[0m 1.448 ms - 127[0m
+✔ safety status is readable without auth but writes are not (188.721ms)
+[0mPOST /api/v1/auth/login [32m200[0m 39.367 ms - 248[0m
+[0mPOST /api/v1/safety/incidents [32m201[0m 5.077 ms - 324[0m
+[0mPOST /api/v1/safety/incidents/INC-77bf1185-4f0c-4282-bc4d-8e0dd41b81a6/confirm [33m403[0m 0.716 ms - 127[0m
+[0mPOST /api/v1/safety/incidents/INC-77bf1185-4f0c-4282-bc4d-8e0dd41b81a6/resolve [33m401[0m 0.375 ms - 33[0m
+[0mGET /api/v1/safety/incidents [32m200[0m 0.410 ms - 308[0m
+[0mGET /api/v1/safety/audit?limit=20 [32m200[0m 0.419 ms - 505[0m
+✔ T14 非运维角色无法确认或解除事件 (81.4755ms)
+[0mPOST /api/v1/auth/login [32m200[0m 41.995 ms - 248[0m
+[0mPOST /api/v1/safety/observations/simulate [32m201[0m 24.119 ms - 2746[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.803 ms - 20657[0m
+[0mGET /api/v1/safety/plan [32m200[0m 0.302 ms - 4497[0m
+✔ 模拟观测 → 规划 → 校验 → NORMAL，前端读取到的是同一份后端结果 (91.0003ms)
+[0mPOST /api/v1/auth/login [32m200[0m 40.133 ms - 248[0m
+[0mPOST /api/v1/safety/demo/A_normal/run [32m200[0m 11.181 ms - 21196[0m
+[0mPOST /api/v1/safety/demo/A_normal/run [32m200[0m 6.048 ms - 21196[0m
+[0mPOST /api/v1/safety/demo/B_exit_fire/run [32m200[0m 9.036 ms - 25395[0m
+[0mPOST /api/v1/safety/demo/B_exit_fire/run [32m200[0m 8.023 ms - 25395[0m
+[0mPOST /api/v1/safety/demo/C_capacity_shortage/run [32m200[0m 8.173 ms - 32127[0m
+[0mPOST /api/v1/safety/demo/C_capacity_shortage/run [32m200[0m 7.032 ms - 32127[0m
+✔ 三个演示场景均可重复运行且结果与期望状态一致 (122.3364ms)
+[0mPOST /api/v1/auth/login [32m200[0m 33.316 ms - 248[0m
+[0mPOST /api/v1/safety/demo/C_capacity_shortage/run [32m200[0m 9.100 ms - 32127[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.511 ms - 31525[0m
+✔ 场景 C 的大屏数据包含拒绝原因与人工介入提示 (56.575ms)
+[0mGET /api/v1/safety/providers [32m200[0m 276.417 ms - 2023[0m
+✔ 感知 provider 状态真实反映本机环境 (285.5238ms)
+[0mPOST /api/v1/auth/login [32m200[0m 35.077 ms - 248[0m
+[0mGET /api/v1/safety/status [32m200[0m 1.394 ms - 11745[0m
+[0mPOST /api/v1/safety/incidents/parse [32m200[0m 0.883 ms - 476[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.362 ms - 11745[0m
+✔ 自然语言事件解析只产出待确认草稿，不改变系统状态 (53.8929ms)
+[0mPOST /api/v1/auth/login [32m200[0m 37.351 ms - 248[0m
+[0mPOST /api/v1/safety/observations/simulate [32m201[0m 5.347 ms - 477[0m
+[0mGET /api/v1/safety/audit?limit=50 [32m200[0m 0.464 ms - 817[0m
+[0mGET /api/v1/safety/traces [32m200[0m 0.430 ms - 1080[0m
+✔ 审计日志记录操作者、动作与结果 (60.4007ms)
+✔ min-cost max-flow 在串联瓶颈网络上给出正确最大流 (1.4574ms)
+✔ 规划器严格遵守通道容量与时间窗，未解决需求被显式记录 (20.6266ms)
+✔ 关闭通道流量为零，且从规划中排除 (1.102ms)
+✔ 容量未知的通道不被当作无限容量 (0.9232ms)
+✔ 反向通道只允许指定方向 (0.6363ms)
+✔ 中间区域满足流量守恒且可缓冲等待 (0.8364ms)
+✔ traversalMinutes 向上取整到分钟 (0.1984ms)
+✔ 全部需求可在时限内完成时状态为 feasible 且无未解决需求 (0.6913ms)
+✔ 视频推理链路在本机真实可运行，且产出明确标注为实测而非模拟 (971.5292ms)
+✔ 已标定摄像机下视频观测可信度不被压低，未标定则被强制压低 (890.7208ms)
+✔ 视频不可读时 provider 抛出明确的不可用错误 (698.125ms)
+✔ 昇腾 provider 在无设备环境下如实报告不可用 (6.9553ms)
+✔ 模拟 provider 输出稳定且始终标记为 simulation (1.3652ms)
+✔ 数据可信且方案通过校验 → NORMAL (2.7548ms)
+✔ 无观测 → DEGRADED，且不允许显示已验证路线 (1.3133ms)
+✔ 校验发现硬违规 → REJECT，仅允许显示候选方案 (0.335ms)
+✔ 存在已确认事件但方案通过校验 → REROUTE 且可发布替代方案 (0.156ms)
+✔ DEGRADED 优先于 REJECT：数据不可信时不下"不可行"的结论 (0.1862ms)
+✔ 仅版本失效 → REROUTE 而非 REJECT (0.2017ms)
+✔ 推理服务异常 → DEGRADED 并携带原因 (0.2849ms)
+ℹ tests 80
+ℹ suites 0
+ℹ pass 80
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6333.6701
+
+> skyguard-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v5.1.0 E:/Projects/skyguard-evacuation/frontend
+
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  01:25:16
+   Duration  2.26s (environment 49%, import 26%, tests 17%, setup 7%, transform 1%)
+

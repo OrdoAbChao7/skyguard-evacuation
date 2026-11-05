@@ -20,7 +20,10 @@ async function startSafetyServer(): Promise<TestServer> {
   const server = await startTestServer();
   const scenarioDir = path.join(server.dataRoot, 'scenarios');
   fs.mkdirSync(scenarioDir, { recursive: true });
-  fs.copyFileSync(REPO_SCENARIO_PATH, path.join(scenarioDir, 'venue-default.json'));
+  const scenarioFile = path.join(scenarioDir, 'venue-default.json');
+  fs.copyFileSync(REPO_SCENARIO_PATH, scenarioFile);
+  // 该文件验证的是旧版合成场馆（venue-default）的验收规则；显式指定，避免受默认场景变化影响。
+  process.env.SAFETY_SCENARIO_FILE = scenarioFile;
   return server;
 }
 

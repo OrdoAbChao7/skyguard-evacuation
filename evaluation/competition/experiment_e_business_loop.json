@@ -1,0 +1,134 @@
+{
+  "config": {
+    "loops": 20,
+    "note": "进程内闭环；模拟数据；耗时不包含人工审核时间。"
+  },
+  "summary": {
+    "success_rate": 1,
+    "transitions_correct": 20,
+    "mean_duration_ms": 24.6,
+    "p95_duration_ms": 38
+  },
+  "loops": [
+    {
+      "loop": 0,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 38
+    },
+    {
+      "loop": 1,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 26
+    },
+    {
+      "loop": 2,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 26
+    },
+    {
+      "loop": 3,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 23
+    },
+    {
+      "loop": 4,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 26
+    },
+    {
+      "loop": 5,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 23
+    },
+    {
+      "loop": 6,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 25
+    },
+    {
+      "loop": 7,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 23
+    },
+    {
+      "loop": 8,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 23
+    },
+    {
+      "loop": 9,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 25
+    },
+    {
+      "loop": 10,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 23
+    },
+    {
+      "loop": 11,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 25
+    },
+    {
+      "loop": 12,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 23
+    },
+    {
+      "loop": 13,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 22
+    },
+    {
+      "loop": 14,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 24
+    },
+    {
+      "loop": 15,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 23
+    },
+    {
+      "loop": 16,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 22
+    },
+    {
+      "loop": 17,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 22
+    },
+    {
+      "loop": 18,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 24
+    },
+    {
+      "loop": 19,
+      "success": true,
+      "transitions_correct": true,
+      "duration_ms": 26
+    }
+  ]
+}

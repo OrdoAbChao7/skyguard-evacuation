@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main, feat/skyguard-mvp-e2e]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install backend
+        run: npm ci --prefix backend
+      - name: Install frontend
+        run: npm ci --prefix frontend
+      - name: Backend + frontend tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Safety demo
+        run: npm run demo
+      - name: MVP end-to-end demo
+        run: npm run demo:mvp
+      - name: Competition benchmark (reproducibility smoke)
+        run: npm run benchmark:competition --prefix backend
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: skyguard-evidence
+          path: evaluation/

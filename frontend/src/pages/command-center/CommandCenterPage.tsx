@@ -24,6 +24,7 @@ import type {
   SafetyValidationResult,
 } from '../../services/safetyApi';
 import { AppstoreOutlined, RadarChartOutlined, EyeOutlined, SafetyCertificateOutlined, AlertOutlined, HistoryOutlined, SettingOutlined } from '@ant-design/icons';
+import MvpPanels from './MvpPanels';
 import './CommandCenterPage.css';
 
 const STATE_LABEL: Record<SafetyStateName, string> = {
@@ -526,6 +527,10 @@ export default function CommandCenterPage() {
           </ul>
         </section>
       </div>
+      <MvpPanels
+        selectedRegion={selectedRegion}
+        onSelectRegion={id => { if (id) selectRegion(id); }}
+      />
     </div>
   );
 }

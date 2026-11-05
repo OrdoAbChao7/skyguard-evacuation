@@ -1,0 +1,200 @@
+{
+  "config": {
+    "seeds": [
+      20261105,
+      20261106,
+      20261107,
+      20261108,
+      20261109
+    ],
+    "series_per_seed": 150,
+    "training_length": 20,
+    "horizons": [
+      2,
+      5,
+      10
+    ],
+    "generator": "base + linear trend + Gaussian surge + 三段均匀噪声（合成）",
+    "selection": "adaptive 使用滚动验证在 [0.25,0.5,0.75,1] 中选择趋势权重",
+    "note": "没有真实标注人流数据；所有指标只代表合成序列，不能当作真实精度。"
+  },
+  "results": [
+    {
+      "horizon_minutes": 2,
+      "series_per_seed": 150,
+      "mae_by_method": {
+        "persistence": {
+          "mean": 23.6467,
+          "lower": 22.1093,
+          "upper": 25.184,
+          "n": 5
+        },
+        "ema": {
+          "mean": 39.4822,
+          "lower": 37.7463,
+          "upper": 41.2181,
+          "n": 5
+        },
+        "linear": {
+          "mean": 77.6477,
+          "lower": 76.0266,
+          "upper": 79.2688,
+          "n": 5
+        },
+        "damped": {
+          "mean": 45.5226,
+          "lower": 43.8508,
+          "upper": 47.1944,
+          "n": 5
+        },
+        "adaptive": {
+          "mean": 25.1389,
+          "lower": 23.2398,
+          "upper": 27.038,
+          "n": 5
+        },
+        "fixed_blend": {
+          "mean": 62.7453,
+          "lower": 61.0959,
+          "upper": 64.3948,
+          "n": 5
+        }
+      },
+      "rmse_by_method": {
+        "persistence": 30.0102,
+        "ema": 48.5613,
+        "linear": 90.9763,
+        "damped": 55.3675,
+        "adaptive": 32.2988,
+        "fixed_blend": 74.044
+      },
+      "method_selection_frequency": {
+        "persistence": 0.7507,
+        "ema": 0.1027,
+        "linear": 0.0507,
+        "damped": 0.0387,
+        "blend": 0.0573
+      },
+      "interval_coverage": 0.9147,
+      "peak_count_mae": 15.7522
+    },
+    {
+      "horizon_minutes": 5,
+      "series_per_seed": 150,
+      "mae_by_method": {
+        "persistence": {
+          "mean": 58.4747,
+          "lower": 57.1212,
+          "upper": 59.8281,
+          "n": 5
+        },
+        "ema": {
+          "mean": 66.1145,
+          "lower": 63.7088,
+          "upper": 68.5201,
+          "n": 5
+        },
+        "linear": {
+          "mean": 102.7635,
+          "lower": 98.8613,
+          "upper": 106.6657,
+          "n": 5
+        },
+        "damped": {
+          "mean": 78.1572,
+          "lower": 75.3381,
+          "upper": 80.9763,
+          "n": 5
+        },
+        "adaptive": {
+          "mean": 59.4802,
+          "lower": 58.1606,
+          "upper": 60.7999,
+          "n": 5
+        },
+        "fixed_blend": {
+          "mean": 96.516,
+          "lower": 92.9234,
+          "upper": 100.1086,
+          "n": 5
+        }
+      },
+      "rmse_by_method": {
+        "persistence": 73.803,
+        "ema": 81.2637,
+        "linear": 122.3196,
+        "damped": 94.3056,
+        "adaptive": 75.2182,
+        "fixed_blend": 114.4564
+      },
+      "method_selection_frequency": {
+        "persistence": 0.736,
+        "ema": 0.0707,
+        "linear": 0.0573,
+        "damped": 0.0533,
+        "blend": 0.0827
+      },
+      "interval_coverage": 0.8413,
+      "peak_count_mae": 18.185
+    },
+    {
+      "horizon_minutes": 10,
+      "series_per_seed": 150,
+      "mae_by_method": {
+        "persistence": {
+          "mean": 83.3973,
+          "lower": 76.6781,
+          "upper": 90.1166,
+          "n": 5
+        },
+        "ema": {
+          "mean": 78.5889,
+          "lower": 72.6268,
+          "upper": 84.5509,
+          "n": 5
+        },
+        "linear": {
+          "mean": 98.2673,
+          "lower": 92.6097,
+          "upper": 103.9248,
+          "n": 5
+        },
+        "damped": {
+          "mean": 84.6243,
+          "lower": 78.0492,
+          "upper": 91.1994,
+          "n": 5
+        },
+        "adaptive": {
+          "mean": 79.7232,
+          "lower": 72.9513,
+          "upper": 86.495,
+          "n": 5
+        },
+        "fixed_blend": {
+          "mean": 102.2213,
+          "lower": 96.3303,
+          "upper": 108.1124,
+          "n": 5
+        }
+      },
+      "rmse_by_method": {
+        "persistence": 103.7438,
+        "ema": 97.6586,
+        "linear": 132.3383,
+        "damped": 107.9808,
+        "adaptive": 102.8958,
+        "fixed_blend": 134.8641
+      },
+      "method_selection_frequency": {
+        "persistence": 0.7267,
+        "ema": 0.0773,
+        "linear": 0.0533,
+        "damped": 0.04,
+        "blend": 0.1027
+      },
+      "interval_coverage": 0.7907,
+      "peak_count_mae": 29.5655
+    }
+  ]
+}

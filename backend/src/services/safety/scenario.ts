@@ -1,7 +1,7 @@
 /**
  * 安全场景加载与静态一致性校验。
  *
- * 场景是**可替换输入**：`data/scenarios/*.json`。默认文件为 `venue-default.json`，
+ * 场景是**可替换输入**：`data/scenarios/*.json`。默认文件为 `stadium-evacuation.json`（体育场散场场景），
  * 可通过环境变量 `SAFETY_SCENARIO_FILE` 指定其它文件名（相对 scenarios 目录）
  * 或绝对路径。加载时做结构校验和引用完整性检查，任何悬空引用都会直接抛错，
  * 避免把坏数据带入规划器。
@@ -12,7 +12,7 @@ import { resolveDataPath } from '../../config/paths';
 import { SafetyScenarioSchema, type SafetyScenario } from './types';
 
 export const SCENARIO_DIR = 'scenarios';
-export const DEFAULT_SCENARIO_FILE = 'venue-default.json';
+export const DEFAULT_SCENARIO_FILE = 'stadium-evacuation.json';
 
 /** 当前生效的场景文件名（环境变量优先）。 */
 export function getScenarioFileName(): string {
@@ -66,6 +66,82 @@ export function validateScenarioReferences(scenario: SafetyScenario): string[] {
       const t = region.thresholds;
       if (!(t.watch_density < t.high_density && t.high_density < t.critical_density)) {
         errors.push(`region ${region.id} thresholds must satisfy watch < high < critical`);
+      }
+    }
+  }
+
+  const staffIds = new Set<string>();
+  for (const member of scenario.staff) {
+    if (staffIds.has(member.id)) errors.push(`duplicate staff id: ${member.id}`);
+    staffIds.add(member.id);
+    if (!regionIds.has(member.region_id)) {
+      errors.push(`staff ${member.id} region_id unknown: ${member.region_id}`);
+    }
+  }
+
+  const ruleIds = new Set<string>();
+  for (const rule of scenario.venue?.rules ?? []) {
+    if (ruleIds.has(rule.id)) errors.push(`duplicate venue rule id: ${rule.id}`);
+    ruleIds.add(rule.id);
+  }
+
+  const uavIds = new Set<string>();
+  for (const unit of scenario.venue?.uav_units ?? []) {
+    if (uavIds.has(unit.id)) errors.push(`duplicate uav unit id: ${unit.id}`);
+    uavIds.add(unit.id);
+  }
+
+  if (scenario.investigation) {
+    const policy = scenario.investigation;
+    const hypothesisIds = new Set<string>();
+    let priorSum = 0;
+    for (const hypothesis of policy.hypotheses) {
+      if (hypothesisIds.has(hypothesis.id)) errors.push(`duplicate hypothesis id: ${hypothesis.id}`);
+      hypothesisIds.add(hypothesis.id);
+      priorSum += hypothesis.prior;
+    }
+    if (Math.abs(priorSum - 1) > 1e-6) {
+      errors.push(`investigation priors must sum to 1 (got ${priorSum.toFixed(6)})`);
+    }
+    for (const hypothesis of policy.hypotheses) {
+      const losses = policy.loss_matrix[hypothesis.id];
+      if (!losses) {
+        errors.push(`loss_matrix missing hypothesis: ${hypothesis.id}`);
+        continue;
+      }
+      for (const decision of policy.decisions) {
+        if (typeof losses[decision] !== 'number') {
+          errors.push(`loss_matrix ${hypothesis.id} missing decision: ${decision}`);
+        }
+      }
+    }
+    const actionIds = new Set<string>();
+    for (const action of policy.actions) {
+      if (actionIds.has(action.id)) errors.push(`duplicate investigation action id: ${action.id}`);
+      actionIds.add(action.id);
+      const byKind = policy.likelihoods[action.kind];
+      if (!byKind) {
+        errors.push(`likelihoods missing action kind: ${action.kind}`);
+        continue;
+      }
+      for (const hypothesis of policy.hypotheses) {
+        const row = byKind[hypothesis.id];
+        if (!row) {
+          errors.push(`likelihoods ${action.kind} missing hypothesis: ${hypothesis.id}`);
+          continue;
+        }
+        let sum = 0;
+        for (const outcome of policy.outcomes) {
+          const value = row[outcome];
+          if (typeof value !== 'number') {
+            errors.push(`likelihoods ${action.kind}/${hypothesis.id} missing outcome: ${outcome}`);
+            continue;
+          }
+          sum += value;
+        }
+        if (Math.abs(sum - 1) > 1e-6) {
+          errors.push(`likelihoods ${action.kind}/${hypothesis.id} must sum to 1 (got ${sum.toFixed(6)})`);
+        }
       }
     }
   }

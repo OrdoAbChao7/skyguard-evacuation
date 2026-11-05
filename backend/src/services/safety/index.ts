@@ -43,7 +43,7 @@ function loadSafetyScenarioWithFallback() {
   try {
     return loadSafetyScenario();
   } catch (error) {
-    const fallback = path.resolve(__dirname, '../../../../data/scenarios/venue-default.json');
+    const fallback = path.resolve(__dirname, '../../../../data/scenarios/stadium-evacuation.json');
     if (fs.existsSync(fallback)) {
       console.warn(
         `[safety] 当前 DATA_ROOT 下未找到场景文件，回退到仓库默认场景：${fallback}`,

@@ -1,0 +1,104 @@
+
+> skyguard@0.1.0 test
+> npm run test --prefix backend && npm test --prefix frontend
+
+
+> skyguard-backend@0.1.0 test
+> tsx --test tests/**/*.test.ts
+
+✔ T01 正常场景：生成可行方案并通过独立校验，进入 NORMAL (26.095ms)
+✔ T02 区域密度快速上升触发风险评估 (4.9982ms)
+✔ T03 B 出口关闭：自动重规划并通过校验，进入 REROUTE (10.6994ms)
+✔ T04 B 出口关闭且剩余容量不足：进入 REJECT 并给出未解决需求 (12.003ms)
+✔ T05 候选路线使用已关闭通道必须被拒绝 (1.0052ms)
+✔ T06 容量未知的通道不得当作无限容量 (0.9051ms)
+✔ T10 出口接收流量超过容量必须被拒绝 (0.6248ms)
+✔ T12 LLM 生成的违规方案被独立校验器拒绝且不会成为已发布方案 (6.5961ms)
+✔ T07 观测过期：进入 DEGRADED 且不发布新路线 (5.9686ms)
+✔ T08 观测置信度不足：按规则降级 (5.8395ms)
+✔ T13 推理服务异常：记录故障并执行降级策略 (8.03ms)
+✔ T09 路网断开且无可行方案：不得生成虚假的完整疏散方案 (5.8289ms)
+✔ T11 规划过程中约束版本变化：旧规划结果不得直接发布 (5.3112ms)
+✔ T15 事件解除后旧路线不得自动恢复，必须重新规划并通过校验 (8.5743ms)
+[auth] 未设置 SECRET_KEY/JWT_SECRET，正在使用开发默认密钥（勿用于生产）。
+[0mGET /api/v1/safety/status [32m200[0m 6.790 ms - 11745[0m
+[0mPOST /api/v1/safety/plan/recompute [33m401[0m 13.254 ms - 33[0m
+[0mPOST /api/v1/safety/plan/recompute [33m403[0m 1.747 ms - 127[0m
+✔ safety status is readable without auth but writes are not (113.6664ms)
+[0mPOST /api/v1/auth/login [32m200[0m 31.432 ms - 248[0m
+[0mPOST /api/v1/safety/incidents [32m201[0m 3.688 ms - 324[0m
+[0mPOST /api/v1/safety/incidents/INC-7508714b-4d04-4e26-a41b-9c874f063ed3/confirm [33m403[0m 0.503 ms - 127[0m
+[0mPOST /api/v1/safety/incidents/INC-7508714b-4d04-4e26-a41b-9c874f063ed3/resolve [33m401[0m 0.190 ms - 33[0m
+[0mGET /api/v1/safety/incidents [32m200[0m 0.397 ms - 308[0m
+[0mGET /api/v1/safety/audit?limit=20 [32m200[0m 0.337 ms - 505[0m
+✔ T14 非运维角色无法确认或解除事件 (57.3783ms)
+[0mPOST /api/v1/auth/login [32m200[0m 33.274 ms - 248[0m
+[0mPOST /api/v1/safety/observations/simulate [32m201[0m 15.649 ms - 2746[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.646 ms - 20657[0m
+[0mGET /api/v1/safety/plan [32m200[0m 0.268 ms - 4497[0m
+✔ 模拟观测 → 规划 → 校验 → NORMAL，前端读取到的是同一份后端结果 (65.259ms)
+[0mPOST /api/v1/auth/login [32m200[0m 32.405 ms - 248[0m
+[0mPOST /api/v1/safety/demo/A_normal/run [32m200[0m 8.652 ms - 21196[0m
+[0mPOST /api/v1/safety/demo/A_normal/run [32m200[0m 5.134 ms - 21196[0m
+[0mPOST /api/v1/safety/demo/B_exit_fire/run [32m200[0m 6.969 ms - 25395[0m
+[0mPOST /api/v1/safety/demo/B_exit_fire/run [32m200[0m 5.633 ms - 25395[0m
+[0mPOST /api/v1/safety/demo/C_capacity_shortage/run [32m200[0m 5.850 ms - 32127[0m
+[0mPOST /api/v1/safety/demo/C_capacity_shortage/run [32m200[0m 5.432 ms - 32127[0m
+✔ 三个演示场景均可重复运行且结果与期望状态一致 (93.9884ms)
+[0mPOST /api/v1/auth/login [32m200[0m 31.293 ms - 248[0m
+[0mPOST /api/v1/safety/demo/C_capacity_shortage/run [32m200[0m 6.857 ms - 32127[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.494 ms - 31525[0m
+✔ 场景 C 的大屏数据包含拒绝原因与人工介入提示 (50.6823ms)
+[0mGET /api/v1/safety/providers [32m200[0m 195.961 ms - 2023[0m
+✔ 感知 provider 状态真实反映本机环境 (203.1766ms)
+[0mPOST /api/v1/auth/login [32m200[0m 31.103 ms - 248[0m
+[0mGET /api/v1/safety/status [32m200[0m 1.147 ms - 11745[0m
+[0mPOST /api/v1/safety/incidents/parse [32m200[0m 0.899 ms - 476[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.392 ms - 11745[0m
+✔ 自然语言事件解析只产出待确认草稿，不改变系统状态 (47.1738ms)
+[0mPOST /api/v1/auth/login [32m200[0m 30.852 ms - 248[0m
+[0mPOST /api/v1/safety/observations/simulate [32m201[0m 4.405 ms - 477[0m
+[0mGET /api/v1/safety/audit?limit=50 [32m200[0m 0.362 ms - 817[0m
+[0mGET /api/v1/safety/traces [32m200[0m 0.320 ms - 1080[0m
+✔ 审计日志记录操作者、动作与结果 (49.3701ms)
+✔ min-cost max-flow 在串联瓶颈网络上给出正确最大流 (2.5539ms)
+✔ 规划器严格遵守通道容量与时间窗，未解决需求被显式记录 (12.8542ms)
+✔ 关闭通道流量为零，且从规划中排除 (0.6334ms)
+✔ 容量未知的通道不被当作无限容量 (0.4456ms)
+✔ 反向通道只允许指定方向 (0.3718ms)
+✔ 中间区域满足流量守恒且可缓冲等待 (0.4587ms)
+✔ traversalMinutes 向上取整到分钟 (0.1015ms)
+✔ 全部需求可在时限内完成时状态为 feasible 且无未解决需求 (0.3792ms)
+✔ 视频推理链路在本机真实可运行，且产出明确标注为实测而非模拟 (978.8547ms)
+✔ 已标定摄像机下视频观测可信度不被压低，未标定则被强制压低 (783.4179ms)
+✔ 视频不可读时 provider 抛出明确的不可用错误 (661.8271ms)
+✔ 昇腾 provider 在无设备环境下如实报告不可用 (6.5495ms)
+✔ 模拟 provider 输出稳定且始终标记为 simulation (1.5065ms)
+✔ 数据可信且方案通过校验 → NORMAL (1.6558ms)
+✔ 无观测 → DEGRADED，且不允许显示已验证路线 (0.1227ms)
+✔ 校验发现硬违规 → REJECT，仅允许显示候选方案 (0.6963ms)
+✔ 存在已确认事件但方案通过校验 → REROUTE 且可发布替代方案 (0.0979ms)
+✔ DEGRADED 优先于 REJECT：数据不可信时不下"不可行"的结论 (0.1133ms)
+✔ 仅版本失效 → REROUTE 而非 REJECT (0.0969ms)
+✔ 推理服务异常 → DEGRADED 并携带原因 (0.2709ms)
+ℹ tests 42
+ℹ suites 0
+ℹ pass 42
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2734.8789
+
+> skyguard-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v5.1.0 E:/Projects/skyguard-evacuation/frontend
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  00:40:10
+   Duration  3.30s (import 48%, environment 32%, tests 12%, setup 7%, transform 1%)
+

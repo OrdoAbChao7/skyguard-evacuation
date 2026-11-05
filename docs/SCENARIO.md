@@ -8,7 +8,7 @@
 | 项 | 说明 |
 | --- | --- |
 | 目录 | `data/scenarios/` |
-| 默认文件 | `venue-default.json`（合成演示场馆，仅供闭环验证） |
+| 默认文件 | `stadium-evacuation.json`（体育场散场，MVP 主场景）；`venue-default.json` 保留为旧版合成场馆 |
 | 选择方式 | 环境变量 `SAFETY_SCENARIO_FILE=<文件名或绝对路径>` |
 | 热切换 | 登录后 `POST /api/v1/safety/admin/reload-scenario`，body `{ "file": "xxx.json" }` |
 | 候选列表 | `GET /api/v1/safety/scenarios` 返回每个文件的结构校验结果 |
@@ -109,6 +109,61 @@
 可用动作：`observe` / `sensor_fault` / `incident.create` / `incident.confirm` /
 `incident.resolve` / `recompute`。`expected_state` 会被自动化演示与测试校验，
 **不要为了提高通过率修改期望值**；应先修正场景数据或算法。
+
+### 2.6 场馆与规则 `venue`（可选，MVP）
+
+```json
+"venue": {
+  "name": "滨江体育中心（合成）",
+  "kind": "stadium",
+  "description": "……",
+  "rules": [
+    { "id": "R-EXIT-01", "title": "不得封闭唯一疏散出口", "text": "……",
+      "category": "safety", "mandatory": true, "source": "合成场馆管理规则（演示）" }
+  ],
+  "uav_units": [
+    { "id": "UAV-01", "name": "无人机 1 号（演示）", "status": "available",
+      "source": "simulation", "verified": false }
+  ],
+  "enabled_tools": ["get_crowd_status", "predict_crowd_trend", "..."]
+}
+```
+
+`enabled_tools` 缺省表示全部启用；配置后 MCP 与本地 Agent 只会看到列出的工具。
+审批规则以 `category: "approval"` 的规则声明，并由后端角色校验强制执行（admin /
+safety_operator 才能审批与派发）。
+
+规则类别：`safety` / `operations` / `approval` / `uav` / `staffing` / `data`。
+规则是 Agent 的建议依据，不会自动改变安全约束。
+
+### 2.7 工作人员 `staff`（可选，MVP）
+
+```json
+"staff": [
+  { "id": "STF-02", "name": "李巡（演示）", "role": "security",
+    "region_id": "R_EAST_STAND", "status": "available",
+    "skills": ["crowd_check", "corridor_check"],
+    "access_code": "1002", "source": "simulation", "verified": false }
+]
+```
+
+- `region_id` 必须存在；人员不可用状态不会参与派发；
+- `access_code` 仅用于演示登录，真实部署必须替换为正式身份系统；
+- 人员位置与技能是合成数据，接口中标记 `source`。
+
+### 2.8 主动调查策略 `investigation`（可选，MVP）
+
+VoI 所需全部参数都在这里显式给出：
+
+- `hypotheses`（先验，必须和为 1）、`outcomes`；
+- `likelihoods[action.kind][hypothesis][outcome]`（每个假设行必须和为 1）；
+- `loss_matrix[hypothesis][decision]`；
+- `weights` 与 `normalization`；
+- `actions`（含时间/资源成本、失败概率、固定优先级）；
+- `stop_threshold` 与 `max_investigations`。
+
+模型与实验见 [`VOI_MODEL.md`](./VOI_MODEL.md)。加载时如果先验不为 1、
+似然行不为 1、损失矩阵缺决策，会直接报错。
 
 ## 3. 换场景检查清单
 

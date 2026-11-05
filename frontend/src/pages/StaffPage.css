@@ -1,0 +1,96 @@
+/* 工作人员移动端任务页 — 深色、单手操作、信息密度适中 */
+.staff-root {
+  min-height: 100vh;
+  margin: 0 auto;
+  max-width: 560px;
+  padding: 16px 16px 40px;
+  box-sizing: border-box;
+}
+
+.staff-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.staff-header h1 { margin: 0; font-size: 22px; }
+.staff-header-actions { display: flex; gap: 8px; }
+.staff-header-actions button, .staff-card button, .staff-actions button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #1d2c45;
+  background: #111c31;
+  color: #e2e8f0;
+  font-size: 14px;
+}
+.staff-actions button.primary { background: #0e7490; border-color: #0e7490; color: #f0f9ff; }
+.staff-actions button.danger { background: #7f1d1d; border-color: #7f1d1d; color: #fee2e2; }
+.staff-root button:disabled { opacity: 0.5; }
+.staff-root button:focus-visible, .staff-root input:focus-visible, .staff-root textarea:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+.staff-muted { color: #7c8ba3; }
+.staff-muted.small, .staff-order .small { font-size: 12px; }
+.staff-error { color: #fca5a5; }
+.staff-error.small { font-size: 12px; }
+.staff-notice { color: #86efac; background: rgba(34, 197, 94, 0.1); padding: 8px 12px; border-radius: 8px; }
+.staff-card {
+  margin-top: 12vh;
+  padding: 20px;
+  border: 1px solid #1d2c45;
+  border-radius: 16px;
+  background: #0c1424;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.staff-card h1 { margin: 0; font-size: 22px; }
+.staff-card label, .staff-modal-card label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #a9b6c9; }
+.staff-card input, .staff-modal-card input, .staff-modal-card textarea {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #1d2c45;
+  background: #0b1322;
+  color: #e2e8f0;
+  font-size: 16px;
+}
+.staff-card a { color: #7dd3fc; text-align: center; font-size: 13px; }
+.staff-orders { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.staff-order {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #1d2c45;
+  background: #0c1424;
+}
+.staff-order.status-assigned { border-color: #854d0e; }
+.staff-order.status-in_progress { border-color: #0e7490; }
+.staff-order.status-completed { border-color: #166534; }
+.staff-order.stale { border-color: #b91c1c; }
+.staff-order header { display: flex; flex-direction: column; gap: 4px; }
+.staff-order header strong { font-size: 16px; }
+.staff-order p { margin: 8px 0; line-height: 1.5; font-size: 14px; color: #cbd5e1; }
+.staff-chip {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #1d2c45;
+  font-size: 11px;
+  color: #cbd5e1;
+}
+.staff-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.staff-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: end center;
+  background: rgba(2, 6, 12, 0.72);
+  padding: 16px;
+}
+.staff-modal-card {
+  width: min(560px, 100%);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #1d2c45;
+  background: #0c1424;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.staff-modal-card h2 { margin: 0; font-size: 18px; }
