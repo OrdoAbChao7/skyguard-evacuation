@@ -1,0 +1,14 @@
+py_tests	0
+real_verify	0
+real_sha	1
+v62_baseline	0
+backend_tests	0
+frontend_tests	0
+backend_tsc	0
+frontend_tsc	0
+build	0
+demo	0
+demo_mvp	0
+docker_info	1
+realdata_sha_final	0
+v62_baseline_final	0

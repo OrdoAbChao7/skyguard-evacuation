@@ -1,0 +1,381 @@
+{
+  "version": 1,
+  "generated_at": "2026-11-05T05:33:35.263Z",
+  "git_head": "3b62fe94bd03406532398dfbdcc6812bf669544d",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "note": "原始实验数据只读；重新生成会改变 generated_at 与耗时字段，统计量应保持一致。",
+  "file_count": 46,
+  "total_bytes": 33399438,
+  "total_gzip_bytes": 1743583,
+  "files": [
+    {
+      "path": "COMPETITION_REPORT.md",
+      "bytes": 5167,
+      "gzip_bytes": 2907,
+      "sha256": "51d8b49cc8a1798600ac9d90259fd0d3f8c6bba6549b66159a473db0b5691b7f",
+      "category": "report",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "competition/experiment_a_voi.json",
+      "bytes": 1138904,
+      "gzip_bytes": 25516,
+      "sha256": "99912bbb9dcb726ddd5d29f898050c03a2684d7234c8db8c50099717637703c9",
+      "category": "raw",
+      "generator": "backend/scripts/competition-benchmark.ts"
+    },
+    {
+      "path": "competition/experiment_b_prediction.json",
+      "bytes": 4589,
+      "gzip_bytes": 1210,
+      "sha256": "b5ec0a73b03754bfb4e7c5134edda43c1b3ee0e0ddf502397a010b8b71a0acb0",
+      "category": "raw",
+      "generator": "backend/scripts/competition-benchmark.ts"
+    },
+    {
+      "path": "competition/experiment_c_planning_robustness.json",
+      "bytes": 18354,
+      "gzip_bytes": 1284,
+      "sha256": "b0720aba68e4f506df46cebfde64b0274281ee89b16cc53c29f8cf17abc08eab",
+      "category": "raw",
+      "generator": "backend/scripts/competition-benchmark.ts"
+    },
+    {
+      "path": "competition/experiment_d_safety_faults.json",
+      "bytes": 1386,
+      "gzip_bytes": 385,
+      "sha256": "6894a74e0735dd4c0e63c4409f978cf0c36976212bd700c35797e30205394076",
+      "category": "raw",
+      "generator": "backend/scripts/competition-benchmark.ts"
+    },
+    {
+      "path": "competition/experiment_e_business_loop.json",
+      "bytes": 2520,
+      "gzip_bytes": 374,
+      "sha256": "e2876b218ed6478eb77b4079aca00b8da1855d40852d4fa1c73b6a5642e9bd0b",
+      "category": "raw",
+      "generator": "backend/scripts/competition-benchmark.ts"
+    },
+    {
+      "path": "competition/experiment_f_latency.json",
+      "bytes": 698,
+      "gzip_bytes": 325,
+      "sha256": "4324d2c6ab19c72c57ff0b6c391ebd2349608cf130a19bc982dc8d0023d50053",
+      "category": "raw",
+      "generator": "backend/scripts/competition-benchmark.ts"
+    },
+    {
+      "path": "competition/run_metadata.json",
+      "bytes": 534,
+      "gzip_bytes": 406,
+      "sha256": "7a3ffbc12291318d59be2a93b78f5a238548bc09954b6265df979842cfdb876f",
+      "category": "summary",
+      "generator": "backend/scripts/competition-benchmark.ts"
+    },
+    {
+      "path": "MVP_REPORT.md",
+      "bytes": 3990,
+      "gzip_bytes": 2254,
+      "sha256": "c91e50c6070f9357051dd541705ea4228204eb53daef2c6ca9ca44cf8ef4cd11",
+      "category": "report",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "mvp/baseline_build.txt",
+      "bytes": 1049,
+      "gzip_bytes": 490,
+      "sha256": "d1fb14e9e098bc1be1ac877cb2efb2df6653214b235150415e6024375a316096",
+      "category": "summary",
+      "generator": "backend/scripts/mvp-experiments.ts 或 skyguard-benchmark.ts"
+    },
+    {
+      "path": "mvp/baseline_tests.txt",
+      "bytes": 6182,
+      "gzip_bytes": 2876,
+      "sha256": "f4977bad69f1f2f9021b5f515a1a4163d739fcf0dabc9f8c4066620f55ab0130",
+      "category": "summary",
+      "generator": "backend/scripts/mvp-experiments.ts 或 skyguard-benchmark.ts"
+    },
+    {
+      "path": "mvp/baseline_v2_tests.txt",
+      "bytes": 10993,
+      "gzip_bytes": 4780,
+      "sha256": "fff108936ac47196d7c84f80a6095988d815af32070dbcbc53d29df5cab626e7",
+      "category": "summary",
+      "generator": "backend/scripts/mvp-experiments.ts 或 skyguard-benchmark.ts"
+    },
+    {
+      "path": "mvp/baseline_v61_tests.txt",
+      "bytes": 14534,
+      "gzip_bytes": 5912,
+      "sha256": "595eb453b9ccb032e687109beb1a4d5a4e6cec261315973dc51d500d3c1df683",
+      "category": "summary",
+      "generator": "backend/scripts/mvp-experiments.ts 或 skyguard-benchmark.ts"
+    },
+    {
+      "path": "mvp/experiment1_voi.json",
+      "bytes": 223439,
+      "gzip_bytes": 7749,
+      "sha256": "022cea16691f90596c6e2b03604a879e558240b6a57a726247d24eddd83cbd0d",
+      "category": "raw",
+      "generator": "backend/scripts/mvp-experiments.ts 或 skyguard-benchmark.ts"
+    },
+    {
+      "path": "mvp/experiment2_prediction.json",
+      "bytes": 1661,
+      "gzip_bytes": 572,
+      "sha256": "633cbed4a410606766c10b26d7027398e3c5c94941ea94fd3cedf1aced681a0d",
+      "category": "raw",
+      "generator": "backend/scripts/mvp-experiments.ts 或 skyguard-benchmark.ts"
+    },
+    {
+      "path": "mvp/experiment3_safety_ablation.json",
+      "bytes": 90927,
+      "gzip_bytes": 2636,
+      "sha256": "d8b073553d6d6b6376cd2004e9b1b05af5cf2e2d751c088744c990a2e7291c12",
+      "category": "raw",
+      "generator": "backend/scripts/mvp-experiments.ts 或 skyguard-benchmark.ts"
+    },
+    {
+      "path": "mvp/experiment4_business_loop.json",
+      "bytes": 3682,
+      "gzip_bytes": 453,
+      "sha256": "9705cffd258a184fc49b48c218a40ac82748c8b71ee852133d992399559830ef",
+      "category": "raw",
+      "generator": "backend/scripts/mvp-experiments.ts 或 skyguard-benchmark.ts"
+    },
+    {
+      "path": "mvp/run_metadata.json",
+      "bytes": 458,
+      "gzip_bytes": 374,
+      "sha256": "ca878edb2ba49a1e13ce7860a9bace16482a153a7f4b5f4db3aac89e5f54d737",
+      "category": "summary",
+      "generator": "backend/scripts/mvp-experiments.ts 或 skyguard-benchmark.ts"
+    },
+    {
+      "path": "performance.json",
+      "bytes": 1631,
+      "gzip_bytes": 651,
+      "sha256": "4546e2528d2dde56e6629f1c3769c58c5925f9e0f0a89bb5040cc48ebb225d21",
+      "category": "raw",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "V6_1_REPORT.md",
+      "bytes": 6619,
+      "gzip_bytes": 3432,
+      "sha256": "7a4cdf83e8e5d8c64eac55c3b51f7de3b46aa72604ec9862abd3762a73536a1a",
+      "category": "report",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "V6_2_REPORT.md",
+      "bytes": 4073,
+      "gzip_bytes": 2208,
+      "sha256": "be695dc477fe5d13fc96302586accb95e0e5ac81a48f603379bf2dd9182691ce",
+      "category": "report",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "V6_REPORT.md",
+      "bytes": 2555,
+      "gzip_bytes": 1536,
+      "sha256": "362f7a1dcdf3f2abb46f46fd3e7c0fd3b64bd0a3b89f91d177d1505b6200a8ba",
+      "category": "report",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v6/experiment_a_multi_region_voi.json",
+      "bytes": 159943,
+      "gzip_bytes": 4130,
+      "sha256": "c5435739aaf1f58dd71f83a5b7a5671a65bf5f93db343d790a8a06c83b0d1376",
+      "category": "raw",
+      "generator": "backend/scripts/v6-benchmark.ts"
+    },
+    {
+      "path": "v6/experiment_b_retry_backoff.json",
+      "bytes": 133950,
+      "gzip_bytes": 2942,
+      "sha256": "6c0898b1eca44450b7a001310818362624e48c55417dcd201ca6aa979c9b6d65",
+      "category": "raw",
+      "generator": "backend/scripts/v6-benchmark.ts"
+    },
+    {
+      "path": "v6/experiment_c_spatial_prediction.json",
+      "bytes": 1144,
+      "gzip_bytes": 456,
+      "sha256": "2771153685c64dad773634bf8d26d49a03fe93aec7db42fef889d55235ab4fc2",
+      "category": "raw",
+      "generator": "backend/scripts/v6-benchmark.ts"
+    },
+    {
+      "path": "v6/experiment_d_multi_event_planning.json",
+      "bytes": 344,
+      "gzip_bytes": 292,
+      "sha256": "d8f3903298be32f893cc9856ad65728fc59b9e765c1e33b628159ffc3f9dec24",
+      "category": "raw",
+      "generator": "backend/scripts/v6-benchmark.ts"
+    },
+    {
+      "path": "v6/run_metadata.json",
+      "bytes": 534,
+      "gzip_bytes": 407,
+      "sha256": "437b4e10bbafb682bd8edc7c41d358eb0cbdeaafb7b58051078ae81301b822fe",
+      "category": "summary",
+      "generator": "backend/scripts/v6-benchmark.ts"
+    },
+    {
+      "path": "v61/experiment_a_fair_multi_region.json",
+      "bytes": 10060476,
+      "gzip_bytes": 309266,
+      "sha256": "e99b5fe05ecb0f94c4be6a84b919808508b7f67dcb4d8c6d61af9097b4db320e",
+      "category": "raw",
+      "generator": "backend/scripts/v61-benchmark.ts"
+    },
+    {
+      "path": "v61/experiment_b_sequential_audit.json",
+      "bytes": 7007702,
+      "gzip_bytes": 99769,
+      "sha256": "b9d0f3505ab7f9e25e514d8abb12267778169c5c9713c2e222eedf32c0afacfa",
+      "category": "raw",
+      "generator": "backend/scripts/v61-benchmark.ts"
+    },
+    {
+      "path": "v61/experiment_c_strict_prediction.json",
+      "bytes": 7015424,
+      "gzip_bytes": 665477,
+      "sha256": "2e3f193c2a09c2b3eeabe52bc6cb0a897d8578f753f320eb6c39c43d28e89563",
+      "category": "raw",
+      "generator": "backend/scripts/v61-benchmark.ts"
+    },
+    {
+      "path": "v61/experiment_d_risk_graph_sensitivity.json",
+      "bytes": 2847,
+      "gzip_bytes": 751,
+      "sha256": "20292fb15927dc1cf7cccef202880516f448d3f7abe7bfadec55ace4f5748262",
+      "category": "raw",
+      "generator": "backend/scripts/v61-benchmark.ts"
+    },
+    {
+      "path": "v61/experiment_e_perception_audit.json",
+      "bytes": 648,
+      "gzip_bytes": 314,
+      "sha256": "2d95492fa8833cb8fcfcf71d0dee4faf9eb15fa77739bacfa9206504c9f5cf43",
+      "category": "raw",
+      "generator": "backend/scripts/v61-benchmark.ts"
+    },
+    {
+      "path": "v61/FREEZE.sha256",
+      "bytes": 687,
+      "gzip_bytes": 385,
+      "sha256": "73d72e6229940f8322653111572936ae800f714696e0a765ee75a4a4b12009d7",
+      "category": "summary",
+      "generator": "backend/scripts/v61-benchmark.ts"
+    },
+    {
+      "path": "v61/run_metadata.json",
+      "bytes": 534,
+      "gzip_bytes": 405,
+      "sha256": "7e692ced77352d7715331b0ca65a3d7a61f22e505a67ce433477ee9b7151fee3",
+      "category": "summary",
+      "generator": "backend/scripts/v61-benchmark.ts"
+    },
+    {
+      "path": "v61/verification.json",
+      "bytes": 17267,
+      "gzip_bytes": 2050,
+      "sha256": "69c50c631676fa18ee537014900b650c53b9c5d689c00e6999807a6882e70038",
+      "category": "summary",
+      "generator": "backend/scripts/v61-benchmark.ts"
+    },
+    {
+      "path": "v62/experiment_a_multi_region_30seeds.json",
+      "bytes": 1982573,
+      "gzip_bytes": 75916,
+      "sha256": "a4e2630a9b714d5a713d1e2d8fb028e9e921c456534ddaa81be483f8e97b640b",
+      "category": "raw",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/experiment_b_sequential_30seeds.json",
+      "bytes": 442122,
+      "gzip_bytes": 9348,
+      "sha256": "44d956e3eeb8d595dc139e7629790a3d0b8d020fd84948472e0a1f89d4d2ee48",
+      "category": "raw",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/experiment_c_prediction_30seeds.json",
+      "bytes": 5009207,
+      "gzip_bytes": 497445,
+      "sha256": "a034a01c96ad3e201506d17265f365857d4152e88a3c4bae7fe3e33cdd23db5d",
+      "category": "raw",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/experiment_d_topology_sensitivity.json",
+      "bytes": 905,
+      "gzip_bytes": 361,
+      "sha256": "059cfb1570cfdf0ae6c158047c30b7ccb0ed2f4273f8f4e43fe029ea34d4217f",
+      "category": "raw",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/freeze_v61.json",
+      "bytes": 1218,
+      "gzip_bytes": 542,
+      "sha256": "3a546085170c34fbb50540ba7081961b495581cf86de7dd8265183b72a7c5cb9",
+      "category": "summary",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/REPRODUCE.md",
+      "bytes": 434,
+      "gzip_bytes": 393,
+      "sha256": "e4f173298c33a8410d56549760c390d23ebeb3500fb0b11a48cd14ce1f4fcbfa",
+      "category": "summary",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/reproduce.ps1",
+      "bytes": 830,
+      "gzip_bytes": 482,
+      "sha256": "6249b7f425c236c90d8ccb6371e959fd059f577275132c91095873c3b662e371",
+      "category": "summary",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/run_metadata.json",
+      "bytes": 955,
+      "gzip_bytes": 514,
+      "sha256": "812554fceb33c773702aa9ab8503ac22364e6c3296d2ea262b180204bcc87430",
+      "category": "summary",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/SHA256SUMS",
+      "bytes": 945,
+      "gzip_bytes": 573,
+      "sha256": "1f1b62b09df67ae470c64bbea714e7cf23bf1ded528926686234390cd4ae47c1",
+      "category": "summary",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/source_verification.json",
+      "bytes": 14060,
+      "gzip_bytes": 2745,
+      "sha256": "24a2b1c58337cb8f0be94955ab8b75937d04f390469055dacb7b5635b84452d0",
+      "category": "summary",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    },
+    {
+      "path": "v62/v61_replay_comparison.json",
+      "bytes": 744,
+      "gzip_bytes": 290,
+      "sha256": "6ab6071ebc281fb53e41f610ae69ae3e0f3844bb1fa7e81f648c084cf8ada400",
+      "category": "summary",
+      "generator": "benchmark 脚本或人工报告（见文件头）"
+    }
+  ]
+}

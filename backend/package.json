@@ -19,7 +19,10 @@
     "mcp": "tsx src/mcp/server.ts",
     "benchmark:competition": "tsx scripts/competition-benchmark.ts",
     "benchmark:v6": "tsx scripts/v6-benchmark.ts",
-    "benchmark:v61": "tsx scripts/v61-benchmark.ts"
+    "benchmark:v61": "tsx scripts/v61-benchmark.ts",
+    "verify:evidence": "tsx scripts/verify-evidence.ts",
+    "manifest:evidence": "tsx scripts/evidence-manifest.ts",
+    "benchmark:v62": "tsx scripts/v62-benchmark.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

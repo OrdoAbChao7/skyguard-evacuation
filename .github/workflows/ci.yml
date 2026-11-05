@@ -28,6 +28,16 @@ jobs:
         run: npm run demo:mvp
       - name: Competition benchmark (reproducibility smoke)
         run: npm run benchmark:competition --prefix backend
+      - name: V6 benchmark
+        run: npm run benchmark:v6 --prefix backend
+      - name: V6.1 release audit benchmark
+        run: npm run benchmark:v61 --prefix backend
+      - name: Verify evidence consistency
+        run: npm run verify:evidence --prefix backend
+      - name: Generate and verify evidence manifest
+        run: |
+          npm run manifest:evidence --prefix backend
+          npx tsx backend/scripts/evidence-manifest.ts --verify
       - name: Upload evidence
         uses: actions/upload-artifact@v4
         with:

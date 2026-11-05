@@ -1,0 +1,1360 @@
+{
+  "status": "completed",
+  "dataset": "ShanghaiTech",
+  "part": "part_A_final",
+  "split": "test_data",
+  "model": "P2PNet SHTechA",
+  "repo": "E:\\datasets\\P2PNet",
+  "repo_commit": "5c91a81ca062b1c7fd3db3ad1c55b1c21f0a7455",
+  "weights": "E:\\datasets\\P2PNet\\weights\\SHTechA.pth",
+  "weights_sha256": "506047732b128ff09efef18e94bfacbe35fcfef300e5e9eeeece259b0488c63f",
+  "threshold": 0.5,
+  "localization_radius_px": 8.0,
+  "environment": {
+    "python": "3.13.7",
+    "torch": "2.14.0+cpu",
+    "device": "cpu",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "images": 182,
+  "load_ms": 1680.69,
+  "metrics": {
+    "n": 182,
+    "mae": 57.2418,
+    "rmse": 96.0415,
+    "nae": 0.1319,
+    "mean_gt": 433.9011,
+    "mean_pred": 426.2418
+  },
+  "density_bins_by_gt_count": [
+    {
+      "low": 0,
+      "high": 50,
+      "n": 0,
+      "mae": null
+    },
+    {
+      "low": 50,
+      "high": 100,
+      "n": 7,
+      "mae": 40.0
+    },
+    {
+      "low": 100,
+      "high": 200,
+      "n": 36,
+      "mae": 17.8333
+    },
+    {
+      "low": 200,
+      "high": 500,
+      "n": 93,
+      "mae": 46.8172
+    },
+    {
+      "low": 500,
+      "high": null,
+      "n": 46,
+      "mae": 111.7826
+    }
+  ],
+  "localization": {
+    "tp": 57959,
+    "fp": 19617,
+    "fn": 21011,
+    "precision": 0.7471,
+    "recall": 0.7339,
+    "f1": 0.7405,
+    "radius_px": 8.0,
+    "note": "GT points scaled to P2PNet resized coordinates; greedy matching."
+  },
+  "latency_ms": {
+    "mean": 1020.611,
+    "p50": 1148.218,
+    "p95": 1714.774,
+    "fps": 0.98,
+    "measurement": "model forward only; excludes image I/O and preprocessing"
+  },
+  "per_image": [
+    {
+      "image": "IMG_1.jpg",
+      "ground_truth": 172,
+      "predicted": 218,
+      "error": 46,
+      "inference_ms": 1313.99
+    },
+    {
+      "image": "IMG_10.jpg",
+      "ground_truth": 502,
+      "predicted": 445,
+      "error": -57,
+      "inference_ms": 1557.633
+    },
+    {
+      "image": "IMG_100.jpg",
+      "ground_truth": 391,
+      "predicted": 449,
+      "error": 58,
+      "inference_ms": 701.158
+    },
+    {
+      "image": "IMG_101.jpg",
+      "ground_truth": 211,
+      "predicted": 202,
+      "error": -9,
+      "inference_ms": 1352.576
+    },
+    {
+      "image": "IMG_102.jpg",
+      "ground_truth": 223,
+      "predicted": 201,
+      "error": -22,
+      "inference_ms": 221.642
+    },
+    {
+      "image": "IMG_103.jpg",
+      "ground_truth": 431,
+      "predicted": 499,
+      "error": 68,
+      "inference_ms": 1277.912
+    },
+    {
+      "image": "IMG_104.jpg",
+      "ground_truth": 1175,
+      "predicted": 1460,
+      "error": 285,
+      "inference_ms": 1288.061
+    },
+    {
+      "image": "IMG_105.jpg",
+      "ground_truth": 265,
+      "predicted": 210,
+      "error": -55,
+      "inference_ms": 1287.479
+    },
+    {
+      "image": "IMG_106.jpg",
+      "ground_truth": 1232,
+      "predicted": 1248,
+      "error": 16,
+      "inference_ms": 685.538
+    },
+    {
+      "image": "IMG_107.jpg",
+      "ground_truth": 294,
+      "predicted": 181,
+      "error": -113,
+      "inference_ms": 496.908
+    },
+    {
+      "image": "IMG_108.jpg",
+      "ground_truth": 182,
+      "predicted": 177,
+      "error": -5,
+      "inference_ms": 1055.031
+    },
+    {
+      "image": "IMG_109.jpg",
+      "ground_truth": 381,
+      "predicted": 341,
+      "error": -40,
+      "inference_ms": 1307.172
+    },
+    {
+      "image": "IMG_11.jpg",
+      "ground_truth": 1068,
+      "predicted": 1066,
+      "error": -2,
+      "inference_ms": 1289.021
+    },
+    {
+      "image": "IMG_110.jpg",
+      "ground_truth": 1023,
+      "predicted": 824,
+      "error": -199,
+      "inference_ms": 1281.241
+    },
+    {
+      "image": "IMG_111.jpg",
+      "ground_truth": 452,
+      "predicted": 498,
+      "error": 46,
+      "inference_ms": 1270.315
+    },
+    {
+      "image": "IMG_112.jpg",
+      "ground_truth": 256,
+      "predicted": 346,
+      "error": 90,
+      "inference_ms": 1167.587
+    },
+    {
+      "image": "IMG_113.jpg",
+      "ground_truth": 66,
+      "predicted": 277,
+      "error": 211,
+      "inference_ms": 846.733
+    },
+    {
+      "image": "IMG_114.jpg",
+      "ground_truth": 141,
+      "predicted": 157,
+      "error": 16,
+      "inference_ms": 1532.643
+    },
+    {
+      "image": "IMG_115.jpg",
+      "ground_truth": 1195,
+      "predicted": 1124,
+      "error": -71,
+      "inference_ms": 437.706
+    },
+    {
+      "image": "IMG_116.jpg",
+      "ground_truth": 289,
+      "predicted": 364,
+      "error": 75,
+      "inference_ms": 399.555
+    },
+    {
+      "image": "IMG_117.jpg",
+      "ground_truth": 1603,
+      "predicted": 1634,
+      "error": 31,
+      "inference_ms": 898.791
+    },
+    {
+      "image": "IMG_118.jpg",
+      "ground_truth": 241,
+      "predicted": 276,
+      "error": 35,
+      "inference_ms": 1336.1
+    },
+    {
+      "image": "IMG_119.jpg",
+      "ground_truth": 251,
+      "predicted": 262,
+      "error": 11,
+      "inference_ms": 1314.948
+    },
+    {
+      "image": "IMG_12.jpg",
+      "ground_truth": 321,
+      "predicted": 160,
+      "error": -161,
+      "inference_ms": 1540.217
+    },
+    {
+      "image": "IMG_120.jpg",
+      "ground_truth": 133,
+      "predicted": 141,
+      "error": 8,
+      "inference_ms": 423.011
+    },
+    {
+      "image": "IMG_121.jpg",
+      "ground_truth": 1210,
+      "predicted": 1429,
+      "error": 219,
+      "inference_ms": 1492.203
+    },
+    {
+      "image": "IMG_122.jpg",
+      "ground_truth": 1153,
+      "predicted": 661,
+      "error": -492,
+      "inference_ms": 1318.448
+    },
+    {
+      "image": "IMG_123.jpg",
+      "ground_truth": 115,
+      "predicted": 111,
+      "error": -4,
+      "inference_ms": 218.907
+    },
+    {
+      "image": "IMG_124.jpg",
+      "ground_truth": 226,
+      "predicted": 157,
+      "error": -69,
+      "inference_ms": 491.136
+    },
+    {
+      "image": "IMG_125.jpg",
+      "ground_truth": 269,
+      "predicted": 269,
+      "error": 0,
+      "inference_ms": 1339.281
+    },
+    {
+      "image": "IMG_126.jpg",
+      "ground_truth": 441,
+      "predicted": 405,
+      "error": -36,
+      "inference_ms": 1421.521
+    },
+    {
+      "image": "IMG_127.jpg",
+      "ground_truth": 986,
+      "predicted": 720,
+      "error": -266,
+      "inference_ms": 1751.717
+    },
+    {
+      "image": "IMG_128.jpg",
+      "ground_truth": 419,
+      "predicted": 337,
+      "error": -82,
+      "inference_ms": 419.75
+    },
+    {
+      "image": "IMG_129.jpg",
+      "ground_truth": 298,
+      "predicted": 221,
+      "error": -77,
+      "inference_ms": 1622.816
+    },
+    {
+      "image": "IMG_13.jpg",
+      "ground_truth": 584,
+      "predicted": 541,
+      "error": -43,
+      "inference_ms": 1955.696
+    },
+    {
+      "image": "IMG_130.jpg",
+      "ground_truth": 921,
+      "predicted": 904,
+      "error": -17,
+      "inference_ms": 964.951
+    },
+    {
+      "image": "IMG_131.jpg",
+      "ground_truth": 605,
+      "predicted": 480,
+      "error": -125,
+      "inference_ms": 1526.373
+    },
+    {
+      "image": "IMG_132.jpg",
+      "ground_truth": 375,
+      "predicted": 348,
+      "error": -27,
+      "inference_ms": 842.962
+    },
+    {
+      "image": "IMG_133.jpg",
+      "ground_truth": 137,
+      "predicted": 113,
+      "error": -24,
+      "inference_ms": 446.902
+    },
+    {
+      "image": "IMG_134.jpg",
+      "ground_truth": 165,
+      "predicted": 151,
+      "error": -14,
+      "inference_ms": 1646.115
+    },
+    {
+      "image": "IMG_135.jpg",
+      "ground_truth": 72,
+      "predicted": 53,
+      "error": -19,
+      "inference_ms": 105.124
+    },
+    {
+      "image": "IMG_136.jpg",
+      "ground_truth": 102,
+      "predicted": 78,
+      "error": -24,
+      "inference_ms": 119.14
+    },
+    {
+      "image": "IMG_137.jpg",
+      "ground_truth": 491,
+      "predicted": 508,
+      "error": 17,
+      "inference_ms": 207.97
+    },
+    {
+      "image": "IMG_138.jpg",
+      "ground_truth": 292,
+      "predicted": 228,
+      "error": -64,
+      "inference_ms": 253.674
+    },
+    {
+      "image": "IMG_139.jpg",
+      "ground_truth": 355,
+      "predicted": 343,
+      "error": -12,
+      "inference_ms": 944.179
+    },
+    {
+      "image": "IMG_14.jpg",
+      "ground_truth": 762,
+      "predicted": 613,
+      "error": -149,
+      "inference_ms": 1618.337
+    },
+    {
+      "image": "IMG_140.jpg",
+      "ground_truth": 93,
+      "predicted": 79,
+      "error": -14,
+      "inference_ms": 1679.8
+    },
+    {
+      "image": "IMG_141.jpg",
+      "ground_truth": 475,
+      "predicted": 358,
+      "error": -117,
+      "inference_ms": 1083.148
+    },
+    {
+      "image": "IMG_142.jpg",
+      "ground_truth": 214,
+      "predicted": 202,
+      "error": -12,
+      "inference_ms": 331.802
+    },
+    {
+      "image": "IMG_143.jpg",
+      "ground_truth": 357,
+      "predicted": 242,
+      "error": -115,
+      "inference_ms": 445.103
+    },
+    {
+      "image": "IMG_144.jpg",
+      "ground_truth": 264,
+      "predicted": 269,
+      "error": 5,
+      "inference_ms": 529.85
+    },
+    {
+      "image": "IMG_145.jpg",
+      "ground_truth": 261,
+      "predicted": 238,
+      "error": -23,
+      "inference_ms": 539.165
+    },
+    {
+      "image": "IMG_146.jpg",
+      "ground_truth": 479,
+      "predicted": 584,
+      "error": 105,
+      "inference_ms": 736.0
+    },
+    {
+      "image": "IMG_147.jpg",
+      "ground_truth": 587,
+      "predicted": 526,
+      "error": -61,
+      "inference_ms": 861.035
+    },
+    {
+      "image": "IMG_148.jpg",
+      "ground_truth": 208,
+      "predicted": 164,
+      "error": -44,
+      "inference_ms": 551.873
+    },
+    {
+      "image": "IMG_149.jpg",
+      "ground_truth": 230,
+      "predicted": 196,
+      "error": -34,
+      "inference_ms": 1611.494
+    },
+    {
+      "image": "IMG_15.jpg",
+      "ground_truth": 341,
+      "predicted": 314,
+      "error": -27,
+      "inference_ms": 221.39
+    },
+    {
+      "image": "IMG_150.jpg",
+      "ground_truth": 1303,
+      "predicted": 1286,
+      "error": -17,
+      "inference_ms": 612.208
+    },
+    {
+      "image": "IMG_151.jpg",
+      "ground_truth": 254,
+      "predicted": 215,
+      "error": -39,
+      "inference_ms": 413.525
+    },
+    {
+      "image": "IMG_152.jpg",
+      "ground_truth": 277,
+      "predicted": 273,
+      "error": -4,
+      "inference_ms": 1429.853
+    },
+    {
+      "image": "IMG_153.jpg",
+      "ground_truth": 397,
+      "predicted": 310,
+      "error": -87,
+      "inference_ms": 434.773
+    },
+    {
+      "image": "IMG_154.jpg",
+      "ground_truth": 498,
+      "predicted": 415,
+      "error": -83,
+      "inference_ms": 537.158
+    },
+    {
+      "image": "IMG_155.jpg",
+      "ground_truth": 165,
+      "predicted": 194,
+      "error": 29,
+      "inference_ms": 1713.971
+    },
+    {
+      "image": "IMG_156.jpg",
+      "ground_truth": 199,
+      "predicted": 159,
+      "error": -40,
+      "inference_ms": 1220.631
+    },
+    {
+      "image": "IMG_157.jpg",
+      "ground_truth": 392,
+      "predicted": 488,
+      "error": 96,
+      "inference_ms": 1381.51
+    },
+    {
+      "image": "IMG_158.jpg",
+      "ground_truth": 308,
+      "predicted": 381,
+      "error": 73,
+      "inference_ms": 449.436
+    },
+    {
+      "image": "IMG_159.jpg",
+      "ground_truth": 199,
+      "predicted": 201,
+      "error": 2,
+      "inference_ms": 786.033
+    },
+    {
+      "image": "IMG_16.jpg",
+      "ground_truth": 417,
+      "predicted": 426,
+      "error": 9,
+      "inference_ms": 388.637
+    },
+    {
+      "image": "IMG_160.jpg",
+      "ground_truth": 121,
+      "predicted": 122,
+      "error": 1,
+      "inference_ms": 206.768
+    },
+    {
+      "image": "IMG_161.jpg",
+      "ground_truth": 266,
+      "predicted": 214,
+      "error": -52,
+      "inference_ms": 1057.12
+    },
+    {
+      "image": "IMG_162.jpg",
+      "ground_truth": 219,
+      "predicted": 244,
+      "error": 25,
+      "inference_ms": 402.311
+    },
+    {
+      "image": "IMG_163.jpg",
+      "ground_truth": 162,
+      "predicted": 204,
+      "error": 42,
+      "inference_ms": 521.839
+    },
+    {
+      "image": "IMG_164.jpg",
+      "ground_truth": 302,
+      "predicted": 343,
+      "error": 41,
+      "inference_ms": 405.827
+    },
+    {
+      "image": "IMG_165.jpg",
+      "ground_truth": 1581,
+      "predicted": 1437,
+      "error": -144,
+      "inference_ms": 1519.272
+    },
+    {
+      "image": "IMG_166.jpg",
+      "ground_truth": 126,
+      "predicted": 161,
+      "error": 35,
+      "inference_ms": 952.42
+    },
+    {
+      "image": "IMG_167.jpg",
+      "ground_truth": 112,
+      "predicted": 113,
+      "error": 1,
+      "inference_ms": 202.545
+    },
+    {
+      "image": "IMG_168.jpg",
+      "ground_truth": 240,
+      "predicted": 280,
+      "error": 40,
+      "inference_ms": 1403.515
+    },
+    {
+      "image": "IMG_169.jpg",
+      "ground_truth": 218,
+      "predicted": 226,
+      "error": 8,
+      "inference_ms": 1429.292
+    },
+    {
+      "image": "IMG_17.jpg",
+      "ground_truth": 1157,
+      "predicted": 1311,
+      "error": 154,
+      "inference_ms": 746.358
+    },
+    {
+      "image": "IMG_170.jpg",
+      "ground_truth": 672,
+      "predicted": 688,
+      "error": 16,
+      "inference_ms": 1388.336
+    },
+    {
+      "image": "IMG_171.jpg",
+      "ground_truth": 239,
+      "predicted": 250,
+      "error": 11,
+      "inference_ms": 1403.061
+    },
+    {
+      "image": "IMG_172.jpg",
+      "ground_truth": 1176,
+      "predicted": 1470,
+      "error": 294,
+      "inference_ms": 571.712
+    },
+    {
+      "image": "IMG_173.jpg",
+      "ground_truth": 483,
+      "predicted": 664,
+      "error": 181,
+      "inference_ms": 1610.572
+    },
+    {
+      "image": "IMG_174.jpg",
+      "ground_truth": 129,
+      "predicted": 138,
+      "error": 9,
+      "inference_ms": 1837.638
+    },
+    {
+      "image": "IMG_175.jpg",
+      "ground_truth": 442,
+      "predicted": 601,
+      "error": 159,
+      "inference_ms": 1019.345
+    },
+    {
+      "image": "IMG_176.jpg",
+      "ground_truth": 213,
+      "predicted": 261,
+      "error": 48,
+      "inference_ms": 443.328
+    },
+    {
+      "image": "IMG_177.jpg",
+      "ground_truth": 363,
+      "predicted": 355,
+      "error": -8,
+      "inference_ms": 1524.63
+    },
+    {
+      "image": "IMG_178.jpg",
+      "ground_truth": 549,
+      "predicted": 497,
+      "error": -52,
+      "inference_ms": 1629.447
+    },
+    {
+      "image": "IMG_179.jpg",
+      "ground_truth": 400,
+      "predicted": 377,
+      "error": -23,
+      "inference_ms": 1469.048
+    },
+    {
+      "image": "IMG_18.jpg",
+      "ground_truth": 227,
+      "predicted": 115,
+      "error": -112,
+      "inference_ms": 1506.335
+    },
+    {
+      "image": "IMG_180.jpg",
+      "ground_truth": 398,
+      "predicted": 335,
+      "error": -63,
+      "inference_ms": 1957.843
+    },
+    {
+      "image": "IMG_181.jpg",
+      "ground_truth": 216,
+      "predicted": 213,
+      "error": -3,
+      "inference_ms": 1550.644
+    },
+    {
+      "image": "IMG_182.jpg",
+      "ground_truth": 199,
+      "predicted": 185,
+      "error": -14,
+      "inference_ms": 1648.245
+    },
+    {
+      "image": "IMG_19.jpg",
+      "ground_truth": 230,
+      "predicted": 214,
+      "error": -16,
+      "inference_ms": 1608.363
+    },
+    {
+      "image": "IMG_2.jpg",
+      "ground_truth": 1111,
+      "predicted": 1238,
+      "error": 127,
+      "inference_ms": 1480.944
+    },
+    {
+      "image": "IMG_20.jpg",
+      "ground_truth": 460,
+      "predicted": 461,
+      "error": 1,
+      "inference_ms": 1476.275
+    },
+    {
+      "image": "IMG_21.jpg",
+      "ground_truth": 717,
+      "predicted": 623,
+      "error": -94,
+      "inference_ms": 1432.449
+    },
+    {
+      "image": "IMG_22.jpg",
+      "ground_truth": 212,
+      "predicted": 271,
+      "error": 59,
+      "inference_ms": 807.115
+    },
+    {
+      "image": "IMG_23.jpg",
+      "ground_truth": 429,
+      "predicted": 445,
+      "error": 16,
+      "inference_ms": 2105.809
+    },
+    {
+      "image": "IMG_24.jpg",
+      "ground_truth": 553,
+      "predicted": 552,
+      "error": -1,
+      "inference_ms": 1148.162
+    },
+    {
+      "image": "IMG_25.jpg",
+      "ground_truth": 243,
+      "predicted": 162,
+      "error": -81,
+      "inference_ms": 1564.775
+    },
+    {
+      "image": "IMG_26.jpg",
+      "ground_truth": 499,
+      "predicted": 463,
+      "error": -36,
+      "inference_ms": 228.71
+    },
+    {
+      "image": "IMG_27.jpg",
+      "ground_truth": 760,
+      "predicted": 752,
+      "error": -8,
+      "inference_ms": 1746.167
+    },
+    {
+      "image": "IMG_28.jpg",
+      "ground_truth": 423,
+      "predicted": 457,
+      "error": 34,
+      "inference_ms": 1492.84
+    },
+    {
+      "image": "IMG_29.jpg",
+      "ground_truth": 309,
+      "predicted": 272,
+      "error": -37,
+      "inference_ms": 1479.67
+    },
+    {
+      "image": "IMG_3.jpg",
+      "ground_truth": 302,
+      "predicted": 452,
+      "error": 150,
+      "inference_ms": 656.889
+    },
+    {
+      "image": "IMG_30.jpg",
+      "ground_truth": 307,
+      "predicted": 306,
+      "error": -1,
+      "inference_ms": 553.124
+    },
+    {
+      "image": "IMG_31.jpg",
+      "ground_truth": 250,
+      "predicted": 256,
+      "error": 6,
+      "inference_ms": 1220.783
+    },
+    {
+      "image": "IMG_32.jpg",
+      "ground_truth": 961,
+      "predicted": 986,
+      "error": 25,
+      "inference_ms": 1406.709
+    },
+    {
+      "image": "IMG_33.jpg",
+      "ground_truth": 475,
+      "predicted": 446,
+      "error": -29,
+      "inference_ms": 1295.612
+    },
+    {
+      "image": "IMG_34.jpg",
+      "ground_truth": 89,
+      "predicted": 87,
+      "error": -2,
+      "inference_ms": 92.466
+    },
+    {
+      "image": "IMG_35.jpg",
+      "ground_truth": 567,
+      "predicted": 670,
+      "error": 103,
+      "inference_ms": 982.189
+    },
+    {
+      "image": "IMG_36.jpg",
+      "ground_truth": 1267,
+      "predicted": 1091,
+      "error": -176,
+      "inference_ms": 1067.726
+    },
+    {
+      "image": "IMG_37.jpg",
+      "ground_truth": 195,
+      "predicted": 179,
+      "error": -16,
+      "inference_ms": 1368.424
+    },
+    {
+      "image": "IMG_38.jpg",
+      "ground_truth": 717,
+      "predicted": 799,
+      "error": 82,
+      "inference_ms": 1571.093
+    },
+    {
+      "image": "IMG_39.jpg",
+      "ground_truth": 196,
+      "predicted": 160,
+      "error": -36,
+      "inference_ms": 1441.79
+    },
+    {
+      "image": "IMG_4.jpg",
+      "ground_truth": 170,
+      "predicted": 158,
+      "error": -12,
+      "inference_ms": 226.945
+    },
+    {
+      "image": "IMG_40.jpg",
+      "ground_truth": 236,
+      "predicted": 285,
+      "error": 49,
+      "inference_ms": 1638.777
+    },
+    {
+      "image": "IMG_41.jpg",
+      "ground_truth": 250,
+      "predicted": 172,
+      "error": -78,
+      "inference_ms": 1725.802
+    },
+    {
+      "image": "IMG_42.jpg",
+      "ground_truth": 802,
+      "predicted": 775,
+      "error": -27,
+      "inference_ms": 1714.816
+    },
+    {
+      "image": "IMG_43.jpg",
+      "ground_truth": 118,
+      "predicted": 140,
+      "error": 22,
+      "inference_ms": 1530.142
+    },
+    {
+      "image": "IMG_44.jpg",
+      "ground_truth": 366,
+      "predicted": 370,
+      "error": 4,
+      "inference_ms": 1539.067
+    },
+    {
+      "image": "IMG_45.jpg",
+      "ground_truth": 139,
+      "predicted": 137,
+      "error": -2,
+      "inference_ms": 1071.512
+    },
+    {
+      "image": "IMG_46.jpg",
+      "ground_truth": 382,
+      "predicted": 384,
+      "error": 2,
+      "inference_ms": 1370.093
+    },
+    {
+      "image": "IMG_47.jpg",
+      "ground_truth": 316,
+      "predicted": 378,
+      "error": 62,
+      "inference_ms": 298.006
+    },
+    {
+      "image": "IMG_48.jpg",
+      "ground_truth": 384,
+      "predicted": 405,
+      "error": 21,
+      "inference_ms": 1148.274
+    },
+    {
+      "image": "IMG_49.jpg",
+      "ground_truth": 514,
+      "predicted": 506,
+      "error": -8,
+      "inference_ms": 442.29
+    },
+    {
+      "image": "IMG_5.jpg",
+      "ground_truth": 819,
+      "predicted": 701,
+      "error": -118,
+      "inference_ms": 1886.189
+    },
+    {
+      "image": "IMG_50.jpg",
+      "ground_truth": 1006,
+      "predicted": 975,
+      "error": -31,
+      "inference_ms": 1934.233
+    },
+    {
+      "image": "IMG_51.jpg",
+      "ground_truth": 297,
+      "predicted": 311,
+      "error": 14,
+      "inference_ms": 1190.43
+    },
+    {
+      "image": "IMG_52.jpg",
+      "ground_truth": 135,
+      "predicted": 130,
+      "error": -5,
+      "inference_ms": 305.866
+    },
+    {
+      "image": "IMG_53.jpg",
+      "ground_truth": 176,
+      "predicted": 164,
+      "error": -12,
+      "inference_ms": 295.312
+    },
+    {
+      "image": "IMG_54.jpg",
+      "ground_truth": 529,
+      "predicted": 782,
+      "error": 253,
+      "inference_ms": 350.737
+    },
+    {
+      "image": "IMG_55.jpg",
+      "ground_truth": 149,
+      "predicted": 143,
+      "error": -6,
+      "inference_ms": 1027.14
+    },
+    {
+      "image": "IMG_56.jpg",
+      "ground_truth": 349,
+      "predicted": 288,
+      "error": -61,
+      "inference_ms": 433.901
+    },
+    {
+      "image": "IMG_57.jpg",
+      "ground_truth": 356,
+      "predicted": 374,
+      "error": 18,
+      "inference_ms": 1364.908
+    },
+    {
+      "image": "IMG_58.jpg",
+      "ground_truth": 198,
+      "predicted": 206,
+      "error": 8,
+      "inference_ms": 1397.755
+    },
+    {
+      "image": "IMG_59.jpg",
+      "ground_truth": 468,
+      "predicted": 513,
+      "error": 45,
+      "inference_ms": 408.984
+    },
+    {
+      "image": "IMG_6.jpg",
+      "ground_truth": 361,
+      "predicted": 362,
+      "error": 1,
+      "inference_ms": 1325.765
+    },
+    {
+      "image": "IMG_60.jpg",
+      "ground_truth": 293,
+      "predicted": 417,
+      "error": 124,
+      "inference_ms": 897.559
+    },
+    {
+      "image": "IMG_61.jpg",
+      "ground_truth": 193,
+      "predicted": 175,
+      "error": -18,
+      "inference_ms": 392.704
+    },
+    {
+      "image": "IMG_62.jpg",
+      "ground_truth": 337,
+      "predicted": 290,
+      "error": -47,
+      "inference_ms": 394.172
+    },
+    {
+      "image": "IMG_63.jpg",
+      "ground_truth": 1121,
+      "predicted": 1092,
+      "error": -29,
+      "inference_ms": 1294.732
+    },
+    {
+      "image": "IMG_64.jpg",
+      "ground_truth": 289,
+      "predicted": 342,
+      "error": 53,
+      "inference_ms": 778.393
+    },
+    {
+      "image": "IMG_65.jpg",
+      "ground_truth": 215,
+      "predicted": 220,
+      "error": 5,
+      "inference_ms": 478.487
+    },
+    {
+      "image": "IMG_66.jpg",
+      "ground_truth": 823,
+      "predicted": 792,
+      "error": -31,
+      "inference_ms": 1432.723
+    },
+    {
+      "image": "IMG_67.jpg",
+      "ground_truth": 192,
+      "predicted": 207,
+      "error": 15,
+      "inference_ms": 867.895
+    },
+    {
+      "image": "IMG_68.jpg",
+      "ground_truth": 212,
+      "predicted": 188,
+      "error": -24,
+      "inference_ms": 1164.314
+    },
+    {
+      "image": "IMG_69.jpg",
+      "ground_truth": 166,
+      "predicted": 147,
+      "error": -19,
+      "inference_ms": 211.566
+    },
+    {
+      "image": "IMG_7.jpg",
+      "ground_truth": 568,
+      "predicted": 558,
+      "error": -10,
+      "inference_ms": 1414.773
+    },
+    {
+      "image": "IMG_70.jpg",
+      "ground_truth": 412,
+      "predicted": 462,
+      "error": 50,
+      "inference_ms": 507.723
+    },
+    {
+      "image": "IMG_71.jpg",
+      "ground_truth": 602,
+      "predicted": 609,
+      "error": 7,
+      "inference_ms": 1634.559
+    },
+    {
+      "image": "IMG_72.jpg",
+      "ground_truth": 589,
+      "predicted": 788,
+      "error": 199,
+      "inference_ms": 653.702
+    },
+    {
+      "image": "IMG_73.jpg",
+      "ground_truth": 153,
+      "predicted": 177,
+      "error": 24,
+      "inference_ms": 1360.738
+    },
+    {
+      "image": "IMG_74.jpg",
+      "ground_truth": 865,
+      "predicted": 974,
+      "error": 109,
+      "inference_ms": 1352.486
+    },
+    {
+      "image": "IMG_75.jpg",
+      "ground_truth": 666,
+      "predicted": 632,
+      "error": -34,
+      "inference_ms": 545.494
+    },
+    {
+      "image": "IMG_76.jpg",
+      "ground_truth": 485,
+      "predicted": 465,
+      "error": -20,
+      "inference_ms": 529.095
+    },
+    {
+      "image": "IMG_77.jpg",
+      "ground_truth": 207,
+      "predicted": 207,
+      "error": 0,
+      "inference_ms": 1593.702
+    },
+    {
+      "image": "IMG_78.jpg",
+      "ground_truth": 271,
+      "predicted": 248,
+      "error": -23,
+      "inference_ms": 1420.681
+    },
+    {
+      "image": "IMG_79.jpg",
+      "ground_truth": 186,
+      "predicted": 154,
+      "error": -32,
+      "inference_ms": 502.223
+    },
+    {
+      "image": "IMG_8.jpg",
+      "ground_truth": 1326,
+      "predicted": 879,
+      "error": -447,
+      "inference_ms": 1326.689
+    },
+    {
+      "image": "IMG_80.jpg",
+      "ground_truth": 157,
+      "predicted": 136,
+      "error": -21,
+      "inference_ms": 1358.445
+    },
+    {
+      "image": "IMG_81.jpg",
+      "ground_truth": 356,
+      "predicted": 484,
+      "error": 128,
+      "inference_ms": 352.765
+    },
+    {
+      "image": "IMG_82.jpg",
+      "ground_truth": 217,
+      "predicted": 192,
+      "error": -25,
+      "inference_ms": 286.599
+    },
+    {
+      "image": "IMG_83.jpg",
+      "ground_truth": 218,
+      "predicted": 235,
+      "error": 17,
+      "inference_ms": 1555.678
+    },
+    {
+      "image": "IMG_84.jpg",
+      "ground_truth": 122,
+      "predicted": 130,
+      "error": 8,
+      "inference_ms": 1352.404
+    },
+    {
+      "image": "IMG_85.jpg",
+      "ground_truth": 97,
+      "predicted": 74,
+      "error": -23,
+      "inference_ms": 1065.196
+    },
+    {
+      "image": "IMG_86.jpg",
+      "ground_truth": 579,
+      "predicted": 562,
+      "error": -17,
+      "inference_ms": 1349.571
+    },
+    {
+      "image": "IMG_87.jpg",
+      "ground_truth": 417,
+      "predicted": 414,
+      "error": -3,
+      "inference_ms": 1480.647
+    },
+    {
+      "image": "IMG_88.jpg",
+      "ground_truth": 86,
+      "predicted": 75,
+      "error": -11,
+      "inference_ms": 1687.457
+    },
+    {
+      "image": "IMG_89.jpg",
+      "ground_truth": 383,
+      "predicted": 363,
+      "error": -20,
+      "inference_ms": 798.38
+    },
+    {
+      "image": "IMG_9.jpg",
+      "ground_truth": 371,
+      "predicted": 261,
+      "error": -110,
+      "inference_ms": 1696.1
+    },
+    {
+      "image": "IMG_90.jpg",
+      "ground_truth": 2256,
+      "predicted": 1843,
+      "error": -413,
+      "inference_ms": 956.932
+    },
+    {
+      "image": "IMG_91.jpg",
+      "ground_truth": 101,
+      "predicted": 90,
+      "error": -11,
+      "inference_ms": 1305.548
+    },
+    {
+      "image": "IMG_92.jpg",
+      "ground_truth": 1366,
+      "predicted": 1421,
+      "error": 55,
+      "inference_ms": 799.001
+    },
+    {
+      "image": "IMG_93.jpg",
+      "ground_truth": 255,
+      "predicted": 239,
+      "error": -16,
+      "inference_ms": 219.833
+    },
+    {
+      "image": "IMG_94.jpg",
+      "ground_truth": 69,
+      "predicted": 69,
+      "error": 0,
+      "inference_ms": 206.798
+    },
+    {
+      "image": "IMG_95.jpg",
+      "ground_truth": 190,
+      "predicted": 135,
+      "error": -55,
+      "inference_ms": 67.714
+    },
+    {
+      "image": "IMG_96.jpg",
+      "ground_truth": 246,
+      "predicted": 225,
+      "error": -21,
+      "inference_ms": 268.727
+    },
+    {
+      "image": "IMG_97.jpg",
+      "ground_truth": 522,
+      "predicted": 494,
+      "error": -28,
+      "inference_ms": 1120.259
+    },
+    {
+      "image": "IMG_98.jpg",
+      "ground_truth": 153,
+      "predicted": 147,
+      "error": -6,
+      "inference_ms": 267.597
+    },
+    {
+      "image": "IMG_99.jpg",
+      "ground_truth": 242,
+      "predicted": 209,
+      "error": -33,
+      "inference_ms": 590.131
+    }
+  ],
+  "generated_at": "2026-11-05T09:02:59Z",
+  "limitations": [
+    "Single public dataset/split; not a real venue measurement.",
+    "P2PNet code from 2021; compatibility patches applied for torchvision 0.29 (version check) and pretrained backbone download disabled.",
+    "ShanghaiTech license/terms must be verified by the user; dataset/weights are not redistributed."
+  ]
+}

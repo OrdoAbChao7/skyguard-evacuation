@@ -1,0 +1,25 @@
+{
+  "run1": {
+    "n": 182,
+    "mae": 57.2418,
+    "rmse": 96.0415,
+    "nae": 0.1319,
+    "mean_gt": 433.9011,
+    "mean_pred": 426.2418
+  },
+  "run2": {
+    "n": 182,
+    "mae": 57.2418,
+    "rmse": 96.0415,
+    "nae": 0.1319,
+    "mean_gt": 433.9011,
+    "mean_pred": 426.2418
+  },
+  "images": 182,
+  "per_image_prediction_differences": 0,
+  "differing_images": [],
+  "same_weights_sha256": true,
+  "same_mae": true,
+  "same_rmse": true,
+  "note": "CPU inference; latency differs, counts should be deterministic."
+}

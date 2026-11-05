@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-11-05T05:10:53.432341+00:00",
+  "git_head": "3b62fe94bd03406532398dfbdcc6812bf669544d",
+  "node": "v24.19.0",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "commands": [
+    {
+      "name": "backend_tests",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_tests",
+      "exit_code": 0
+    },
+    {
+      "name": "backend_tsc",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_tsc",
+      "exit_code": 0
+    },
+    {
+      "name": "build",
+      "exit_code": 0
+    },
+    {
+      "name": "demo",
+      "exit_code": 0
+    },
+    {
+      "name": "demo_mvp",
+      "exit_code": 0
+    },
+    {
+      "name": "bench_comp",
+      "exit_code": 0
+    },
+    {
+      "name": "bench_v6",
+      "exit_code": 0
+    },
+    {
+      "name": "bench_v61",
+      "exit_code": 0
+    },
+    {
+      "name": "verify_evidence",
+      "exit_code": 0
+    },
+    {
+      "name": "manifest",
+      "exit_code": 0
+    },
+    {
+      "name": "manifest_verify",
+      "exit_code": 0
+    }
+  ],
+  "all_zero": true,
+  "verification": {
+    "checks": 82,
+    "passed": 82
+  },
+  "manifest": {
+    "files": 33,
+    "raw_mib": 24.73,
+    "gzip_mib": 1.1,
+    "verified": 33
+  },
+  "note": "退出码来自实际运行；Docker 构建因 Docker daemon 未启动而失败，未列入代码测试。"
+}

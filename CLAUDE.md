@@ -4,10 +4,14 @@
 
 ## 必读顺序
 
-1. `AGENTS.md`（架构/安全/Git/证据规则）
-2. `docs/MVP_LIMITATIONS.md`（禁止表述）
-3. `research/CLAIMS.md`（技术主张状态）
-4. `docs/MVP_ARCHITECTURE.md`（模块边界）
+1. `AGENTS.md`（长期研发目标、架构/安全/Git/证据规则）
+2. `docs/PROJECT_STATUS.md`（当前状态唯一事实来源）
+3. `docs/LIMITATIONS.md` / `docs/MVP_LIMITATIONS.md`（禁止表述）
+4. `research/CLAIMS.md`（技术主张状态：VERIFIED / PARTIALLY_SUPPORTED / HEURISTIC / UNVERIFIED）
+5. 执行任何修改前检查 `git status`、HEAD 与未提交成果
+
+`AGENTS.md` 是长期目标与开发规则；`docs/PROJECT_STATUS.md` 是当前状态的事实来源。
+两者冲突时，以实际代码/原始实验数据和 `PROJECT_STATUS.md` 的最新核对结果为准，并同步修正文档。
 
 ## 不可违背
 

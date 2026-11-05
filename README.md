@@ -10,6 +10,9 @@ SkyGuard 是一个**独立的安全决策研究原型**：把
 
 ## 项目状态
 
+> **当前状态唯一事实来源：** [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md)<br>
+> 阶段：Research Prototype Candidate（V6.2 证据已冻结，工作区未提交）；不是 Production Ready。
+
 - 本仓库从灵小禅（Lingshan AI Guide）仓库中的 SkyGuard 安全业务域拆分而来，
   与文旅导览业务**完全切割**：没有游客端、RAG、数字人、管理后台。
 - **疏散引擎原样保留**：时间扩展最小费用流规划器、15 类硬约束独立校验器、
@@ -18,7 +21,7 @@ SkyGuard 是一个**独立的安全决策研究原型**：把
   区域 / 通道 / 出口 / 演示脚本 / 大屏底图与地标 / 模拟基线全部在
   `data/scenarios/*.json` 中声明，换场景不需要改疏散代码。
   详见 [`docs/SCENARIO.md`](docs/SCENARIO.md)。
-- 默认场景 `venue-default.json` 是**合成演示场馆**，仅用于验证闭环，不代表任何真实建筑。
+- 默认场景为 `stadium-evacuation.json`（合成体育场散场）；`venue-default.json` 保留为旧版合成场馆。场景仅用于验证闭环，不代表任何真实建筑。
 
 ## MVP 端到端闭环（华为 ICT 方向）
 
@@ -31,7 +34,7 @@ SkyGuard 是一个**独立的安全决策研究原型**：把
 ```
 
 - **感知**：视频回放、CSV/JSON 回放、模拟观测、摄像头健康；固定摄像头与无人机观察统一契约。
-- **预测**：`ema-linear-v1`，输出趋势、区间、数据充分性与不确定性说明。
+- **预测**：`adaptive-forecast-v3`，滚动验证选择 persistence/EMA/linear/damped/blend，输出趋势、区间、数据充分性与不确定性说明。
 - **VoI**：贝叶斯后验 + 信息熵 + 预期风险降低 + 时间/资源/失败成本，参数全部来自场景文件。
 - **Agent**：本地确定式主干 Agent；AgentArts 适配器已实现但**未实机连接**，界面明确区分 `LOCAL DEMO`。
 - **MCP**：官方 SDK 实现 15 个工具，权限、Schema、超时与审计与本地 Agent 共用。
@@ -65,22 +68,29 @@ npm run mcp --prefix backend   # 标准 MCP stdio Server
 | 统一基准（多随机种子、置信区间、敏感性、Pareto、故障注入） | [`evaluation/COMPETITION_REPORT.md`](evaluation/COMPETITION_REPORT.md) |
 | V6 科研报告（多区域 VoI、重试、邻居预测、多事件） | [`evaluation/V6_REPORT.md`](evaluation/V6_REPORT.md) |
 | V6.1 科研审计（公平预算、序贯审计、严格滚动预测、图敏感性） | [`evaluation/V6_1_REPORT.md`](evaluation/V6_1_REPORT.md) |
+| V6.2 30 种子统计与最终交付 | [`evaluation/V6_2_REPORT.md`](evaluation/V6_2_REPORT.md)、[`docs/FINAL_DELIVERY.md`](docs/FINAL_DELIVERY.md)、[`RELEASE_AUDIT_FINAL.md`](RELEASE_AUDIT_FINAL.md) |
 | 研究资料库（38 条来源、10 篇专题笔记） | [`research/INDEX.md`](research/INDEX.md) |
-| 6–8 分钟演示脚本 | [`docs/DEMO_SCRIPT_6_8MIN.md`](docs/DEMO_SCRIPT_6_8MIN.md) |
-| 答辩问题库 | [`docs/QA_BANK.md`](docs/QA_BANK.md) |
+| 当前状态事实源 | [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md) |
+| 6–8 分钟演示脚本 | [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md)、[`docs/DEMO_SCRIPT_6_8MIN.md`](docs/DEMO_SCRIPT_6_8MIN.md) |
+| 答辩问题库 | [`docs/DEFENSE_QA.md`](docs/DEFENSE_QA.md)（40 问）、[`docs/QA_BANK.md`](docs/QA_BANK.md) |
 | 核心研究贡献 | [`docs/RESEARCH_CONTRIBUTIONS.md`](docs/RESEARCH_CONTRIBUTIONS.md) |
 | 完整技术报告 | [`docs/COMPETITION_TECHNICAL_REPORT.md`](docs/COMPETITION_TECHNICAL_REPORT.md) |
 | 论文初稿 | [`docs/PAPER_DRAFT.md`](docs/PAPER_DRAFT.md) |
-| 30 问答辩库 | [`docs/DEFENSE_QA.md`](docs/DEFENSE_QA.md) |
 | 论文/技术报告大纲 | [`docs/PAPER_OUTLINE.md`](docs/PAPER_OUTLINE.md) |
 | 创新点—证据映射 | [`docs/INNOVATION_EVIDENCE_MAP.md`](docs/INNOVATION_EVIDENCE_MAP.md) |
 | 部署手册 / 昇腾路径 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)、[`docs/ASCEND_DEPLOYMENT.md`](docs/ASCEND_DEPLOYMENT.md) |
+| 发布审计 | [`RELEASE_AUDIT_REPORT.md`](RELEASE_AUDIT_REPORT.md)、[`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md) |
+| 真实数据评测 | [`evaluation/real-data/REPORT.md`](evaluation/real-data/REPORT.md)、[`docs/REAL_DATASET_EVALUATION.md`](docs/REAL_DATASET_EVALUATION.md) |
+| 数据治理 | [`docs/DATA_GOVERNANCE.md`](docs/DATA_GOVERNANCE.md)、[`evaluation/DATA_MANIFEST.md`](evaluation/DATA_MANIFEST.md) |
 | 容器与 CI | `Dockerfile`、`.github/workflows/ci.yml` |
 
 ```powershell
 npm run benchmark:competition   # 竞赛级基准 → evaluation/COMPETITION_REPORT.md
 npm run benchmark:v6            # V6 多区域/重试/邻居预测 → evaluation/V6_REPORT.md
-npm run benchmark:v61           # V6.1 公平预算/序贯审计/严格预测 → evaluation/V6_1_REPORT.md
+npm run benchmark:v61           # V6.1（复跑请设 V61_OUT_DIR，避免覆盖冻结数据）
+npm run benchmark:v62           # V6.2 30 种子统计 → evaluation/V6_2_REPORT.md
+npm run verify:evidence         # 原始数据 → 汇总数字一致性校验
+npm run manifest:evidence       # 证据 SHA-256 清单
 ```
 
 ### 工程加固

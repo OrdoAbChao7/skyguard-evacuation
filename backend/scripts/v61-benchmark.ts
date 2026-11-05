@@ -39,7 +39,12 @@ import { forecastWithMethod, selectForecastMethod, selectIntervalQuantile } from
 import { matchPoints } from '../src/services/perception/metrics';
 
 const SEEDS = [20261105, 20261106, 20261107, 20261108, 20261109];
-const OUT = path.resolve(__dirname, '../../evaluation/v61');
+const OUT = process.env.V61_OUT_DIR
+  ? path.resolve(process.env.V61_OUT_DIR)
+  : path.resolve(__dirname, '../../evaluation/v61');
+const REPORT_PATH = process.env.V61_REPORT_PATH
+  ? path.resolve(process.env.V61_REPORT_PATH)
+  : path.resolve(__dirname, '../../evaluation/V6_1_REPORT.md');
 const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
 const scenario: SafetyScenario = loadSafetyScenario(SCENARIO_PATH);
 const policy = scenario.investigation;
@@ -64,6 +69,25 @@ function bootstrapCI(values: number[], iterations = 1000, seed = 17) {
   stats.sort((a, b) => a - b);
   return { mean: Number(mean(values).toFixed(4)), lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
 }
+function clusterBootstrap(groups: number[][], iterations = 1000, seed = 19) {
+  const rng = mulberry32(seed);
+  const stats: number[] = [];
+  for (let i = 0; i < iterations; i += 1) {
+    let sum = 0;
+    let count = 0;
+    for (let g = 0; g < groups.length; g += 1) {
+      const group = groups[Math.floor(rng() * groups.length)];
+      for (let j = 0; j < group.length; j += 1) {
+        sum += group[Math.floor(rng() * group.length)];
+        count += 1;
+      }
+    }
+    stats.push(sum / count);
+  }
+  stats.sort((a, b) => a - b);
+  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
+}
+
 function cohenDz(diffs: number[]): number {
   const sd = std(diffs);
   return sd === 0 ? 0 : Number((mean(diffs) / sd).toFixed(4));
@@ -262,7 +286,14 @@ function experimentA2() {
     },
     summary,
     paired_multi_minus_single: {
-      benefit_diff: { ...ci(paired.map(item => item.benefit)), bootstrap: bootstrapCI(paired.map(item => item.benefit)), cohen_dz: cohenDz(paired.map(item => item.benefit)) },
+      benefit_diff: {
+        ...ci(paired.map(item => item.benefit)),
+        bootstrap: bootstrapCI(paired.map(item => item.benefit)),
+        bootstrap_cluster_by_seed: clusterBootstrap(
+          SEEDS.map(seed => paired.filter((_, index) => rows.filter(row => row.quality === 0.6 && row.budget === 2 && row.strategy === 'multi')[index]?.seed === seed).map(item => item.benefit)),
+        ),
+        cohen_dz: cohenDz(paired.map(item => item.benefit)),
+      },
       cost_diff: ci(paired.map(item => item.cost)),
       efficiency_diff: ci(paired.map(item => item.efficiency)),
       n: paired.length,
@@ -440,12 +471,15 @@ function experimentC() {
   const horizons = [2, 5, 10];
   const names: ScenarioName[] = ['stable', 'surge', 'decline', 'periodic', 'missing'];
   const rows: Array<any> = [];
+  const seriesMetrics: Array<any> = [];
+  const methods = ['persistence', 'ema', 'linear', 'damped', 'adaptive'] as const;
   for (const name of names) {
     for (const horizon of horizons) {
       for (const seed of SEEDS) {
         const rng = mulberry32(seed + 100 + horizon * 7 + name.length);
         for (let series = 0; series < 120; series += 1) {
           const values = fillMissing(generateSeries(name, rng, 40));
+          const localRows: Array<any> = [];
           // 测试起点从 30 开始；每个起点只用过去数据重新选择方法
           for (let origin = 30; origin + horizon <= 40; origin += 1) {
             const train = values.slice(0, origin);
@@ -462,15 +496,25 @@ function experimentC() {
             const q95 = selectIntervalQuantile(points, selection.method, horizon) ?? 0;
             const margin95 = q95 * 1.5 * Math.sqrt(1 + horizon / origin);
             const margin90 = q95 * 1.645 / 1.96 * 1.5 * Math.sqrt(1 + horizon / origin);
-            rows.push({
+            const row = {
               name, horizon, seed, series, origin, truth,
               predictions,
               selected_method: selection.method,
               coverage90: Math.abs(truth - predictions.adaptive) <= margin90,
               coverage95: Math.abs(truth - predictions.adaptive) <= margin95,
               interval_width: 2 * margin95,
-            });
+            };
+            rows.push(row);
+            localRows.push(row);
           }
+          seriesMetrics.push({
+            name, horizon, seed, series, n: localRows.length,
+            mae: Object.fromEntries(methods.map(method => [method, Number(mean(localRows.map(row => Math.abs(row.predictions[method] - row.truth))).toFixed(6))])),
+            coverage90: Number((localRows.filter(row => row.coverage90).length / localRows.length).toFixed(6)),
+            coverage95: Number((localRows.filter(row => row.coverage95).length / localRows.length).toFixed(6)),
+            mean_interval_width: Number(mean(localRows.map(row => row.interval_width)).toFixed(4)),
+            selected_methods: Object.fromEntries(['persistence', 'ema', 'linear', 'damped', 'blend'].map(method => [method, localRows.filter(row => row.selected_method === method).length])),
+          });
         }
       }
     }
@@ -501,6 +545,7 @@ function experimentC() {
       note: '全部为合成序列；missing 场景使用前向填充。',
     },
     summary,
+    series_metrics: seriesMetrics,
     raw: rows.slice(0, 5000),
   };
 }
@@ -683,7 +728,8 @@ V6.1 重做为**同种子、同初始信念、同动作预算、同证据**的�
 配对差异（多区域 − 单区域）：
 
 - 风险降低差：${a.paired_multi_minus_single.benefit_diff.mean} [${a.paired_multi_minus_single.benefit_diff.lower}, ${a.paired_multi_minus_single.benefit_diff.upper}]，
-  Bootstrap [${a.paired_multi_minus_single.benefit_diff.bootstrap.lower}, ${a.paired_multi_minus_single.benefit_diff.bootstrap.upper}]，
+  Bootstrap（trial 级）[${a.paired_multi_minus_single.benefit_diff.bootstrap.lower}, ${a.paired_multi_minus_single.benefit_diff.bootstrap.upper}]，
+  聚类 Bootstrap（按 seed 重采样）[${a.paired_multi_minus_single.benefit_diff.bootstrap_cluster_by_seed.lower}, ${a.paired_multi_minus_single.benefit_diff.bootstrap_cluster_by_seed.upper}]，
   Cohen's d_z = ${a.paired_multi_minus_single.benefit_diff.cohen_dz}；
 - 成本差：${a.paired_multi_minus_single.cost_diff.mean}；
 - 效率差：${a.paired_multi_minus_single.efficiency_diff.mean} [${a.paired_multi_minus_single.efficiency_diff.lower}, ${a.paired_multi_minus_single.efficiency_diff.upper}]（区间含 0，效率差异不显著）；
@@ -760,5 +806,5 @@ ${Object.entries(d.coverage_weight_sensitivity).map(([name, value]: [string, any
 
 真实场地/人流/视频、AgentArts 租户、CANN 设备、公开数据集与权重、无人机。
 `;
-fs.writeFileSync(path.resolve(__dirname, '../../evaluation/V6_1_REPORT.md'), report);
+fs.writeFileSync(REPORT_PATH, report);
 console.log('[v61] 输出 evaluation/v61/*.json 与 evaluation/V6_1_REPORT.md');
