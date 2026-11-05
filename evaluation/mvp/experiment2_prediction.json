@@ -1,0 +1,82 @@
+{
+  "config": {
+    "seed": 20261107,
+    "series_count": 300,
+    "train_length_minutes": 20,
+    "horizons": [
+      2,
+      5,
+      10
+    ],
+    "generator": "base + slope*step + 三段均匀噪声；全部为合成序列",
+    "note": "这不是真实人流数据的精度指标；真实数据缺失，无法报告真实 MAE/RMSE。"
+  },
+  "results": [
+    {
+      "horizon_minutes": 2,
+      "series": 300,
+      "metrics": {
+        "persistence": {
+          "mae": 13.2967,
+          "rmse": 16.638
+        },
+        "ema_only": {
+          "mae": 17.8487,
+          "rmse": 21.3974
+        },
+        "linear_only": {
+          "mae": 7.3527,
+          "rmse": 9.899
+        },
+        "ema_linear": {
+          "mae": 8.01,
+          "rmse": 10.4062
+        }
+      }
+    },
+    {
+      "horizon_minutes": 5,
+      "series": 300,
+      "metrics": {
+        "persistence": {
+          "mae": 28.0467,
+          "rmse": 32.9533
+        },
+        "ema_only": {
+          "mae": 34.3717,
+          "rmse": 39.8472
+        },
+        "linear_only": {
+          "mae": 8.4226,
+          "rmse": 11.0462
+        },
+        "ema_linear": {
+          "mae": 9.0767,
+          "rmse": 11.8391
+        }
+      }
+    },
+    {
+      "horizon_minutes": 10,
+      "series": 300,
+      "metrics": {
+        "persistence": {
+          "mae": 50.11,
+          "rmse": 57.8532
+        },
+        "ema_only": {
+          "mae": 57.5611,
+          "rmse": 66.0845
+        },
+        "linear_only": {
+          "mae": 8.419,
+          "rmse": 11.3029
+        },
+        "ema_linear": {
+          "mae": 9.2567,
+          "rmse": 12.2165
+        }
+      }
+    }
+  ]
+}

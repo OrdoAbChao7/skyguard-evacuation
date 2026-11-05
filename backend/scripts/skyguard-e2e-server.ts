@@ -7,7 +7,7 @@ import path from 'node:path';
 // 隔离 HTTP 集成测试：真实安全路由和 JWT 校验，不挂载生产服务。
 const root = process.env.SKYGUARD_E2E_ROOT ?? fs.mkdtempSync(path.join(os.tmpdir(), 'skyguard-http-e2e-'));
 fs.mkdirSync(path.join(root, 'scenarios'), { recursive: true });
-fs.copyFileSync(path.resolve(__dirname, '../../data/scenarios/venue-default.json'), path.join(root, 'scenarios/venue-default.json'));
+fs.copyFileSync(path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json'), path.join(root, 'scenarios/stadium-evacuation.json'));
 process.env.DATA_ROOT = root;
 process.env.SECRET_KEY = 'skyguard-isolated-e2e-secret';
 

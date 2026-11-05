@@ -13,9 +13,14 @@
     "test:safety": "tsx --test tests/safety/*.test.ts",
     "demo:safety": "tsx scripts/skyguard-demo.ts",
     "bench:safety": "tsx scripts/skyguard-benchmark.ts --iterations 30 --out ../evaluation/performance.json",
-    "e2e:server": "tsx scripts/skyguard-e2e-server.ts"
+    "e2e:server": "tsx scripts/skyguard-e2e-server.ts",
+    "demo:mvp": "tsx scripts/mvp-demo.ts",
+    "experiments:mvp": "tsx scripts/mvp-experiments.ts",
+    "mcp": "tsx src/mcp/server.ts",
+    "benchmark:competition": "tsx scripts/competition-benchmark.ts"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",

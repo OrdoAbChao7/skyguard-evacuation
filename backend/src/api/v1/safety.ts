@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { verifyToken } from './auth';
 import { EvacuationPlanSchema } from '../../services/safety/types';
 import { listScenarioFiles, getScenarioFileName } from '../../services/safety/scenario';
+import { resetMvpServiceForTests } from '../../services/mvp';
 import {
   getProviders,
   getSafetyService,
@@ -64,7 +65,7 @@ const ObservationBody = z.object({
   region_id: z.string().min(1),
   count: z.number().nonnegative(),
   confidence: z.number().min(0).max(1),
-  source: z.enum(['simulation', 'recorded_video', 'live_video']),
+  source: z.enum(['simulation', 'recorded_video', 'live_video', 'csv_replay', 'field_report', 'uav_observation']),
   provider: z.string().min(1).default('manual'),
   model_version: z.string().min(1).default('manual'),
   calibration_version: z.string().min(1).optional(),
@@ -509,6 +510,8 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
     if (parsed.data.file) process.env.SAFETY_SCENARIO_FILE = parsed.data.file;
     try {
       resetSafetyServiceForTests();
+      // MVP 服务持有自己的场景/人员/预测实例，必须一起重载，避免 /safety 与 /mvp 场景分叉。
+      resetMvpServiceForTests();
       const status = getSafetyService().getStatus();
       res.json({
         status: 'reloaded',
@@ -522,6 +525,7 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
       // 重新加载原场景，避免服务处于不可用状态
       process.env.SAFETY_SCENARIO_FILE = '';
       resetSafetyServiceForTests();
+      resetMvpServiceForTests();
     }
   });
 

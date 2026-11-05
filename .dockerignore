@@ -1,0 +1,13 @@
+.git
+.github
+node_modules
+backend/node_modules
+frontend/node_modules
+backend/dist
+frontend/dist
+data/audit
+data/admin_config.json
+data/ops-state.json
+evaluation/competition
+.env
+*.log

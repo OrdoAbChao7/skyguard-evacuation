@@ -1,0 +1,61 @@
+{
+  "config": {
+    "cases": 6,
+    "note": "状态机纯函数故障注入；不涉及真实数据。"
+  },
+  "summary": {
+    "matched": 6,
+    "total": 6,
+    "false_publish": 0
+  },
+  "cases": [
+    {
+      "case": "normal",
+      "expected": "NORMAL",
+      "actual": "NORMAL",
+      "publishable": true,
+      "validated_route_display_allowed": true,
+      "matched": true
+    },
+    {
+      "case": "no_observations",
+      "expected": "DEGRADED",
+      "actual": "DEGRADED",
+      "publishable": false,
+      "validated_route_display_allowed": false,
+      "matched": true
+    },
+    {
+      "case": "untrusted",
+      "expected": "DEGRADED",
+      "actual": "DEGRADED",
+      "publishable": false,
+      "validated_route_display_allowed": false,
+      "matched": true
+    },
+    {
+      "case": "inference_down",
+      "expected": "DEGRADED",
+      "actual": "DEGRADED",
+      "publishable": false,
+      "validated_route_display_allowed": false,
+      "matched": true
+    },
+    {
+      "case": "invalid_plan",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "publishable": false,
+      "validated_route_display_allowed": false,
+      "matched": true
+    },
+    {
+      "case": "plan_invalidated",
+      "expected": "REROUTE",
+      "actual": "REROUTE",
+      "publishable": false,
+      "validated_route_display_allowed": false,
+      "matched": true
+    }
+  ]
+}

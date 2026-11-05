@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 const CommandCenterPage = lazy(() => import('./pages/command-center/CommandCenterPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
+const StaffPage = lazy(() => import('./pages/StaffPage'));
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<CommandCenterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/staff" element={<StaffPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>

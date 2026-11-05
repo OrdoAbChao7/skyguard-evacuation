@@ -1,0 +1,174 @@
+{
+  "name": "stadium-evacuation-sample",
+  "provenance": "合成演示回放数据（固定值）；时间戳为示例，实际使用前需按当前时间平移。",
+  "rows": [
+    {
+      "timestamp": "2026-11-05T18:00:00.000Z",
+      "region_id": "R_NORTH_STAND",
+      "count": 350,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:00:00.000Z",
+      "region_id": "R_SOUTH_STAND",
+      "count": 300,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:00:00.000Z",
+      "region_id": "R_WEST_STAND",
+      "count": 280,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:00:00.000Z",
+      "region_id": "R_EAST_STAND",
+      "count": 300,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:00:00.000Z",
+      "region_id": "R_NORTH_CONCOURSE",
+      "count": 120,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:00:00.000Z",
+      "region_id": "R_SOUTH_CONCOURSE",
+      "count": 110,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:00:00.000Z",
+      "region_id": "R_EAST_PLAZA",
+      "count": 60,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:00:00.000Z",
+      "region_id": "R_WEST_PLAZA",
+      "count": 55,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:01:00.000Z",
+      "region_id": "R_NORTH_STAND",
+      "count": 340,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:01:00.000Z",
+      "region_id": "R_SOUTH_STAND",
+      "count": 295,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:01:00.000Z",
+      "region_id": "R_WEST_STAND",
+      "count": 275,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:01:00.000Z",
+      "region_id": "R_EAST_STAND",
+      "count": 330,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:01:00.000Z",
+      "region_id": "R_NORTH_CONCOURSE",
+      "count": 125,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:01:00.000Z",
+      "region_id": "R_SOUTH_CONCOURSE",
+      "count": 112,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:01:00.000Z",
+      "region_id": "R_EAST_PLAZA",
+      "count": 62,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:01:00.000Z",
+      "region_id": "R_WEST_PLAZA",
+      "count": 56,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:02:00.000Z",
+      "region_id": "R_NORTH_STAND",
+      "count": 330,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:02:00.000Z",
+      "region_id": "R_SOUTH_STAND",
+      "count": 290,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:02:00.000Z",
+      "region_id": "R_WEST_STAND",
+      "count": 270,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:02:00.000Z",
+      "region_id": "R_EAST_STAND",
+      "count": 360,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:02:00.000Z",
+      "region_id": "R_NORTH_CONCOURSE",
+      "count": 130,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:02:00.000Z",
+      "region_id": "R_SOUTH_CONCOURSE",
+      "count": 114,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:02:00.000Z",
+      "region_id": "R_EAST_PLAZA",
+      "count": 64,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    },
+    {
+      "timestamp": "2026-11-05T18:02:00.000Z",
+      "region_id": "R_WEST_PLAZA",
+      "count": 57,
+      "confidence": 0.9,
+      "source": "csv_replay"
+    }
+  ]
+}

@@ -1,0 +1,656 @@
+{
+  "config": {
+    "perturbations": "容量 ±20%、关闭 E_EAST、关闭 C_MID、需求 ×1.6",
+    "cases": 48,
+    "fault_model": "route_over_capacity / closed_exit_route / unknown_corridor_step / negative_route_persons / duplicate_route_id",
+    "note": "合成需求与注入故障；只验证机制能否发现，不代表真实场馆安全水平。"
+  },
+  "summary": {
+    "plan_status_counts": {
+      "feasible": 44,
+      "partial": 4
+    },
+    "validator_rejected": 4,
+    "mean_unresolved": 71.5,
+    "mean_max_exit_utilization": 0.7368,
+    "mean_route_jaccard": 0.7374,
+    "fault_injection_detected": 5,
+    "fault_injection_total": 5
+  },
+  "cases": [
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "none",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.625,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "none",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.5263
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "none",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.625,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "none",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.5263
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "east",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.675,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "east",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.5
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "east",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.675,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "east",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.5
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "east_west",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.7,
+      "route_set_jaccard_vs_baseline": 0.5714
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "east_west",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "partial",
+      "unresolved_persons": 1298,
+      "validator_valid": false,
+      "violation_codes": [
+        "unresolved_demand"
+      ],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.4286
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "east_west",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.7,
+      "route_set_jaccard_vs_baseline": 0.5714
+    },
+    {
+      "capacity_scale": 0.6,
+      "exit_failure": "east_west",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "partial",
+      "unresolved_persons": 1298,
+      "validator_valid": false,
+      "violation_codes": [
+        "unresolved_demand"
+      ],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.4286
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "none",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.4688,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "none",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.9091
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "none",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.475,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "none",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.9091
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "east",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.475,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "east",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.6
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "east",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.4813,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "east",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.6429
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "east_west",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.5094,
+      "route_set_jaccard_vs_baseline": 0.6154
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "east_west",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "partial",
+      "unresolved_persons": 418,
+      "validator_valid": false,
+      "violation_codes": [
+        "unresolved_demand"
+      ],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.5714
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "east_west",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.5156,
+      "route_set_jaccard_vs_baseline": 0.6154
+    },
+    {
+      "capacity_scale": 0.8,
+      "exit_failure": "east_west",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "partial",
+      "unresolved_persons": 418,
+      "validator_valid": false,
+      "violation_codes": [
+        "unresolved_demand"
+      ],
+      "max_exit_utilization": 1.1,
+      "route_set_jaccard_vs_baseline": 0.5714
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "none",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.37,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "none",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.925,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "none",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.375,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "none",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.925,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "east",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.4,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "east",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "east",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.405,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "east",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "east_west",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.4275,
+      "route_set_jaccard_vs_baseline": 0.5385
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "east_west",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1,
+      "route_set_jaccard_vs_baseline": 0.5714
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "east_west",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.4325,
+      "route_set_jaccard_vs_baseline": 0.6154
+    },
+    {
+      "capacity_scale": 1,
+      "exit_failure": "east_west",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 1,
+      "route_set_jaccard_vs_baseline": 0.5714
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "none",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.35,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "none",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.8,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "none",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.35,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "none",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.8,
+      "route_set_jaccard_vs_baseline": 1
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "east",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.35,
+      "route_set_jaccard_vs_baseline": 0.8182
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "east",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.8,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "east",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.35,
+      "route_set_jaccard_vs_baseline": 0.8182
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "east",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.8,
+      "route_set_jaccard_vs_baseline": 0.75
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "east_west",
+      "corridor_failure": false,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.35,
+      "route_set_jaccard_vs_baseline": 0.6667
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "east_west",
+      "corridor_failure": false,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.8408,
+      "route_set_jaccard_vs_baseline": 0.5714
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "east_west",
+      "corridor_failure": true,
+      "demand_multiplier": 1,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.35,
+      "route_set_jaccard_vs_baseline": 0.6667
+    },
+    {
+      "capacity_scale": 1.2,
+      "exit_failure": "east_west",
+      "corridor_failure": true,
+      "demand_multiplier": 2.5,
+      "plan_status": "feasible",
+      "unresolved_persons": 0,
+      "validator_valid": true,
+      "violation_codes": [],
+      "max_exit_utilization": 0.8408,
+      "route_set_jaccard_vs_baseline": 0.5714
+    }
+  ],
+  "fault_injection": [
+    {
+      "fault": "route_over_capacity",
+      "detected": true,
+      "violation_codes": [
+        "exit_capacity_exceeded",
+        "flow_conservation_violation",
+        "totals_inconsistent"
+      ]
+    },
+    {
+      "fault": "closed_exit_route",
+      "detected": true,
+      "violation_codes": [
+        "unknown_exit",
+        "flow_conservation_violation",
+        "totals_inconsistent"
+      ]
+    },
+    {
+      "fault": "unknown_corridor_step",
+      "detected": true,
+      "violation_codes": [
+        "path_broken_chain",
+        "corridor_direction_violation",
+        "step_duration_mismatch",
+        "path_does_not_reach_exit",
+        "route_arrival_mismatch",
+        "unknown_corridor_used",
+        "corridor_capacity_unknown"
+      ]
+    },
+    {
+      "fault": "negative_route_persons",
+      "detected": true,
+      "violation_codes": [
+        "invalid_persons",
+        "totals_inconsistent"
+      ]
+    },
+    {
+      "fault": "duplicate_route_id",
+      "detected": true,
+      "violation_codes": [
+        "duplicate_route_id",
+        "flow_conservation_violation",
+        "totals_inconsistent"
+      ]
+    }
+  ]
+}
