@@ -16,6 +16,8 @@
     "demo:mvp": "npm run demo:mvp --prefix backend",
     "experiments:mvp": "npm run experiments:mvp --prefix backend",
     "mcp": "npm run mcp --prefix backend",
-    "benchmark:competition": "npm run benchmark:competition --prefix backend"
+    "benchmark:competition": "npm run benchmark:competition --prefix backend",
+    "benchmark:v6": "npm run benchmark:v6 --prefix backend",
+    "benchmark:v61": "npm run benchmark:v61 --prefix backend"
   }
 }

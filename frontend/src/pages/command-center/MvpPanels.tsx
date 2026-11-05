@@ -3,7 +3,7 @@
  * 所有动态数据均来自后端 API；前端不写死演示结果。
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import mvpApi, { type AgentRun, type MvpDashboard, type WorkOrder } from '../../services/mvpApi';
+import mvpApi, { type AgentRun, type MvpDashboard, type MultiRegionAnalysis, type WorkOrder } from '../../services/mvpApi';
 import './MvpPanels.css';
 
 interface Props {
@@ -52,6 +52,7 @@ function pct(value: number | null): string {
 export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
   const [dashboard, setDashboard] = useState<MvpDashboard | null>(null);
   const [experiments, setExperiments] = useState<Awaited<ReturnType<typeof mvpApi.experiments>> | null>(null);
+  const [multi, setMulti] = useState<MultiRegionAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
@@ -93,6 +94,15 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
   useEffect(() => {
     mvpApi.experiments().then(setExperiments).catch(() => setExperiments(null));
   }, []);
+
+  useEffect(() => {
+    const load = () => {
+      mvpApi.multiRegion(selectedRegion ?? undefined).then(setMulti).catch(() => setMulti(null));
+    };
+    load();
+    const timer = setInterval(load, 10_000);
+    return () => clearInterval(timer);
+  }, [selectedRegion]);
 
   useEffect(() => {
     if (selectedRegion) setAgentRegion(selectedRegion);
@@ -500,6 +510,57 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
               <p className="mvp-muted mvp-small">{experiments.note} 报告：{experiments.report_path}</p>
             </>
           ) : <p className="mvp-muted">运行 `npm run benchmark:competition --prefix backend` 后在此展示摘要。</p>}
+        </section>
+
+        <section className="mvp-panel mvp-span-3">
+          <div className="mvp-panel-title">
+            <h3>多区域协同调查</h3>
+            <span>{multi?.target_region_id ? `目标 ${multi.target_region_id}` : '加载中'}</span>
+          </div>
+          {multi?.available ? (
+            <div className="mvp-multi">
+              <div>
+                <h4>区域调查优先级（传播风险 × 不确定性 × 中心性）</h4>
+                <table className="mvp-table">
+                  <thead><tr><th>区域</th><th>传播风险</th><th>不确定性</th><th>中心性</th><th>优先级</th></tr></thead>
+                  <tbody>
+                    {(multi.priorities ?? []).slice(0, 6).map(item => (
+                      <tr key={item.regionId}>
+                        <td><button type="button" className="mvp-link-button" onClick={() => onSelectRegion(item.regionId)}>{item.regionId}</button></td>
+                        <td>{item.propagatedRisk.toFixed(3)}</td>
+                        <td>{item.uncertainty}</td>
+                        <td>{item.centrality.toFixed(2)}</td>
+                        <td>{item.priority.toFixed(3)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <h4>联合 VoI 动作排序</h4>
+                <table className="mvp-table">
+                  <thead><tr><th>动作</th><th>VoI</th><th>覆盖区域</th><th>加权 Δ风险</th><th>加权 IG</th></tr></thead>
+                  <tbody>
+                    {(multi.decision?.evaluations ?? []).map(item => (
+                      <tr key={item.action_id} className={item.action_id === multi.decision?.recommended_action_id ? 'selected' : ''}>
+                        <td>{item.label}</td>
+                        <td>{item.score === null ? '—' : item.score.toFixed(3)}</td>
+                        <td>{item.covered_regions.map(region => region.region_id).join(' / ')}</td>
+                        <td>{item.weighted_risk_reduction.toFixed(3)}</td>
+                        <td>{item.weighted_information_gain_bits.toFixed(3)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="mvp-muted mvp-small">
+                  推荐：{multi.decision?.recommended_action_id ?? '停止调查'}
+                  {multi.decision?.recommended_covered_regions.length ? `；覆盖 ${multi.decision.recommended_covered_regions.join(' / ')}` : ''}
+                  {multi.decision?.stop_reason ? `；停止原因 ${multi.decision.stop_reason}` : ''}
+                </p>
+                <p className="mvp-muted mvp-small">{multi.note}</p>
+              </div>
+            </div>
+          ) : <p className="mvp-muted">{multi?.reason ?? '场景未配置调查策略'}</p>}
         </section>
       </div>
 

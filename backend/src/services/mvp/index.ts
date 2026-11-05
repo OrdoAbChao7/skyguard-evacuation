@@ -16,6 +16,8 @@ import { ReplayService, allCameraHealth, replayObservationInputs, type ReplaySta
 import { createToolDefinitions, ToolRegistry, type ToolContext } from './tools';
 import { AgentService, type AgentRun } from './agent';
 import { AgentArtsClient, loadAgentArtsConfig, type AgentArtsStatus } from './agentarts';
+import { buildRegionGraph, propagateRisk, rankInvestigationPriorities } from './risk-graph';
+import { decideMultiRegionInvestigation, priorBeliefsForRegions } from './multi-voi';
 
 export * from './prediction';
 export * from './voi';
@@ -24,6 +26,9 @@ export * from './ingest';
 export * from './tools';
 export * from './agent';
 export * from './agentarts';
+export * from './risk-graph';
+export * from './multi-voi';
+export * from './investigation-session';
 
 export interface MvpServiceOptions {
   scenario?: SafetyScenario;
@@ -441,6 +446,46 @@ export class MvpService {
       evidence: { work_order_id: order.id, feedback_note: order.feedback.note },
     }, actor);
     this.safety.recompute(actor, `staff_feedback:${order.id}`);
+  }
+
+  // ---------------------------------------------------------------- 多区域协同
+  getMultiRegionAnalysis(regionId?: string): Record<string, unknown> {
+    const policy = this.scenario.investigation;
+    if (!policy) {
+      return { available: false, reason: '场景未配置 investigation 策略' };
+    }
+    const status = this.safety.getStatus();
+    const graph = buildRegionGraph(this.scenario);
+    const propagated = propagateRisk(this.scenario, status.risks);
+    const priorities = rankInvestigationPriorities(this.scenario, status.risks, propagated);
+    const target = regionId ?? priorities[0]?.regionId ?? this.scenario.regions[0]?.id;
+    if (!target) return { available: false, reason: '场景没有区域' };
+    const beliefs = priorBeliefsForRegions(policy, status.risks);
+    const cameras = this.cameraHealth(target);
+    const camera = cameras[0] ?? null;
+    const staff = this.ops.recommendStaff({ region_id: target, required_skills: ['crowd_check'] });
+    const uavAvailable = (this.scenario.venue?.uav_units ?? []).some(unit => unit.status === 'available');
+    const historyPoints = this.safety.getObservationStore().window(
+      target,
+      new Date(Date.now() - this.scenario.config.trend_window_seconds * 1000),
+      new Date(),
+    ).filter(item => item.valid).length;
+    const availability = {
+      A_CAMERA: camera && camera.state !== 'offline' ? { available: true } : { available: false, reason: '摄像头离线' },
+      A_STAFF: staff.recommended ? { available: true } : { available: false, reason: '没有可用工作人员' },
+      A_UAV: uavAvailable ? { available: true } : { available: false, reason: '没有可用无人机' },
+      A_HISTORY: historyPoints >= 2 ? { available: true } : { available: false, reason: '历史观测不足' },
+      A_PREDICTION: { available: true },
+    };
+    const decision = decideMultiRegionInvestigation(policy, target, beliefs, graph, availability);
+    return {
+      available: true,
+      target_region_id: target,
+      propagated_risks: propagated,
+      priorities: priorities.slice(0, 8),
+      decision,
+      note: '风险传播与覆盖权重为配置化启发式，不是真实人群迁移模型。',
+    };
   }
 
   // ---------------------------------------------------------------- 一键推演

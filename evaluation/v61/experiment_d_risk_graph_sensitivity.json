@@ -1,0 +1,145 @@
+{
+  "config": {
+    "trials": 200,
+    "variants": [
+      {
+        "name": "baseline",
+        "damping": 0.6,
+        "steps": 3,
+        "scale": 1
+      },
+      {
+        "name": "damping_0",
+        "damping": 0,
+        "steps": 3,
+        "scale": 1
+      },
+      {
+        "name": "damping_0.2",
+        "damping": 0.2,
+        "steps": 3,
+        "scale": 1
+      },
+      {
+        "name": "damping_0.4",
+        "damping": 0.4,
+        "steps": 3,
+        "scale": 1
+      },
+      {
+        "name": "damping_0.8",
+        "damping": 0.8,
+        "steps": 3,
+        "scale": 1
+      },
+      {
+        "name": "damping_0.95",
+        "damping": 0.95,
+        "steps": 3,
+        "scale": 1
+      },
+      {
+        "name": "steps_1",
+        "damping": 0.6,
+        "steps": 1,
+        "scale": 1
+      },
+      {
+        "name": "steps_10",
+        "damping": 0.6,
+        "steps": 10,
+        "scale": 1
+      },
+      {
+        "name": "edge_scale_0.5",
+        "damping": 0.6,
+        "steps": 3,
+        "scale": 0.5
+      },
+      {
+        "name": "edge_scale_1.5",
+        "damping": 0.6,
+        "steps": 3,
+        "scale": 1.5
+      }
+    ],
+    "note": "Kendall τ 衡量调查优先级排序变化；风险配置为合成。"
+  },
+  "ranking_stability": {
+    "baseline": {
+      "mean_tau": 1,
+      "min_tau": 1
+    },
+    "damping_0": {
+      "mean_tau": 0.6164,
+      "min_tau": -0.1429
+    },
+    "damping_0.2": {
+      "mean_tau": 0.9182,
+      "min_tau": 0.5714
+    },
+    "damping_0.4": {
+      "mean_tau": 0.9496,
+      "min_tau": 0.7143
+    },
+    "damping_0.8": {
+      "mean_tau": 0.9236,
+      "min_tau": 0.5714
+    },
+    "damping_0.95": {
+      "mean_tau": 0.8782,
+      "min_tau": 0.4286
+    },
+    "steps_1": {
+      "mean_tau": 0.9225,
+      "min_tau": 0.5
+    },
+    "steps_10": {
+      "mean_tau": 0.9975,
+      "min_tau": 0.8571
+    },
+    "edge_scale_0.5": {
+      "mean_tau": 0.93,
+      "min_tau": 0.5714
+    },
+    "edge_scale_1.5": {
+      "mean_tau": 0.8921,
+      "min_tau": 0.4286
+    }
+  },
+  "coverage_weight_sensitivity": {
+    "neighbor_0.25": {
+      "mean_covered": 5.068,
+      "mean_score": 0.3504,
+      "agreement_with_0.5": 0.696
+    },
+    "neighbor_0.5": {
+      "mean_covered": 5.358,
+      "mean_score": 0.5528,
+      "agreement_with_0.5": 1
+    },
+    "neighbor_0.75": {
+      "mean_covered": 5.358,
+      "mean_score": 0.7631,
+      "agreement_with_0.5": 0.984
+    }
+  },
+  "graph": {
+    "regions": 8,
+    "edges": 11,
+    "components": [
+      [
+        "R_EAST_PLAZA",
+        "R_EAST_STAND",
+        "R_NORTH_CONCOURSE",
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE",
+        "R_SOUTH_STAND",
+        "R_WEST_PLAZA",
+        "R_WEST_STAND"
+      ]
+    ],
+    "connected": true,
+    "note": "边为开放且容量已知的通道；未知通道被排除。"
+  }
+}

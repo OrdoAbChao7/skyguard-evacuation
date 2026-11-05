@@ -178,6 +178,11 @@ export function createMvpRouter(): Router {
     res.status(201).json(await getMvpService().runDemoScenario(parsed.data.scenario, actorOf(req)));
   }));
 
+  router.get('/multi-region', handle((req, res) => {
+    const regionId = typeof req.query.region_id === 'string' ? req.query.region_id : undefined;
+    res.json(getMvpService().getMultiRegionAnalysis(regionId));
+  }));
+
   router.get('/experiments', handle((_req, res) => {
     res.json(getMvpService().getExperimentSummary());
   }));

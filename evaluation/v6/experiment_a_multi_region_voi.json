@@ -1,0 +1,7583 @@
+{
+  "config": {
+    "seed": 20261116,
+    "trials": 300,
+    "note": "风险配置与覆盖权重为合成/启发式；多区域收益按覆盖权重求和，成本只计一次。"
+  },
+  "summary": {
+    "multi_region": {
+      "trials": 300,
+      "mean_benefit": {
+        "mean": 0.0832,
+        "lower": 0.0786,
+        "upper": 0.0877
+      },
+      "mean_covered": {
+        "mean": 5.7767,
+        "lower": 5.5462,
+        "upper": 6.0071
+      },
+      "mean_cost": {
+        "mean": 6.9503,
+        "lower": 6.7437,
+        "upper": 7.157
+      },
+      "benefit_per_cost": {
+        "mean": 0.0125,
+        "lower": 0.0118,
+        "upper": 0.0133
+      },
+      "coverage_gt1": 287
+    },
+    "single_region": {
+      "trials": 300,
+      "mean_benefit": {
+        "mean": 0.0244,
+        "lower": 0.0227,
+        "upper": 0.026
+      },
+      "mean_covered": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1
+      },
+      "mean_cost": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1
+      },
+      "benefit_per_cost": {
+        "mean": 0.0244,
+        "lower": 0.0227,
+        "upper": 0.026
+      },
+      "coverage_gt1": 0
+    },
+    "fixed_priority": {
+      "trials": 300,
+      "mean_benefit": {
+        "mean": 0.0244,
+        "lower": 0.0227,
+        "upper": 0.026
+      },
+      "mean_covered": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1
+      },
+      "mean_cost": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1
+      },
+      "benefit_per_cost": {
+        "mean": 0.0244,
+        "lower": 0.0227,
+        "upper": 0.026
+      },
+      "coverage_gt1": 0
+    }
+  },
+  "raw": [
+    {
+      "trial": 0,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "normal",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 1,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 2,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 3,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.162846,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.021713
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 4,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.001911,
+        "covered": 2,
+        "cost": 0.8,
+        "efficiency": 0.002389
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 5,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051851,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006913
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 6,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077539,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010339
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 7,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 8,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 9,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 10,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 11,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 12,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 13,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 14,
+      "target": "R_EAST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 15,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 16,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 17,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120669,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016089
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 18,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051851,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006913
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 19,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 20,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077063,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010275
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 21,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 22,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.026164,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.003489
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 23,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 24,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111948,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014926
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 25,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 26,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 27,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 28,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077539,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010339
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 29,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128438,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017125
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 30,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 31,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 32,
+      "target": "R_EAST_STAND",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 33,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.162846,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.021713
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 34,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 35,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034409,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004588
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 36,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.154601,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.020613
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 37,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 38,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 39,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 40,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060573,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008076
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 41,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 42,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 43,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 44,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 45,
+      "target": "R_NORTH_STAND",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 46,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 47,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.04313,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005751
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 48,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.026164,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.003489
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 49,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.162846,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.021713
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 50,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 51,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077063,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.010275
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 52,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 53,
+      "target": "R_EAST_STAND",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 54,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 55,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.10275,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.0137
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 56,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 57,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.04313,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005751
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 58,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 59,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.04313,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005751
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 60,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.04313,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005751
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 61,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077539,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010339
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 62,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 63,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 64,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.154125,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.02055
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 65,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034409,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004588
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 66,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 67,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 68,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 69,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 70,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077539,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010339
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 71,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.08626,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011501
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 72,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 73,
+      "target": "R_WEST_STAND",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 74,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 75,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 76,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 77,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 78,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 79,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 80,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.043606,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005814
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0125,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0125
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0125,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 81,
+      "target": "R_EAST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 82,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.001911,
+        "covered": 7,
+        "cost": 0.8,
+        "efficiency": 0.002389
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 83,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 84,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 85,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 86,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 87,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 88,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 89,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 90,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 91,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 92,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 93,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 94,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.094505,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.012601
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 95,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.162846,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.021713
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 96,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051851,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006913
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 97,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034409,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004588
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 98,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077063,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.010275
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 99,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 100,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 101,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 102,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 103,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 104,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 105,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.094505,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.012601
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 106,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.04313,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005751
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 107,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 108,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 109,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 110,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 111,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051851,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006913
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 112,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.003823,
+        "covered": 7,
+        "cost": 0.8,
+        "efficiency": 0.004779
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 113,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 114,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 115,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 116,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 117,
+      "target": "R_EAST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 118,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 119,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 120,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 121,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 122,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 123,
+      "target": "R_EAST_STAND",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 124,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.171568,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.022876
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 125,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 126,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 127,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 128,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077063,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.010275
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 129,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 130,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "normal",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 131,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.001911,
+        "covered": 7,
+        "cost": 0.8,
+        "efficiency": 0.002389
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 132,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 133,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.003823,
+        "covered": 7,
+        "cost": 0.8,
+        "efficiency": 0.004779
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 134,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 135,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 136,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051851,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006913
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 137,
+      "target": "R_EAST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 138,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 139,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 140,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 141,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 142,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 143,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 144,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 145,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 146,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077539,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010339
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 147,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 148,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 149,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 150,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 151,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.001911,
+        "covered": 7,
+        "cost": 0.8,
+        "efficiency": 0.002389
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 152,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.094505,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.012601
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 153,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.003823,
+        "covered": 3,
+        "cost": 0.8,
+        "efficiency": 0.004779
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 154,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077539,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010339
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 155,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128438,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017125
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 156,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.162846,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.021713
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 157,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120669,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016089
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 158,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 159,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034885,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004651
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 160,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 161,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.171568,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.022876
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 162,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 163,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 164,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.001911,
+        "covered": 7,
+        "cost": 0.8,
+        "efficiency": 0.002389
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 165,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 166,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111948,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014926
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 167,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.08626,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011501
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 168,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 169,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.025688,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.003425
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 170,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 171,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034885,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004651
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0125,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0125
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0125,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 172,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060573,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008076
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 173,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 174,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077539,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010339
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 175,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "normal",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 176,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 177,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.08626,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011501
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 178,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 179,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 180,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 181,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137635,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018351
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 182,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 183,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.003823,
+        "covered": 7,
+        "cost": 0.8,
+        "efficiency": 0.004779
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 184,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.003823,
+        "covered": 7,
+        "cost": 0.8,
+        "efficiency": 0.004779
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 185,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077539,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010339
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 186,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128438,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017125
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 187,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137635,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018351
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 188,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034409,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004588
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 189,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 190,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 191,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 192,
+      "target": "R_WEST_STAND",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 193,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.10275,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.0137
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 194,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.085784,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011438
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 195,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 196,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 197,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 198,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 199,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 200,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.162846,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.021713
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 201,
+      "target": "R_WEST_STAND",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 202,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 203,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 204,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051851,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006913
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 205,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 206,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 207,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 208,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 209,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 210,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 211,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.01465,
+        "covered": 2,
+        "cost": 0.8,
+        "efficiency": 0.018312
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 212,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.179813,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.023975
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 213,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034409,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004588
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 214,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 215,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 216,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051851,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006913
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 217,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 218,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 219,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060573,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008076
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0125,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0125
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0125,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 220,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 221,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 222,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 223,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 224,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 225,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 226,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 227,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034409,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004588
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 228,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 229,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 230,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 231,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 232,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 233,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077063,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.010275
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 234,
+      "target": "R_EAST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 235,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034409,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004588
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 236,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.10275,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.0137
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 237,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 238,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.14588,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.019451
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 239,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 240,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.154125,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.02055
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 241,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 242,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 243,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.04313,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005751
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 244,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 245,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 246,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.043606,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005814
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 247,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.04313,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005751
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 248,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 249,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103226,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013763
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 250,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.120193,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.016026
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 251,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 252,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 253,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.08626,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011501
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 254,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 255,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 256,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051851,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006913
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 257,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 258,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.08626,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.011501
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 259,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_PREDICTION",
+        "benefit": 0.003823,
+        "covered": 3,
+        "cost": 0.8,
+        "efficiency": 0.004779
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 260,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 261,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 262,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.094505,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.012601
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 263,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.043606,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005814
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0125,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0125
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0125,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 264,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.094505,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.012601
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 265,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 266,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 267,
+      "target": "R_EAST_PLAZA",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 268,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 269,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 270,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 271,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128914,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017189
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 272,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.052328,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006977
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 273,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 274,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 275,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.034409,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.004588
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 276,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051851,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.006913
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 277,
+      "target": "R_NORTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 278,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128438,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017125
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 279,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 2,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 280,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 281,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 282,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "normal",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.094505,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.012601
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 283,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.111471,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.014863
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 284,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.103703,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.013827
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 285,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 286,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.060096,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.008013
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 287,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "watch",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.128438,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.017125
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 288,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 289,
+      "target": "R_SOUTH_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 290,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.026164,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.003489
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 291,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.04313,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.005751
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 292,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.068818,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.009176
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 293,
+      "target": "R_WEST_STAND",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.077063,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.010275
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 294,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.026164,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.003489
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 295,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.154601,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.020613
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 296,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.162846,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.021713
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 297,
+      "target": "R_SOUTH_CONCOURSE",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.137159,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.018288
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 298,
+      "target": "R_WEST_PLAZA",
+      "target_risk": "high",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.051375,
+        "covered": 3,
+        "cost": 7.5,
+        "efficiency": 0.00685
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    },
+    {
+      "trial": 299,
+      "target": "R_NORTH_CONCOURSE",
+      "target_risk": "critical",
+      "multi": {
+        "action": "A_UAV",
+        "benefit": 0.171568,
+        "covered": 7,
+        "cost": 7.5,
+        "efficiency": 0.022876
+      },
+      "single": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1,
+        "efficiency": 0.0333
+      },
+      "fixed": {
+        "action": "A_CAMERA",
+        "benefit": 0.0333,
+        "covered": 1,
+        "cost": 1
+      }
+    }
+  ]
+}

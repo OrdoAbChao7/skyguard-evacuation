@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-11-05T04:24:48.943Z",
+  "seeds": [
+    20261105,
+    20261106,
+    20261107,
+    20261108,
+    20261109
+  ],
+  "node": "v24.19.0",
+  "platform": "win32",
+  "cpu": "AMD Ryzen 7 7745HX with Radeon Graphics        ",
+  "scenario": {
+    "id": "stadium-evacuation-v1",
+    "version": "1.0.0",
+    "path": "E:\\Projects\\skyguard-evacuation\\data\\scenarios\\stadium-evacuation.json"
+  },
+  "data_nature": "全部为合成/模拟数据；不含真实场馆、人群、无人机、昇腾或 AgentArts 实测。"
+}

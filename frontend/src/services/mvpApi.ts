@@ -200,6 +200,32 @@ export interface MvpDashboard {
   generated_at: string;
 }
 
+export interface MultiRegionAnalysis {
+  available: boolean;
+  reason?: string;
+  target_region_id?: string;
+  propagated_risks?: Array<{ regionId: string; localRisk: number; inboundInfluence: number; propagatedRisk: number }>;
+  priorities?: Array<{ regionId: string; propagatedRisk: number; uncertainty: number; centrality: number; priority: number; reason: string }>;
+  decision?: {
+    recommended_action_id: string | null;
+    recommended_covered_regions: string[];
+    covered_region_count: number;
+    ranked_action_ids: string[];
+    stop_reason: string | null;
+    evaluations: Array<{
+      action_id: string;
+      label: string;
+      available: boolean;
+      unavailable_reason: string | null;
+      covered_regions: Array<{ region_id: string; weight: number; risk_reduction: number; information_gain_bits: number }>;
+      weighted_risk_reduction: number;
+      weighted_information_gain_bits: number;
+      score: number | null;
+    }>;
+  };
+  note?: string;
+}
+
 export const mvpApi = {
   dashboard: () => client.get<MvpDashboard>('/mvp/dashboard').then(response => response.data),
   scenario: () => client.get('/mvp/scenario').then(response => response.data),
@@ -249,6 +275,9 @@ export const mvpApi = {
   runDemo: (scenario: 'A_normal' | 'B_surge' | 'C_untrusted') =>
     client.post('/mvp/demo/run', { scenario }, { headers: adminHeaders() })
       .then(response => response.data as { scenario: string; state: { state: string }; run: AgentRun; dashboard: MvpDashboard }),
+  multiRegion: (regionId?: string) =>
+    client.get<MultiRegionAnalysis>('/mvp/multi-region', { params: regionId ? { region_id: regionId } : {} })
+      .then(response => response.data),
   experiments: () =>
     client.get('/mvp/experiments').then(response => response.data as {
       available: boolean;

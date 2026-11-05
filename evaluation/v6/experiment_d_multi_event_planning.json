@@ -1,0 +1,14 @@
+{
+  "config": {
+    "incidents": 3,
+    "demand_model": "区域在留容量 ×0.9 的合成需求",
+    "note": "多事件同时发生的合成压力；不代表真实场景。"
+  },
+  "summary": {
+    "plan_status": "feasible",
+    "unresolved_persons": 0,
+    "viable_routes": 56,
+    "validator_valid": true,
+    "violation_codes": []
+  }
+}

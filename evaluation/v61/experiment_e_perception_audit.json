@@ -1,0 +1,31 @@
+{
+  "config": {
+    "note": "仅验证匹配算法与指标边界；没有数据集、权重或真实精度。"
+  },
+  "optimal_matching_example": {
+    "true_positives": 2,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "precision": 1,
+    "recall": 1,
+    "f1": 1
+  },
+  "edge_cases": {
+    "empty_ground_truth": {
+      "true_positives": 0,
+      "false_positives": 1,
+      "false_negatives": 0,
+      "precision": 0,
+      "recall": 1,
+      "f1": 0
+    },
+    "empty_predictions": {
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    }
+  }
+}
