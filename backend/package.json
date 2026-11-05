@@ -17,7 +17,9 @@
     "demo:mvp": "tsx scripts/mvp-demo.ts",
     "experiments:mvp": "tsx scripts/mvp-experiments.ts",
     "mcp": "tsx src/mcp/server.ts",
-    "benchmark:competition": "tsx scripts/competition-benchmark.ts"
+    "benchmark:competition": "tsx scripts/competition-benchmark.ts",
+    "benchmark:v6": "tsx scripts/v6-benchmark.ts",
+    "benchmark:v61": "tsx scripts/v61-benchmark.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

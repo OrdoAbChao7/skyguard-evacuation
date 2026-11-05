@@ -445,10 +445,24 @@ export const INVESTIGATION_OUTCOME = [
 ] as const;
 export type InvestigationOutcome = (typeof INVESTIGATION_OUTCOME)[number];
 
+export const INVESTIGATION_COVERAGE = ['target', 'neighbors', 'all'] as const;
+export type InvestigationCoverage = (typeof INVESTIGATION_COVERAGE)[number];
+
+export const InvestigationRetrySchema = z.object({
+  max_retries: z.number().int().min(0).max(3),
+  cooldown_minutes: z.number().nonnegative(),
+  backoff_factor: z.number().min(1).max(5),
+});
+export type InvestigationRetry = z.infer<typeof InvestigationRetrySchema>;
+
 export const InvestigationActionSchema = z.object({
   id: z.string().min(1),
   kind: z.enum(INVESTIGATION_KIND),
   label: z.string().min(1),
+  /** 动作覆盖范围：目标区域 / 相邻区域 / 全部区域（多区域联合调查）。 */
+  coverage: z.enum(INVESTIGATION_COVERAGE).default('target'),
+  /** 失败重试策略（冷却与指数退避）。 */
+  retry: InvestigationRetrySchema.optional(),
   /** 固定调查策略使用的优先级，数字越小越先调查。 */
   priority: z.number().int().positive(),
   time_cost_minutes: z.number().nonnegative(),
@@ -493,6 +507,12 @@ export const InvestigationPolicySchema = z.object({
   /** VoI 低于该值即停止调查、转人工。 */
   stop_threshold: z.number(),
   max_investigations: z.number().int().positive().max(6),
+  /** 调查预算：动作数/总资源成本/总时间上限（可选）。 */
+  budget: z.object({
+    max_actions: z.number().int().positive().max(10),
+    max_total_cost: z.number().positive(),
+    max_total_time_minutes: z.number().positive(),
+  }).optional(),
 });
 export type InvestigationPolicy = z.infer<typeof InvestigationPolicySchema>;
 

@@ -1,0 +1,218 @@
+
+> skyguard@0.1.0 test
+> npm run test --prefix backend && npm test --prefix frontend
+
+
+> skyguard-backend@0.1.0 test
+> tsx --test tests/**/*.test.ts
+
+✔ 信息缺口下 Agent 通过 VoI 创建现场核查与无人机请求 (91.5964ms)
+✔ 人工反馈写回观测后 Agent 不再重复调查，并生成疏导工单 (207.1921ms)
+✔ 正常数据下 Agent 不发起调查也不创建工单 (68.268ms)
+✔ 工具注册表强制角色权限与参数校验 (16.8177ms)
+✔ 摄像头降级但未离线时，Agent 仍会先尝试摄像头查询 (69.5041ms)
+✔ 健康探测成功后 AgentArts 模式执行平台选择的工具 (223.1755ms)
+✔ 健康探测失败时明确失败，不回退伪装为已连接 (259.0905ms)
+✔ 缺少配置时明确保持 LOCAL_DEMO (1.0828ms)
+✔ 健康探测成功才标记 AGENTARTS_CONNECTED (137.4025ms)
+✔ 健康探测失败不会伪装为已连接 (29.0508ms)
+✔ 工具决策契约：接受 decision 包裹与扁平结构 (58.8774ms)
+✔ HTTP 错误、非 JSON 与超时都显式失败 (89.7004ms)
+[auth] 未设置 SECRET_KEY/JWT_SECRET，正在使用开发默认密钥（勿用于生产）。
+[0mPOST /api/v1/auth/login [32m200[0m 109.232 ms - 248[0m
+[safety] 当前 DATA_ROOT 下未找到场景文件，回退到仓库默认场景：E:\Projects\skyguard-evacuation\data\scenarios\stadium-evacuation.json
+[0mPOST /api/v1/mvp/demo/run [32m201[0m 221.824 ms - 67538[0m
+✔ 一键推演 A：正常散场进入 NORMAL 且不建单 (1409.1888ms)
+[0mPOST /api/v1/auth/login [32m200[0m 58.551 ms - 248[0m
+[0mPOST /api/v1/mvp/demo/run [32m201[0m 41.215 ms - 119635[0m
+✔ 一键推演 B：低置信观测生成待审批工单 (118.9771ms)
+[0mPOST /api/v1/auth/login [32m200[0m 51.804 ms - 248[0m
+[0mPOST /api/v1/mvp/demo/run [32m201[0m 21.848 ms - 86784[0m
+✔ 一键推演 C：DEGRADED → REJECT 且禁止发布 (88.891ms)
+✔ CSV 回放解析支持标准列与来源列 (3.2785ms)
+✔ CSV 缺少必需列或行格式错误时显式报错 (1.3701ms)
+✔ 回放数据引用未知区域时拒绝加载 (12.5789ms)
+✔ 回放游标与完成状态正确推进 (18.6064ms)
+✔ JSON 与 CSV 文件回放可用 (30.7461ms)
+✔ 摄像头健康状态区分无观测、低置信与在线 (13.1081ms)
+✔ 失败后进入冷却，冷却结束可重试，达到最大次数后不可用 (12.8419ms)
+✔ 调查预算耗尽后所有动作不可用 (8.9138ms)
+✔ 相反证据触发冲突，并以折扣方式更新信念 (8.5794ms)
+✔ MCP Server 暴露 15 个工具并执行权限校验 (2917.4376ms)
+[auth] 未设置 SECRET_KEY/JWT_SECRET，正在使用开发默认密钥（勿用于生产）。
+[0mPOST /api/v1/mvp/reset [33m401[0m 25.719 ms - 33[0m
+[safety] 当前 DATA_ROOT 下未找到场景文件，回退到仓库默认场景：E:\Projects\skyguard-evacuation\data\scenarios\stadium-evacuation.json
+[0mGET /api/v1/mvp/multi-region?region_id=R_EAST_STAND [32m200[0m 35.837 ms - 6681[0m
+✔ 多区域协同 API 返回风险传播、优先级与联合调查决策 (840.4737ms)
+✔ 相邻覆盖动作同时评估目标区域与邻居区域 (25.7849ms)
+✔ 可信观测会更新区域信念，不可信观测保持先验 (26.7985ms)
+✔ 预算耗尽时停止调查 (20.0522ms)
+[auth] 未设置 SECRET_KEY/JWT_SECRET，正在使用开发默认密钥（勿用于生产）。
+[0mPOST /api/v1/auth/login [32m200[0m 97.337 ms - 248[0m
+[0mPOST /api/v1/mvp/reset [32m200[0m 30.225 ms - 18[0m
+[0mPOST /api/v1/safety/observations/simulate [32m201[0m 34.976 ms - 3216[0m
+[0mPOST /api/v1/safety/observations [32m201[0m 6.244 ms - 391[0m
+[0mGET /api/v1/safety/status [32m200[0m 23.508 ms - 20454[0m
+[0mPOST /api/v1/mvp/agent/runs [32m201[0m 28.833 ms - 34582[0m
+[0mGET /api/v1/mvp/work-orders?status=PENDING_APPROVAL [32m200[0m 0.956 ms - 1840[0m
+[0mPOST /api/v1/mvp/work-orders/WO-E9E4DB3B/approve [32m200[0m 2.226 ms - 1201[0m
+[0mPOST /api/v1/mvp/work-orders/WO-E9E4DB3B/revalidate [32m200[0m 2.433 ms - 1323[0m
+[0mPOST /api/v1/mvp/work-orders/WO-E9E4DB3B/assign [32m200[0m 2.050 ms - 1484[0m
+[0mPOST /api/v1/mvp/auth/staff-login [32m200[0m 1.208 ms - 459[0m
+[0mPOST /api/v1/mvp/work-orders/WO-E9E4DB3B/accept [32m200[0m 2.223 ms - 1632[0m
+[0mPOST /api/v1/mvp/work-orders/WO-E9E4DB3B/start [32m200[0m 1.527 ms - 1780[0m
+[0mPOST /api/v1/mvp/work-orders/WO-E9E4DB3B/complete [32m200[0m 9.182 ms - 2085[0m
+[0mPOST /api/v1/mvp/work-orders/WO-3126B2EC/approve [32m200[0m 1.251 ms - 1094[0m
+[0mPOST /api/v1/mvp/work-orders/WO-3126B2EC/revalidate [32m200[0m 1.557 ms - 1216[0m
+[0mPOST /api/v1/mvp/work-orders/WO-3126B2EC/assign [32m200[0m 1.158 ms - 1377[0m
+[0mPOST /api/v1/mvp/auth/staff-login [32m200[0m 0.764 ms - 459[0m
+[0mPOST /api/v1/mvp/work-orders/WO-3126B2EC/accept [32m200[0m 1.281 ms - 1525[0m
+[0mPOST /api/v1/mvp/work-orders/WO-3126B2EC/start [32m200[0m 2.200 ms - 1673[0m
+[0mPOST /api/v1/mvp/work-orders/WO-3126B2EC/complete [32m200[0m 4.964 ms - 1978[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.886 ms - 27311[0m
+[0mGET /api/v1/mvp/dashboard [32m200[0m 3.393 ms - 94055[0m
+[0mGET /api/v1/safety/audit?limit=100 [32m200[0m 0.537 ms - 17207[0m
+✔ HTTP 闭环：低置信观测 → Agent → 审批 → 派发 → 执行 → 反馈 → 重新评估 (1026.2525ms)
+[0mPOST /api/v1/mvp/agent/runs [33m401[0m 0.498 ms - 33[0m
+[0mPOST /api/v1/auth/login [32m200[0m 51.806 ms - 248[0m
+[0mPOST /api/v1/mvp/reset [32m200[0m 2.850 ms - 18[0m
+[0mPOST /api/v1/mvp/auth/staff-login [32m200[0m 0.587 ms - 459[0m
+[0mPOST /api/v1/mvp/work-orders/WO-NOT-EXIST/approve [33m403[0m 0.440 ms - 80[0m
+[0mPOST /api/v1/mvp/tools/submit_worker_feedback [33m400[0m 0.550 ms - 275[0m
+✔ HTTP 权限：未登录不能运行 Agent，staff 不能审批，Agent 不能反馈 (80.8856ms)
+✔ 人员推荐按技能、状态与通道距离排序 (30.6929ms)
+✔ 员工不足时明确返回 shortage 而不是伪造推荐 (10.9292ms)
+✔ Agent 不能审批工单，只有管理员可以 (18.811ms)
+✔ 工单状态机拒绝跳跃，并完整走到 COMPLETED (92.1411ms)
+✔ 工作人员只能操作指派给本人的工单 (53.6187ms)
+✔ 拒绝工单必须填写审批意见 (117.9831ms)
+✔ 不可用人员不会被派发 (48.23ms)
+✔ 工单幂等键避免 Agent 重试产生重复任务 (64.2266ms)
+✔ 审批后观测变化使工单过期，必须重新确认才能派发 (45.0869ms)
+✔ 可选持久化：工单与幂等键在重启后恢复 (76.9652ms)
+✔ 定位匹配按半径统计 TP/FP/FN (1.3532ms)
+✔ 计数指标 MAE/RMSE/NAE 正确 (0.3486ms)
+✔ 数据集评测汇总计数与定位 (0.2967ms)
+✔ 线性上升序列预测为上升趋势且区间包住预测值 (121.0449ms)
+✔ 数据不足时明确标记 insufficient 并回退最近有效观测 (54.5381ms)
+✔ 低置信度观测被排除在预测输入之外 (92.309ms)
+✔ 未知区域预测抛错 (6.5277ms)
+✔ 风险沿开放通道传播，未知通道被排除 (30.9282ms)
+✔ 调查优先级综合传播风险、不确定性与中心性 (18.734ms)
+[auth] 未设置 SECRET_KEY/JWT_SECRET，正在使用开发默认密钥（勿用于生产）。
+[safety] 当前 DATA_ROOT 下未找到场景文件，回退到仓库默认场景：E:\Projects\skyguard-evacuation\data\scenarios\stadium-evacuation.json
+[0mGET /api/v1/mvp/scenario [32m200[0m 16.379 ms - 17602[0m
+[0mGET /api/v1/mvp/scenario [32m200[0m 0.997 ms - 17602[0m
+[0mGET /api/v1/mvp/scenario [33m429[0m 0.544 ms - 82[0m
+✔ 限流：超过阈值返回 429 与 Retry-After (607.0516ms)
+[0mGET /api/v1/mvp/scenario [33m401[0m 0.504 ms - 33[0m
+[0mPOST /api/v1/auth/login [32m200[0m 64.655 ms - 248[0m
+[0mGET /api/v1/mvp/scenario [32m200[0m 1.241 ms - 17602[0m
+✔ 可选读鉴权：开启后未登录读取 API 返回 401 (90.2472ms)
+[0mGET /api/v1/mvp/scenario [32m200[0m 0.659 ms - 17602[0m
+✔ CORS 允许来源可配置 (8.6079ms)
+[0mGET /api/v1/mvp/scenario [32m200[0m 0.824 ms - 17602[0m
+✔ 响应包含请求 ID，便于审计关联 (8.9843ms)
+✔ 先验概率归一且熵大于 0 (20.6739ms)
+✔ 全部动作可用时按 VoI 排序并给出可解释分解 (33.4407ms)
+✔ 所有动作不可用时停止调查并给出原因 (11.9193ms)
+✔ 达到最大调查轮次后停止 (17.555ms)
+✔ 阈值提高后低收益调查被停止 (10.5917ms)
+✔ 拥堵证据按贝叶斯更新提高高危假设后验 (8.5555ms)
+✔ 固定优先级策略按配置顺序选择首个可用动作 (7.7368ms)
+✔ T01 正常场景：生成可行方案并通过独立校验，进入 NORMAL (83.7897ms)
+✔ T02 区域密度快速上升触发风险评估 (27.2161ms)
+✔ T03 B 出口关闭：自动重规划并通过校验，进入 REROUTE (75.9484ms)
+✔ T04 B 出口关闭且剩余容量不足：进入 REJECT 并给出未解决需求 (33.3269ms)
+✔ T05 候选路线使用已关闭通道必须被拒绝 (2.3855ms)
+✔ T06 容量未知的通道不得当作无限容量 (1.6981ms)
+✔ T10 出口接收流量超过容量必须被拒绝 (1.2395ms)
+✔ T12 LLM 生成的违规方案被独立校验器拒绝且不会成为已发布方案 (18.664ms)
+✔ T07 观测过期：进入 DEGRADED 且不发布新路线 (10.9648ms)
+✔ T08 观测置信度不足：按规则降级 (9.6284ms)
+✔ T13 推理服务异常：记录故障并执行降级策略 (16.8266ms)
+✔ T09 路网断开且无可行方案：不得生成虚假的完整疏散方案 (11.2679ms)
+✔ T11 规划过程中约束版本变化：旧规划结果不得直接发布 (13.6735ms)
+✔ T15 事件解除后旧路线不得自动恢复，必须重新规划并通过校验 (16.8028ms)
+[auth] 未设置 SECRET_KEY/JWT_SECRET，正在使用开发默认密钥（勿用于生产）。
+[0mGET /api/v1/safety/status [32m200[0m 11.571 ms - 11745[0m
+[0mPOST /api/v1/safety/plan/recompute [33m401[0m 8.795 ms - 33[0m
+[0mPOST /api/v1/safety/plan/recompute [33m403[0m 1.860 ms - 127[0m
+✔ safety status is readable without auth but writes are not (169.6796ms)
+[0mPOST /api/v1/auth/login [32m200[0m 36.884 ms - 248[0m
+[0mPOST /api/v1/safety/incidents [32m201[0m 4.646 ms - 324[0m
+[0mPOST /api/v1/safety/incidents/INC-63274a16-6345-457b-9ee4-0705c3256b3e/confirm [33m403[0m 0.900 ms - 127[0m
+[0mPOST /api/v1/safety/incidents/INC-63274a16-6345-457b-9ee4-0705c3256b3e/resolve [33m401[0m 0.389 ms - 33[0m
+[0mGET /api/v1/safety/incidents [32m200[0m 0.573 ms - 308[0m
+[0mGET /api/v1/safety/audit?limit=20 [32m200[0m 0.524 ms - 505[0m
+✔ T14 非运维角色无法确认或解除事件 (74.4784ms)
+[0mPOST /api/v1/auth/login [32m200[0m 37.753 ms - 248[0m
+[0mPOST /api/v1/safety/observations/simulate [32m201[0m 21.553 ms - 2746[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.821 ms - 20657[0m
+[0mGET /api/v1/safety/plan [32m200[0m 0.442 ms - 4497[0m
+✔ 模拟观测 → 规划 → 校验 → NORMAL，前端读取到的是同一份后端结果 (81.6651ms)
+[0mPOST /api/v1/auth/login [32m200[0m 38.630 ms - 248[0m
+[0mPOST /api/v1/safety/demo/A_normal/run [32m200[0m 8.896 ms - 21196[0m
+[0mPOST /api/v1/safety/demo/A_normal/run [32m200[0m 6.446 ms - 21196[0m
+[0mPOST /api/v1/safety/demo/B_exit_fire/run [32m200[0m 8.040 ms - 25395[0m
+[0mPOST /api/v1/safety/demo/B_exit_fire/run [32m200[0m 6.841 ms - 25395[0m
+[0mPOST /api/v1/safety/demo/C_capacity_shortage/run [32m200[0m 6.960 ms - 32127[0m
+[0mPOST /api/v1/safety/demo/C_capacity_shortage/run [32m200[0m 6.820 ms - 32127[0m
+✔ 三个演示场景均可重复运行且结果与期望状态一致 (114.3896ms)
+[0mPOST /api/v1/auth/login [32m200[0m 37.263 ms - 248[0m
+[0mPOST /api/v1/safety/demo/C_capacity_shortage/run [32m200[0m 7.453 ms - 32127[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.569 ms - 31525[0m
+✔ 场景 C 的大屏数据包含拒绝原因与人工介入提示 (59.1141ms)
+[0mGET /api/v1/safety/providers [32m200[0m 231.230 ms - 2023[0m
+✔ 感知 provider 状态真实反映本机环境 (239.2404ms)
+[0mPOST /api/v1/auth/login [32m200[0m 38.584 ms - 248[0m
+[0mGET /api/v1/safety/status [32m200[0m 1.392 ms - 11745[0m
+[0mPOST /api/v1/safety/incidents/parse [32m200[0m 1.186 ms - 476[0m
+[0mGET /api/v1/safety/status [32m200[0m 0.505 ms - 11745[0m
+✔ 自然语言事件解析只产出待确认草稿，不改变系统状态 (60.695ms)
+[0mPOST /api/v1/auth/login [32m200[0m 36.909 ms - 248[0m
+[0mPOST /api/v1/safety/observations/simulate [32m201[0m 4.377 ms - 477[0m
+[0mGET /api/v1/safety/audit?limit=50 [32m200[0m 0.507 ms - 817[0m
+[0mGET /api/v1/safety/traces [32m200[0m 0.502 ms - 1080[0m
+✔ 审计日志记录操作者、动作与结果 (60.1904ms)
+✔ min-cost max-flow 在串联瓶颈网络上给出正确最大流 (1.1513ms)
+✔ 规划器严格遵守通道容量与时间窗，未解决需求被显式记录 (23.4777ms)
+✔ 关闭通道流量为零，且从规划中排除 (10.4704ms)
+✔ 容量未知的通道不被当作无限容量 (1.2315ms)
+✔ 反向通道只允许指定方向 (0.9909ms)
+✔ 中间区域满足流量守恒且可缓冲等待 (5.3776ms)
+✔ traversalMinutes 向上取整到分钟 (0.237ms)
+✔ 全部需求可在时限内完成时状态为 feasible 且无未解决需求 (3.6734ms)
+✔ 视频推理链路在本机真实可运行，且产出明确标注为实测而非模拟 (1146.2988ms)
+✔ 已标定摄像机下视频观测可信度不被压低，未标定则被强制压低 (893.7932ms)
+✔ 视频不可读时 provider 抛出明确的不可用错误 (641.6254ms)
+✔ 昇腾 provider 在无设备环境下如实报告不可用 (7.6495ms)
+✔ 模拟 provider 输出稳定且始终标记为 simulation (1.4917ms)
+✔ 数据可信且方案通过校验 → NORMAL (2.9783ms)
+✔ 无观测 → DEGRADED，且不允许显示已验证路线 (0.2348ms)
+✔ 校验发现硬违规 → REJECT，仅允许显示候选方案 (0.2759ms)
+✔ 存在已确认事件但方案通过校验 → REROUTE 且可发布替代方案 (0.1538ms)
+✔ DEGRADED 优先于 REJECT：数据不可信时不下"不可行"的结论 (0.167ms)
+✔ 仅版本失效 → REROUTE 而非 REJECT (0.1758ms)
+✔ 推理服务异常 → DEGRADED 并携带原因 (0.3107ms)
+ℹ tests 103
+ℹ suites 0
+ℹ pass 103
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6982.0873
+
+> skyguard-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v5.1.0 E:/Projects/skyguard-evacuation/frontend
+
+
+ Test Files  3 passed (3)
+      Tests  8 passed (8)
+   Start at  12:09:35
+   Duration  3.06s (environment 51%, import 25%, tests 12%, setup 11%, transform 1%)
+

@@ -1,0 +1,57 @@
+{
+  "config": {
+    "seeds": [
+      20261105,
+      20261106,
+      20261107,
+      20261108,
+      20261109
+    ],
+    "series_per_seed": 120,
+    "note": "共享趋势 + 区域独立噪声的合成序列；邻居信息不是真实人群迁移证据。"
+  },
+  "results": [
+    {
+      "horizon_minutes": 2,
+      "own_mae": {
+        "mean": 11.3433,
+        "lower": 10.6693,
+        "upper": 12.0174
+      },
+      "spatial_mae": {
+        "mean": 10.805,
+        "lower": 10.1561,
+        "upper": 11.4539
+      },
+      "relative_improvement": 0.0475
+    },
+    {
+      "horizon_minutes": 5,
+      "own_mae": {
+        "mean": 11.81,
+        "lower": 11.1618,
+        "upper": 12.4582
+      },
+      "spatial_mae": {
+        "mean": 11.205,
+        "lower": 10.591,
+        "upper": 11.819
+      },
+      "relative_improvement": 0.0512
+    },
+    {
+      "horizon_minutes": 10,
+      "own_mae": {
+        "mean": 13.7767,
+        "lower": 12.9443,
+        "upper": 14.609
+      },
+      "spatial_mae": {
+        "mean": 12.625,
+        "lower": 11.8668,
+        "upper": 13.3832
+      },
+      "relative_improvement": 0.0836
+    }
+  ]
+}

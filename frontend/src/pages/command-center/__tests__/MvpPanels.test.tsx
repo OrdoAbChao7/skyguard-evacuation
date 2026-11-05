@@ -15,6 +15,7 @@ const mocks = vi.hoisted(() => ({
   fail: vi.fn(),
   staffLogin: vi.fn(),
   experiments: vi.fn(),
+  multiRegion: vi.fn(),
   reset: vi.fn(),
   runDemo: vi.fn(),
 }));
@@ -140,6 +141,7 @@ describe('MVP 指挥面板', () => {
     mocks.experiments.mockResolvedValue({
       available: false, generated_at: null, experiments: {}, report_path: 'evaluation/COMPETITION_REPORT.md', note: '合成数据',
     });
+    mocks.multiRegion.mockResolvedValue({ available: false, reason: '测试未配置' });
     localStorage.clear();
   });
 

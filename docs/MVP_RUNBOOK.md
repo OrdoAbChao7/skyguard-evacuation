@@ -90,6 +90,7 @@ npx tsx --test tests/mvp/*.test.ts     # MVP 用例（在 backend 目录）
 ```powershell
 npm run experiments:mvp
 npm run benchmark:competition --prefix backend   # 竞赛级基准
+npm run benchmark:v6 --prefix backend            # V6 多区域/重试/邻居预测
 ```
 
 生成：
@@ -146,6 +147,7 @@ SAFETY_SCENARIO_FILE=<仓库>/data/scenarios/stadium-evacuation.json
 | POST | `/api/v1/mvp/tools/:name` | 直接调用工具 | JWT |
 | POST | `/api/v1/mvp/demo/run` | 一键推演 A/B/C | admin/operator |
 | GET | `/api/v1/mvp/experiments` | 竞赛基准摘要 | 否 |
+| GET | `/api/v1/mvp/multi-region` | 多区域风险传播与联合 VoI | 否 |
 | POST | `/api/v1/mvp/work-orders/:id/revalidate` | 重新确认上下文 | admin/operator |
 
 PowerShell 示例：

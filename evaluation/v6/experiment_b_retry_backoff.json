@@ -1,0 +1,7030 @@
+{
+  "config": {
+    "seed": 20261127,
+    "trials": 500,
+    "failure_probability": 0.3,
+    "action": "A_CAMERA",
+    "retry": {
+      "max_retries": 1,
+      "cooldown_minutes": 0.5,
+      "backoff_factor": 2
+    },
+    "note": "失败概率为合成参数；验证冷却/退避逻辑，不代表真实设备故障率。"
+  },
+  "summary": {
+    "no_retry": {
+      "success_rate": 0.686,
+      "mean_attempts": 1,
+      "mean_failures": 0,
+      "mean_elapsed_minutes": 0.5
+    },
+    "retry": {
+      "success_rate": 0.91,
+      "mean_attempts": 1.298,
+      "mean_failures": 0.388,
+      "mean_elapsed_minutes": 0.194
+    }
+  },
+  "raw": [
+    {
+      "trial": 0,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 1,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 2,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 3,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 4,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 5,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 6,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 7,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 8,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 9,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 10,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 11,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 12,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 13,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 14,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 15,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 16,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 17,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 18,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 19,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 20,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 21,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 22,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 23,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 24,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 25,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 26,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 27,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 28,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 29,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 30,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 31,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 32,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 33,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 34,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 35,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 36,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 37,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 38,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 39,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 40,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 41,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 42,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 43,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 44,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 45,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 46,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 47,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 48,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 49,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 50,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 51,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 52,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 53,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 54,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 55,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 56,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 57,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 58,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 59,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 60,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 61,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 62,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 63,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 64,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 65,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 66,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 67,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 68,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 69,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 70,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 71,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 72,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 73,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 74,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 75,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 76,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 77,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 78,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 79,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 80,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 81,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 82,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 83,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 84,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 85,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 86,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 87,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 88,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 89,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 90,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 91,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 92,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 93,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 94,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 95,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 96,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 97,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 98,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 99,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 100,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 101,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 102,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 103,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 104,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 105,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 106,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 107,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 108,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 109,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 110,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 111,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 112,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 113,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 114,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 115,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 116,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 117,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 118,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 119,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 120,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 121,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 122,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 123,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 124,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 125,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 126,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 127,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 128,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 129,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 130,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 131,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 132,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 133,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 134,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 135,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 136,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 137,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 138,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 139,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 140,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 141,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 142,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 143,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 144,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 145,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 146,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 147,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 148,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 149,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 150,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 151,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 152,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 153,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 154,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 155,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 156,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 157,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 158,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 159,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 160,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 161,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 162,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 163,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 164,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 165,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 166,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 167,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 168,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 169,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 170,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 171,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 172,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 173,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 174,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 175,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 176,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 177,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 178,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 179,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 180,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 181,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 182,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 183,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 184,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 185,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 186,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 187,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 188,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 189,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 190,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 191,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 192,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 193,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 194,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 195,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 196,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 197,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 198,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 199,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 200,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 201,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 202,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 203,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 204,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 205,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 206,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 207,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 208,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 209,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 210,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 211,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 212,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 213,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 214,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 215,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 216,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 217,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 218,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 219,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 220,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 221,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 222,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 223,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 224,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 225,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 226,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 227,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 228,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 229,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 230,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 231,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 232,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 233,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 234,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 235,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 236,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 237,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 238,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 239,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 240,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 241,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 242,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 243,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 244,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 245,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 246,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 247,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 248,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 249,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 250,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 251,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 252,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 253,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 254,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 255,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 256,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 257,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 258,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 259,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 260,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 261,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 262,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 263,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 264,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 265,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 266,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 267,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 268,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 269,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 270,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 271,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 272,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 273,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 274,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 275,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 276,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 277,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 278,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 279,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 280,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 281,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 282,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 283,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 284,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 285,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 286,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 287,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 288,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 289,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 290,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 291,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 292,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 293,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 294,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 295,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 296,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 297,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 298,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 299,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 300,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 301,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 302,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 303,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 304,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 305,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 306,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 307,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 308,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 309,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 310,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 311,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 312,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 313,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 314,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 315,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 316,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 317,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 318,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 319,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 320,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 321,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 322,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 323,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 324,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 325,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 326,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 327,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 328,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 329,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 330,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 331,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 332,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 333,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 334,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 335,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 336,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 337,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 338,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 339,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 340,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 341,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 342,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 343,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 344,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 345,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 346,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 347,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 348,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 349,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 350,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 351,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 352,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 353,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 354,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 355,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 356,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 357,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 358,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 359,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 360,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 361,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 362,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 363,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 364,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 365,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 366,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 367,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 368,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 369,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 370,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 371,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 372,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 373,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 374,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 375,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 376,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 377,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 378,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 379,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 380,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 381,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 382,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 383,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 384,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 385,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 386,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 387,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 388,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 389,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 390,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 391,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 392,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 393,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 394,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 395,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 396,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 397,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 398,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 399,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 400,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 401,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 402,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 403,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 404,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 405,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 406,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 407,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 408,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 409,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 410,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 411,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 412,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 413,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 414,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 415,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 416,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 417,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 418,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 419,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 420,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 421,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 422,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 423,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 424,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 425,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 426,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 427,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 428,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 429,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 430,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 431,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 432,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 433,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 434,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 435,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 436,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 437,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 438,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 439,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 440,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 441,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 442,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 443,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 444,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 445,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 446,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 447,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 448,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 449,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 450,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 451,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 452,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 453,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 454,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 455,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 456,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 457,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 458,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 459,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 460,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 461,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 462,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 463,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 464,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 465,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 466,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 467,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 468,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 469,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 470,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 471,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 472,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 473,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 474,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 475,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 476,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 477,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 478,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 479,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 480,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 481,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 482,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 483,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 484,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 485,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 486,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 487,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 488,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 489,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 490,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 491,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 492,
+      "no_retry": {
+        "success": false,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 493,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": false,
+        "attempts": 2,
+        "failures": 2,
+        "elapsed_minutes": 1
+      }
+    },
+    {
+      "trial": 494,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 495,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 496,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 497,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 2,
+        "failures": 1,
+        "elapsed_minutes": 0.5
+      }
+    },
+    {
+      "trial": 498,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    },
+    {
+      "trial": 499,
+      "no_retry": {
+        "success": true,
+        "attempts": 1,
+        "elapsed_minutes": 0.5
+      },
+      "retry": {
+        "success": true,
+        "attempts": 1,
+        "failures": 0,
+        "elapsed_minutes": 0
+      }
+    }
+  ]
+}

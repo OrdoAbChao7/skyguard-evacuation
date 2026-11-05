@@ -233,6 +233,16 @@ export function selectIntervalQuantile(
   return Number(sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.95))].toFixed(4));
 }
 
+export interface SpatialPredictionResult extends PredictionResult {
+  spatial: {
+    neighbors: string[];
+    neighbor_mean: number | null;
+    weight: number;
+    neighbor_predictions: Array<{ region_id: string; predicted_count: number | null; sufficient: boolean }>;
+    note: string;
+  };
+}
+
 export class PredictionService {
   constructor(
     private readonly scenario: SafetyScenario,
@@ -356,6 +366,45 @@ export class PredictionService {
     };
   }
 
+  /** 邻居信息融合：自身数据不足时更多依赖相邻区域趋势；仅作辅助，不替代本地观测。 */
+  predictSpatial(regionId: string, neighborRegionIds: string[], options: PredictOptions = {}): SpatialPredictionResult {
+    const own = this.predict(regionId, options);
+    const neighborPredictions = neighborRegionIds.map(id => this.predict(id, options));
+    const usable = neighborPredictions.filter(item => item.sufficient && item.predicted_count !== null);
+    if (usable.length === 0 || own.predicted_count === null) {
+      return {
+        ...own,
+        spatial: {
+          neighbors: neighborRegionIds,
+          neighbor_mean: null,
+          weight: 0,
+          neighbor_predictions: neighborPredictions.map(item => ({ region_id: item.region_id, predicted_count: item.predicted_count, sufficient: item.sufficient })),
+          note: '邻居数据不足，未融合',
+        },
+      };
+    }
+    const neighborMean = usable.reduce((sum, item) => sum + (item.predicted_count ?? 0), 0) / usable.length;
+    const weight = own.sufficient ? 0.25 : 0.6;
+    const blended = Math.max(0, Math.round((1 - weight) * own.predicted_count + weight * neighborMean));
+    const spread = Math.sqrt(meanSquare(usable.map(item => (item.predicted_count ?? 0) - neighborMean)));
+    const interval = own.interval
+      ? { lower: Math.max(0, Math.round(own.interval.lower - spread * weight)), upper: Math.round(own.interval.upper + spread * weight) }
+      : null;
+    return {
+      ...own,
+      predicted_count: blended,
+      interval,
+      spatial: {
+        neighbors: neighborRegionIds,
+        neighbor_mean: Number(neighborMean.toFixed(2)),
+        weight,
+        neighbor_predictions: neighborPredictions.map(item => ({ region_id: item.region_id, predicted_count: item.predicted_count, sufficient: item.sufficient })),
+        note: `融合 ${usable.length} 个邻居预测（权重 ${weight}）；邻居结果只作辅助，不是人群迁移证据。`,
+      },
+      uncertainty_note: `${own.uncertainty_note} ${own.sufficient ? '' : '自身数据不足，邻居信息权重提高。'}`.trim(),
+    };
+  }
+
   private qualityNote(stale: boolean, lowConfidence: boolean, pointCount: number): string {
     const parts: string[] = [];
     if (pointCount === 0) parts.push('窗口内无可信观测');
@@ -363,6 +412,10 @@ export class PredictionService {
     if (lowConfidence) parts.push('最近观测置信度低于阈值');
     return parts.length > 0 ? parts.join('；') : '数据质量正常';
   }
+}
+
+function meanSquare(values: number[]): number {
+  return values.length === 0 ? 0 : values.reduce((sum, value) => sum + value ** 2, 0) / values.length;
 }
 
 /** 供离线实验复用：对任意时间序列做同样的 EMA + 线性外推。 */

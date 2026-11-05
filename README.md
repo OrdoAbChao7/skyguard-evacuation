@@ -63,9 +63,15 @@ npm run mcp --prefix backend   # 标准 MCP stdio Server
 | 交付物 | 位置 |
 | --- | --- |
 | 统一基准（多随机种子、置信区间、敏感性、Pareto、故障注入） | [`evaluation/COMPETITION_REPORT.md`](evaluation/COMPETITION_REPORT.md) |
-| 研究资料库（34 条来源、8 篇专题笔记） | [`research/INDEX.md`](research/INDEX.md) |
+| V6 科研报告（多区域 VoI、重试、邻居预测、多事件） | [`evaluation/V6_REPORT.md`](evaluation/V6_REPORT.md) |
+| V6.1 科研审计（公平预算、序贯审计、严格滚动预测、图敏感性） | [`evaluation/V6_1_REPORT.md`](evaluation/V6_1_REPORT.md) |
+| 研究资料库（38 条来源、10 篇专题笔记） | [`research/INDEX.md`](research/INDEX.md) |
 | 6–8 分钟演示脚本 | [`docs/DEMO_SCRIPT_6_8MIN.md`](docs/DEMO_SCRIPT_6_8MIN.md) |
 | 答辩问题库 | [`docs/QA_BANK.md`](docs/QA_BANK.md) |
+| 核心研究贡献 | [`docs/RESEARCH_CONTRIBUTIONS.md`](docs/RESEARCH_CONTRIBUTIONS.md) |
+| 完整技术报告 | [`docs/COMPETITION_TECHNICAL_REPORT.md`](docs/COMPETITION_TECHNICAL_REPORT.md) |
+| 论文初稿 | [`docs/PAPER_DRAFT.md`](docs/PAPER_DRAFT.md) |
+| 30 问答辩库 | [`docs/DEFENSE_QA.md`](docs/DEFENSE_QA.md) |
 | 论文/技术报告大纲 | [`docs/PAPER_OUTLINE.md`](docs/PAPER_OUTLINE.md) |
 | 创新点—证据映射 | [`docs/INNOVATION_EVIDENCE_MAP.md`](docs/INNOVATION_EVIDENCE_MAP.md) |
 | 部署手册 / 昇腾路径 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)、[`docs/ASCEND_DEPLOYMENT.md`](docs/ASCEND_DEPLOYMENT.md) |
@@ -73,6 +79,8 @@ npm run mcp --prefix backend   # 标准 MCP stdio Server
 
 ```powershell
 npm run benchmark:competition   # 竞赛级基准 → evaluation/COMPETITION_REPORT.md
+npm run benchmark:v6            # V6 多区域/重试/邻居预测 → evaluation/V6_REPORT.md
+npm run benchmark:v61           # V6.1 公平预算/序贯审计/严格预测 → evaluation/V6_1_REPORT.md
 ```
 
 ### 工程加固
@@ -80,6 +88,7 @@ npm run benchmark:competition   # 竞赛级基准 → evaluation/COMPETITION_REP
 - 可配置 CORS、CSP、读接口鉴权（`READ_AUTH_REQUIRED`）、请求 ID、进程内限流；
 - 生产环境错误响应不返回内部细节；
 - 工单支持上下文版本失效与可选 JSON 快照持久化；
+- 多区域协同面板：传播风险排序 + 联合 VoI；
 - 工作人员移动端：`/staff`（登录后可接单、执行、反馈）；
 - AgentArts 健康探测带有限重试，Trace ID 贯穿审计；
 - MCP 工具结构化错误码与幂等键。
@@ -176,7 +185,7 @@ npm run bench                         # 实测规划/校验/决策延迟 → eva
 
 | 证据 | 当前结果 |
 | --- | --- |
-| 后端测试（安全 + MVP） | 91 / 91 通过 |
+| 后端测试（安全 + MVP + V6/V6.1） | 104 / 104 通过 |
 | 前端测试 | 8 / 8 通过 |
 | 演示场景 A（常规） | `NORMAL`，1000/1000 人分配完毕 |
 | 演示场景 B（出口火灾） | `REROUTE`，原方案重规划 |
