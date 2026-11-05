@@ -1,0 +1,32 @@
+{
+  "replay_dir": "C:\\Users\\32583\\AppData\\Local\\Temp/skyguard-v61-replay",
+  "checked_at": "2026-11-05T05:32:31.672850+00:00",
+  "files": [
+    {
+      "file": "experiment_a_fair_multi_region.json",
+      "match": true,
+      "differing_keys": []
+    },
+    {
+      "file": "experiment_b_sequential_audit.json",
+      "match": true,
+      "differing_keys": []
+    },
+    {
+      "file": "experiment_c_strict_prediction.json",
+      "match": true,
+      "differing_keys": []
+    },
+    {
+      "file": "experiment_d_risk_graph_sensitivity.json",
+      "match": true,
+      "differing_keys": []
+    },
+    {
+      "file": "experiment_e_perception_audit.json",
+      "match": true,
+      "differing_keys": []
+    }
+  ],
+  "all_match": true
+}

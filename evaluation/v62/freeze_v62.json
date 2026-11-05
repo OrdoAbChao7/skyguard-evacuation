@@ -1,0 +1,804 @@
+{
+  "version": 1,
+  "frozen_at": "2026-11-05T08:44:01.290453+00:00",
+  "git_head": "3b62fe94bd03406532398dfbdcc6812bf669544d",
+  "branch": "feat/skyguard-mvp-e2e",
+  "worktree_status": {
+    "staged": 0,
+    "unstaged": 28,
+    "untracked_entries": 18,
+    "untracked_files": 31,
+    "status_entries": 46
+  },
+  "scope": [
+    "backend/src",
+    "backend/scripts",
+    "backend/tests",
+    "backend/package.json",
+    "backend/tsconfig.json",
+    "frontend/src",
+    "frontend/package.json",
+    "frontend/tsconfig.json",
+    "frontend/vite.config.ts",
+    "frontend/vitest.config.ts",
+    "package.json",
+    "data/scenarios",
+    "data/replays",
+    "evaluation/v61",
+    "evaluation/v62",
+    "evaluation/v6",
+    "evaluation/competition",
+    "evaluation/mvp",
+    "evaluation/V6_2_REPORT.md",
+    "evaluation/V6_1_REPORT.md",
+    "evaluation/COMPETITION_REPORT.md",
+    "evaluation/MANIFEST.json",
+    "evaluation/DATA_MANIFEST.md",
+    "RELEASE_AUDIT_FINAL.md",
+    "RELEASE_AUDIT_REPORT.md"
+  ],
+  "excluded": [
+    "evaluation/v62/BASELINE_SHA256",
+    "evaluation/v62/freeze_v62.json"
+  ],
+  "file_count": 151,
+  "total_bytes": 34403582,
+  "note": "V6.2 source/config/raw experiments/reports baseline. Docs/research narrative and evaluation/real-data are outside this freeze.",
+  "files": [
+    {
+      "path": "RELEASE_AUDIT_FINAL.md",
+      "bytes": 6727,
+      "sha256": "59af55c8c204bd3015cfe8b165fb2d8fc463ead5c214ae178a9944c2c200fcb1"
+    },
+    {
+      "path": "RELEASE_AUDIT_REPORT.md",
+      "bytes": 10582,
+      "sha256": "14d00540ccd2e5d76adb87f64307cabc7488aba60da888a5e7c22010c5266ea5"
+    },
+    {
+      "path": "backend/package.json",
+      "bytes": 1593,
+      "sha256": "034f3402096746214c59a217362362c44a4fb9c62dec715acb53b587f5a0cc87"
+    },
+    {
+      "path": "backend/scripts/competition-benchmark.ts",
+      "bytes": 45141,
+      "sha256": "b9e322363516a1e11e578dce774f2fa47534bdb5c940d44cc6237438363ffa7f"
+    },
+    {
+      "path": "backend/scripts/evidence-manifest.ts",
+      "bytes": 5010,
+      "sha256": "14a1d27ee33573565499984c51c989e4f8e2c27c2b2ac156e0e622a03f13cbda"
+    },
+    {
+      "path": "backend/scripts/mvp-demo.ts",
+      "bytes": 15437,
+      "sha256": "6686691f041015250a7626b1c7cdd6aa1bcb16b6853d20a017f3538310594241"
+    },
+    {
+      "path": "backend/scripts/mvp-experiments.ts",
+      "bytes": 30009,
+      "sha256": "c39b0f55cf61c6e946c57a31ffe94971bb75afd102c554148845e447af34fb4f"
+    },
+    {
+      "path": "backend/scripts/perception-eval.ts",
+      "bytes": 2124,
+      "sha256": "b57034f960f4fd8e3f7915812b056b46902281abf46ab71dde6e94e755771e18"
+    },
+    {
+      "path": "backend/scripts/skyguard-benchmark.ts",
+      "bytes": 10883,
+      "sha256": "a3178120b544a52886a73fc9e6ad9952decab4f997f02c489c1c8c3a3bfbf09b"
+    },
+    {
+      "path": "backend/scripts/skyguard-demo.ts",
+      "bytes": 4042,
+      "sha256": "ba425144499613473d65e482539dd8d5ffaff252179b90361af7b9df2b71f03f"
+    },
+    {
+      "path": "backend/scripts/skyguard-e2e-server.ts",
+      "bytes": 1564,
+      "sha256": "5cedee03a15614165178f5d05b88fbff56e10df5c59e3610f1e81cb1f35df4af"
+    },
+    {
+      "path": "backend/scripts/v6-benchmark.ts",
+      "bytes": 19313,
+      "sha256": "d903856f7f967d21f8b52263fac364c4c4a11725cb94a264080fbb3e49cc5e95"
+    },
+    {
+      "path": "backend/scripts/v61-benchmark.ts",
+      "bytes": 40506,
+      "sha256": "6e3ef2753093e7b23eaa9b5caa6866d897d20e410a70347a9e92c0f9bd934e65"
+    },
+    {
+      "path": "backend/scripts/v62-benchmark.ts",
+      "bytes": 27406,
+      "sha256": "da96dd6933cde78f12b7d7069746cfc426291945785ba3e6acd67a10ae8cb293"
+    },
+    {
+      "path": "backend/scripts/verify-evidence.ts",
+      "bytes": 10761,
+      "sha256": "624eb3185593b4e1db46f4144c9055dac3a795cc6b2cbf8617b5b430862657ad"
+    },
+    {
+      "path": "backend/scripts/verify-sources.ts",
+      "bytes": 3944,
+      "sha256": "db7b6d619f26c0f690611bac71c80b585131f7deaff423adcab77c8df9d948da"
+    },
+    {
+      "path": "backend/src/api/v1/auth.ts",
+      "bytes": 3930,
+      "sha256": "b84e7289e304f144446eb626b72980a6044616b09670fde2e13f800916d84a45"
+    },
+    {
+      "path": "backend/src/api/v1/mvp.ts",
+      "bytes": 12118,
+      "sha256": "d85b70c78bbf5a42c00bb23a60b12ce4feda456b71920c86361446e8ec4c88ad"
+    },
+    {
+      "path": "backend/src/api/v1/router.ts",
+      "bytes": 294,
+      "sha256": "c6dde612aaf1b952b30636c802169f5f37816d7b17a855404562d7a471fcc31b"
+    },
+    {
+      "path": "backend/src/api/v1/safety.ts",
+      "bytes": 20331,
+      "sha256": "cf929c37ef1fc61eb99f32eb5997080df1e3b030f34f4b9c651fae1bf69ae7a8"
+    },
+    {
+      "path": "backend/src/app.ts",
+      "bytes": 3029,
+      "sha256": "85e74a34d2cabb780bfad85adce4948934cd7ffddfd95eb4bfc0e1330bff2dad"
+    },
+    {
+      "path": "backend/src/config/paths.ts",
+      "bytes": 666,
+      "sha256": "a2d4db7b4265d7130294f92a6f7f25deabd6818ac472c5447303c6232ba38c71"
+    },
+    {
+      "path": "backend/src/config/security.ts",
+      "bytes": 2535,
+      "sha256": "fe083859aa051bb24f87ddfb4be40d922d6b501ffbc2c01f1fff77545a37bede"
+    },
+    {
+      "path": "backend/src/index.ts",
+      "bytes": 1173,
+      "sha256": "0fe9fc5b336c03726b7e0790bfbf4caf89087c93f3d8ecafa169d72e8b29211d"
+    },
+    {
+      "path": "backend/src/mcp/server.ts",
+      "bytes": 3380,
+      "sha256": "8e21c917b81c1811802d6aa5049f5a1bc1bad8ff3ebd4b8c545c3991f1213f5e"
+    },
+    {
+      "path": "backend/src/services/mvp/agent.ts",
+      "bytes": 28620,
+      "sha256": "343efffa7f51e90f7f3a7bc933616482e4b82a9b79c30b82798f2d79bceb334c"
+    },
+    {
+      "path": "backend/src/services/mvp/agentarts.ts",
+      "bytes": 9139,
+      "sha256": "6f7c3618ac11cbf69b1de85ea6926c938b9e12d6166768bdfc71ffba5ca4259c"
+    },
+    {
+      "path": "backend/src/services/mvp/index.ts",
+      "bytes": 25451,
+      "sha256": "8766d831640d0614118bb0cea21b00776af599a74905b643b9b7598023050d03"
+    },
+    {
+      "path": "backend/src/services/mvp/ingest.ts",
+      "bytes": 10359,
+      "sha256": "fa0715af7be237efb2d27eb7659c332d72772197f68fce1588cb0ddae76b9494"
+    },
+    {
+      "path": "backend/src/services/mvp/investigation-session.ts",
+      "bytes": 6983,
+      "sha256": "56c51293ae71a25a08b5aea11c058300f277c2e3fb4698c75f941d323e7f75bc"
+    },
+    {
+      "path": "backend/src/services/mvp/multi-voi.ts",
+      "bytes": 8853,
+      "sha256": "8b8675a2271a108d636107b2e1b707fd3c4584c25b14299f0af210b7029ed176"
+    },
+    {
+      "path": "backend/src/services/mvp/ops.ts",
+      "bytes": 25956,
+      "sha256": "10e0471d335339d4fa21e4a102c70341daad2e01e333d9b2e8740be2202fe7ea"
+    },
+    {
+      "path": "backend/src/services/mvp/prediction.ts",
+      "bytes": 19473,
+      "sha256": "c01002577defcc530c2da4e9c5950f70ba89de5b4fe915e661940c70de9e1160"
+    },
+    {
+      "path": "backend/src/services/mvp/risk-graph.ts",
+      "bytes": 5905,
+      "sha256": "a3d679644ced73df91f923e8fc2cae777cefe72b6c77dc651a77941f0e7c336e"
+    },
+    {
+      "path": "backend/src/services/mvp/tools.ts",
+      "bytes": 29944,
+      "sha256": "f28cfd118a19401e0a97ac2eb740f6aeb43b9fb8065049361c4692120aa21de3"
+    },
+    {
+      "path": "backend/src/services/mvp/voi.ts",
+      "bytes": 15041,
+      "sha256": "abe1a5959b5d3fe5d3ace4bba0939fb0ac7ae387d3c797ab67a1728cf5949fe6"
+    },
+    {
+      "path": "backend/src/services/perception/metrics.ts",
+      "bytes": 5111,
+      "sha256": "e35adce7fafa76909a4617c06bc3e2e5153b264f1274a2f3da68fc13c45b3357"
+    },
+    {
+      "path": "backend/src/services/safety/audit.ts",
+      "bytes": 4318,
+      "sha256": "0129d6ccc66d8b88e2283a90dd92132c5f2971e7b187cd0a3f3372fa8ec6a7b2"
+    },
+    {
+      "path": "backend/src/services/safety/decision-service.ts",
+      "bytes": 34879,
+      "sha256": "d06a69efe2e16ae0bb1a2d605bb8b1b6524203997f7857c2543cce2293822cfa"
+    },
+    {
+      "path": "backend/src/services/safety/incidents.ts",
+      "bytes": 4323,
+      "sha256": "2e774555d894b9ea8997682d4405eece12a48035a8c5686551c2c3810ebdb949"
+    },
+    {
+      "path": "backend/src/services/safety/index.ts",
+      "bytes": 2455,
+      "sha256": "0828b84550eb70eab0011370cf87c4ad3ed3dd72070c425b0776a2c944510897"
+    },
+    {
+      "path": "backend/src/services/safety/network.ts",
+      "bytes": 6294,
+      "sha256": "75d5462bdd825cdaab08869c28ae2aaf0e73470e6382f9306d36e6d1bb93b93d"
+    },
+    {
+      "path": "backend/src/services/safety/nl-incident.ts",
+      "bytes": 4274,
+      "sha256": "601aaa0496b93532f57a5cc22ebbd3704feb7659a31b9891dca1a07e367359f9"
+    },
+    {
+      "path": "backend/src/services/safety/observations.ts",
+      "bytes": 4930,
+      "sha256": "ab45cb02be63c9404707ced8e879da258e0571c95acb98df44b6a2f88d23f16c"
+    },
+    {
+      "path": "backend/src/services/safety/planning/evacuation-planner.ts",
+      "bytes": 13185,
+      "sha256": "b067a4d9b6e9f5326c4975abd1f495c846fbc095a1c7d3698d781f120de6481e"
+    },
+    {
+      "path": "backend/src/services/safety/planning/min-cost-flow.ts",
+      "bytes": 8705,
+      "sha256": "d21895152ccb727a803e65442af6bf41a97b3104d3f8346ce67896cef932f317"
+    },
+    {
+      "path": "backend/src/services/safety/providers/ascend.ts",
+      "bytes": 7119,
+      "sha256": "f2eb2a437d7ebb1c2ba1a262cb3ce62357a20dd76315eacd4174d4653c06efe1"
+    },
+    {
+      "path": "backend/src/services/safety/providers/simulation.ts",
+      "bytes": 2587,
+      "sha256": "b3802f8873162972169fe8428298507b8c8e07ef01ad20ae962b38ecb83065bb"
+    },
+    {
+      "path": "backend/src/services/safety/providers/types.ts",
+      "bytes": 1727,
+      "sha256": "34489ea6a8ce00f83fceaee33eac337131500356c10f0a70fec7c694890ac4d8"
+    },
+    {
+      "path": "backend/src/services/safety/providers/video.ts",
+      "bytes": 6835,
+      "sha256": "2cc54f12574df41691174f98eff4d512f4e71bd52c9e990d0cf05f4d6827489f"
+    },
+    {
+      "path": "backend/src/services/safety/risk.ts",
+      "bytes": 7003,
+      "sha256": "aba7a59149258a50f59bf287c2989709c3e6dd84e574413d3182f3a177dde944"
+    },
+    {
+      "path": "backend/src/services/safety/scenario.ts",
+      "bytes": 9375,
+      "sha256": "8875e1ad158fb5c9bd38578d7a39165cd87fe2f6786551972352769d20eb8a56"
+    },
+    {
+      "path": "backend/src/services/safety/state-machine.ts",
+      "bytes": 7422,
+      "sha256": "4dd6060b3d7cef901ffa82153618bd08e7ecdffb6787fb9500f1517bba3dd4eb"
+    },
+    {
+      "path": "backend/src/services/safety/types.ts",
+      "bytes": 21244,
+      "sha256": "6936d6d1c6db81aec50c22ef7ee65ea9a56a682f6fec94c567c9c6daee64d235"
+    },
+    {
+      "path": "backend/src/services/safety/validator.ts",
+      "bytes": 19701,
+      "sha256": "fc16e0e1fe84d1029f63e0672c60e71fae6696cefcb41777a34571976e0240ec"
+    },
+    {
+      "path": "backend/tests/helpers/api-fixtures.ts",
+      "bytes": 2112,
+      "sha256": "4315585f58de375afb30813460b7c0bc2c589e0f18e1e8a846d965cbdc85cd0b"
+    },
+    {
+      "path": "backend/tests/mvp/agent.test.ts",
+      "bytes": 6174,
+      "sha256": "ca86dd389bb2ef1569dd71bd625f2d017ec87ded8e250adefbaf31a28edc1e19"
+    },
+    {
+      "path": "backend/tests/mvp/agentarts-runtime.test.ts",
+      "bytes": 3579,
+      "sha256": "877d048b6206af3d120cd4965f4212c6bb777831eaecb7c8a2bf1a3260784682"
+    },
+    {
+      "path": "backend/tests/mvp/agentarts.test.ts",
+      "bytes": 5140,
+      "sha256": "6aaf12974ad389408ddfe1ef3d2130d643e85cd6e43e4a6b9f1eb936be8731cd"
+    },
+    {
+      "path": "backend/tests/mvp/demo-api.test.ts",
+      "bytes": 2750,
+      "sha256": "5a177b06bca72aa99dd424ae6c3556e71510716de724c96120c8096569790025"
+    },
+    {
+      "path": "backend/tests/mvp/fixtures.ts",
+      "bytes": 2260,
+      "sha256": "b858afcfff60a3acb8fbc9bcec3fcf9fb399cf40a0c0d111fdba99b946889d92"
+    },
+    {
+      "path": "backend/tests/mvp/ingest.test.ts",
+      "bytes": 4580,
+      "sha256": "173b37f8ba725e04ef0427d1f4330b1ed5c2fcd4f4bd583d7f5383993b642149"
+    },
+    {
+      "path": "backend/tests/mvp/investigation-session.test.ts",
+      "bytes": 3699,
+      "sha256": "714b9fae97125bd308a8db13384cf2e3d30286065205f6f97c3dccb60dac9953"
+    },
+    {
+      "path": "backend/tests/mvp/mcp.test.ts",
+      "bytes": 4445,
+      "sha256": "d5f198028c783e36bec87bf884c727d688d765885c5f7440bafe8fab75bd99a6"
+    },
+    {
+      "path": "backend/tests/mvp/multi-region-api.test.ts",
+      "bytes": 1177,
+      "sha256": "9004b49406ecbf48cd2fd67bf8ce17571908a9362dcbed410b50fa80bd776114"
+    },
+    {
+      "path": "backend/tests/mvp/multi-voi.test.ts",
+      "bytes": 3370,
+      "sha256": "d4794a9a9a2fbaa7a2834ae8b2762d60885709ded2c9072a907f3103e0550f4f"
+    },
+    {
+      "path": "backend/tests/mvp/mvp-api.test.ts",
+      "bytes": 8508,
+      "sha256": "ef5ce0277031f7c224f5ab510d3f4a7cd03811f317f18ac18655b70fa2327c90"
+    },
+    {
+      "path": "backend/tests/mvp/ops.test.ts",
+      "bytes": 8500,
+      "sha256": "66699af0923754b03f3212b6ff6281f0748859bd5c4498667fb1f1a7603e5f43"
+    },
+    {
+      "path": "backend/tests/mvp/perception-metrics.test.ts",
+      "bytes": 1797,
+      "sha256": "c953828ed0eb3e85c4d2f1e9560e0f69f86ad827f9df827253787170b40e922d"
+    },
+    {
+      "path": "backend/tests/mvp/prediction.test.ts",
+      "bytes": 3978,
+      "sha256": "3c4a563f57f1bad6320b581e3aed2564f6aa6fad90a958e3ead771a48c00edf0"
+    },
+    {
+      "path": "backend/tests/mvp/risk-graph.test.ts",
+      "bytes": 2519,
+      "sha256": "455a700aafb5b5dec0f71415a87dc39b4c5b63164a9f588a4c0223840f786d6d"
+    },
+    {
+      "path": "backend/tests/mvp/security.test.ts",
+      "bytes": 3415,
+      "sha256": "90ac97a90455a69d39cbc9ec0f1e88834aa3d5327d512c5b911b534d70d26e58"
+    },
+    {
+      "path": "backend/tests/mvp/voi.test.ts",
+      "bytes": 3619,
+      "sha256": "6c0644f6bbd5d7857ee3eca3ac47e7f6f5e2708fb167ca255edcfd962e022995"
+    },
+    {
+      "path": "backend/tests/safety/fixtures.ts",
+      "bytes": 2859,
+      "sha256": "491397d36217c818579bfc3b11fd32b95862e0afaa4748f64e9aecff93459365"
+    },
+    {
+      "path": "backend/tests/safety/safety-acceptance.test.ts",
+      "bytes": 19369,
+      "sha256": "638169ba179241027863564373a57bc0bf21719f529b8a4b27584684ab73a58b"
+    },
+    {
+      "path": "backend/tests/safety/safety-api.test.ts",
+      "bytes": 11424,
+      "sha256": "57b9aabca08e7faff695a4c0a4538013d9d6384b94634ad4f2966680fa6753e1"
+    },
+    {
+      "path": "backend/tests/safety/safety-planner.test.ts",
+      "bytes": 8614,
+      "sha256": "044578ee01cd46744d91f344c1b8cac42bae3b08e464b570ef066bf10d76d893"
+    },
+    {
+      "path": "backend/tests/safety/safety-providers.test.ts",
+      "bytes": 6884,
+      "sha256": "266f3bb7a98a8c8163f4061391d2c27d9897a7db4b5a582f4c35a04796d3ef99"
+    },
+    {
+      "path": "backend/tests/safety/safety-state-machine.test.ts",
+      "bytes": 4134,
+      "sha256": "622568d3f5271e2063cf824237d256a8aff5c4ec69732088a19e8e39729151ba"
+    },
+    {
+      "path": "backend/tsconfig.json",
+      "bytes": 497,
+      "sha256": "466a5894505b7fb5f25ed0ad8e50b9a9bcb599c038b167bf552f68ff0df8618d"
+    },
+    {
+      "path": "data/replays/stadium-evacuation.csv",
+      "bytes": 1442,
+      "sha256": "6bcad57c4e0e0d1eab50ab995641f085a8551f4a05b46fe7b42cf60465c4564e"
+    },
+    {
+      "path": "data/replays/stadium-evacuation.json",
+      "bytes": 4269,
+      "sha256": "a24c77da568ee387ad1c6c3a8631482b0bfdfca8295b10a0fd3d315929759c2c"
+    },
+    {
+      "path": "data/scenarios/stadium-evacuation.json",
+      "bytes": 26822,
+      "sha256": "ac09c125b3513b763d08cda2cbc465dc30d789b5f207f84dca7bdd8859470d8a"
+    },
+    {
+      "path": "data/scenarios/venue-default.json",
+      "bytes": 15706,
+      "sha256": "0a8f8bd7026a9ed71e7dd6cac8f2bcdbd3c954f85fae35da3e0fcd48202514b5"
+    },
+    {
+      "path": "evaluation/COMPETITION_REPORT.md",
+      "bytes": 5167,
+      "sha256": "51d8b49cc8a1798600ac9d90259fd0d3f8c6bba6549b66159a473db0b5691b7f"
+    },
+    {
+      "path": "evaluation/DATA_MANIFEST.md",
+      "bytes": 6141,
+      "sha256": "88c99720b547442d84aa41100a12b5509866cdc1e352eb1954fe76cfd40ef9ab"
+    },
+    {
+      "path": "evaluation/MANIFEST.json",
+      "bytes": 13492,
+      "sha256": "fab37b2fbd85b78f05243b6dd2f0cf21b7f49cb07e45b54a8feb8fa53199ab42"
+    },
+    {
+      "path": "evaluation/V6_1_REPORT.md",
+      "bytes": 6619,
+      "sha256": "7a4cdf83e8e5d8c64eac55c3b51f7de3b46aa72604ec9862abd3762a73536a1a"
+    },
+    {
+      "path": "evaluation/V6_2_REPORT.md",
+      "bytes": 4073,
+      "sha256": "be695dc477fe5d13fc96302586accb95e0e5ac81a48f603379bf2dd9182691ce"
+    },
+    {
+      "path": "evaluation/competition/experiment_a_voi.json",
+      "bytes": 1138904,
+      "sha256": "99912bbb9dcb726ddd5d29f898050c03a2684d7234c8db8c50099717637703c9"
+    },
+    {
+      "path": "evaluation/competition/experiment_b_prediction.json",
+      "bytes": 4589,
+      "sha256": "b5ec0a73b03754bfb4e7c5134edda43c1b3ee0e0ddf502397a010b8b71a0acb0"
+    },
+    {
+      "path": "evaluation/competition/experiment_c_planning_robustness.json",
+      "bytes": 18354,
+      "sha256": "b0720aba68e4f506df46cebfde64b0274281ee89b16cc53c29f8cf17abc08eab"
+    },
+    {
+      "path": "evaluation/competition/experiment_d_safety_faults.json",
+      "bytes": 1386,
+      "sha256": "6894a74e0735dd4c0e63c4409f978cf0c36976212bd700c35797e30205394076"
+    },
+    {
+      "path": "evaluation/competition/experiment_e_business_loop.json",
+      "bytes": 2520,
+      "sha256": "e2876b218ed6478eb77b4079aca00b8da1855d40852d4fa1c73b6a5642e9bd0b"
+    },
+    {
+      "path": "evaluation/competition/experiment_f_latency.json",
+      "bytes": 698,
+      "sha256": "4324d2c6ab19c72c57ff0b6c391ebd2349608cf130a19bc982dc8d0023d50053"
+    },
+    {
+      "path": "evaluation/competition/run_metadata.json",
+      "bytes": 534,
+      "sha256": "7a3ffbc12291318d59be2a93b78f5a238548bc09954b6265df979842cfdb876f"
+    },
+    {
+      "path": "evaluation/mvp/baseline_build.txt",
+      "bytes": 1049,
+      "sha256": "d1fb14e9e098bc1be1ac877cb2efb2df6653214b235150415e6024375a316096"
+    },
+    {
+      "path": "evaluation/mvp/baseline_tests.txt",
+      "bytes": 6182,
+      "sha256": "f4977bad69f1f2f9021b5f515a1a4163d739fcf0dabc9f8c4066620f55ab0130"
+    },
+    {
+      "path": "evaluation/mvp/baseline_v2_tests.txt",
+      "bytes": 10993,
+      "sha256": "fff108936ac47196d7c84f80a6095988d815af32070dbcbc53d29df5cab626e7"
+    },
+    {
+      "path": "evaluation/mvp/baseline_v61_tests.txt",
+      "bytes": 14534,
+      "sha256": "595eb453b9ccb032e687109beb1a4d5a4e6cec261315973dc51d500d3c1df683"
+    },
+    {
+      "path": "evaluation/mvp/experiment1_voi.json",
+      "bytes": 223439,
+      "sha256": "022cea16691f90596c6e2b03604a879e558240b6a57a726247d24eddd83cbd0d"
+    },
+    {
+      "path": "evaluation/mvp/experiment2_prediction.json",
+      "bytes": 1661,
+      "sha256": "633cbed4a410606766c10b26d7027398e3c5c94941ea94fd3cedf1aced681a0d"
+    },
+    {
+      "path": "evaluation/mvp/experiment3_safety_ablation.json",
+      "bytes": 90927,
+      "sha256": "d8b073553d6d6b6376cd2004e9b1b05af5cf2e2d751c088744c990a2e7291c12"
+    },
+    {
+      "path": "evaluation/mvp/experiment4_business_loop.json",
+      "bytes": 3682,
+      "sha256": "9705cffd258a184fc49b48c218a40ac82748c8b71ee852133d992399559830ef"
+    },
+    {
+      "path": "evaluation/mvp/run_metadata.json",
+      "bytes": 458,
+      "sha256": "ca878edb2ba49a1e13ce7860a9bace16482a153a7f4b5f4db3aac89e5f54d737"
+    },
+    {
+      "path": "evaluation/v6/experiment_a_multi_region_voi.json",
+      "bytes": 159943,
+      "sha256": "c5435739aaf1f58dd71f83a5b7a5671a65bf5f93db343d790a8a06c83b0d1376"
+    },
+    {
+      "path": "evaluation/v6/experiment_b_retry_backoff.json",
+      "bytes": 133950,
+      "sha256": "6c0898b1eca44450b7a001310818362624e48c55417dcd201ca6aa979c9b6d65"
+    },
+    {
+      "path": "evaluation/v6/experiment_c_spatial_prediction.json",
+      "bytes": 1144,
+      "sha256": "2771153685c64dad773634bf8d26d49a03fe93aec7db42fef889d55235ab4fc2"
+    },
+    {
+      "path": "evaluation/v6/experiment_d_multi_event_planning.json",
+      "bytes": 344,
+      "sha256": "d8f3903298be32f893cc9856ad65728fc59b9e765c1e33b628159ffc3f9dec24"
+    },
+    {
+      "path": "evaluation/v6/run_metadata.json",
+      "bytes": 534,
+      "sha256": "437b4e10bbafb682bd8edc7c41d358eb0cbdeaafb7b58051078ae81301b822fe"
+    },
+    {
+      "path": "evaluation/v61/FREEZE.sha256",
+      "bytes": 687,
+      "sha256": "73d72e6229940f8322653111572936ae800f714696e0a765ee75a4a4b12009d7"
+    },
+    {
+      "path": "evaluation/v61/experiment_a_fair_multi_region.json",
+      "bytes": 10060476,
+      "sha256": "e99b5fe05ecb0f94c4be6a84b919808508b7f67dcb4d8c6d61af9097b4db320e"
+    },
+    {
+      "path": "evaluation/v61/experiment_b_sequential_audit.json",
+      "bytes": 7007702,
+      "sha256": "b9d0f3505ab7f9e25e514d8abb12267778169c5c9713c2e222eedf32c0afacfa"
+    },
+    {
+      "path": "evaluation/v61/experiment_c_strict_prediction.json",
+      "bytes": 7015424,
+      "sha256": "2e3f193c2a09c2b3eeabe52bc6cb0a897d8578f753f320eb6c39c43d28e89563"
+    },
+    {
+      "path": "evaluation/v61/experiment_d_risk_graph_sensitivity.json",
+      "bytes": 2847,
+      "sha256": "20292fb15927dc1cf7cccef202880516f448d3f7abe7bfadec55ace4f5748262"
+    },
+    {
+      "path": "evaluation/v61/experiment_e_perception_audit.json",
+      "bytes": 648,
+      "sha256": "2d95492fa8833cb8fcfcf71d0dee4faf9eb15fa77739bacfa9206504c9f5cf43"
+    },
+    {
+      "path": "evaluation/v61/run_metadata.json",
+      "bytes": 534,
+      "sha256": "7e692ced77352d7715331b0ca65a3d7a61f22e505a67ce433477ee9b7151fee3"
+    },
+    {
+      "path": "evaluation/v61/verification.json",
+      "bytes": 17267,
+      "sha256": "69c50c631676fa18ee537014900b650c53b9c5d689c00e6999807a6882e70038"
+    },
+    {
+      "path": "evaluation/v62/REPRODUCE.md",
+      "bytes": 434,
+      "sha256": "e4f173298c33a8410d56549760c390d23ebeb3500fb0b11a48cd14ce1f4fcbfa"
+    },
+    {
+      "path": "evaluation/v62/SHA256SUMS",
+      "bytes": 945,
+      "sha256": "1f1b62b09df67ae470c64bbea714e7cf23bf1ded528926686234390cd4ae47c1"
+    },
+    {
+      "path": "evaluation/v62/experiment_a_multi_region_30seeds.json",
+      "bytes": 1982573,
+      "sha256": "a4e2630a9b714d5a713d1e2d8fb028e9e921c456534ddaa81be483f8e97b640b"
+    },
+    {
+      "path": "evaluation/v62/experiment_b_sequential_30seeds.json",
+      "bytes": 442122,
+      "sha256": "44d956e3eeb8d595dc139e7629790a3d0b8d020fd84948472e0a1f89d4d2ee48"
+    },
+    {
+      "path": "evaluation/v62/experiment_c_prediction_30seeds.json",
+      "bytes": 5009207,
+      "sha256": "a034a01c96ad3e201506d17265f365857d4152e88a3c4bae7fe3e33cdd23db5d"
+    },
+    {
+      "path": "evaluation/v62/experiment_d_topology_sensitivity.json",
+      "bytes": 905,
+      "sha256": "059cfb1570cfdf0ae6c158047c30b7ccb0ed2f4273f8f4e43fe029ea34d4217f"
+    },
+    {
+      "path": "evaluation/v62/freeze_v61.json",
+      "bytes": 1218,
+      "sha256": "3a546085170c34fbb50540ba7081961b495581cf86de7dd8265183b72a7c5cb9"
+    },
+    {
+      "path": "evaluation/v62/reproduce.ps1",
+      "bytes": 830,
+      "sha256": "6249b7f425c236c90d8ccb6371e959fd059f577275132c91095873c3b662e371"
+    },
+    {
+      "path": "evaluation/v62/run_metadata.json",
+      "bytes": 955,
+      "sha256": "812554fceb33c773702aa9ab8503ac22364e6c3296d2ea262b180204bcc87430"
+    },
+    {
+      "path": "evaluation/v62/source_verification.json",
+      "bytes": 14060,
+      "sha256": "24a2b1c58337cb8f0be94955ab8b75937d04f390469055dacb7b5635b84452d0"
+    },
+    {
+      "path": "evaluation/v62/v61_replay_comparison.json",
+      "bytes": 744,
+      "sha256": "6ab6071ebc281fb53e41f610ae69ae3e0f3844bb1fa7e81f648c084cf8ada400"
+    },
+    {
+      "path": "frontend/package.json",
+      "bytes": 764,
+      "sha256": "041372e7680bb82c956aa3c9e247617a719b14e6959f7063ba5367dea6325e1d"
+    },
+    {
+      "path": "frontend/src/App.tsx",
+      "bytes": 801,
+      "sha256": "b2430b365e9ce315fb1deb862e7b68383ccfa1d667a1fa3f2a4eed552cfffe25"
+    },
+    {
+      "path": "frontend/src/index.css",
+      "bytes": 438,
+      "sha256": "f3cddfb673c50300cb0b017b6f7b1e346f407ac9f66815eb395fdbbe90b0e975"
+    },
+    {
+      "path": "frontend/src/main.tsx",
+      "bytes": 231,
+      "sha256": "9215c75c817895f2a1c100e2b7eccbca1b2e4d06ca78388ed5fb1432cbccb8bc"
+    },
+    {
+      "path": "frontend/src/pages/LoginPage.css",
+      "bytes": 1669,
+      "sha256": "f03e430e0f91706f4976e1d0d683567e92b901aa93a2b98e69c782fc701f63ea"
+    },
+    {
+      "path": "frontend/src/pages/LoginPage.tsx",
+      "bytes": 3765,
+      "sha256": "3f30da81cf4c2c1f3e75cd4f6bcc859255f65b65e6f5ace98e5b7ddc8604c27f"
+    },
+    {
+      "path": "frontend/src/pages/StaffPage.css",
+      "bytes": 3188,
+      "sha256": "bb6bd3353bc9c247995f1136bde95c8e2363dc545f116ccf6dff124ae600e781"
+    },
+    {
+      "path": "frontend/src/pages/StaffPage.tsx",
+      "bytes": 8679,
+      "sha256": "13308bfa5ea062d884bc7f33d5d7067a5b99e40a4ef3d6bd4beb97ff99465ca4"
+    },
+    {
+      "path": "frontend/src/pages/__tests__/StaffPage.test.tsx",
+      "bytes": 2138,
+      "sha256": "e1573e210b643513e61119165eaa38703a9ba87718f68010021e3acba514933e"
+    },
+    {
+      "path": "frontend/src/pages/command-center/CommandCenterPage.css",
+      "bytes": 25364,
+      "sha256": "f7be047370117214a7c7e390a8785efe5a6403ff6f333dcfc455193b2de70676"
+    },
+    {
+      "path": "frontend/src/pages/command-center/CommandCenterPage.tsx",
+      "bytes": 49141,
+      "sha256": "14281593342bba953b8134b3a68c6893b3ce513bf9a36a9ca324bc5cb8f839bd"
+    },
+    {
+      "path": "frontend/src/pages/command-center/MvpPanels.css",
+      "bytes": 9810,
+      "sha256": "efdc34f8808b8c53b636750cb58bcd9ca15bac0147fdf8d37dbf6f6ffba970fe"
+    },
+    {
+      "path": "frontend/src/pages/command-center/MvpPanels.tsx",
+      "bytes": 31312,
+      "sha256": "4dbfc25cc0e5065ffc247d3e9661490b2afc68eae82ad9a933d53c858b9ee30e"
+    },
+    {
+      "path": "frontend/src/pages/command-center/__tests__/CommandCenterPage.test.tsx",
+      "bytes": 11859,
+      "sha256": "4fb59f6b8651de5d90fed86f63603f84817222a9fd55d27bc49729604761245a"
+    },
+    {
+      "path": "frontend/src/pages/command-center/__tests__/MvpPanels.test.tsx",
+      "bytes": 6763,
+      "sha256": "d05c37390056bef3b6fc7ceb6dc162f84e81955d2d0ccde4de1c670ca82d5ec6"
+    },
+    {
+      "path": "frontend/src/services/mvpApi.ts",
+      "bytes": 11167,
+      "sha256": "e489a995a36cdda87b27ae5b028a011ef78a84a4ced97b0f93475e731f582fb1"
+    },
+    {
+      "path": "frontend/src/services/safetyApi.ts",
+      "bytes": 9187,
+      "sha256": "695130d75acb95dc410267d529becc46e6a607af48842554011f8dec157a5517"
+    },
+    {
+      "path": "frontend/src/test/setup.ts",
+      "bytes": 710,
+      "sha256": "099fcb5eb2993d1c32b91e78ec40f4e112f889e70561a3a716c9d945657101bd"
+    },
+    {
+      "path": "frontend/tsconfig.json",
+      "bytes": 445,
+      "sha256": "8458ec77ec614440d80429280fd227a2399c838637837a82a101ac9746314356"
+    },
+    {
+      "path": "frontend/vite.config.ts",
+      "bytes": 321,
+      "sha256": "8c128d23b77225d19473baaf4ab3a527c90210b15e003adbaa1c4e6c56eb7ae1"
+    },
+    {
+      "path": "frontend/vitest.config.ts",
+      "bytes": 327,
+      "sha256": "9e00dd68c0aa89d3b09004484c4d3eb3080d2c49de28980b0346c705ab1140c6"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1257,
+      "sha256": "747ebabfa75b461be2775d080ec3f5a542e1e94ab9d2e881bab6fc41695a55ae"
+    }
+  ]
+}

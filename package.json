@@ -18,6 +18,9 @@
     "mcp": "npm run mcp --prefix backend",
     "benchmark:competition": "npm run benchmark:competition --prefix backend",
     "benchmark:v6": "npm run benchmark:v6 --prefix backend",
-    "benchmark:v61": "npm run benchmark:v61 --prefix backend"
+    "benchmark:v61": "npm run benchmark:v61 --prefix backend",
+    "verify:evidence": "npm run verify:evidence --prefix backend",
+    "manifest:evidence": "npm run manifest:evidence --prefix backend",
+    "benchmark:v62": "npm run benchmark:v62 --prefix backend"
   }
 }

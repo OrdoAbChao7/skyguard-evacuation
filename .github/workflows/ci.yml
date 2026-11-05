@@ -26,8 +26,12 @@ jobs:
         run: npm run demo
       - name: MVP end-to-end demo
         run: npm run demo:mvp
-      - name: Competition benchmark (reproducibility smoke)
-        run: npm run benchmark:competition --prefix backend
+      - name: Python syntax check (real-data tools)
+        run: python -m py_compile backend/python/real_data/*.py backend/python/real_data/tests/*.py
+      - name: Verify committed evidence manifest
+        run: npx tsx backend/scripts/evidence-manifest.ts --verify
+      - name: Verify evidence consistency (no benchmark reruns)
+        run: npm run verify:evidence --prefix backend
       - name: Upload evidence
         uses: actions/upload-artifact@v4
         with:

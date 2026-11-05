@@ -20,3 +20,17 @@ frontend/node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# V6.1 证据治理：不忽略 raw JSON，只忽略临时文件
+evaluation/**/*.tmp
+evaluation/**/*.log
+
+# V6.3 真实数据：数据集/权重不进入仓库
+evaluation/real-data/dataset/
+evaluation/real-data/weights/
+*.pth
+*.zip
+
+# Python cache
+__pycache__/
+*.pyc

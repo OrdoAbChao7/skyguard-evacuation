@@ -1,0 +1,69 @@
+{
+  "generated_at": "2026-11-05T09:07:31.981712+00:00",
+  "git_head": "3b62fe94bd03406532398dfbdcc6812bf669544d",
+  "node": "v24.19.0",
+  "python": "3.13.7",
+  "commands": [
+    {
+      "name": "py_tests",
+      "exit_code": 0
+    },
+    {
+      "name": "real_verify",
+      "exit_code": 0
+    },
+    {
+      "name": "real_sha",
+      "exit_code": 1
+    },
+    {
+      "name": "v62_baseline",
+      "exit_code": 0
+    },
+    {
+      "name": "backend_tests",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_tests",
+      "exit_code": 0
+    },
+    {
+      "name": "backend_tsc",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_tsc",
+      "exit_code": 0
+    },
+    {
+      "name": "build",
+      "exit_code": 0
+    },
+    {
+      "name": "demo",
+      "exit_code": 0
+    },
+    {
+      "name": "demo_mvp",
+      "exit_code": 0
+    },
+    {
+      "name": "docker_info",
+      "exit_code": 1
+    },
+    {
+      "name": "realdata_sha_final",
+      "exit_code": 0
+    },
+    {
+      "name": "v62_baseline_final",
+      "exit_code": 0
+    }
+  ],
+  "notes": [
+    "real_sha initial comparison failed because VERIFICATION.json was regenerated after manifest; final manifest/SHA regenerated and verified (realdata_sha_final).",
+    "docker_info exit 1: Docker daemon unavailable; no build claimed.",
+    "V6.2 baseline SHA check exit 0."
+  ]
+}

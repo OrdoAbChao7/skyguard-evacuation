@@ -1,0 +1,53 @@
+{
+  "config": {
+    "topology_variants": [
+      "baseline",
+      "no_mid_corridor",
+      "no_east_plaza"
+    ],
+    "sensitivity_trials": 100,
+    "note": "拓扑/风险配置为合成；不代表真实场馆。"
+  },
+  "topology": [
+    {
+      "name": "baseline",
+      "regions": 8,
+      "edges": 11,
+      "components": 1
+    },
+    {
+      "name": "no_mid_corridor",
+      "regions": 8,
+      "edges": 10,
+      "components": 1
+    },
+    {
+      "name": "no_east_plaza",
+      "regions": 7,
+      "edges": 9,
+      "components": 1
+    }
+  ],
+  "damping_sensitivity": [
+    {
+      "damping": 0,
+      "mean_tau": 0.6021,
+      "min_tau": 0
+    },
+    {
+      "damping": 0.2,
+      "mean_tau": 0.9079,
+      "min_tau": 0.6429
+    },
+    {
+      "damping": 0.6,
+      "mean_tau": 1,
+      "min_tau": 1
+    },
+    {
+      "damping": 0.95,
+      "mean_tau": 0.8536,
+      "min_tau": 0.5
+    }
+  ]
+}

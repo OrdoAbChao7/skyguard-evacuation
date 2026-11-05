@@ -1,0 +1,34 @@
+{
+  "dataset": "ShanghaiTech",
+  "dataset_source": "https://drive.google.com/uc?id=16dhJn7k4FWVwByRsQAEpl9lwjuV03jVI&export=download",
+  "dataset_link_reference": "Google Drive link listed in official CSRNet-pytorch README (leeyeehoo/CSRNet-pytorch)",
+  "dataset_license_status": "UNVERIFIED: archive contains no explicit LICENSE file; research use only; not redistributed",
+  "part": "part_A_final",
+  "split": "test_data",
+  "images": 182,
+  "annotation_format": "MATLAB .mat image_info.location (x,y points) per image",
+  "official_split_respected": true,
+  "model": "P2PNet (official repo, SHTechA weights)",
+  "repo": "E:\\datasets\\P2PNet",
+  "repo_commit": "5c91a81ca062b1c7fd3db3ad1c55b1c21f0a7455",
+  "weights": "E:\\datasets\\P2PNet\\weights\\SHTechA.pth",
+  "weights_sha256": "506047732b128ff09efef18e94bfacbe35fcfef300e5e9eeeece259b0488c63f",
+  "threshold": 0.5,
+  "localization_radius_px": 8.0,
+  "environment": {
+    "python": "3.13.7",
+    "torch": "2.14.0+cpu",
+    "device": "cpu",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cuda_available": false
+  },
+  "command": "python -I backend/python/real_data/run_p2pnet_eval.py --dataset-root E:/datasets/shanghaitech/extracted --part part_A_final --split test_data --repo E:/datasets/P2PNet --weights E:/datasets/P2PNet/weights/SHTechA.pth --output evaluation/real-data",
+  "results": [
+    "RESULTS.json",
+    "VERIFICATION.json",
+    "REPRODUCIBILITY.json",
+    "REPORT.md",
+    "repeat/RESULTS.json"
+  ],
+  "note": "Public dataset benchmark only; not a real venue measurement. Dataset/weights are outside the repository and not redistributed."
+}

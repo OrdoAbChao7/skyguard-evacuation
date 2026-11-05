@@ -5,31 +5,31 @@
   "summary": {
     "planning": {
       "iterations": 30,
-      "mean_ms": 0.181,
-      "p50_ms": 0.174,
-      "p95_ms": 0.241,
-      "max_ms": 0.241
+      "mean_ms": 0.244,
+      "p50_ms": 0.214,
+      "p95_ms": 0.397,
+      "max_ms": 0.732
     },
     "validation": {
       "iterations": 30,
-      "mean_ms": 0.045,
-      "p50_ms": 0.04,
-      "p95_ms": 0.076,
-      "max_ms": 0.092
+      "mean_ms": 0.06,
+      "p50_ms": 0.043,
+      "p95_ms": 0.148,
+      "max_ms": 0.192
     },
     "dashboard": {
       "iterations": 20,
-      "mean_ms": 0.138,
-      "p50_ms": 0.09,
-      "p95_ms": 0.484,
-      "max_ms": 0.531
+      "mean_ms": 0.1,
+      "p50_ms": 0.074,
+      "p95_ms": 0.131,
+      "max_ms": 0.517
     },
     "agent": {
       "iterations": 10,
-      "mean_ms": 2.445,
-      "p50_ms": 2.332,
-      "p95_ms": 2.847,
-      "max_ms": 2.847
+      "mean_ms": 2.708,
+      "p50_ms": 2.496,
+      "p95_ms": 3.677,
+      "max_ms": 3.677
     }
   }
 }

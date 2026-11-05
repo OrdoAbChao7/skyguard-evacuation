@@ -2392,6 +2392,10 @@
         "lower": 0.1506,
         "upper": 0.1675
       },
+      "bootstrap_cluster_by_seed": {
+        "lower": 0.1462,
+        "upper": 0.173
+      },
       "cohen_dz": 1.4889
     },
     "cost_diff": {

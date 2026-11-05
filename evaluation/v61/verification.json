@@ -1,0 +1,814 @@
+{
+  "generated_at": "2026-11-05T05:32:21.191Z",
+  "git_head": "3b62fe94bd03406532398dfbdcc6812bf669544d",
+  "checks": 134,
+  "passed": 134,
+  "failed": 0,
+  "failures": [],
+  "results": [
+    {
+      "name": "A/single/benefit",
+      "expected": 0.0298,
+      "actual": 0.0298,
+      "pass": true
+    },
+    {
+      "name": "A/single/cost",
+      "expected": 0.074,
+      "actual": 0.074,
+      "pass": true
+    },
+    {
+      "name": "A/single/covered",
+      "expected": 1,
+      "actual": 1,
+      "pass": true
+    },
+    {
+      "name": "A/single/efficiency",
+      "expected": 0.3692,
+      "actual": 0.3692,
+      "pass": true
+    },
+    {
+      "name": "A/multi/benefit",
+      "expected": 0.1891,
+      "actual": 0.1891,
+      "pass": true
+    },
+    {
+      "name": "A/multi/cost",
+      "expected": 0.5697,
+      "actual": 0.5697,
+      "pass": true
+    },
+    {
+      "name": "A/multi/covered",
+      "expected": 5.3917,
+      "actual": 5.3917,
+      "pass": true
+    },
+    {
+      "name": "A/multi/efficiency",
+      "expected": 0.3594,
+      "actual": 0.3594,
+      "pass": true
+    },
+    {
+      "name": "A/fixed/benefit",
+      "expected": 0.0306,
+      "actual": 0.0306,
+      "pass": true
+    },
+    {
+      "name": "A/fixed/cost",
+      "expected": 0.4,
+      "actual": 0.4,
+      "pass": true
+    },
+    {
+      "name": "A/fixed/covered",
+      "expected": 1,
+      "actual": 1,
+      "pass": true
+    },
+    {
+      "name": "A/fixed/efficiency",
+      "expected": 0.0766,
+      "actual": 0.0766,
+      "pass": true
+    },
+    {
+      "name": "A/random/benefit",
+      "expected": 0.1189,
+      "actual": 0.1189,
+      "pass": true
+    },
+    {
+      "name": "A/random/cost",
+      "expected": 0.4157,
+      "actual": 0.4157,
+      "pass": true
+    },
+    {
+      "name": "A/random/covered",
+      "expected": 4.1,
+      "actual": 4.1,
+      "pass": true
+    },
+    {
+      "name": "A/random/efficiency",
+      "expected": 0.4922,
+      "actual": 0.4922,
+      "pass": true
+    },
+    {
+      "name": "A/heuristic/benefit",
+      "expected": 0.0298,
+      "actual": 0.0298,
+      "pass": true
+    },
+    {
+      "name": "A/heuristic/cost",
+      "expected": 0.08,
+      "actual": 0.08,
+      "pass": true
+    },
+    {
+      "name": "A/heuristic/covered",
+      "expected": 1,
+      "actual": 1,
+      "pass": true
+    },
+    {
+      "name": "A/heuristic/efficiency",
+      "expected": 0.3728,
+      "actual": 0.3728,
+      "pass": true
+    },
+    {
+      "name": "A/paired_mean",
+      "expected": 0.1594,
+      "actual": 0.1594,
+      "pass": true
+    },
+    {
+      "name": "A/cohen_dz",
+      "expected": 1.4889,
+      "actual": 1.4889,
+      "pass": true
+    },
+    {
+      "name": "A/paired_n",
+      "expected": 600,
+      "actual": 600,
+      "pass": true
+    },
+    {
+      "name": "B/no_retry/success",
+      "expected": 0.92,
+      "actual": 0.92,
+      "pass": true
+    },
+    {
+      "name": "B/no_retry/detection",
+      "expected": 0.765,
+      "actual": 0.765,
+      "pass": true
+    },
+    {
+      "name": "B/no_retry/decision",
+      "expected": 0.965,
+      "actual": 0.965,
+      "pass": true
+    },
+    {
+      "name": "B/retry/success",
+      "expected": 0.92,
+      "actual": 0.92,
+      "pass": true
+    },
+    {
+      "name": "B/retry/detection",
+      "expected": 0.765,
+      "actual": 0.765,
+      "pass": true
+    },
+    {
+      "name": "B/retry/decision",
+      "expected": 0.965,
+      "actual": 0.965,
+      "pass": true
+    },
+    {
+      "name": "C/stable_h2/adaptive_mae",
+      "expected": 5.3432,
+      "actual": 5.3432,
+      "pass": true
+    },
+    {
+      "name": "C/stable_h2/coverage90",
+      "expected": 0.8017,
+      "actual": 0.8017,
+      "pass": true
+    },
+    {
+      "name": "C/stable_h2/coverage95",
+      "expected": 0.8557,
+      "actual": 0.8557,
+      "pass": true
+    },
+    {
+      "name": "C/stable_h5/adaptive_mae",
+      "expected": 6.198,
+      "actual": 6.198,
+      "pass": true
+    },
+    {
+      "name": "C/stable_h5/coverage90",
+      "expected": 0.8481,
+      "actual": 0.8481,
+      "pass": true
+    },
+    {
+      "name": "C/stable_h5/coverage95",
+      "expected": 0.8989,
+      "actual": 0.8989,
+      "pass": true
+    },
+    {
+      "name": "C/stable_h10/adaptive_mae",
+      "expected": 9.2932,
+      "actual": 9.2932,
+      "pass": true
+    },
+    {
+      "name": "C/stable_h10/coverage90",
+      "expected": 0.9,
+      "actual": 0.9,
+      "pass": true
+    },
+    {
+      "name": "C/stable_h10/coverage95",
+      "expected": 0.935,
+      "actual": 0.935,
+      "pass": true
+    },
+    {
+      "name": "C/surge_h2/adaptive_mae",
+      "expected": 70.5839,
+      "actual": 70.5839,
+      "pass": true
+    },
+    {
+      "name": "C/surge_h2/coverage90",
+      "expected": 0.8437,
+      "actual": 0.8437,
+      "pass": true
+    },
+    {
+      "name": "C/surge_h2/coverage95",
+      "expected": 0.9174,
+      "actual": 0.9174,
+      "pass": true
+    },
+    {
+      "name": "C/surge_h5/adaptive_mae",
+      "expected": 144.5232,
+      "actual": 144.5232,
+      "pass": true
+    },
+    {
+      "name": "C/surge_h5/coverage90",
+      "expected": 0.8825,
+      "actual": 0.8825,
+      "pass": true
+    },
+    {
+      "name": "C/surge_h5/coverage95",
+      "expected": 0.8947,
+      "actual": 0.8947,
+      "pass": true
+    },
+    {
+      "name": "C/surge_h10/adaptive_mae",
+      "expected": 156.0448,
+      "actual": 156.0448,
+      "pass": true
+    },
+    {
+      "name": "C/surge_h10/coverage90",
+      "expected": 0.83,
+      "actual": 0.83,
+      "pass": true
+    },
+    {
+      "name": "C/surge_h10/coverage95",
+      "expected": 0.885,
+      "actual": 0.885,
+      "pass": true
+    },
+    {
+      "name": "C/decline_h2/adaptive_mae",
+      "expected": 5.2791,
+      "actual": 5.2791,
+      "pass": true
+    },
+    {
+      "name": "C/decline_h2/coverage90",
+      "expected": 0.8228,
+      "actual": 0.8228,
+      "pass": true
+    },
+    {
+      "name": "C/decline_h2/coverage95",
+      "expected": 0.8726,
+      "actual": 0.8726,
+      "pass": true
+    },
+    {
+      "name": "C/decline_h5/adaptive_mae",
+      "expected": 6.8583,
+      "actual": 6.8583,
+      "pass": true
+    },
+    {
+      "name": "C/decline_h5/coverage90",
+      "expected": 0.8539,
+      "actual": 0.8539,
+      "pass": true
+    },
+    {
+      "name": "C/decline_h5/coverage95",
+      "expected": 0.905,
+      "actual": 0.905,
+      "pass": true
+    },
+    {
+      "name": "C/decline_h10/adaptive_mae",
+      "expected": 9.6977,
+      "actual": 9.6977,
+      "pass": true
+    },
+    {
+      "name": "C/decline_h10/coverage90",
+      "expected": 0.9167,
+      "actual": 0.9167,
+      "pass": true
+    },
+    {
+      "name": "C/decline_h10/coverage95",
+      "expected": 0.935,
+      "actual": 0.935,
+      "pass": true
+    },
+    {
+      "name": "C/periodic_h2/adaptive_mae",
+      "expected": 48.8725,
+      "actual": 48.8725,
+      "pass": true
+    },
+    {
+      "name": "C/periodic_h2/coverage90",
+      "expected": 0.7844,
+      "actual": 0.7844,
+      "pass": true
+    },
+    {
+      "name": "C/periodic_h2/coverage95",
+      "expected": 0.9069,
+      "actual": 0.9069,
+      "pass": true
+    },
+    {
+      "name": "C/periodic_h5/adaptive_mae",
+      "expected": 72.1192,
+      "actual": 72.1192,
+      "pass": true
+    },
+    {
+      "name": "C/periodic_h5/coverage90",
+      "expected": 0.9828,
+      "actual": 0.9828,
+      "pass": true
+    },
+    {
+      "name": "C/periodic_h5/coverage95",
+      "expected": 0.9994,
+      "actual": 0.9994,
+      "pass": true
+    },
+    {
+      "name": "C/periodic_h10/adaptive_mae",
+      "expected": 31.356,
+      "actual": 31.356,
+      "pass": true
+    },
+    {
+      "name": "C/periodic_h10/coverage90",
+      "expected": 0.9283,
+      "actual": 0.9283,
+      "pass": true
+    },
+    {
+      "name": "C/periodic_h10/coverage95",
+      "expected": 0.96,
+      "actual": 0.96,
+      "pass": true
+    },
+    {
+      "name": "C/missing_h2/adaptive_mae",
+      "expected": 5.5124,
+      "actual": 5.5124,
+      "pass": true
+    },
+    {
+      "name": "C/missing_h2/coverage90",
+      "expected": 0.787,
+      "actual": 0.787,
+      "pass": true
+    },
+    {
+      "name": "C/missing_h2/coverage95",
+      "expected": 0.8393,
+      "actual": 0.8393,
+      "pass": true
+    },
+    {
+      "name": "C/missing_h5/adaptive_mae",
+      "expected": 7.2089,
+      "actual": 7.2089,
+      "pass": true
+    },
+    {
+      "name": "C/missing_h5/coverage90",
+      "expected": 0.8356,
+      "actual": 0.8356,
+      "pass": true
+    },
+    {
+      "name": "C/missing_h5/coverage95",
+      "expected": 0.8869,
+      "actual": 0.8869,
+      "pass": true
+    },
+    {
+      "name": "C/missing_h10/adaptive_mae",
+      "expected": 9.6634,
+      "actual": 9.6634,
+      "pass": true
+    },
+    {
+      "name": "C/missing_h10/coverage90",
+      "expected": 0.8933,
+      "actual": 0.8933,
+      "pass": true
+    },
+    {
+      "name": "C/missing_h10/coverage95",
+      "expected": 0.9317,
+      "actual": 0.9317,
+      "pass": true
+    },
+    {
+      "name": "D/baseline_tau",
+      "expected": 1,
+      "actual": 1,
+      "pass": true
+    },
+    {
+      "name": "D/damping0_lower",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "D/connected",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "E/optimal_tp",
+      "expected": 2,
+      "actual": 2,
+      "pass": true
+    },
+    {
+      "name": "report/contains/0.189",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "report/contains/0.92",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "report/contains/0.6164",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "report/contains/V6.1",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "V62/A/single/benefit",
+      "expected": 0.0472,
+      "actual": 0.0472,
+      "pass": true
+    },
+    {
+      "name": "V62/A/multi/benefit",
+      "expected": 0.2154,
+      "actual": 0.2154,
+      "pass": true
+    },
+    {
+      "name": "V62/A/fixed/benefit",
+      "expected": 0.0486,
+      "actual": 0.0486,
+      "pass": true
+    },
+    {
+      "name": "V62/A/random/benefit",
+      "expected": 0.1184,
+      "actual": 0.1184,
+      "pass": true
+    },
+    {
+      "name": "V62/A/heuristic/benefit",
+      "expected": 0.0393,
+      "actual": 0.0393,
+      "pass": true
+    },
+    {
+      "name": "V62/A/paired_mean",
+      "expected": 0.1682,
+      "actual": 0.1682,
+      "pass": true
+    },
+    {
+      "name": "V62/A/paired_dz",
+      "expected": 2.0583,
+      "actual": 2.0583,
+      "pass": true
+    },
+    {
+      "name": "V62/A/n",
+      "expected": 1200,
+      "actual": 1200,
+      "pass": true
+    },
+    {
+      "name": "V62/B/success",
+      "expected": 0.9089,
+      "actual": 0.9089,
+      "pass": true
+    },
+    {
+      "name": "V62/B/detection",
+      "expected": 0.7767,
+      "actual": 0.7767,
+      "pass": true
+    },
+    {
+      "name": "V62/B/decision",
+      "expected": 0.96,
+      "actual": 0.96,
+      "pass": true
+    },
+    {
+      "name": "V62/C/stable_h2/adaptive_mae",
+      "expected": 5.1639,
+      "actual": 5.1639,
+      "pass": true
+    },
+    {
+      "name": "V62/C/stable_h2/coverage95",
+      "expected": 0.8552,
+      "actual": 0.8552,
+      "pass": true
+    },
+    {
+      "name": "V62/C/stable_h5/adaptive_mae",
+      "expected": 6.3034,
+      "actual": 6.3034,
+      "pass": true
+    },
+    {
+      "name": "V62/C/stable_h5/coverage95",
+      "expected": 0.8954,
+      "actual": 0.8954,
+      "pass": true
+    },
+    {
+      "name": "V62/C/stable_h10/adaptive_mae",
+      "expected": 9.0246,
+      "actual": 9.0246,
+      "pass": true
+    },
+    {
+      "name": "V62/C/stable_h10/coverage95",
+      "expected": 0.9289,
+      "actual": 0.9289,
+      "pass": true
+    },
+    {
+      "name": "V62/C/surge_h2/adaptive_mae",
+      "expected": 70.7188,
+      "actual": 70.7188,
+      "pass": true
+    },
+    {
+      "name": "V62/C/surge_h2/coverage95",
+      "expected": 0.9165,
+      "actual": 0.9165,
+      "pass": true
+    },
+    {
+      "name": "V62/C/surge_h5/adaptive_mae",
+      "expected": 147.8045,
+      "actual": 147.8045,
+      "pass": true
+    },
+    {
+      "name": "V62/C/surge_h5/coverage95",
+      "expected": 0.8924,
+      "actual": 0.8924,
+      "pass": true
+    },
+    {
+      "name": "V62/C/surge_h10/adaptive_mae",
+      "expected": 147.7681,
+      "actual": 147.7681,
+      "pass": true
+    },
+    {
+      "name": "V62/C/surge_h10/coverage95",
+      "expected": 0.8544,
+      "actual": 0.8544,
+      "pass": true
+    },
+    {
+      "name": "V62/C/decline_h2/adaptive_mae",
+      "expected": 5.2671,
+      "actual": 5.2671,
+      "pass": true
+    },
+    {
+      "name": "V62/C/decline_h2/coverage95",
+      "expected": 0.8759,
+      "actual": 0.8759,
+      "pass": true
+    },
+    {
+      "name": "V62/C/decline_h5/adaptive_mae",
+      "expected": 6.5401,
+      "actual": 6.5401,
+      "pass": true
+    },
+    {
+      "name": "V62/C/decline_h5/coverage95",
+      "expected": 0.9115,
+      "actual": 0.9115,
+      "pass": true
+    },
+    {
+      "name": "V62/C/decline_h10/adaptive_mae",
+      "expected": 9.3856,
+      "actual": 9.3856,
+      "pass": true
+    },
+    {
+      "name": "V62/C/decline_h10/coverage95",
+      "expected": 0.9289,
+      "actual": 0.9289,
+      "pass": true
+    },
+    {
+      "name": "V62/C/periodic_h2/adaptive_mae",
+      "expected": 48.9538,
+      "actual": 48.9538,
+      "pass": true
+    },
+    {
+      "name": "V62/C/periodic_h2/coverage95",
+      "expected": 0.9104,
+      "actual": 0.9104,
+      "pass": true
+    },
+    {
+      "name": "V62/C/periodic_h5/adaptive_mae",
+      "expected": 72.3583,
+      "actual": 72.3583,
+      "pass": true
+    },
+    {
+      "name": "V62/C/periodic_h5/coverage95",
+      "expected": 0.9996,
+      "actual": 0.9996,
+      "pass": true
+    },
+    {
+      "name": "V62/C/periodic_h10/adaptive_mae",
+      "expected": 31.7145,
+      "actual": 31.7145,
+      "pass": true
+    },
+    {
+      "name": "V62/C/periodic_h10/coverage95",
+      "expected": 0.9656,
+      "actual": 0.9656,
+      "pass": true
+    },
+    {
+      "name": "V62/C/missing_h2/adaptive_mae",
+      "expected": 5.4904,
+      "actual": 5.4904,
+      "pass": true
+    },
+    {
+      "name": "V62/C/missing_h2/coverage95",
+      "expected": 0.8485,
+      "actual": 0.8485,
+      "pass": true
+    },
+    {
+      "name": "V62/C/missing_h5/adaptive_mae",
+      "expected": 7.2138,
+      "actual": 7.2138,
+      "pass": true
+    },
+    {
+      "name": "V62/C/missing_h5/coverage95",
+      "expected": 0.8798,
+      "actual": 0.8798,
+      "pass": true
+    },
+    {
+      "name": "V62/C/missing_h10/adaptive_mae",
+      "expected": 9.2415,
+      "actual": 9.2415,
+      "pass": true
+    },
+    {
+      "name": "V62/C/missing_h10/coverage95",
+      "expected": 0.9378,
+      "actual": 0.9378,
+      "pass": true
+    },
+    {
+      "name": "freeze/evaluation/v61/experiment_a_fair_multi_region.json",
+      "expected": "e99b5fe05ecb0f94c4be6a84b919808508b7f67dcb4d8c6d61af9097b4db320e",
+      "actual": "e99b5fe05ecb0f94c4be6a84b919808508b7f67dcb4d8c6d61af9097b4db320e",
+      "pass": true
+    },
+    {
+      "name": "freeze/evaluation/v61/experiment_b_sequential_audit.json",
+      "expected": "b9d0f3505ab7f9e25e514d8abb12267778169c5c9713c2e222eedf32c0afacfa",
+      "actual": "b9d0f3505ab7f9e25e514d8abb12267778169c5c9713c2e222eedf32c0afacfa",
+      "pass": true
+    },
+    {
+      "name": "freeze/evaluation/v61/experiment_c_strict_prediction.json",
+      "expected": "2e3f193c2a09c2b3eeabe52bc6cb0a897d8578f753f320eb6c39c43d28e89563",
+      "actual": "2e3f193c2a09c2b3eeabe52bc6cb0a897d8578f753f320eb6c39c43d28e89563",
+      "pass": true
+    },
+    {
+      "name": "freeze/evaluation/v61/experiment_d_risk_graph_sensitivity.json",
+      "expected": "20292fb15927dc1cf7cccef202880516f448d3f7abe7bfadec55ace4f5748262",
+      "actual": "20292fb15927dc1cf7cccef202880516f448d3f7abe7bfadec55ace4f5748262",
+      "pass": true
+    },
+    {
+      "name": "freeze/evaluation/v61/experiment_e_perception_audit.json",
+      "expected": "2d95492fa8833cb8fcfcf71d0dee4faf9eb15fa77739bacfa9206504c9f5cf43",
+      "actual": "2d95492fa8833cb8fcfcf71d0dee4faf9eb15fa77739bacfa9206504c9f5cf43",
+      "pass": true
+    },
+    {
+      "name": "freeze/evaluation/v61/run_metadata.json",
+      "expected": "7e692ced77352d7715331b0ca65a3d7a61f22e505a67ce433477ee9b7151fee3",
+      "actual": "7e692ced77352d7715331b0ca65a3d7a61f22e505a67ce433477ee9b7151fee3",
+      "pass": true
+    },
+    {
+      "name": "V62/report/0.2154",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "V62/report/0.0917",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "V62/report/30 个独立种子",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "sources/total",
+      "expected": 38,
+      "actual": 38,
+      "pass": true
+    },
+    {
+      "name": "sources/reachable",
+      "expected": 28,
+      "actual": 28,
+      "pass": true
+    }
+  ]
+}

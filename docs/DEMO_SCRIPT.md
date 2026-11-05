@@ -42,7 +42,7 @@
 
 ## 6:30–7:20 证据
 
-- 91 后端 + 8 前端测试；
+- 104 后端 + 8 前端测试；
 - `evaluation/COMPETITION_REPORT.md`：VoI/预测/规划/故障注入/闭环；
 - `evaluation/V6_REPORT.md`：多区域/重试/邻居预测/多事件；
 - MCP 15 工具、权限/幂等；
@@ -64,3 +64,10 @@ npm run benchmark:competition
 npm run benchmark:v6
 npm run dev
 ```
+
+## 失败时的备用演示方案
+
+1. 若一键推演失败：改用命令行 `npm run demo:mvp`，展示同一闭环输出。
+2. 若前端未启动：直接用 `curl http://localhost:8010/api/v1/mvp/dashboard` 展示后端事实数据。
+3. 若 Agent 运行失败：展示 `evaluation/V6_2_REPORT.md` 与 `COMPETITION_REPORT.md`，并诚实说明未实机项。
+4. 若网络/AgentArts 不可用：确认界面显示 `LOCAL DEMO`；不要演示假连接。

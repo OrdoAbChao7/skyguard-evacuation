@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-11-05T05:33:37.038987+00:00",
+  "git_head": "3b62fe94bd03406532398dfbdcc6812bf669544d",
+  "node": "v24.19.0",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "commands": [
+    {
+      "name": "backend_tests",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_tests",
+      "exit_code": 0
+    },
+    {
+      "name": "backend_tsc",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_tsc",
+      "exit_code": 0
+    },
+    {
+      "name": "build",
+      "exit_code": 0
+    },
+    {
+      "name": "demo",
+      "exit_code": 0
+    },
+    {
+      "name": "demo_mvp",
+      "exit_code": 0
+    },
+    {
+      "name": "bench_comp",
+      "exit_code": 0
+    },
+    {
+      "name": "bench_v6",
+      "exit_code": 0
+    },
+    {
+      "name": "bench_v62",
+      "exit_code": 0
+    },
+    {
+      "name": "bench_v61_replay",
+      "exit_code": 0
+    },
+    {
+      "name": "verify_evidence",
+      "exit_code": 1
+    },
+    {
+      "name": "verify_evidence_rerun",
+      "exit_code": 0
+    },
+    {
+      "name": "v61_replay_compare",
+      "exit_code": 0
+    },
+    {
+      "name": "manifest",
+      "exit_code": 0
+    },
+    {
+      "name": "manifest_verify",
+      "exit_code": 0
+    }
+  ],
+  "final_all_zero": true,
+  "notes": [
+    "verify_evidence first run exited 1 due freeze including derived verification.json; freeze was corrected to raw-only and rerun exited 0.",
+    "Docker build not included: daemon unavailable."
+  ]
+}
