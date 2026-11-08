@@ -1,0 +1,78 @@
+{
+  "package_id": "citystreet-display",
+  "display_name": "CityStreet C3 单机位人流回放（派生显示数据）",
+  "kind": "derived_display_replay",
+  "usage_tier": "demo_only",
+  "summary": "单机位离线回放：逐人像素点位、地面米制坐标、区域统计与航拍底图坐标系。用于验证前端时间轴、热力与区域查询，不参与疏散规划与安全判定。",
+  "scene_id": "citystreet",
+  "camera_id": "C3",
+  "ingested_at": "2026-11-08",
+  "source": {
+    "dataset": "CityStreet — Wide-Area Crowd Counting / Multi-View Fusion Networks",
+    "dataset_publisher": "香港城市大学 VISAL 团队",
+    "dataset_url": "https://scholars.cityu.edu.hk/en/datasets/wide-area-crowd-counting-multi-view-fusion-networks-for-counting-/",
+    "clip": "C3 机位 2280–2339 帧（60 帧）",
+    "derivation": "本项目对 C3 画面做头部检测 + 跟踪 + 单应近似地面投影，再生成逐帧点位与区域统计",
+    "detector_model": "https://huggingface.co/Sharath33/Person",
+    "basemap": "香港地政总署 航拍影像（z20 瓦片）",
+    "basemap_bundled": false
+  },
+  "time_base": "clip_start_4hz_assumed",
+  "time_base_note": "时间戳按 4 Hz 由片段起点推算，非相机原始时间戳；不得作为真实采集时刻使用。",
+  "calibration": {
+    "calibration_id": "citystreet_C3_fixed_head_height_1p65m",
+    "method": "固定机位 + 平均人头高度单点近似",
+    "status": "approximate"
+  },
+  "ground_truth": {
+    "available": false,
+    "note": "无逐帧人工标注，只能做可视化回放，不能据此计算 MAE/RMSE/F1 等精度指标。"
+  },
+  "known_errors": [
+    "地图配准为近似配准：东侧两处目视检查点偏差约 4.4 m 与 5.3 m。",
+    "单机位、无跨机位去重，遮挡与人群粘连会导致区域人数为估计值。",
+    "过线流量与短时预测不在本数据包范围内。",
+    "航拍底图坐标系为 768 × 768 像素，与真实场地区域 ID 无对应关系。"
+  ],
+  "prohibited_claims": [
+    "不得表述为真实场馆测绘或现场实时接入。",
+    "不得用本数据包报告感知精度或人数准确率。",
+    "不得把 13 个人流区域当作疏散场景的 zones/corridors/exits 容量配置。"
+  ],
+  "license": {
+    "status": "UNVERIFIED",
+    "note": "原始视频与航拍底图许可未确认。本目录只提交本项目的派生点位与区域统计（无原始影像帧）；航拍底图不随仓库分发，由部署方本地提供并自行确认许可。"
+  },
+  "privacy": {
+    "contains_person_imagery": false,
+    "contains_identity": false,
+    "note": "派生数据仅含匿名临时 track_id 与坐标，无面部/身份信息。"
+  },
+  "files": [
+    {
+      "name": "citystreet_display.json",
+      "original_name": "citystreet_display.json",
+      "bytes": 1609905,
+      "sha256": "91f9ed979930bae44e79d25ae521eddcaf6af38d94a782fa5b4b60043d8151b4",
+      "tracked": true,
+      "role": "display_payload"
+    },
+    {
+      "name": "orthophoto-z20.jpg",
+      "original_name": "orthophoto-z20.jpg",
+      "bytes": 270829,
+      "sha256": "1fa71ea38c43d39cc916ab9a36985a0a247c6931cd4ed1d118bb1475cbce747f",
+      "tracked": false,
+      "role": "basemap",
+      "note": "许可未确认，不随仓库分发；缺失时 API 返回 BASEMAP_NOT_BUNDLED，前端退回无底图坐标系。"
+    },
+    {
+      "name": "PACKAGE_README.md",
+      "original_name": "README.md",
+      "bytes": 2345,
+      "sha256": "4486c6ad8a9a24b136d6ac46531588e9eb33fe5f1bfa1a569f75fff0769bf31f",
+      "tracked": true,
+      "role": "vendor_note"
+    }
+  ]
+}

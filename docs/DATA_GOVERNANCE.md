@@ -9,6 +9,7 @@
 | raw | 每次运行产生的原始 JSON（含 per-trial 记录） | `evaluation/v61/`、`evaluation/v6/`、`evaluation/competition/`、`evaluation/mvp/` | 不手工修改；只由脚本生成 |
 | summary | 复算结果、校验结果、性能数据 | `evaluation/v61/verification.json`、`evaluation/performance.json` | 可由 raw 复算 |
 | report | 人类可读报告 | `evaluation/*_REPORT.md`、`evaluation/DATA_MANIFEST.md` | 数字必须来自 raw/summary |
+| display | 感知回放展示包（前端演示用） | `data/perception/<package>/` | 必须附 `PROVENANCE.json`（来源/许可/真值状态/已知误差/文件哈希）；运行时只读；许可未确认的底图不入库 |
 
 当前尚未物理移动目录；上表是逻辑分层。未来迁移时只改脚本输出路径与文档引用，不删除 raw。
 

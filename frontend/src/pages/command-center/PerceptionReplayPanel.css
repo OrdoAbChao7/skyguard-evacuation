@@ -1,0 +1,282 @@
+/* 感知回放面板（CityStreet C3 派生数据）—— 复用 .cc-root 的深色主题变量 */
+
+.perception-panel {
+  margin-top: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.perception-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.perception-head h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.perception-head h4 span {
+  font-weight: 400;
+  font-size: 11px;
+}
+
+.perception-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.perception-badge {
+  font-size: 10px;
+  line-height: 1;
+  padding: 4px 7px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: var(--panel-2);
+  white-space: nowrap;
+}
+
+.perception-badge-demo {
+  color: #fde68a;
+  border-color: #7c5f14;
+  background: rgba(234, 179, 8, 0.12);
+  letter-spacing: 0.04em;
+}
+
+.perception-badge-warn {
+  color: #fdba74;
+  border-color: #7c4a17;
+  background: rgba(249, 115, 22, 0.12);
+}
+
+.perception-badge-ok {
+  color: #86efac;
+  border-color: #1c5f36;
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.perception-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 10px;
+  align-items: start;
+}
+
+.perception-canvas {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: #070d18;
+  overflow: hidden;
+}
+
+.perception-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  max-height: 460px;
+}
+
+.perception-nobase {
+  fill: #0a1424;
+}
+
+.perception-nobase-grid {
+  stroke: rgba(56, 189, 248, 0.12);
+  stroke-width: 1;
+}
+
+.perception-nobase-label {
+  fill: #8fa2bd;
+  font-size: 16px;
+}
+
+.perception-nobase-hint {
+  fill: #556c8c;
+  font-size: 12px;
+}
+
+.perception-zone {
+  fill: transparent;
+  stroke: rgba(56, 189, 248, 0.45);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+  cursor: pointer;
+}
+
+.perception-zone:hover {
+  stroke: rgba(56, 189, 248, 0.85);
+}
+
+.perception-zone.selected {
+  fill: rgba(56, 189, 248, 0.1);
+  stroke: #38bdf8;
+  stroke-dasharray: none;
+  stroke-width: 2;
+}
+
+.perception-zone-label {
+  fill: #cbd8ea;
+  font-size: 11px;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(6, 10, 18, 0.8);
+  stroke-width: 3;
+}
+
+.perception-side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.perception-frameinfo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.perception-frameinfo > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--panel-2);
+}
+
+.perception-frameinfo span {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.perception-frameinfo strong {
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.perception-framectl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.perception-framectl button {
+  flex: none;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.perception-framectl button:hover {
+  border-color: var(--info);
+}
+
+.perception-framectl input[type='range'] {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--info);
+}
+
+.perception-zonecard {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--panel-2);
+  padding: 8px;
+}
+
+.perception-zonecard h5 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.perception-zonecard ul {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #aab8cc;
+}
+
+.perception-zonetable {
+  max-height: 220px;
+  overflow: auto;
+  display: block;
+}
+
+.perception-zonetable caption {
+  text-align: left;
+  padding-bottom: 4px;
+}
+
+.perception-zonetable tbody tr {
+  cursor: pointer;
+}
+
+.perception-zonetable tbody tr.selected td {
+  background: rgba(56, 189, 248, 0.1);
+  color: #e2e8f0;
+}
+
+.perception-zonetable td:last-child,
+.perception-zonetable th:last-child {
+  font-variant-numeric: tabular-nums;
+}
+
+.perception-foot {
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.perception-foot p {
+  margin: 0 0 4px;
+}
+
+.perception-foot code {
+  color: #a5b4cb;
+  background: rgba(17, 28, 49, 0.9);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+.perception-foot details summary {
+  cursor: pointer;
+  color: #93a4bb;
+}
+
+.perception-foot details ul {
+  margin: 6px 0;
+  padding-left: 16px;
+  line-height: 1.6;
+}
+
+@media (max-width: 1100px) {
+  .perception-body {
+    grid-template-columns: 1fr;
+  }
+
+  .perception-zonetable {
+    max-height: none;
+  }
+}

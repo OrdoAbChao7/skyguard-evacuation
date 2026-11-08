@@ -157,6 +157,7 @@ npm start              # 由后端托管 frontend/dist
 - 指挥大屏：`http://localhost:5173/`（开发）或 `http://localhost:8010/`（构建后）
 - 操作登录：`/login`
 - API：`/api/v1/safety/status`、`/api/v1/safety/scenario`、`/api/v1/safety/scenarios`
+- 感知回放（只读、纯展示）：`/api/v1/perception/displays`、`/api/v1/perception/displays/citystreet-display`
 
 ### 认证
 
@@ -213,9 +214,12 @@ npm run bench                         # 实测规划/校验/决策延迟 → eva
 ```text
 backend/
   src/services/safety/        # 疏散引擎（规划器、校验器、状态机、感知 provider、审计）
+  src/services/perception/    # 感知回放展示包加载与一致性校验（不参与判定）
   src/api/v1/safety.ts        # 安全 API
+  src/api/v1/perception.ts    # 感知回放只读 API
   src/api/v1/auth.ts          # 最小 JWT 认证
-  tests/safety/               # 42 个安全域测试
+  tests/safety/               # 安全域测试
+  tests/perception/           # 感知回放展示包测试
   scripts/                    # 演示、基准、隔离 E2E 服务
   python/crowd_service.py     # CPU 视频人群计数（可选）
 frontend/
@@ -223,6 +227,7 @@ frontend/
   src/pages/LoginPage.tsx     # 运维登录
   public/scenarios/           # 场景底图
 data/scenarios/               # 场景定义（可替换）
+data/perception/              # 感知回放展示包（派生数据 + PROVENANCE；底图不入库）
 docs/                         # 场景指南、局限、决策记录
 evaluation/                   # 性能实测产物
 ```
