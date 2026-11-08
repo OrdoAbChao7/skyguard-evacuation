@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "run_id": "2026-11-08T17-00-16-896Z",
+  "note": "voi-v2 独立证据清单；根 evaluation/MANIFEST.json（V6.2）保持冻结。",
+  "file_count": 3,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1814,
+      "sha256": "242094a9ff2e57cd76e106137b842fb781357d9032349c67bbae3daa2a5e86ab"
+    },
+    {
+      "path": "experiment_a_fair.json",
+      "bytes": 1982738,
+      "sha256": "8f2e77c9b8185e9e9e169ef350661c623119cc00d41817ae57a94ac9df189ab4"
+    },
+    {
+      "path": "run_metadata.json",
+      "bytes": 949,
+      "sha256": "df12523de86095fbd22d1e93fc302d361bd3768c8f72cc1babe3c52e54621eb2"
+    }
+  ]
+}

@@ -60,6 +60,12 @@ export interface PredictionResult {
   interval: { lower: number; upper: number } | null;
   trend: { direction: 'rising' | 'falling' | 'stable' | 'unknown'; rate_per_minute: number | null };
   data_quality: { stale: boolean; low_confidence: boolean; missing: boolean; note: string };
+  reliability?: {
+    status: 'ok' | 'warning' | 'failed';
+    reasons: string[];
+    relative_interval_width: number | null;
+    max_relative_interval_width: number;
+  };
   uncertainty_note: string;
 }
 
@@ -167,6 +173,17 @@ export interface AgentArtsStatus {
   missing_config: string[];
   detail: string;
   checked_at: string | null;
+  /** 以下字段用于区分"平台可达"与"业务闭环已验证"。旧后端可能不返回。 */
+  runtime_requested?: 'local' | 'agentarts';
+  connectivity?: 'not_requested' | 'misconfigured' | 'unreachable' | 'reachable';
+  business_closure?: {
+    verified: boolean;
+    verified_at: string | null;
+    app_version: string | null;
+    note: string;
+  };
+  last_successful_call_at?: string | null;
+  last_tool_call_at?: string | null;
 }
 
 export interface MvpDashboard {
@@ -187,6 +204,7 @@ export interface MvpDashboard {
   work_orders: WorkOrder[];
   agent_runs: AgentRun[];
   agentarts: AgentArtsStatus;
+  state_store?: { enabled: boolean; writable: boolean; revision: number; path: string | null };
   replay: { loaded: boolean; dataset_name: string | null; total_rows: number; cursor: number; completed: boolean };
   audit: Array<{
     id: string;

@@ -11,7 +11,7 @@ SkyGuard 是一个**独立的安全决策研究原型**：把
 ## 项目状态
 
 > **当前状态唯一事实来源：** [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md)<br>
-> 阶段：Research Prototype Candidate（V6.2 证据已冻结，工作区未提交）；不是 Production Ready。
+> 阶段：Research Prototype Candidate（V6.2 证据已冻结，V6.4/V6.5 工程与实验加固进行中）；不是 Production Ready。
 
 - 本仓库从灵小禅（Lingshan AI Guide）仓库中的 SkyGuard 安全业务域拆分而来，
   与文旅导览业务**完全切割**：没有游客端、RAG、数字人、管理后台。
@@ -36,9 +36,11 @@ SkyGuard 是一个**独立的安全决策研究原型**：把
 - **感知**：视频回放、CSV/JSON 回放、模拟观测、摄像头健康；固定摄像头与无人机观察统一契约。
 - **预测**：`adaptive-forecast-v3`，滚动验证选择 persistence/EMA/linear/damped/blend，输出趋势、区间、数据充分性与不确定性说明。
 - **VoI**：贝叶斯后验 + 信息熵 + 预期风险降低 + 时间/资源/失败成本，参数全部来自场景文件。
-- **Agent**：本地确定式主干 Agent；AgentArts 适配器已实现但**未实机连接**，界面明确区分 `LOCAL DEMO`。
-- **MCP**：官方 SDK 实现 15 个工具，权限、Schema、超时与审计与本地 Agent 共用。
-- **人员与工单**：推荐算法（技能/状态/通道距离）、完整状态机、人工审批、接单执行反馈。
+- **Agent**：本地确定式主干 Agent；AgentArts 官方运行时契约与有界多步已实现但**未实机连接**，界面明确区分 `LOCAL DEMO`、平台可达性与业务闭环状态。
+- **MCP**：官方 SDK 实现 15 个工具，stdio 与同进程 Streamable HTTP `/mcp` 共用权限、Schema、超时与审计。
+- **人员与工单**：推荐算法（技能/状态/通道距离）、完整状态机、人工审批、接单执行反馈；工单创建即预留人员/预算，拒绝/取消/过期/失败释放，完成结算。
+- **状态与恢复**：单实例 `MVP_STATE_FILE` 原子快照覆盖安全/工单/预算/Agent/审计；损坏或版本超前时 fail closed。
+- **感知门禁**：图像/派生帧 → 人数 → 面积/标定门禁 → 区域观测；未标定数据不进入安全域。
 - **前端**：大屏新增预测、摄像头、人员、Agent 控制台、审批中心与工单面板。
 
 命令：
@@ -69,6 +71,8 @@ npm run mcp --prefix backend   # 标准 MCP stdio Server
 | V6 科研报告（多区域 VoI、重试、邻居预测、多事件） | [`evaluation/V6_REPORT.md`](evaluation/V6_REPORT.md) |
 | V6.1 科研审计（公平预算、序贯审计、严格滚动预测、图敏感性） | [`evaluation/V6_1_REPORT.md`](evaluation/V6_1_REPORT.md) |
 | V6.2 30 种子统计与最终交付 | [`evaluation/V6_2_REPORT.md`](evaluation/V6_2_REPORT.md)、[`docs/FINAL_DELIVERY.md`](docs/FINAL_DELIVERY.md)、[`RELEASE_AUDIT_FINAL.md`](RELEASE_AUDIT_FINAL.md) |
+| V6.4 公平 VoI 与工程加固 | [`docs/V6_4_IMPLEMENTATION_REPORT.md`](docs/V6_4_IMPLEMENTATION_REPORT.md)、[`evaluation/voi-v2/`](evaluation/voi-v2/) |
+| V6.5 资源/状态/预测/感知加固 | [`docs/V6_5_IMPLEMENTATION_REPORT.md`](docs/V6_5_IMPLEMENTATION_REPORT.md)、[`evaluation/v65/`](evaluation/v65/) |
 | 研究资料库（38 条来源、10 篇专题笔记） | [`research/INDEX.md`](research/INDEX.md) |
 | 当前状态事实源 | [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md) |
 | 6–8 分钟演示脚本 | [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md)、[`docs/DEMO_SCRIPT_6_8MIN.md`](docs/DEMO_SCRIPT_6_8MIN.md) |
@@ -189,21 +193,26 @@ npm start              # 由后端托管 frontend/dist
 ## 测试与证据
 
 ```powershell
-npm test                              # 后端 42 用例 + 前端 4 用例
+npm test                              # 后端 175 用例 + 前端 16 用例
 npm run demo                          # 进程内跑完 A/B/C 三个演示场景并校验最终状态
 npm run bench                         # 实测规划/校验/决策延迟 → evaluation/performance.json
+npm run benchmark:voi-v2              # 公平 VoI 复跑 → evaluation/voi-v2/<run-id>/
+npm run benchmark:v65                 # 预测实验 → evaluation/v65/<run-id>/
 ```
 
 | 证据 | 当前结果 |
 | --- | --- |
-| 后端测试（安全 + MVP + V6/V6.1） | 104 / 104 通过 |
-| 前端测试 | 8 / 8 通过 |
+| 后端测试（安全 + MVP + V6/V6.1 + 感知 + 状态） | 175 / 175 通过 |
+| 前端测试 | 16 / 16 通过 |
 | 演示场景 A（常规） | `NORMAL`，1000/1000 人分配完毕 |
 | 演示场景 B（出口火灾） | `REROUTE`，原方案重规划 |
 | 演示场景 C（容量不足） | `REJECT`，明确给出 180 人未解决并要求人工介入 |
 | 性能基准 | 见 [`evaluation/performance.json`](evaluation/performance.json)（本机实测） |
 | MVP 业务闭环 | `npm run demo:mvp`：A 正常 / B 局部积聚 / C 不可信与容量不足 全部通过 |
-| MVP 自动化测试 | 预测、VoI、人员工单、感知、Agent、HTTP 闭环、MCP 协议、AgentArts 契约 |
+| MVP 自动化测试 | 预测、VoI、预算、证据生命周期、人员工单、感知、Agent、HTTP 闭环、MCP stdio/HTTP、AgentArts 官方契约 |
+| 公平 VoI 复跑 | 见 [`evaluation/voi-v2/`](evaluation/voi-v2/)（相同动作覆盖 + 观测采样；不覆盖 V6.2） |
+| V6.5 预测实验 | 见 [`evaluation/v65/`](evaluation/v65/)（30 种子 × 6 机制；surge 覆盖率 0.738） |
+| 统一状态/资源预留 | `MVP_STATE_FILE` 原子快照；工单创建预留、重启恢复、损坏 fail closed |
 | MVP 实验 | 见 [`evaluation/MVP_REPORT.md`](evaluation/MVP_REPORT.md)（固定种子，可复现） |
 | 竞赛级基准 | 见 [`evaluation/COMPETITION_REPORT.md`](evaluation/COMPETITION_REPORT.md)（5 种子、CI、故障注入） |
 

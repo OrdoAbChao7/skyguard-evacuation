@@ -8,7 +8,7 @@
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import perceptionApi from '../../services/perceptionApi';
-import type { PerceptionDisplayDetail, PerceptionFrame } from '../../services/perceptionApi';
+import type { PerceptionDisplayDetail, PerceptionFrame, PerceptionFrameQuality } from '../../services/perceptionApi';
 import './PerceptionReplayPanel.css';
 
 interface Props {
@@ -37,6 +37,7 @@ export default function PerceptionReplayPanel({ packageId = 'citystreet-display'
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
+  const [quality, setQuality] = useState<PerceptionFrameQuality | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -81,6 +82,15 @@ export default function PerceptionReplayPanel({ packageId = 'citystreet-display'
 
   const frame = frames[index] ?? null;
   const zones = display?.zones ?? [];
+
+  useEffect(() => {
+    if (playing || !frame) return undefined;
+    let cancelled = false;
+    perceptionApi.frameQuality(packageId, frame.frame_id)
+      .then(result => { if (!cancelled) setQuality(result); })
+      .catch(() => { if (!cancelled) setQuality(null); });
+    return () => { cancelled = true; };
+  }, [packageId, frame?.frame_id, playing]);
   const zoneStatsById = useMemo(() => {
     const map = new Map<string, PerceptionFrame['zone_stats'][number]>();
     for (const stat of frame?.zone_stats ?? []) map.set(stat.zone_id, stat);
@@ -124,6 +134,13 @@ export default function PerceptionReplayPanel({ packageId = 'citystreet-display'
   const height = display.map.height_px;
   const selectedStat = selectedZone ? zoneStatsById.get(selectedZone) : undefined;
   const selectedGeometry = zones.find(zone => zone.zone_id === selectedZone);
+  const selectedArea = selectedZone ? display.zone_areas_m2?.[selectedZone] ?? null : null;
+  const selectedDensity = selectedArea && selectedStat
+    ? selectedStat.estimated_people / selectedArea
+    : null;
+  const selectedQuality = selectedZone
+    ? quality?.zones.find(item => item.zone_id === selectedZone) ?? null
+    : null;
   const visiblePeople = frame?.people.filter(person => person.map_xy_px) ?? [];
   const totalEstimated = frame?.zone_stats.reduce((sum, stat) => sum + stat.estimated_people, 0) ?? 0;
 
@@ -142,6 +159,7 @@ export default function PerceptionReplayPanel({ packageId = 'citystreet-display'
           <span className={`perception-badge ${display.license_status === 'UNVERIFIED' ? 'perception-badge-warn' : 'perception-badge-muted'}`}>
             许可 {display.license_status}
           </span>
+          <span className="perception-badge perception-badge-warn">未标定映射</span>
         </div>
       </div>
 
@@ -289,6 +307,21 @@ export default function PerceptionReplayPanel({ packageId = 'citystreet-display'
                 <li>
                   地面范围：{selectedGeometry.ground_polygon_m.length} 点边界 ·{' '}
                   {selectedGeometry.ground_polygon_m.length >= 3 ? '已按米制投影' : '未标定'}
+                </li>
+                <li>
+                  演示面积：{selectedArea == null ? '不可计算' : `${selectedArea.toFixed(2)} m²`}
+                  （米制多边形，非场景标定面积）
+                </li>
+                <li>
+                  演示密度：{selectedDensity == null ? '不可计算' : `${selectedDensity.toFixed(3)} 人/m²`}
+                  （未标定，不得用于安全判定）
+                </li>
+                <li>
+                  感知质量：{selectedQuality ? selectedQuality.quality.status : '读取中'}
+                  {selectedQuality ? ` · ${selectedQuality.valid_for_safety ? '门禁通过' : '不进入安全域'}` : ''}
+                  {selectedQuality && selectedQuality.quality.reasons.length > 0
+                    ? `（${selectedQuality.quality.reasons.slice(0, 3).join('、')}）`
+                    : ''}
                 </li>
               </ul>
             </div>

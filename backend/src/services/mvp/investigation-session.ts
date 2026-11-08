@@ -9,6 +9,7 @@
  */
 import type { InvestigationAction, InvestigationKind, InvestigationOutcome, InvestigationPolicy } from '../safety/types';
 import { applyEvidence, entropy, type BeliefEntry } from './voi';
+import { allCandidatesBlocked, checkCandidateBudget } from './budget';
 
 export interface InvestigationAttempt {
   actionId: string;
@@ -76,14 +77,20 @@ export function actionAvailability(
   }
   const budget = policy.budget;
   if (budget) {
-    if (session.attempts.length >= budget.max_actions) {
-      return { available: false, reason: `调查动作预算 ${budget.max_actions} 已耗尽`, nextAvailableAt: null, attempts: attempts.length, maxAttempts };
-    }
-    if (session.spentCost >= budget.max_total_cost) {
-      return { available: false, reason: `调查资源预算 ${budget.max_total_cost} 已耗尽`, nextAvailableAt: null, attempts: attempts.length, maxAttempts };
-    }
-    if (session.spentTimeMinutes >= budget.max_total_time_minutes) {
-      return { available: false, reason: `调查时间预算 ${budget.max_total_time_minutes} 分钟已耗尽`, nextAvailableAt: null, attempts: attempts.length, maxAttempts };
+    // G04：候选动作自身成本也必须计入；只检查"已用 >= 上限"会放行越界动作。
+    const budgetDecision = checkCandidateBudget(policy, action, {
+      used_actions: session.attempts.length,
+      used_cost: session.spentCost,
+      used_time_minutes: session.spentTimeMinutes,
+    });
+    if (!budgetDecision.eligible) {
+      return {
+        available: false,
+        reason: budgetDecision.reason ?? '调查预算不足',
+        nextAvailableAt: null,
+        attempts: attempts.length,
+        maxAttempts,
+      };
     }
   }
   if (attempts.length > 0 && action.retry && action.retry.cooldown_minutes > 0) {
@@ -133,6 +140,11 @@ const OPPOSITE: Record<string, string> = {
   signal_congested: 'signal_normal',
 };
 
+/** 冲突判定时间窗：优先取场景配置，缺省沿用历史默认 10 分钟。 */
+export function conflictWindowMinutes(policy: InvestigationPolicy): number {
+  return policy.conflict?.window_minutes ?? 10;
+}
+
 export function detectEvidenceConflict(
   session: InvestigationSession,
   kind: InvestigationKind,
@@ -158,30 +170,38 @@ export function detectEvidenceConflict(
   return conflict;
 }
 
-/** 冲突时把后验与先验按 50/50 混合，避免单条矛盾证据过度改变信念。 */
+/** 冲突时把后验与先验按场景系数混合，避免单条矛盾证据过度改变信念。 */
 export function applyEvidenceWithConflict(
   policy: InvestigationPolicy,
   belief: BeliefEntry[],
   kind: InvestigationKind,
   outcome: InvestigationOutcome,
   conflict: EvidenceConflict,
-): { belief: BeliefEntry[]; entropy: number } {
+): { belief: BeliefEntry[]; entropy: number; blend_prior: number; blend_source: 'scenario' | 'legacy_default' } {
+  const blendPrior = policy.conflict?.blend_prior ?? 0.5;
   const posterior = applyEvidence(policy, belief, kind, outcome);
   const blended = conflict.detected
     ? posterior.map((entry, index) => ({
       ...entry,
-      probability: 0.5 * entry.probability + 0.5 * belief[index].probability,
+      probability: blendPrior * entry.probability + (1 - blendPrior) * belief[index].probability,
     }))
     : posterior;
   const total = blended.reduce((sum, entry) => sum + entry.probability, 0);
   const normalized = blended.map(entry => ({ ...entry, probability: entry.probability / total }));
-  return { belief: normalized, entropy: Number(entropy(normalized).toFixed(6)) };
+  return {
+    belief: normalized,
+    entropy: Number(entropy(normalized).toFixed(6)),
+    blend_prior: blendPrior,
+    blend_source: policy.conflict?.blend_prior === undefined ? 'legacy_default' : 'scenario',
+  };
 }
 
 export function budgetExhausted(policy: InvestigationPolicy, session: InvestigationSession): boolean {
-  const budget = policy.budget;
-  if (!budget) return false;
-  return session.attempts.length >= budget.max_actions
-    || session.spentCost >= budget.max_total_cost
-    || session.spentTimeMinutes >= budget.max_total_time_minutes;
+  if (!policy.budget) return false;
+  // 只有所有候选动作都无法准入时才算预算耗尽；单个贵动作超限不应阻断便宜动作。
+  return allCandidatesBlocked(policy, {
+    used_actions: session.attempts.length,
+    used_cost: session.spentCost,
+    used_time_minutes: session.spentTimeMinutes,
+  });
 }

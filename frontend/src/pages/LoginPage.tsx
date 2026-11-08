@@ -7,6 +7,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AimOutlined, AuditOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
 import './LoginPage.css';
 
 export default function LoginPage() {
@@ -46,58 +47,84 @@ export default function LoginPage() {
 
   return (
     <main className="login-root">
-      <section className="login-card" aria-labelledby="login-title">
-        <p className="login-eyebrow">SkyGuard · 操作员入口</p>
-        <h1 id="login-title">安全决策操作登录</h1>
-        <p className="login-note">
-          读取态势无需登录；登记事件、重新规划与运行演示需要运维角色。
-        </p>
+      <div className="login-shell">
+        <section className="login-hero" aria-label="SkyGuard 简介">
+          <span className="login-mark" aria-hidden="true"><SafetyCertificateOutlined /></span>
+          <p className="login-eyebrow">SKYGUARD · TRUSTED EVACUATION INTELLIGENCE</p>
+          <h1>可信安全决策<br /><span>指挥中心</span></h1>
+          <p className="login-lede">
+            面向大型活动散场的主动感知、风险评估与可审计疏散决策。四态安全内核与独立校验保证「不可用即拒绝」。
+          </p>
+          <ul className="login-features">
+            <li>
+              <SafetyCertificateOutlined aria-hidden="true" />
+              <div><strong>独立校验</strong><span>方案先校验后发布，失败即降级或拒绝</span></div>
+            </li>
+            <li>
+              <AuditOutlined aria-hidden="true" />
+              <div><strong>全链路审计</strong><span>观测、规划、审批与工单流转均可追溯</span></div>
+            </li>
+            <li>
+              <AimOutlined aria-hidden="true" />
+              <div><strong>感知回放</strong><span>真实回放包仅作展示，非实时、无真值</span></div>
+            </li>
+          </ul>
+          <p className="login-hero-foot">研究原型 · 不得用于真实应急指挥</p>
+        </section>
 
-        {hasToken ? (
-          <div className="login-session">
-            <p>当前浏览器已有操作令牌。</p>
-            <div className="login-actions">
-              <button type="button" className="login-primary" onClick={() => navigate('/')}>
-                进入指挥大屏
-              </button>
-              <button type="button" onClick={logout}>清除令牌</button>
-            </div>
-          </div>
-        ) : (
-          <form className="login-form" onSubmit={onSubmit}>
-            <label htmlFor="username">用户名</label>
-            <input
-              id="username"
-              name="username"
-              autoComplete="username"
-              value={username}
-              onChange={event => setUsername(event.target.value)}
-              required
-            />
-            <label htmlFor="password">密码</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={event => setPassword(event.target.value)}
-              required
-            />
-            {error ? <p className="login-error" role="alert">{error}</p> : null}
-            <div className="login-actions">
-              <button type="submit" className="login-primary" disabled={busy}>
-                {busy ? '登录中…' : '登录'}
-              </button>
-              <button type="button" onClick={() => navigate('/')}>返回大屏</button>
-            </div>
-          </form>
-        )}
+        <section className="login-card" aria-labelledby="login-title">
+          <p className="login-eyebrow">OPERATOR ACCESS · AUTH REQUIRED</p>
+          <h1 id="login-title">安全决策操作登录</h1>
+          <p className="login-note">
+            读取态势无需登录；登记事件、重新规划与运行演示需要运维角色。
+          </p>
 
-        <p className="login-foot">
-          研究原型，不得用于真实应急指挥。账号初始化见 <code>README.md</code>。
-        </p>
-      </section>
+          {hasToken ? (
+            <div className="login-session">
+              <p>当前浏览器已有操作令牌。</p>
+              <div className="login-actions">
+                <button type="button" className="login-primary" onClick={() => navigate('/')}>
+                  进入指挥大屏
+                </button>
+                <button type="button" onClick={logout}>清除令牌</button>
+              </div>
+            </div>
+          ) : (
+            <form className="login-form" onSubmit={onSubmit}>
+              <label htmlFor="username">用户名</label>
+              <input
+                id="username"
+                name="username"
+                autoComplete="username"
+                value={username}
+                onChange={event => setUsername(event.target.value)}
+                required
+              />
+              <label htmlFor="password">密码</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={event => setPassword(event.target.value)}
+                required
+              />
+              {error ? <p className="login-error" role="alert">{error}</p> : null}
+              <div className="login-actions">
+                <button type="submit" className="login-primary" disabled={busy}>
+                  {busy ? '登录中…' : '登录'}
+                </button>
+                <button type="button" onClick={() => navigate('/')}>返回大屏</button>
+              </div>
+            </form>
+          )}
+
+          <p className="login-foot">
+            研究原型，不得用于真实应急指挥。账号初始化见 <code>README.md</code>。
+          </p>
+        </section>
+      </div>
     </main>
   );
 }

@@ -3,6 +3,7 @@
  * 所有动态数据均来自后端 API；前端不写死演示结果。
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { AimOutlined } from '@ant-design/icons';
 import mvpApi, { type AgentRun, type MvpDashboard, type MultiRegionAnalysis, type WorkOrder } from '../../services/mvpApi';
 import './MvpPanels.css';
 
@@ -108,7 +109,16 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
     if (selectedRegion) setAgentRegion(selectedRegion);
   }, [selectedRegion]);
 
-  const act = useCallback(async (key: string, action: () => Promise<unknown>, message: string) => {
+  useEffect(() => {
+    if (!feedback) return undefined;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && busy === null) setFeedback(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [feedback, busy]);
+
+  const act = useCallback(async (key: string, action: () => Promise<unknown>, message: string): Promise<boolean> => {
     setBusy(key);
     setNotice(null);
     setError(null);
@@ -116,8 +126,10 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
       await action();
       setNotice(message);
       await refresh();
+      return true;
     } catch (caught) {
       setError(errorMessage(caught));
+      return false;
     } finally {
       setBusy(null);
     }
@@ -137,6 +149,15 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
 
   const mode = dashboard?.agentarts.mode ?? 'LOCAL_DEMO';
   const modeClass = mode === 'AGENTARTS_CONNECTED' ? 'ok' : mode === 'AGENTARTS_UNAVAILABLE' ? 'bad' : 'warn';
+  const connectivity = dashboard?.agentarts.connectivity;
+  const connectivityLabel = connectivity === 'reachable'
+    ? '可达'
+    : connectivity === 'unreachable'
+      ? '不可达'
+      : connectivity === 'misconfigured'
+        ? '配置不完整'
+        : '未探测';
+  const closureVerified = dashboard?.agentarts.business_closure?.verified === true;
 
   async function loginStaff() {
     const session = await mvpApi.staffLogin(staffIdInput.trim(), staffCodeInput.trim());
@@ -166,11 +187,11 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
       setError('置信度必须在 0~1 之间');
       return;
     }
-    await act('feedback', () => mvpApi.complete(feedback.orderId, {
+    const ok = await act('feedback', () => mvpApi.complete(feedback.orderId, {
       note: feedback.note || '现场反馈',
       observation: { count, confidence, valid: true },
     }), '反馈已提交，系统已触发重新评估');
-    setFeedback(null);
+    if (ok) setFeedback(null);
   }
 
   function renderOrderActions(order: WorkOrder) {
@@ -229,6 +250,16 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
         <div className="mvp-header-right">
           <span className={`mvp-mode ${modeClass}`}>{mode === 'AGENTARTS_CONNECTED' ? 'AGENTARTS CONNECTED' : mode === 'AGENTARTS_UNAVAILABLE' ? 'AGENTARTS UNAVAILABLE' : 'LOCAL DEMO'}</span>
           <span className="mvp-muted">{dashboard?.agentarts.detail ?? '本地演示模式'}</span>
+          {dashboard?.agentarts.runtime_requested === 'agentarts' && (
+            <span className="mvp-muted" title="平台可达性只说明网络探测结果，不代表完整业务闭环已验证">
+              可达性 {connectivityLabel} · 业务闭环 {closureVerified ? '已验证' : '未验证'}
+            </span>
+          )}
+          {dashboard?.state_store?.enabled && (
+            <span className="mvp-muted" title={dashboard.state_store.path ?? ''}>
+              状态快照 rev {dashboard.state_store.revision}{dashboard.state_store.writable ? '' : ' · 只读'}
+            </span>
+          )}
           <a className="mvp-link" href="/staff">工作人员移动端</a>
           <button type="button" disabled={busy !== null} onClick={() => void act('demo-A', async () => {
             const result = await mvpApi.runDemo('A_normal');
@@ -345,7 +376,13 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
               </ul>
               <p className="mvp-muted mvp-small">{shownRun.limitations.join(' ')}</p>
             </>
-          ) : <p className="mvp-muted">选择区域并运行 Agent，查看调查决策、工具调用与建议。</p>}
+          ) : (
+            <div className="mvp-empty">
+              <span className="mvp-empty-orbit" aria-hidden="true"><AimOutlined /></span>
+              <strong>Agent 待命</strong>
+              <span>选择调查区域并运行 Agent，查看调查决策、工具调用、信念更新与建议。Agent 只创建待审批工单，不会直接派发或控制现场资源。</span>
+            </div>
+          )}
         </section>
 
         {/* 预测 */}
@@ -376,7 +413,7 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
         </section>
 
         {/* 摄像头 + 人员 */}
-        <section className="mvp-panel">
+        <section className="mvp-panel mvp-cams">
           <div className="mvp-panel-title"><h3>摄像头状态</h3><span>{dashboard?.cameras.length ?? 0} 路</span></div>
           <ul className="mvp-health">
             {(dashboard?.cameras ?? []).map(camera => (
@@ -475,7 +512,7 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
           </div>
         </section>
 
-        <section className="mvp-panel">
+        <section className="mvp-panel mvp-timeline-panel">
           <div className="mvp-panel-title"><h3>事件时间轴</h3><span>最近 {dashboard?.audit.length ?? 0} 条</span></div>
           <ol className="mvp-timeline">
             {(dashboard?.audit ?? []).slice(0, 12).map(entry => (
@@ -490,7 +527,7 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
           </ol>
         </section>
 
-        <section className="mvp-panel mvp-span-2">
+        <section className="mvp-panel mvp-bench">
           <div className="mvp-panel-title">
             <h3>竞赛基准结果</h3>
             <span>{experiments?.available ? `生成于 ${fmtTime(experiments.generated_at)}` : '尚未生成'}</span>

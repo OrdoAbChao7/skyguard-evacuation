@@ -45,13 +45,23 @@ function sha256(buffer: Buffer): string {
   return crypto.createHash('sha256').update(buffer).digest('hex');
 }
 
+/**
+ * 文本证据按 LF 归一化后再计算大小与哈希，避免 Git autocrlf 导致
+ * 同一提交在 Windows/Linux 上校验结果不同。二进制文件保持原样。
+ */
+const TEXT_EVIDENCE = /\.(json|jsonl|md|tsv|txt|csv|log)$/i;
+function normalizeEvidence(buffer: Buffer, relative: string): Buffer {
+  if (!TEXT_EVIDENCE.test(relative)) return buffer;
+  return Buffer.from(buffer.toString('utf8').replace(/\r\n/g, '\n'), 'utf8');
+}
+
 const files = walk(EVAL)
   // release/ 下是测试日志与退出码，会随运行追加，不能作为被校验的原始证据。
   .filter(file => !path.relative(EVAL, file).startsWith(`release${path.sep}`))
   .filter(file => file !== MANIFEST && !file.endsWith('DATA_MANIFEST.md'))
   .map(file => {
     const relative = path.relative(EVAL, file).replaceAll('\\', '/');
-    const buffer = fs.readFileSync(file);
+    const buffer = normalizeEvidence(fs.readFileSync(file), relative);
     return {
       path: relative,
       bytes: buffer.length,
@@ -86,7 +96,7 @@ if (verifyOnly) {
   for (const expected of previous.files) {
     const full = path.join(EVAL, expected.path);
     if (!fs.existsSync(full)) { failures.push(`missing: ${expected.path}`); continue; }
-    const buffer = fs.readFileSync(full);
+    const buffer = normalizeEvidence(fs.readFileSync(full), expected.path);
     if (buffer.length !== expected.bytes) failures.push(`size: ${expected.path}`);
     if (sha256(buffer) !== expected.sha256) failures.push(`sha256: ${expected.path}`);
   }

@@ -187,6 +187,21 @@ function agentActor(actor: OpsActor): OpsActor {
   };
 }
 
+/** 由场景动作成本生成工单资源请求；缺配置时不伪造金额/时长。 */
+function investigationResourceRequest(
+  ctx: ToolContext,
+  kind: 'staff_check' | 'uav_request',
+  staffId: string | null | undefined,
+) {
+  const action = ctx.scenario.investigation?.actions.find(item => item.kind === kind);
+  if (!action) return undefined;
+  return {
+    person_minutes: action.time_cost_minutes,
+    budget_units: action.resource_cost,
+    ...(staffId ? { staff_id: staffId } : {}),
+  };
+}
+
 export function createToolDefinitions(ctx: ToolContext): ToolDefinition[] {
   const workOrderSchema = WorkOrderCreateSchema.omit({ submit: true }).extend({
     submit: z.literal(true).optional(),
@@ -342,6 +357,11 @@ export function createToolDefinitions(ctx: ToolContext): ToolDefinition[] {
             }
             : { staff_id: null, reasons: [recommendation.reason], score: null },
           submit: true,
+          resource_request: investigationResourceRequest(
+            ctx,
+            'staff_check',
+            recommendation.recommended?.staff_id,
+          ),
         });
         return ok({
           channel: 'staff',
@@ -393,6 +413,11 @@ export function createToolDefinitions(ctx: ToolContext): ToolDefinition[] {
             }
             : { staff_id: null, reasons: [recommendation.reason], score: null },
           submit: true,
+          resource_request: investigationResourceRequest(
+            ctx,
+            'uav_request',
+            recommendation.recommended?.staff_id,
+          ),
         });
         return ok({
           outcome: 'inconclusive',
@@ -568,8 +593,19 @@ export function createToolDefinitions(ctx: ToolContext): ToolDefinition[] {
       source: 'ops-work-order',
       timeout_ms: 5000,
       async handler(args, actor) {
+        const preview = ctx.ops.previewReservation({ ...args, submit: true });
+        if (!preview.eligible) {
+          return {
+            ok: false,
+            data: { preview },
+            source: 'ops-work-order',
+            confidence: null,
+            error: preview.reason ?? '资源或预算不足，无法创建工单',
+            error_code: 'RESOURCE_UNAVAILABLE',
+          };
+        }
         const order = ctx.ops.createWorkOrder(agentActor(actor), { ...args, submit: true });
-        return ok({ work_order: order }, 'ops-work-order', null);
+        return ok({ work_order: order, reservation: order.reservation, preview }, 'ops-work-order', null);
       },
     },
     {

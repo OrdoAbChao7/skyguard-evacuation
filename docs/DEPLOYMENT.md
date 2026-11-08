@@ -29,6 +29,16 @@ npm start            # 由后端托管 frontend/dist，默认 8010
 | `SECRET_KEY` / `JWT_SECRET` | 开发默认值（警告） | **必须**显式设置 |
 | `SKYGUARD_ADMIN_USERNAME/PASSWORD` | `admin / skyguard2026` | 首次启动前修改 |
 | `OPS_PERSIST_FILE` | 未设置（纯内存） | `data/ops-state.json` 并挂载持久卷 |
+| `MVP_RUNS_FILE` | 未设置（纯内存） | `data/agent-runs.json` 并挂载持久卷 |
+| `MVP_STATE_FILE` | 未设置（分模块内存/旧快照） | **推荐**：`data/mvp-state.json`；统一原子快照，损坏时拒绝启动 |
+| `MCP_HTTP_TOKEN` | 未设置 | 生产必填；HTTP `/mcp` Bearer token，未配置时生产返回 503 |
+| `AGENT_RUNTIME` | `local` | 未完成真实租户验证前保持 `local` |
+| `AGENTARTS_BASE_URL` / `AGENTARTS_API_KEY` | 未设置 | 仅通过部署密钥注入 |
+| `AGENTARTS_RUNTIME_NAME` | 回退 `AGENTARTS_AGENT_ID` | 租户发布页的运行时名 |
+| `AGENTARTS_CONTRACT` | `official` | 生产使用 `official`；`template` 仅本地测试 |
+| `AGENTARTS_MAX_STEPS` | `4` | 1~10；防止平台循环 |
+| `AGENTARTS_AUTO_CONTINUE` | `false` | 需要真实租户验证后再开启 |
+| `MCP_ACTOR_ROLE` | `agent` | HTTP/stdio MCP 服务端身份；客户端不能自报 |
 | `RATE_LIMIT_MAX` / `RATE_LIMIT_WINDOW_MS` | 300 / 60000 | 按网关能力调整 |
 | `CORS_ORIGINS` | `*` | 精确列出前端域名 |
 | `READ_AUTH_REQUIRED` | `false` | 公网部署建议 `true` |
@@ -41,14 +51,17 @@ npm start            # 由后端托管 frontend/dist，默认 8010
 ```bash
 docker build -t skyguard:mvp .
 docker run --rm -p 8010:8010 \
-  -e SECRET_KEY='change-me' \
-  -e SKYGUARD_ADMIN_PASSWORD='change-me' \
+  -e SECRET_KEY='change-me-long-random-secret' \
+  -e SKYGUARD_ADMIN_PASSWORD='change-me-strong-2026' \
   -e OPS_PERSIST_FILE=/app/data/ops-state.json \
+  -e MVP_RUNS_FILE=/app/data/agent-runs.json \
   -v skyguard-data:/app/data \
   skyguard:mvp
 ```
 
 > Dockerfile 未在目标生产环境实机验证；构建依赖公网 npm。
+> 生产模式会拒绝默认/过短的 `SECRET_KEY` 与 `SKYGUARD_ADMIN_PASSWORD`（启动退出）；
+> 运行镜像必须显式传入强凭证。镜像以非 root 用户运行，`/app/data` 为数据卷。
 
 ## 5. 反向代理与安全
 
@@ -57,7 +70,12 @@ docker run --rm -p 8010:8010 \
 - 设置 `CORS_ORIGINS`、`READ_AUTH_REQUIRED=true`、`TRUST_PROXY=true`；
 - 管理员口令、`SECRET_KEY` 使用密钥管理，不写进镜像/仓库；
 - 审计日志 `data/audit/*.jsonl` 需集中采集与轮转；
-- 工单快照 `data/ops-state.json` 需备份；单实例写入，不支持多副本并发。
+- 工单快照 `data/ops-state.json` 与 Agent 运行快照 `data/agent-runs.json` 需备份；
+  单实例写入，不支持多副本并发。
+- 推荐设置 `MVP_STATE_FILE`：统一快照（安全/工单/预算/Agent/审计）原子写入；
+  primary 损坏自动尝试 backup/temp，全部损坏时进程拒绝启动。不要手工清空文件绕过。
+- HTTP MCP 端点 `POST /mcp` 与网页 API 同进程、共享状态；生产必须设置
+  `MCP_HTTP_TOKEN`（未设置时返回 503），公网部署还需在网关限制来源。
 
 ## 6. 可观测性
 
@@ -77,5 +95,6 @@ docker run --rm -p 8010:8010 \
 
 ## 8. CI
 
-`.github/workflows/ci.yml`：安装依赖 → 测试 → 构建 → 安全演示 → MVP 演示 → 竞赛基准 → 上传 `evaluation/`。
+`.github/workflows/ci.yml`：安装依赖 → 后端/前端测试 → 构建 → 安全演示 → MVP 演示 →
+Python 语法检查 → 校验已提交证据清单（行尾无关）→ 证据一致性检查（不重跑基准）→ 上传 `evaluation/`。
 CI 未在真实仓库运行验证（需推送后观察）。

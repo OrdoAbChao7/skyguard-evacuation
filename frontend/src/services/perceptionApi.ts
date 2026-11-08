@@ -85,8 +85,34 @@ export interface PerceptionDisplaySummary {
 export interface PerceptionDisplayDetail extends PerceptionDisplaySummary {
   map: { map_image: string; width_px: number; height_px: number };
   zones: PerceptionZone[];
+  /** 米制多边形鞋带面积（演示；不等于场景区域标定面积）。 */
+  zone_areas_m2?: Record<string, number | null>;
   notice: string;
   provenance: Record<string, unknown> | null;
+}
+
+export interface PerceptionFrameQuality {
+  package_id: string;
+  frame_id: number;
+  observed_at: string;
+  zones: Array<{
+    zone_id: string;
+    estimated_count: number;
+    area_m2: number | null;
+    density_per_m2: number | null;
+    confidence: number | null;
+    valid_for_safety: boolean;
+    quality: {
+      status: 'ok' | 'degraded' | 'unusable';
+      reasons: string[];
+      calibrated: boolean;
+      demo_mapping: boolean;
+      ground_truth_available: boolean;
+      license_status: string;
+    };
+    limitations: string[];
+  }>;
+  notice: string;
 }
 
 export interface PerceptionFramePage {
@@ -113,6 +139,13 @@ const api = {
     const response = await client.get<PerceptionFramePage>(`/displays/${encodeURIComponent(packageId)}/frames`, {
       params: { from: options.from, limit: options.limit },
     });
+    return response.data;
+  },
+
+  async frameQuality(packageId: string, frameId: number): Promise<PerceptionFrameQuality> {
+    const response = await client.get<PerceptionFrameQuality>(
+      `/displays/${encodeURIComponent(packageId)}/frames/${frameId}/quality`,
+    );
     return response.data;
   },
 };

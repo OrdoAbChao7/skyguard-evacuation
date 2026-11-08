@@ -12,18 +12,26 @@
 | C05 | VoI 在模拟中降低调查成本 | 实验 A：VoI 1.77 min vs 固定 3.57 min | 部分验证 | 风险收益略低；参数未标定 |
 | C06 | 预测在突增场景仍脆弱 | 实验 B：自适应 MAE 25.1/59.5/79.7；覆盖率 91%/84%/79% | 已验证（局限） | 不得声称真实精度 |
 | C07 | MCP 15 工具可被标准客户端调用 | `mcp.test.ts` 官方 SDK 客户端 | 已验证 | AgentArts 是否支持 stdio MCP 未确认 |
-| C08 | AgentArts 适配器可配置、可探测、失败不伪装 | 契约测试 + 运行时接线测试 | 已验证（本地 stub） | **未实机连接** |
+| C08 | AgentArts 适配器按官方运行时契约调用、可探测、失败不伪装、有界多步 | `agentarts.test.ts`（官方路径/会话头/`query`+`inputs`/`data.text`）、`agentarts-runtime.test.ts`（多步/重复调用/等待人工） | 已验证（本地 stub） | **未实机连接**；无真实租户与平台 Trace |
 | C09 | 昇腾边云路径已实现 | 仅 provider 探针与外部推理契约 | 未验证 | 无 NPU/CANN/`.om` |
 | C10 | 无人机观察已实现 | 工单请求 + 审批 + 模拟反馈 | 部分验证 | 无真实无人机/飞控 |
 | C11 | 人群计数精度（公开数据集） | ShanghaiTech Part A test，P2PNet 官方权重：MAE 57.24/RMSE 96.04/NAE 0.1319；二次复跑一致 | PARTIALLY_SUPPORTED | 公开数据集/官方权重，非自训练模型或真实场馆；许可未核验 |
 | C12 | 已接入华为云 AgentArts | 无租户/凭证/官方 API 文档 | 禁止表述 | 只能写适配器与 Runbook |
 | C13 | 可获国家一等奖 | 无评分证据 | 禁止表述 | 只能陈述已完成工作 |
 | C14 | 实验可复现 | 固定种子；`evaluation/competition/*.json`、`evaluation/v6/*.json` | 已验证 | 结果依赖本机与配置 |
-| C15 | 多区域联合调查提高总风险收益 | V6.2 30 种子（目标轮换）：0.2154 vs 0.0472，d_z=2.06，覆盖 6.74 vs 1.59 | PARTIALLY_SUPPORTED | 成本 2.3×；效率差 +0.0917 CI [0.0755,0.1079]；V6.1 同目标设计效率不显著，结论依赖目标策略 |
+| C15 | 多区域联合调查提高总风险收益 | V6.2 30 种子（目标轮换）：0.2154 vs 0.0472，d_z=2.06，覆盖 6.74 vs 1.59；公平复跑（C20）0.1711 vs 0.0446，d_z=1.27 | PARTIALLY_SUPPORTED | 成本 2.3×；V6.2 效应量受信息权限差异放大；V6.1 同目标设计效率不显著；效率低于随机/启发式 |
 | C16 | 冷却+退避重试提高调查成功率 | V6.1：同 2 次尝试预算下 92% vs 92%，检测/决策相同 | **不支持** | V6-B 的 91% vs 68.6% 是 2 次 vs 1 次尝试，不是重试效应 |
 | C17 | 邻居信息可改善短时预测 | V6-C：相对改进 4.8%/5.1%/8.4% | 部分验证（合成） | 共享趋势假设；真实数据未验证 |
 | C18 | 人群计数评测流程可用 | `evaluation/real-data/`：数据加载、P2PNet 适配、per-image 结果、复算与复跑 | VERIFIED | 仅单数据集；不证明真实场馆精度 |
 | C19 | 感知派生数据可端到端进入前端展示（时间轴/热力/区域查询） | `data/perception/citystreet-display/`（CityStreet C3，60 帧）+ `tests/perception/display-api.test.ts` 12 用例 + `PerceptionReplayPanel.test.tsx` 7 用例 | VERIFIED（仅展示链路） | 派生显示数据、近似配准、**无真值**；不得用于报告精度，且不参与规划/校验 |
+| C20 | 在相同动作覆盖与相同预算下，多区域 VoI 的总风险降低仍高于单区域，但效率不占优 | `evaluation/voi-v2/2026-11-08T17-00-16-896Z/`（30 seeds × 40 trials）：多 0.1711 vs 单 0.0446，配对差 0.1265 [0.1209,0.1321]，d_z=1.27；效率 0.2971 vs 0.2643，差 0.0328 [0.0140,0.0515] | PARTIALLY_SUPPORTED | 合成数据、目标轮换；随机效率 0.3433、启发式 0.3961 高于多区域；V6.2 效应量被信息权限放大 |
+| C21 | 调查预算准入计入候选动作自身成本与预留，越界候选被拒绝 | `backend/src/services/mvp/budget.ts`；`budget.test.ts`（0.9+1.0>1.0、等值允许、NaN、预留）；`agent-budget.test.ts` | VERIFIED | 仅业务预算；派发时的资源预留尚未与工单联动 |
+| C22 | MCP HTTP 与网页 API 共享同一业务状态 | `tests/mvp/mcp-http.test.ts`：通过 `/mcp` 创建工单，网页侧 `getMvpService()` 读到同一工单 | VERIFIED（单实例） | 无独立 MCP 鉴权层；多实例一致性未实现 |
+| C23 | 重复观测被忽略且乱序旧观测不覆盖较新观测 | `ObservationStore.ingest`；`tests/safety/observations.test.ts` | VERIFIED（存储层） | 仅按来源/提供方/模型/观测时间/人数判重；未做跨来源相关性建模 |
+| C24 | 工单创建时预留人员/预算，审批确认，拒绝/取消/过期/失败释放，完成结算 | `ops.ts`、`reservations.test.ts`（8 组）、HTTP 409 | VERIFIED（单实例） | 预算结算用声明值；多实例并发未支持 |
+| C25 | 统一状态快照跨安全/工单/预算/Agent/审计原子提交，损坏时拒绝启动 | `persistent-store.ts`、`state-persistence.test.ts`、进程重启与双副本损坏实测 | VERIFIED（单实例） | 不是分布式事务；内存审计视图可能落后于 JSONL |
+| C26 | 预测可靠性失败时 VoI 预测动作被阻断，且不替代四态 | `prediction.ts` reliability、`availability.ts`、`prediction.test.ts` | VERIFIED | 阈值来自场景；预测本身仍是启发式 |
+| C27 | 人数只有在校准/面积/置信度同时满足时才生成可信区域观测 | `perception/adapter.ts`、`adapter.test.ts`、质量 API | VERIFIED（门禁逻辑） | CityStreet/P2PNet 无现场标定；不产生精度主张 |
 
 ## 引用规则
 
@@ -55,6 +63,17 @@
 | C17 | PARTIALLY_SUPPORTED | 合成相关序列；真实数据未验证 |
 | C18 | VERIFIED | 真实数据流水线已运行；精度范围有限 |
 | C19 | VERIFIED | 仅证明展示链路与数据治理；无精度含义 |
+
+## Release labels（V6.4，2026-11-09）
+
+| ID | Label | 说明 |
+| --- | --- | --- |
+| C08 | PARTIALLY_SUPPORTED | 官方契约与有界多步已实现；仍无真实租户 |
+| C15 | PARTIALLY_SUPPORTED | 公平复跑总收益仍更高；效应量缩小，效率不占优 |
+| C20 | PARTIALLY_SUPPORTED | 合成公平实验；不得替代 V6.2 冻结结果 |
+| C21 | VERIFIED | 预算准入含候选与预留；派发联动未完成 |
+| C22 | VERIFIED | 单实例 HTTP MCP 与网页共享状态 |
+| C23 | VERIFIED | 存储层去重与乱序保护 |
 
 ### 判定规则
 

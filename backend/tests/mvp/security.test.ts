@@ -83,6 +83,25 @@ test('CORS 允许来源可配置', async () => {
   }
 });
 
+test('生产环境未配置 CORS 时不放行跨域', async () => {
+  saveEnv();
+  resetRateLimiterForTests();
+  process.env.NODE_ENV = 'production';
+  delete process.env.CORS_ORIGINS;
+  const server = await startTestServer();
+  try {
+    const response = await server.request('/api/v1/mvp/scenario', {
+      headers: { Origin: 'https://evil.example' },
+    });
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('access-control-allow-origin'), null);
+  } finally {
+    await server.close();
+    restoreEnv();
+    resetRateLimiterForTests();
+  }
+});
+
 test('响应包含请求 ID，便于审计关联', async () => {
   saveEnv();
   resetRateLimiterForTests();

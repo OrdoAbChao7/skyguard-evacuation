@@ -35,6 +35,12 @@ const ALLOWED_TRANSITIONS: Record<IncidentStatus, IncidentStatus[]> = {
   dismissed: [],
 };
 
+export interface IncidentStoreState {
+  incidents: Incident[];
+  aliases: Array<[string, string]>;
+  version: number;
+}
+
 export class IncidentStore {
   private incidents = new Map<string, Incident>();
   private aliases = new Map<string, string>();
@@ -42,6 +48,34 @@ export class IncidentStore {
 
   getVersion(): number {
     return this.version;
+  }
+
+  exportState(): IncidentStoreState {
+    return {
+      incidents: [...this.incidents.values()].map(item => ({ ...item })),
+      aliases: [...this.aliases.entries()],
+      version: this.version,
+    };
+  }
+
+  restoreState(state: IncidentStoreState): void {
+    if (!state || !Array.isArray(state.incidents) || !Array.isArray(state.aliases)
+      || !Number.isInteger(state.version) || state.version < 0) {
+      throw new Error('事件状态格式非法');
+    }
+    this.incidents.clear();
+    this.aliases.clear();
+    for (const incident of state.incidents) {
+      if (!incident || typeof incident.id !== 'string') throw new Error('事件状态条目非法');
+      this.incidents.set(incident.id, { ...incident });
+    }
+    for (const entry of state.aliases) {
+      if (!Array.isArray(entry) || entry.length !== 2 || typeof entry[0] !== 'string' || typeof entry[1] !== 'string') {
+        throw new Error('事件别名状态非法');
+      }
+      this.aliases.set(entry[0], entry[1]);
+    }
+    this.version = state.version;
   }
 
   list(): Incident[] {

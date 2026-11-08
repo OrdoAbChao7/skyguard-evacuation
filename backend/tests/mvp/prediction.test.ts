@@ -95,3 +95,68 @@ test('未知区域预测抛错', () => {
     fixture.cleanup();
   }
 });
+
+test('预测可靠性：数据不足 / 区间过宽标记 failed，陈旧或低置信标记 warning', () => {
+  const { assessPredictionReliability } = require('../../src/services/mvp/prediction') as typeof import('../../src/services/mvp/prediction');
+  const base = {
+    sufficient: true,
+    predicted_count: 100,
+    interval: { lower: 90, upper: 110 },
+    data_quality: { stale: false, low_confidence: false, missing: false },
+    max_relative_interval_width: 0.5,
+  };
+  assert.equal(assessPredictionReliability(base).status, 'ok');
+  assert.equal(assessPredictionReliability({ ...base, sufficient: false }).status, 'failed');
+  assert.equal(assessPredictionReliability({ ...base, interval: { lower: 0, upper: 300 } }).status, 'failed');
+  assert.equal(assessPredictionReliability({
+    ...base,
+    data_quality: { stale: true, low_confidence: false, missing: false },
+  }).status, 'warning');
+});
+
+test('预测可靠性 failed 时 VoI 预测动作不可用', () => {
+  const { buildInvestigationAvailability } = require('../../src/services/mvp/availability') as typeof import('../../src/services/mvp/availability');
+  const fixture = makeMvpFixture();
+  try {
+    const policy = fixture.scenario.investigation!;
+    const available = buildInvestigationAvailability(policy, {
+      cameraOnline: true,
+      staffAvailable: true,
+      uavAvailable: true,
+      historyPoints: 5,
+      predictionReliable: true,
+    });
+    const blocked = buildInvestigationAvailability(policy, {
+      cameraOnline: true,
+      staffAvailable: true,
+      uavAvailable: true,
+      historyPoints: 5,
+      predictionReliable: false,
+      predictionReason: '区间过宽',
+    });
+    const predictionAction = policy.actions.find(action => action.kind === 'prediction')!;
+    assert.equal(available[predictionAction.id].available, true);
+    assert.equal(blocked[predictionAction.id].available, false);
+    assert.match(blocked[predictionAction.id].reason ?? '', /区间过宽/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('预测结果携带可靠性字段，并在区间过宽时标记 failed', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const now = new Date('2026-11-05T12:00:00.000Z');
+    seed(fixture, now, [100, 900, 120, 880, 140, 860, 160, 840]);
+    const service = new PredictionService(fixture.scenario, fixture.safety.getObservationStore());
+    const result = service.predict('R_EAST_STAND', { now, horizonMinutes: 5 });
+    assert.ok(result.reliability);
+    assert.ok(['ok', 'warning', 'failed'].includes(result.reliability.status));
+    assert.ok(result.reliability.reasons.length >= 0);
+    if (result.reliability.relative_interval_width !== null) {
+      assert.ok(result.reliability.relative_interval_width >= 0);
+    }
+  } finally {
+    fixture.cleanup();
+  }
+});

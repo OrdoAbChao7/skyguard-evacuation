@@ -470,6 +470,67 @@
     }
   ],
   "demo_scenarios": [],
+  "ui_demos": {
+    "normal": {
+      "region_id": "R_NORTH_STAND",
+      "confidence": 0.9,
+      "series": {
+        "R_NORTH_STAND": [360, 345, 330, 315, 300, 290],
+        "R_SOUTH_STAND": [310, 300, 290, 280, 270, 260],
+        "R_WEST_STAND": [290, 280, 270, 260, 250, 240],
+        "R_EAST_STAND": [300, 320, 345, 370, 395, 420],
+        "R_NORTH_CONCOURSE": [120, 125, 130, 135, 140, 145],
+        "R_SOUTH_CONCOURSE": [110, 112, 114, 116, 118, 120],
+        "R_EAST_PLAZA": [60, 62, 64, 66, 68, 70],
+        "R_WEST_PLAZA": [55, 56, 57, 58, 59, 60]
+      }
+    },
+    "surge": {
+      "region_id": "R_EAST_STAND",
+      "confidence": 0.9,
+      "series": {
+        "R_NORTH_STAND": [300, 305, 310],
+        "R_SOUTH_STAND": [280, 285, 290],
+        "R_WEST_STAND": [260, 265, 270],
+        "R_NORTH_CONCOURSE": [110, 115, 120],
+        "R_SOUTH_CONCOURSE": [105, 108, 112],
+        "R_EAST_PLAZA": [55, 60, 65],
+        "R_WEST_PLAZA": [50, 52, 55]
+      },
+      "degraded": {
+        "region_id": "R_EAST_STAND",
+        "count": 900,
+        "confidence": 0.35
+      }
+    },
+    "reject": {
+      "region_id": "R_EAST_STAND",
+      "offline": {
+        "count": 800,
+        "confidence": 0.9,
+        "reason": "摄像头离线（演示构造）"
+      },
+      "capacity_by_region": {
+        "R_NORTH_STAND": 1300,
+        "R_SOUTH_STAND": 1300,
+        "R_WEST_STAND": 1300,
+        "R_EAST_STAND": 1300,
+        "R_NORTH_CONCOURSE": 700,
+        "R_SOUTH_CONCOURSE": 700,
+        "R_EAST_PLAZA": 400,
+        "R_WEST_PLAZA": 400
+      },
+      "capacity_confidence": 0.95,
+      "incident": {
+        "type": "corridor_closure",
+        "description": "东西主出口临时关闭（控制台演示）",
+        "severity": "critical",
+        "exit_ids": ["E_EAST", "E_WEST"],
+        "region_ids": [],
+        "corridor_ids": []
+      }
+    }
+  },
   "map": {
     "caption": "示意拓扑 · 合成体育场 · 非地理坐标、未空间标定",
     "landmarks": []
@@ -979,6 +1040,14 @@
     ],
     "stop_threshold": 0.02,
     "max_investigations": 2,
+    "coverage_weights": {
+      "neighbor": 0.5,
+      "global": 0.3
+    },
+    "conflict": {
+      "window_minutes": 10,
+      "blend_prior": 0.5
+    },
     "budget": {
       "max_actions": 3,
       "max_total_cost": 1.2,

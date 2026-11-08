@@ -13,6 +13,48 @@ export const PREDICTION_VERSION = '1.0.0';
 
 export type TrendDirection = 'rising' | 'falling' | 'stable' | 'unknown';
 
+export type PredictionReliabilityStatus = 'ok' | 'warning' | 'failed';
+
+export interface PredictionReliability {
+  status: PredictionReliabilityStatus;
+  reasons: string[];
+  relative_interval_width: number | null;
+  max_relative_interval_width: number;
+}
+
+export function assessPredictionReliability(input: {
+  sufficient: boolean;
+  predicted_count: number | null;
+  interval: { lower: number; upper: number } | null;
+  data_quality: { stale: boolean; low_confidence: boolean; missing: boolean };
+  max_relative_interval_width: number;
+}): PredictionReliability {
+  const max = input.max_relative_interval_width;
+  if (!input.sufficient || input.predicted_count === null || input.interval === null) {
+    return {
+      status: 'failed',
+      reasons: ['insufficient_data'],
+      relative_interval_width: null,
+      max_relative_interval_width: max,
+    };
+  }
+  const relative = (input.interval.upper - input.interval.lower) / Math.max(1, input.predicted_count);
+  const reasons: string[] = [];
+  if (relative > max) reasons.push('interval_too_wide');
+  if (input.data_quality.stale) reasons.push('stale_observation');
+  if (input.data_quality.low_confidence) reasons.push('low_confidence');
+  const status: PredictionReliabilityStatus = reasons.includes('interval_too_wide')
+    || reasons.includes('insufficient_data')
+    ? 'failed'
+    : reasons.length > 0 ? 'warning' : 'ok';
+  return {
+    status,
+    reasons,
+    relative_interval_width: Number(relative.toFixed(4)),
+    max_relative_interval_width: max,
+  };
+}
+
 export interface PredictionResult {
   region_id: string;
   region_name: string;
@@ -44,6 +86,8 @@ export interface PredictionResult {
   /** 区间校准系数：用滚动验证误差放大残差区间，避免过度自信。 */
   interval_calibration: number;
   data_quality: { stale: boolean; low_confidence: boolean; missing: boolean; note: string };
+  /** 预测可靠性：区间过宽或数据不足时标记 failed，不用于 VoI 预测动作。 */
+  reliability: PredictionReliability;
   uncertainty_note: string;
 }
 
@@ -170,19 +214,21 @@ export function forecastWithMethod(
 export function selectForecastMethod(
   samples: Array<{ x: number; y: number }>,
   validationPoints = 3,
+  candidates: ForecastMethod[] = FORECAST_METHODS,
 ): {
   method: ForecastMethod;
   selectedBy: 'rolling_validation' | 'default';
   scores: Array<{ method: ForecastMethod; validation_mae: number | null; validation_q95: number | null }>;
 } {
   if (samples.length < Math.max(5, validationPoints + 3)) {
+    const fallback = candidates.includes('blend') ? 'blend' : candidates[0] ?? 'blend';
     return {
-      method: 'blend',
+      method: fallback,
       selectedBy: 'default',
-      scores: FORECAST_METHODS.map(method => ({ method, validation_mae: null, validation_q95: null })),
+      scores: candidates.map(method => ({ method, validation_mae: null, validation_q95: null })),
     };
   }
-  const scores = FORECAST_METHODS.map(method => {
+  const scores = candidates.map(method => {
     const errors: number[] = [];
     for (let index = samples.length - validationPoints; index < samples.length; index += 1) {
       const train = samples.slice(0, index);
@@ -203,8 +249,11 @@ export function selectForecastMethod(
     };
   });
   const scored = scores.filter(item => item.validation_mae !== null) as Array<{ method: ForecastMethod; validation_mae: number; validation_q95: number | null }>;
-  if (scored.length === 0) return { method: 'blend', selectedBy: 'default', scores };
-  const preference = new Map(FORECAST_METHODS.map((method, index) => [method, index]));
+  if (scored.length === 0) {
+    const fallback = candidates.includes('blend') ? 'blend' : candidates[0] ?? 'blend';
+    return { method: fallback, selectedBy: 'default', scores };
+  }
+  const preference = new Map(candidates.map((method, index) => [method, index]));
   scored.sort((a, b) => a.validation_mae - b.validation_mae || (preference.get(a.method) ?? 0) - (preference.get(b.method) ?? 0));
   return { method: scored[0].method, selectedBy: 'rolling_validation', scores };
 }
@@ -215,6 +264,7 @@ export function selectIntervalQuantile(
   method: ForecastMethod,
   horizonMinutes: number,
   validationPoints = 3,
+  quantile = 0.95,
 ): number | null {
   if (samples.length < Math.max(5, validationPoints + horizonMinutes + 3)) return null;
   const errors: number[] = [];
@@ -230,7 +280,8 @@ export function selectIntervalQuantile(
   }
   if (errors.length === 0) return null;
   const sorted = errors.sort((a, b) => a - b);
-  return Number(sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.95))].toFixed(4));
+  const boundedQuantile = Math.max(0.5, Math.min(0.99, quantile));
+  return Number(sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * boundedQuantile))].toFixed(4));
 }
 
 export interface SpatialPredictionResult extends PredictionResult {
@@ -305,12 +356,13 @@ export class PredictionService {
 
     if (!sufficient) {
       const fallback = latestTrusted ? latestTrusted.estimated_count : null;
+      const fallbackInterval = fallback === null ? null : { lower: fallback, upper: fallback };
       return {
         ...base,
         sufficient: false,
         current_count: fallback,
         predicted_count: fallback,
-        interval: fallback === null ? null : { lower: fallback, upper: fallback },
+        interval: fallbackInterval,
         trend: { direction: 'unknown', rate_per_minute: null },
         selection: {
           method: 'persistence',
@@ -318,6 +370,13 @@ export class PredictionService {
           candidates: FORECAST_METHODS.map(method => ({ method, validation_mae: null, validation_q95: null })),
         },
         interval_calibration: 1,
+        reliability: assessPredictionReliability({
+          sufficient: false,
+          predicted_count: fallback,
+          interval: fallbackInterval,
+          data_quality: base.data_quality,
+          max_relative_interval_width: this.scenario.config.prediction_max_relative_interval_width,
+        }),
         uncertainty_note: `数据不足（有效点 ${points.length} 个，跨度 ${Math.round(spanSeconds)} 秒，要求 ≥${MIN_POINTS} 点且 ≥${MIN_SPAN_SECONDS} 秒），仅回退为最近一次有效观测，不给出趋势外推。`,
       };
     }
@@ -352,17 +411,27 @@ export class PredictionService {
 
     const current = clampCount(points[points.length - 1].estimated_count);
     const direction: TrendDirection = slope > 2 ? 'rising' : slope < -2 ? 'falling' : 'stable';
+    const interval = { lower: clampCount(predicted - margin), upper: clampCount(predicted + margin) };
+    const reliability = assessPredictionReliability({
+      sufficient: true,
+      predicted_count: predicted,
+      interval,
+      data_quality: base.data_quality,
+      max_relative_interval_width: this.scenario.config.prediction_max_relative_interval_width,
+    });
 
     return {
       ...base,
       sufficient: true,
       current_count: current,
       predicted_count: predicted,
-      interval: { lower: clampCount(predicted - margin), upper: clampCount(predicted + margin) },
+      interval,
       trend: { direction, rate_per_minute: Number(slope.toFixed(2)) },
       selection: { method: selection.method, selected_by: selection.selectedBy, candidates: selection.scores },
       interval_calibration: intervalCalibration,
-      uncertainty_note: `基于窗口内 ${points.length} 个可信观测，由滚动验证选择 ${selection.method} 方法外推；区间使用验证误差 95 分位校准。未建模事件突变与拥堵反馈，预测 ${horizonMinutes} 分钟内的吞吐上界，不是安全保证。`,
+      reliability,
+      uncertainty_note: `基于窗口内 ${points.length} 个可信观测，由滚动验证选择 ${selection.method} 方法外推；区间使用验证误差 95 分位校准。未建模事件突变与拥堵反馈，预测 ${horizonMinutes} 分钟内的吞吐上界，不是安全保证。`
+        + (reliability.status === 'failed' ? ` 预测可靠性失败：${reliability.reasons.join('、')}。` : ''),
     };
   }
 

@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
   displays: vi.fn(),
   display: vi.fn(),
   frames: vi.fn(),
+  frameQuality: vi.fn(),
 }));
 
 vi.mock('../../../services/perceptionApi', () => ({ default: mocks }));
@@ -36,6 +37,7 @@ const display = {
   limitations: ['地图配准为近似配准：东侧两处目视检查点偏差约 4.4 m 与 5.3 m。'],
   prohibited_claims: ['不得用本数据包报告感知精度或人数准确率。'],
   map: { map_image: 'orthophoto-z20.jpg', width_px: 768, height_px: 768 },
+  zone_areas_m2: { N: 152.52, 'S-A': 50 },
   notice: '感知回放派生数据，无真值标注：仅用于展示，不得用于报告精度。',
   provenance: { source: { dataset: 'CityStreet' } },
   zones: [
@@ -94,6 +96,16 @@ beforeEach(() => {
   mocks.displays.mockResolvedValue([display]);
   mocks.display.mockResolvedValue(display);
   mocks.frames.mockResolvedValue(framesPage);
+  mocks.frameQuality.mockResolvedValue({
+    package_id: 'citystreet-display',
+    frame_id: 2300,
+    observed_at: new Date().toISOString(),
+    notice: '派生显示数据无真值',
+    zones: [
+      { zone_id: 'N', estimated_count: 1, area_m2: 152.52, density_per_m2: 0.0066, confidence: 0.8, valid_for_safety: false, quality: { status: 'degraded', reasons: ['missing_region_mapping'], calibrated: false, demo_mapping: true, ground_truth_available: false, license_status: 'UNVERIFIED' }, limitations: [] },
+      { zone_id: 'S-A', estimated_count: 4, area_m2: 50, density_per_m2: 0.08, confidence: 0.7, valid_for_safety: false, quality: { status: 'degraded', reasons: ['uncalibrated_region_mapping'], calibrated: false, demo_mapping: true, ground_truth_available: false, license_status: 'UNVERIFIED' }, limitations: [] },
+    ],
+  });
 });
 
 describe('PerceptionReplayPanel', () => {
@@ -139,6 +151,11 @@ describe('PerceptionReplayPanel', () => {
     expect(await screen.findByRole('heading', { name: /区域 S-A/ })).toBeInTheDocument();
     expect(screen.getByText(/1\.963 m\/s/)).toBeInTheDocument();
     expect(screen.getByText(/朝向路口 1/)).toBeInTheDocument();
+    expect(screen.getByText(/50\.00 m²/)).toBeInTheDocument();
+    expect(screen.getByText(/0\.080 人\/m²/)).toBeInTheDocument();
+    expect(screen.getByText(/不得用于安全判定/)).toBeInTheDocument();
+    expect(await screen.findByText(/感知质量：degraded/)).toBeInTheDocument();
+    expect(screen.getByText(/不进入安全域/)).toBeInTheDocument();
   });
 
   it('时间轴切换帧后显示对应帧号', async () => {

@@ -101,17 +101,45 @@ export function assessObservation(
   };
 }
 
+export interface ObservationIngestResult {
+  accepted: boolean;
+  duplicate: boolean;
+}
+
+export interface ObservationStoreState {
+  history: Array<[string, DensityObservation[]]>;
+  version: number;
+}
+
 export class ObservationStore {
   private history = new Map<string, DensityObservation[]>();
   private version = 0;
 
-  ingest(observation: DensityObservation): void {
+  /**
+   * 写入观测：
+   *  - 相同来源/提供方/模型/观测时间/人数的重复上报被忽略，不增加版本；
+   *  - 按 observed_at 升序插入，乱序到达的旧观测不会覆盖较新的"最新观测"。
+   */
+  ingest(observation: DensityObservation): ObservationIngestResult {
     const list = this.history.get(observation.region_id) ?? [];
-    list.push(observation);
+    const duplicate = list.some(item =>
+      item.source === observation.source
+      && item.provider === observation.provider
+      && item.model_version === observation.model_version
+      && item.observed_at === observation.observed_at
+      && item.estimated_count === observation.estimated_count
+      && item.valid === observation.valid);
+    if (duplicate) return { accepted: false, duplicate: true };
+
+    const observedAt = new Date(observation.observed_at).getTime();
+    let index = list.length;
+    while (index > 0 && new Date(list[index - 1].observed_at).getTime() > observedAt) index -= 1;
+    list.splice(index, 0, observation);
     // 仅保留最近 200 条，避免内存无界增长
     if (list.length > 200) list.splice(0, list.length - 200);
     this.history.set(observation.region_id, list);
     this.version += 1;
+    return { accepted: true, duplicate: false };
   }
 
   latest(regionId: string): DensityObservation | undefined {
@@ -149,6 +177,31 @@ export class ObservationStore {
 
   getVersion(): number {
     return this.version;
+  }
+
+  /** 完整导出观测历史（不仅是最新快照），用于统一状态持久化。 */
+  exportState(): ObservationStoreState {
+    return {
+      history: [...this.history.entries()].map(([regionId, list]) => [
+        regionId,
+        list.map(item => ({ ...item })),
+      ]),
+      version: this.version,
+    };
+  }
+
+  restoreState(state: ObservationStoreState): void {
+    if (!state || !Array.isArray(state.history) || !Number.isInteger(state.version) || state.version < 0) {
+      throw new Error('观测状态格式非法');
+    }
+    this.history.clear();
+    for (const entry of state.history) {
+      if (!Array.isArray(entry) || entry.length !== 2) throw new Error('观测状态条目非法');
+      const [regionId, list] = entry;
+      if (typeof regionId !== 'string' || !Array.isArray(list)) throw new Error('观测状态条目非法');
+      this.history.set(regionId, list.map(item => ({ ...item })));
+    }
+    this.version = state.version;
   }
 
   reset(): void {

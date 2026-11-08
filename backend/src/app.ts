@@ -7,6 +7,7 @@ import { randomUUID } from 'node:crypto';
 import { apiRouter } from './api/v1/router';
 import { verifyToken } from './api/v1/auth';
 import { rateLimit, securityConfig } from './config/security';
+import { mcpHttpHandler } from './mcp/server';
 
 export function createApp(): Express {
   const app = express();
@@ -30,7 +31,7 @@ export function createApp(): Express {
     crossOriginOpenerPolicy: false,
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   }));
-  app.use(cors({ origin: security.corsOrigins }));
+  app.use(cors({ origin: security.corsOrigins === false ? false : security.corsOrigins }));
   app.use(morgan(process.env.LOG_FORMAT ?? 'dev'));
   app.use((req, res, next) => {
     const requestId = req.header('x-request-id') ?? randomUUID().slice(0, 8);
@@ -43,6 +44,29 @@ export function createApp(): Express {
 
   app.use(express.static(path.resolve(__dirname, '../../frontend/dist')));
   app.use('/api', rateLimit(security));
+  // 同一进程、同一 MvpService 单例：HTTP MCP 与网页读写同一份业务状态。
+  // 可选 Bearer token：生产环境未配置 token 时拒绝提供 MCP（fail closed）。
+  app.use('/mcp', rateLimit(security), (req, res, next) => {
+    const expected = process.env.MCP_HTTP_TOKEN?.trim();
+    if (!expected) {
+      if (process.env.NODE_ENV === 'production') {
+        res.status(503).json({
+          error: { code: 'MCP_DISABLED', message: '生产环境未配置 MCP_HTTP_TOKEN，HTTP MCP 已禁用' },
+        });
+        return;
+      }
+      next();
+      return;
+    }
+    const authorization = req.header('authorization') ?? '';
+    const bearer = authorization.replace(/^Bearer\s+/i, '').trim();
+    const provided = bearer || req.header('x-mcp-token')?.trim() || '';
+    if (provided !== expected) {
+      res.status(401).json({ error: { code: 'MCP_UNAUTHORIZED', message: 'MCP 访问令牌无效' } });
+      return;
+    }
+    next();
+  }, mcpHttpHandler());
 
   if (security.readAuthRequired) {
     app.use('/api/v1', (req, res, next) => {
