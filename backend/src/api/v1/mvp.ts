@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { SECRET, verifyToken } from './auth';
 import { getMvpService } from '../../services/mvp';
 import { WorkOrderCreateSchema, type OpsActor } from '../../services/mvp/ops';
+import { securityConfig } from '../../config/security';
 
 export function createMvpRouter(): Router {
   const router = Router();
@@ -45,8 +46,17 @@ export function createMvpRouter(): Router {
 
   function handle(fn: (req: Request, res: Response) => void | Promise<void>) {
     return (req: Request, res: Response): void => {
-      Promise.resolve(fn(req, res)).catch((error: Error) => {
-        fail(res, 500, 'MVP_API_ERROR', error.message);
+      Promise.resolve(fn(req, res)).catch((error: Error & { status?: number; name?: string }) => {
+        const status = Number.isInteger(error.status) && error.status! >= 400 && error.status! < 500
+          ? error.status!
+          : 500;
+        const code = status === 409
+          ? (error.name === 'IdempotencyConflictError'
+            ? 'IDEMPOTENCY_CONFLICT'
+            : error.name === 'ResourceUnavailableError' ? 'RESOURCE_UNAVAILABLE' : 'CONFLICT')
+          : 'MVP_API_ERROR';
+        const exposeDetail = securityConfig().errorDetail;
+        fail(res, status, code, status >= 500 && !exposeDetail ? '服务器内部错误' : error.message);
       });
     };
   }
@@ -234,6 +244,10 @@ export function createMvpRouter(): Router {
     });
   }));
 
+  router.get('/work-orders/budget', handle((_req, res) => {
+    res.json({ budget: getMvpService().ops.getBudgetStatus() });
+  }));
+
   router.post('/work-orders', ...operatorOnly, handle((req, res) => {
     const parsed = WorkOrderCreateSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -241,7 +255,7 @@ export function createMvpRouter(): Router {
       return;
     }
     const order = getMvpService().ops.createWorkOrder(actorOf(req), parsed.data);
-    res.status(201).json({ work_order: order });
+    res.status(201).json({ work_order: order, budget: getMvpService().ops.getBudgetStatus() });
   }));
 
   router.post('/work-orders/:id/approve', ...operatorOnly, handle((req, res) => {
@@ -295,6 +309,11 @@ export function createMvpRouter(): Router {
   router.post('/work-orders/:id/fail', ...staffOnly, handle((req, res) => {
     const reason = typeof req.body?.reason === 'string' ? req.body.reason : '';
     res.json({ work_order: getMvpService().ops.fail(paramOf(req, 'id'), actorOf(req), reason) });
+  }));
+
+  router.post('/work-orders/:id/cancel', ...operatorOnly, handle((req, res) => {
+    const reason = typeof req.body?.reason === 'string' ? req.body.reason : '';
+    res.json({ work_order: getMvpService().ops.cancel(paramOf(req, 'id'), actorOf(req), reason) });
   }));
 
   // ---------------------------------------------------------------- 运维

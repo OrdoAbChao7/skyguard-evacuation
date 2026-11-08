@@ -183,6 +183,30 @@ test('平台重复返回同一调用且上下文未变时停止循环', async ()
   }
 });
 
+test('平台越权工具被本地权限阻断，且不产生反馈副作用', async () => {
+  const stub = await withSequenceStub([
+    {
+      tool: 'submit_worker_feedback',
+      arguments: { work_order_id: 'WO-X', note: '平台不应直接提交反馈' },
+      reasoning: '越权测试',
+    },
+  ]);
+  const fixture = makeMvpFixture();
+  try {
+    setAgentArtsEnv(stub.baseUrl);
+    const mvp = new MvpService({ scenario: fixture.scenario, safety: fixture.safety, audit: fixture.audit });
+    const run = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'agentarts_forbidden', runtime: 'agentarts' });
+    assert.equal(run.status, 'failed');
+    assert.equal(run.trace.length, 1);
+    assert.equal(run.trace[0].ok, false);
+    assert.equal(mvp.ops.listWorkOrders({}).length, 0);
+  } finally {
+    clearAgentArtsEnv();
+    await stub.close();
+    fixture.cleanup();
+  }
+});
+
 test('人工反馈后自动续接平台运行（AGENTARTS_AUTO_CONTINUE=true）', async () => {
   const stub = await withSequenceStub([
     { tool: 'get_crowd_status', arguments: { region_id: 'R_EAST_STAND' }, reasoning: '读取态势' },

@@ -35,6 +35,10 @@ export interface AgentArtsConfig {
   healthPath: string;
   timeoutMs: number;
   healthRetries: number;
+  /** select 调用在 timeout/429/5xx 时的额外重试次数（0~3）。 */
+  invokeRetries: number;
+  /** 重试退避基数（毫秒，最终按 2^attempt 截断）。 */
+  retryBaseMs: number;
 }
 
 export interface AgentArtsBusinessClosure {
@@ -61,6 +65,7 @@ export interface AgentArtsStatus {
   invoke_path: string;
   health_path: string;
   missing_config: string[];
+  invoke_retries: number;
   detail: string;
   checked_at: string | null;
   http_status: number | null;
@@ -87,6 +92,8 @@ export interface AgentArtsSelectInput {
   regionId: string;
   trigger: string;
   traceId: string;
+  /** 全链路会话 ID（同一次运行的多个步骤共用）；缺省使用 traceId。 */
+  sessionId?: string;
   /** 官方运行时契约的 query 字段（单/多智能体必填）。 */
   query?: string;
   context: Record<string, unknown>;
@@ -116,6 +123,37 @@ const OfficialResponseSchema = z.object({
   createdTime: z.number().optional(),
 }).passthrough();
 
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * 解析平台响应：普通 JSON，或 SSE/流式 `data:` 事件（取最后一个可解析事件）。
+ * 截断/部分写入的 JSON 会显式失败，不会当作成功。
+ */
+function parseAgentArtsText(text: string): unknown {
+  const trimmed = text.trim();
+  if (!trimmed) throw new Error('响应为空');
+  if (/^data:/m.test(trimmed)) {
+    const payloads = trimmed
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(line => line.startsWith('data:'))
+      .map(line => line.slice(5).trim())
+      .filter(payload => payload && payload !== '[DONE]');
+    let lastError: Error | null = null;
+    for (let index = payloads.length - 1; index >= 0; index -= 1) {
+      try {
+        return JSON.parse(payloads[index]);
+      } catch (error) {
+        lastError = error as Error;
+      }
+    }
+    throw new Error(`SSE 事件中没有可解析的 JSON${lastError ? `：${lastError.message}` : ''}`);
+  }
+  return JSON.parse(trimmed);
+}
+
 export function loadAgentArtsConfig(env: NodeJS.ProcessEnv = process.env): AgentArtsConfig {
   const runtime = env.AGENT_RUNTIME === 'agentarts' ? 'agentarts' : 'local';
   const contract = env.AGENTARTS_CONTRACT === 'template' ? 'template' : 'official';
@@ -138,6 +176,8 @@ export function loadAgentArtsConfig(env: NodeJS.ProcessEnv = process.env): Agent
     healthPath: env.AGENTARTS_HEALTH_PATH?.trim() || '/health',
     timeoutMs: Number(env.AGENTARTS_TIMEOUT_MS ?? 8000),
     healthRetries: Math.max(0, Math.min(3, Number(env.AGENTARTS_HEALTH_RETRIES ?? 1))),
+    invokeRetries: Math.max(0, Math.min(3, Number(env.AGENTARTS_INVOKE_RETRIES ?? 1))),
+    retryBaseMs: Math.max(10, Math.min(5000, Number(env.AGENTARTS_RETRY_BASE_MS ?? 250))),
   };
 }
 
@@ -207,6 +247,7 @@ export class AgentArtsClient {
       invoke_path: this.config.invokePath,
       health_path: this.config.healthPath,
       missing_config: missing,
+      invoke_retries: this.config.invokeRetries,
       detail: !configured
         ? `缺少配置：${missing.join('、')}；本地模式可用，未连接 AgentArts。`
         : this.config.runtime === 'agentarts'
@@ -253,6 +294,39 @@ export class AgentArtsClient {
     } finally {
       clearTimeout(timer);
     }
+  }
+
+  /**
+   * 有界重试：只对超时/网络错误/429/5xx 重试；4xx 业务错误立即返回。
+   * 平台决策请求本身不执行本地工具，重试不会重复产生本地副作用。
+   */
+  private async invokeWithRetry(body: unknown, sessionId: string): Promise<Response> {
+    const attempts = this.config.invokeRetries + 1;
+    let lastError: Error | null = null;
+    for (let attempt = 0; attempt < attempts; attempt += 1) {
+      try {
+        const response = await this.request(this.config.invokePath, {
+          method: 'POST',
+          body: JSON.stringify(body),
+        }, sessionId);
+        if (response.ok) return response;
+        if ((response.status === 429 || response.status >= 500) && attempt < attempts - 1) {
+          await response.text().catch(() => undefined);
+          await sleep(Math.min(5000, this.config.retryBaseMs * 2 ** attempt));
+          continue;
+        }
+        return response;
+      } catch (error) {
+        lastError = error as Error;
+        if (attempt < attempts - 1) {
+          await sleep(Math.min(5000, this.config.retryBaseMs * 2 ** attempt));
+          continue;
+        }
+      }
+    }
+    throw new AgentArtsUnavailableError(
+      `AgentArts 调用在 ${attempts} 次尝试后失败：${lastError?.message ?? 'unknown'}`,
+    );
   }
 
   async healthCheck(): Promise<AgentArtsStatus> {
@@ -338,19 +412,16 @@ export class AgentArtsClient {
         contract_version: 'skyguard-agentarts-v1',
       };
 
-    const response = await this.request(this.config.invokePath, {
-      method: 'POST',
-      body: JSON.stringify(body),
-    }, input.traceId);
+    const response = await this.invokeWithRetry(body, input.sessionId ?? input.traceId);
     const text = await response.text();
     if (!response.ok) {
       throw new AgentArtsUnavailableError(`AgentArts 调用失败：HTTP ${response.status} ${text.slice(0, 300)}`);
     }
     let parsed: unknown;
     try {
-      parsed = JSON.parse(text);
+      parsed = parseAgentArtsText(text);
     } catch {
-      throw new AgentArtsUnavailableError(`AgentArts 返回不是 JSON：${text.slice(0, 200)}`);
+      throw new AgentArtsUnavailableError(`AgentArts 返回不是有效 JSON/SSE：${text.slice(0, 200)}`);
     }
 
     if (this.config.contract === 'official') {

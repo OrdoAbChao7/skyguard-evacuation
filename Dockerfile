@@ -11,7 +11,8 @@ FROM node:24-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production \
     PORT=8010 \
-    SAFETY_SCENARIO_FILE=stadium-evacuation.json
+    SAFETY_SCENARIO_FILE=stadium-evacuation.json \
+    MVP_STATE_FILE=/app/data/mvp-state.json
 COPY --from=build /app/backend/dist ./backend/dist
 COPY --from=build /app/backend/package*.json ./backend/
 COPY --from=build /app/backend/node_modules ./backend/node_modules

@@ -65,6 +65,11 @@ export interface DecisionTrace {
 const MAX_AUDIT_IN_MEMORY = 1000;
 const MAX_TRACES_IN_MEMORY = 200;
 
+export interface AuditLogState {
+  entries: AuditEntry[];
+  traces: DecisionTrace[];
+}
+
 export class AuditLog {
   private entries: AuditEntry[] = [];
   private traces = new Map<string, DecisionTrace>();
@@ -149,6 +154,34 @@ export class AuditLog {
       .reverse()
       .map(id => this.traces.get(id)!)
       .filter(Boolean);
+  }
+
+  exportState(): AuditLogState {
+    return {
+      entries: this.entries.map(item => ({ ...item })),
+      traces: this.traceOrder.map(id => this.traces.get(id)!).filter(Boolean).map(item => ({ ...item })),
+    };
+  }
+
+  /** 只恢复内存视图；JSONL 审计文件仍为追加式事实来源。 */
+  restoreState(state: AuditLogState): void {
+    if (!state || !Array.isArray(state.entries) || !Array.isArray(state.traces)) {
+      throw new Error('审计状态格式非法');
+    }
+    this.entries = state.entries
+      .filter(item => item && typeof item.id === 'string')
+      .slice(-MAX_AUDIT_IN_MEMORY);
+    this.traces.clear();
+    this.traceOrder = [];
+    for (const trace of state.traces) {
+      if (!trace || typeof trace.trace_id !== 'string') continue;
+      this.traces.set(trace.trace_id, { ...trace });
+      this.traceOrder.push(trace.trace_id);
+    }
+    if (this.traceOrder.length > MAX_TRACES_IN_MEMORY) {
+      const overflow = this.traceOrder.length - MAX_TRACES_IN_MEMORY;
+      for (const id of this.traceOrder.splice(0, overflow)) this.traces.delete(id);
+    }
   }
 
   reset(): void {

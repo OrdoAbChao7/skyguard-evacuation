@@ -242,6 +242,7 @@ export class AgentService {
         : 0;
 
       uavAvailable = uavUnits.some(unit => unit.status === 'available');
+      const predictionReliable = prediction ? prediction.reliability?.status !== 'failed' : false;
       const availability: AvailabilityMap = buildInvestigationAvailability(policy, {
         cameraOnline: Boolean(camera && camera.state !== 'offline'),
         cameraReason: `摄像头离线：${String(camera?.reason ?? '无可用设备')}`,
@@ -250,6 +251,10 @@ export class AgentService {
         uavAvailable,
         uavReason: '没有可用无人机或未获批准',
         historyPoints: trendPoints,
+        predictionReliable,
+        predictionReason: prediction
+          ? `预测可靠性 ${prediction.reliability?.status ?? 'unknown'}：${(prediction.reliability?.reasons ?? []).join('、') || '区间过宽或数据不足'}`
+          : '预测服务不可用',
       });
 
       for (let round = 1; round <= policy.max_investigations; round += 1) {

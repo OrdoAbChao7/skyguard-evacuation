@@ -2,9 +2,18 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { app } from './app';
 import { getSafetyService } from './services/safety';
+import { getMvpService } from './services/mvp';
 import { scenarioPath } from './services/safety/scenario';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+
+// 统一状态在启动阶段完成校验；损坏或版本不兼容时 fail closed。
+try {
+  getMvpService();
+} catch (error) {
+  console.error('[FATAL] 统一状态初始化失败，拒绝启动：', (error as Error).message);
+  process.exit(1);
+}
 
 const PORT = parseInt(process.env.PORT || '8010', 10);
 const server = app.listen(PORT, () => {

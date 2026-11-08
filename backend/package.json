@@ -23,7 +23,8 @@
     "verify:evidence": "tsx scripts/verify-evidence.ts",
     "manifest:evidence": "tsx scripts/evidence-manifest.ts",
     "benchmark:v62": "tsx scripts/v62-benchmark.ts",
-    "benchmark:voi-v2": "tsx scripts/voi-v2-benchmark.ts"
+    "benchmark:voi-v2": "tsx scripts/voi-v2-benchmark.ts",
+    "benchmark:v65": "tsx scripts/v65-prediction-benchmark.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

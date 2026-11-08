@@ -19,6 +19,8 @@ import { AgentArtsClient, loadAgentArtsConfig, type AgentArtsStatus } from './ag
 import { buildRegionGraph, propagateRisk, rankInvestigationPriorities } from './risk-graph';
 import { decideMultiRegionInvestigation, priorBeliefsForRegions } from './multi-voi';
 import { buildInvestigationAvailability } from './availability';
+import { PersistentStateStore, StateStoreError, type LoadedState } from '../state/persistent-store';
+import type { PersistedAppState } from '../state/app-state';
 
 export * from './prediction';
 export * from './voi';
@@ -59,6 +61,7 @@ export interface MvpDashboard {
   agentarts: AgentArtsStatus;
   replay: ReplayStatus;
   audit: Array<Record<string, unknown>>;
+  state_store?: { enabled: boolean; writable: boolean; revision: number; path: string | null };
   generated_at: string;
 }
 
@@ -94,11 +97,24 @@ export class MvpService {
   private runOrder: string[] = [];
   private agentArtsCache: { status: AgentArtsStatus; at: number } | null = null;
   private readonly runsFile: string | null;
+  private readonly stateStore: PersistentStateStore<PersistedAppState> | null;
+  private stateRevision = 0;
+  private stateWritable = true;
+  private restoring = true;
+  private persisting = false;
+  private transactionDepth = 0;
+  private stateDirty = false;
 
   constructor(options: MvpServiceOptions = {}) {
     this.scenario = options.scenario ?? loadSafetyScenario();
     this.audit = options.audit ?? options.safety?.getAuditLog() ?? new AuditLog();
+    const stateFile = process.env.MVP_STATE_FILE?.trim() || null;
+    this.stateStore = stateFile ? new PersistentStateStore<PersistedAppState>(stateFile, 1) : null;
+    // 先加载并校验；损坏或版本不兼容时在构造阶段 fail closed。
+    const restoredState = this.stateStore?.load() ?? null;
+
     this.safety = options.safety ?? new SafetyDecisionService({ scenario: this.scenario, auditLog: this.audit });
+    this.safety.setStateChangeHook(() => this.handleStateChange());
     this.prediction = new PredictionService(this.scenario, this.safety.getObservationStore());
     this.replay = new ReplayService(this.scenario);
     this.ops = new OpsService(
@@ -109,7 +125,9 @@ export class MvpService {
         const version = this.safety.getVersions();
         return { observation: version.observation, constraint: version.constraint, scenario: version.scenario };
       },
-      process.env.OPS_PERSIST_FILE?.trim() || undefined,
+      this.stateStore ? undefined : (process.env.OPS_PERSIST_FILE?.trim() || undefined),
+      () => this.handleStateChange(),
+      fn => this.withTransaction(fn),
     );
 
     const context: ToolContext = {
@@ -152,12 +170,142 @@ export class MvpService {
     });
     this.agent = new AgentService(this.scenario, this.registry);
     this.agentArts = new AgentArtsClient(loadAgentArtsConfig());
-    this.runsFile = process.env.MVP_RUNS_FILE?.trim() || null;
+    this.runsFile = this.stateStore ? null : (process.env.MVP_RUNS_FILE?.trim() || null);
     this.restoreRuns();
+    if (restoredState) this.applyRestoredState(restoredState);
+    this.restoring = false;
+    // 首次启动且已配置统一状态文件：立即建立 revision=1 的可校验快照。
+    if (this.stateStore && !restoredState) this.persistState();
+  }
+
+  private applyRestoredState(loaded: LoadedState<PersistedAppState>): void {
+    const state = loaded.payload;
+    if (!state || state.schema_version !== 1) {
+      throw new StateStoreError('STATE_RESTORE_FAILED', '统一状态 schema_version 不受支持');
+    }
+    if (state.scenario?.id !== this.scenario.scenario_id || state.scenario?.version !== this.scenario.version) {
+      throw new StateStoreError(
+        'STATE_SCENARIO_MISMATCH',
+        `状态文件场景 ${state.scenario?.id ?? 'unknown'}@${state.scenario?.version ?? 'unknown'} 与当前场景 `
+        + `${this.scenario.scenario_id}@${this.scenario.version} 不一致；拒绝恢复`,
+      );
+    }
+    try {
+      this.safety.restoreState(state.safety);
+      this.audit.restoreState(state.audit);
+      this.ops.applyPersistedState(state.ops);
+      this.runs.clear();
+      for (const run of Array.isArray(state.runs) ? state.runs : []) {
+        if (run && typeof run.run_id === 'string') this.runs.set(run.run_id, run);
+      }
+      this.runOrder = (Array.isArray(state.run_order) ? state.run_order : Array.from(this.runs.keys()))
+        .filter(id => this.runs.has(id))
+        .slice(-100);
+      this.stateRevision = loaded.revision;
+      this.audit.record({
+        actor: 'system',
+        role: 'system',
+        action: 'system.state_restored',
+        entity_type: 'state_store',
+        summary: `从 ${loaded.source} 恢复统一状态 revision=${loaded.revision}`,
+        result: 'success',
+        after: {
+          source: loaded.source,
+          revision: loaded.revision,
+          saved_at: loaded.saved_at,
+          work_orders: this.ops.listWorkOrders({}).length,
+          runs: this.runOrder.length,
+        },
+      });
+    } catch (error) {
+      throw new StateStoreError('STATE_RESTORE_FAILED', `统一状态恢复失败：${(error as Error).message}`);
+    }
+  }
+
+  /** 状态写入失败后进入只读；后续写操作直接失败，等待人工重启/修复。 */
+  private handleStateChange(): void {
+    if (this.restoring) return;
+    if (this.transactionDepth > 0) {
+      this.stateDirty = true;
+      return;
+    }
+    this.persistState();
+  }
+
+  /** 把跨安全域/工单/反馈的多步变更合并为一次统一状态提交。 */
+  private withTransaction<T>(fn: () => T): T {
+    this.transactionDepth += 1;
+    try {
+      return fn();
+    } finally {
+      this.transactionDepth -= 1;
+      if (this.transactionDepth === 0 && this.stateDirty && !this.restoring) {
+        this.stateDirty = false;
+        this.persistState();
+      }
+    }
+  }
+
+  private persistState(): void {
+    if (!this.stateStore || this.restoring) return;
+    if (!this.stateWritable) {
+      throw new StateStoreError('STATE_READ_ONLY', '统一状态存储不可写；请检查磁盘并重启服务');
+    }
+    if (this.persisting) return;
+    this.persisting = true;
+    try {
+      const payload: PersistedAppState = {
+        schema_version: 1,
+        saved_at: new Date().toISOString(),
+        scenario: { id: this.scenario.scenario_id, version: this.scenario.version },
+        safety: this.safety.exportState(),
+        ops: this.ops.exportState(),
+        runs: this.runOrder.map(id => this.runs.get(id)!).filter(Boolean),
+        run_order: [...this.runOrder],
+        audit: this.audit.exportState(),
+      };
+      this.stateRevision = this.stateStore.save(payload, this.stateRevision);
+    } catch (error) {
+      this.stateWritable = false;
+      const wrapped = error instanceof StateStoreError
+        ? error
+        : new StateStoreError('STATE_WRITE_FAILED', `统一状态写入失败：${(error as Error).message}`);
+      try {
+        this.audit.record({
+          actor: 'system',
+          role: 'system',
+          action: 'system.state_persist_failed',
+          entity_type: 'state_store',
+          summary: '统一状态写入失败，服务进入只读状态',
+          result: 'failure',
+          reason: wrapped.message,
+        });
+      } catch {
+        // 审计失败不掩盖原始存储错误。
+      }
+      throw wrapped;
+    } finally {
+      this.persisting = false;
+    }
+  }
+
+  getStateStoreHealth(): {
+    enabled: boolean;
+    writable: boolean;
+    revision: number;
+    path: string | null;
+  } {
+    return {
+      enabled: Boolean(this.stateStore),
+      writable: this.stateWritable,
+      revision: this.stateRevision,
+      path: this.stateStore?.path ?? null,
+    };
   }
 
   /** 可选持久化：MVP_RUNS_FILE 指向 JSON 快照；未配置时保持纯内存。 */
   private restoreRuns(): void {
+    if (this.stateStore) return;
     if (!this.runsFile || !fs.existsSync(this.runsFile)) return;
     try {
       const raw = JSON.parse(fs.readFileSync(this.runsFile, 'utf8')) as { runs?: AgentRun[]; order?: string[] };
@@ -190,6 +338,7 @@ export class MvpService {
   }
 
   private persistRuns(): void {
+    if (this.stateStore) return;
     if (!this.runsFile) return;
     try {
       fs.mkdirSync(path.dirname(this.runsFile), { recursive: true });
@@ -250,6 +399,7 @@ export class MvpService {
       agentarts: this.getAgentArtsStatusCached(),
       replay: this.replay.status(),
       audit: this.audit.list(20) as unknown as Array<Record<string, unknown>>,
+      state_store: this.getStateStoreHealth(),
       generated_at: new Date().toISOString(),
     };
   }
@@ -369,6 +519,7 @@ export class MvpService {
         regionId: options.regionId,
         trigger: options.trigger,
         traceId: `${traceId}-S${step}`,
+        sessionId: traceId,
         context: {
           step,
           safety_state: current.state,
@@ -588,7 +739,8 @@ export class MvpService {
       const evicted = this.runOrder.shift();
       if (evicted) this.runs.delete(evicted);
     }
-    this.persistRuns();
+    if (this.stateStore) this.persistState();
+    else this.persistRuns();
   }
 
   listAgentRuns(limit = 20): AgentRun[] {
@@ -669,6 +821,7 @@ export class MvpService {
       new Date(Date.now() - this.scenario.config.trend_window_seconds * 1000),
       new Date(),
     ).filter(item => item.valid).length;
+    const prediction = this.prediction.predict(target);
     const availability = buildInvestigationAvailability(policy, {
       cameraOnline: Boolean(camera && camera.state !== 'offline'),
       cameraReason: camera ? '摄像头离线' : '无可用摄像头',
@@ -677,6 +830,8 @@ export class MvpService {
       uavAvailable,
       uavReason: '没有可用无人机',
       historyPoints,
+      predictionReliable: prediction.reliability?.status !== 'failed',
+      predictionReason: `预测可靠性 ${prediction.reliability?.status ?? 'unknown'}：${(prediction.reliability?.reasons ?? []).join('、') || '区间过宽或数据不足'}`,
     });
     const decision = decideMultiRegionInvestigation(policy, target, beliefs, graph, availability);
     return {
@@ -824,12 +979,19 @@ export class MvpService {
 
   // ---------------------------------------------------------------- 重置
   resetAll(actor: OpsActor = { username: 'system', role: 'admin' }): void {
-    this.safety.reset(actor);
-    this.ops.reset();
-    this.replay.reset();
-    this.runs.clear();
-    this.runOrder = [];
-    this.agentArtsCache = null;
-    this.persistRuns();
+    const previousRestoring = this.restoring;
+    this.restoring = true;
+    try {
+      this.safety.reset(actor);
+      this.ops.reset();
+      this.replay.reset();
+      this.runs.clear();
+      this.runOrder = [];
+      this.agentArtsCache = null;
+    } finally {
+      this.restoring = previousRestoring;
+    }
+    if (this.stateStore) this.persistState();
+    else this.persistRuns();
   }
 }

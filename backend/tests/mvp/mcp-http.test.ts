@@ -52,6 +52,23 @@ test('HTTP MCP 与网页共享同一业务状态', { timeout: 30_000 }, async ()
     assert.ok(webVisible);
     assert.equal(webVisible?.status, 'PENDING_APPROVAL');
 
+    // 可选 Bearer token：配置后无令牌请求被拒绝，带令牌请求可进入 MCP 处理。
+    process.env.MCP_HTTP_TOKEN = 'mcp-http-secret';
+    const url = `http://127.0.0.1:${address.port}/mcp`;
+    const denied = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: '{}',
+    });
+    assert.equal(denied.status, 401);
+    const allowed = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: 'Bearer mcp-http-secret' },
+      body: '{}',
+    });
+    assert.notEqual(allowed.status, 401);
+    delete process.env.MCP_HTTP_TOKEN;
+
     await client.close();
   } finally {
     await client.close().catch(() => undefined);

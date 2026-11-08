@@ -1,6 +1,6 @@
 /** 安全相关运行时配置（全部来自环境变量，禁止在代码里硬编码生产值）。 */
 export interface SecurityConfig {
-  corsOrigins: string[] | '*';
+  corsOrigins: string[] | '*' | false;
   rateLimitWindowMs: number;
   rateLimitMax: number;
   readAuthRequired: boolean;
@@ -12,7 +12,10 @@ export interface SecurityConfig {
 export function securityConfig(env: NodeJS.ProcessEnv = process.env): SecurityConfig {
   const origins = env.CORS_ORIGINS?.trim();
   return {
-    corsOrigins: !origins || origins === '*' ? '*' : origins.split(',').map(item => item.trim()).filter(Boolean),
+    // 生产环境未显式配置 CORS 时不放行跨域（前端与 API 同源部署）。
+    corsOrigins: !origins
+      ? (env.NODE_ENV === 'production' ? false : '*')
+      : origins === '*' ? '*' : origins.split(',').map(item => item.trim()).filter(Boolean),
     rateLimitWindowMs: Math.max(1000, Number(env.RATE_LIMIT_WINDOW_MS ?? 60_000)),
     rateLimitMax: Math.max(1, Number(env.RATE_LIMIT_MAX ?? 300)),
     readAuthRequired: env.READ_AUTH_REQUIRED === 'true',

@@ -255,6 +255,11 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
               可达性 {connectivityLabel} · 业务闭环 {closureVerified ? '已验证' : '未验证'}
             </span>
           )}
+          {dashboard?.state_store?.enabled && (
+            <span className="mvp-muted" title={dashboard.state_store.path ?? ''}>
+              状态快照 rev {dashboard.state_store.revision}{dashboard.state_store.writable ? '' : ' · 只读'}
+            </span>
+          )}
           <a className="mvp-link" href="/staff">工作人员移动端</a>
           <button type="button" disabled={busy !== null} onClick={() => void act('demo-A', async () => {
             const result = await mvpApi.runDemo('A_normal');

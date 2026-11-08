@@ -55,6 +55,8 @@
 | `AGENTARTS_TIMEOUT_MS` | 否 | `8000` | 单次请求超时 |
 | `AGENTARTS_HEALTH_RETRIES` | 否 | `1` | 健康探测重试次数（0~3，仅 GET） |
 | `AGENTARTS_MAX_STEPS` | 否 | `4` | 单次运行的最大平台决策步数（1~10） |
+| `AGENTARTS_INVOKE_RETRIES` | 否 | `1` | 超时/429/5xx 的额外重试次数（0~3）；4xx 不重试 |
+| `AGENTARTS_RETRY_BASE_MS` | 否 | `250` | 重试退避基数（指数退避，封顶 5s） |
 | `AGENTARTS_AUTO_CONTINUE` | 否 | `false` | 工单反馈后是否自动续接平台运行 |
 
 > 密钥只能通过本地环境或部署密钥注入，禁止写入仓库。
@@ -122,7 +124,11 @@ X-Invoke-Mode: published            # 可选
 5. 同一工具+参数+上下文版本重复出现 → `no_progress_repeated_call`，不再执行；
 6. 工具失败 → `failed`，不重放写操作；
 7. 人工反馈后，若 `AGENTARTS_AUTO_CONTINUE=true` 且运行处于等待状态，
-   触发一次续接；平台故障不影响本地工单闭环。
+   触发一次续接；平台故障不影响本地工单闭环；
+8. `select` 对超时/429/5xx 做有界重试；4xx 不重试；SSE/流式 `data:` 响应取最后一个
+   可解析事件，截断/部分 JSON 显式失败；
+9. 同一次运行的所有步骤共用 `x-hw-agentarts-session-id`（运行级 Trace ID），
+   每步 `inputs.trace_id` 独立，便于全链路关联。
 
 ## 6. 已完成验证
 

@@ -8,6 +8,8 @@
  * 响应里 license_status 为 UNKNOWN，前端必须按"来源未标明"展示。
  */
 import { Router, type Request, type Response } from 'express';
+import fs from 'node:fs';
+import path from 'node:path';
 import {
   DisplayPackageError,
   getDisplayFramePage,
@@ -15,6 +17,7 @@ import {
   loadDisplayPackage,
   readBasemap,
 } from '../../services/perception/display';
+import { adaptDisplayFrame, zoneAreaM2 } from '../../services/perception/adapter';
 
 function fail(res: Response, status: number, code: string, message: string, detail?: unknown): void {
   res.status(status).json({ error: { code, message, detail } });
@@ -64,11 +67,81 @@ perceptionRouter.get('/displays/:id', (req, res) => {
     ...loaded.summary,
     map: loaded.map,
     zones: loaded.zones,
+    zone_areas_m2: Object.fromEntries(loaded.zones.map(zone => [zone.zone_id, zoneAreaM2(zone.ground_polygon_m)])),
     provenance: loaded.provenance,
     notice: loaded.summary.ground_truth_available
       ? '感知回放派生数据：仅用于展示，不参与规划与校验。'
       : '感知回放派生数据，无真值标注：仅用于展示，不得用于报告精度。',
   });
+});
+
+/**
+ * 单帧感知质量预览（只读）：把派生帧适配为“人数→面积→密度→质量”草稿。
+ * 不写入安全域；缺少 surveyed 标定时 valid_for_safety 恒为 false。
+ */
+perceptionRouter.get('/displays/:id/frames/:frameId/quality', (req, res) => {
+  const loaded = resolvePackage(req, res);
+  if (!loaded) return;
+  const frameId = Number(paramOf(req, 'frameId'));
+  if (!Number.isFinite(frameId) || !Number.isInteger(frameId)) {
+    fail(res, 400, 'INVALID_FRAME_ID', 'frameId 必须是整数');
+    return;
+  }
+  const frame = loaded.frames.find(item => item.frame_id === frameId);
+  if (!frame) {
+    fail(res, 404, 'FRAME_NOT_FOUND', `帧 ${frameId} 不存在`);
+    return;
+  }
+  const last = loaded.frames[loaded.frames.length - 1];
+  const observedAt = new Date(Date.now() - Math.max(0, last.timestamp_ms - frame.timestamp_ms)).toISOString();
+  const drafts = adaptDisplayFrame(loaded, frame, { observed_at: observedAt });
+  res.json({
+    package_id: loaded.summary.package_id,
+    frame_id: frame.frame_id,
+    observed_at: observedAt,
+    zones: drafts.map(draft => ({
+      zone_id: draft.provenance.zone_id,
+      estimated_count: draft.estimated_count,
+      area_m2: draft.area_m2,
+      density_per_m2: draft.density_per_m2,
+      confidence: draft.confidence,
+      valid_for_safety: draft.valid_for_safety,
+      quality: draft.quality,
+      limitations: draft.limitations,
+    })),
+    notice: '派生显示数据无真值、配准近似；未提供 surveyed 区域映射时不得进入安全域。',
+  });
+});
+
+/** 公开数据集真实推理结果摘要（只读；没有结果文件时明确 404）。 */
+perceptionRouter.get('/real-data/summary', (_req, res) => {
+  const file = path.resolve(__dirname, '../../../../evaluation/real-data/RESULTS.json');
+  if (!fs.existsSync(file)) {
+    fail(res, 404, 'REAL_DATA_RESULTS_MISSING', '尚未生成真实数据评测结果');
+    return;
+  }
+  try {
+    const result = JSON.parse(fs.readFileSync(file, 'utf8')) as Record<string, unknown>;
+    res.json({
+      dataset: result.dataset,
+      part: result.part,
+      split: result.split,
+      model: result.model,
+      environment: result.environment,
+      images: result.images,
+      metrics: result.metrics,
+      localization: result.localization,
+      latency_ms: result.latency_ms,
+      generated_at: result.generated_at,
+      caveats: [
+        '公开数据集 + 官方权重；不是 SkyGuard 自训练模型，也不是真实场馆实测。',
+        '许可 UNVERIFIED；不得据此声称现场精度。',
+        '人数到区域密度仍需场地面积与摄像机标定。',
+      ],
+    });
+  } catch (error) {
+    fail(res, 500, 'REAL_DATA_RESULTS_INVALID', `真实数据结果无法解析：${(error as Error).message}`);
+  }
 });
 
 /** 逐帧点位分页读取，避免整包 1.6 MB 每帧轮询。 */

@@ -11,6 +11,8 @@
   - **Streamable HTTP**：挂在既有 Express 服务 `/mcp`，与网页 API 共享同一个
     `MvpService` 单例（工单、人员、证据、运行记录读写同一份状态，见 G03）。
     每个请求新建 transport/server，底层服务不新建。
+- HTTP 鉴权：`MCP_HTTP_TOKEN` 设置后要求 `Authorization: Bearer <token>` 或
+  `x-mcp-token`；生产环境未设置时 `/mcp` 返回 503（fail closed）。
 - 身份：服务端环境变量决定，客户端不能通过参数自报角色。
   `MCP_ACTOR_ROLE=agent|viewer|staff`（默认 `agent`）。
   - `staff` 模式必须同时提供 `MCP_STAFF_ID` 与 `MCP_STAFF_CODE`，否则降级为 `viewer`；

@@ -60,6 +60,12 @@ export interface PredictionResult {
   interval: { lower: number; upper: number } | null;
   trend: { direction: 'rising' | 'falling' | 'stable' | 'unknown'; rate_per_minute: number | null };
   data_quality: { stale: boolean; low_confidence: boolean; missing: boolean; note: string };
+  reliability?: {
+    status: 'ok' | 'warning' | 'failed';
+    reasons: string[];
+    relative_interval_width: number | null;
+    max_relative_interval_width: number;
+  };
   uncertainty_note: string;
 }
 
@@ -198,6 +204,7 @@ export interface MvpDashboard {
   work_orders: WorkOrder[];
   agent_runs: AgentRun[];
   agentarts: AgentArtsStatus;
+  state_store?: { enabled: boolean; writable: boolean; revision: number; path: string | null };
   replay: { loaded: boolean; dataset_name: string | null; total_rows: number; cursor: number; completed: boolean };
   audit: Array<{
     id: string;

@@ -106,6 +106,11 @@ export interface ObservationIngestResult {
   duplicate: boolean;
 }
 
+export interface ObservationStoreState {
+  history: Array<[string, DensityObservation[]]>;
+  version: number;
+}
+
 export class ObservationStore {
   private history = new Map<string, DensityObservation[]>();
   private version = 0;
@@ -172,6 +177,31 @@ export class ObservationStore {
 
   getVersion(): number {
     return this.version;
+  }
+
+  /** 完整导出观测历史（不仅是最新快照），用于统一状态持久化。 */
+  exportState(): ObservationStoreState {
+    return {
+      history: [...this.history.entries()].map(([regionId, list]) => [
+        regionId,
+        list.map(item => ({ ...item })),
+      ]),
+      version: this.version,
+    };
+  }
+
+  restoreState(state: ObservationStoreState): void {
+    if (!state || !Array.isArray(state.history) || !Number.isInteger(state.version) || state.version < 0) {
+      throw new Error('观测状态格式非法');
+    }
+    this.history.clear();
+    for (const entry of state.history) {
+      if (!Array.isArray(entry) || entry.length !== 2) throw new Error('观测状态条目非法');
+      const [regionId, list] = entry;
+      if (typeof regionId !== 'string' || !Array.isArray(list)) throw new Error('观测状态条目非法');
+      this.history.set(regionId, list.map(item => ({ ...item })));
+    }
+    this.version = state.version;
   }
 
   reset(): void {

@@ -461,3 +461,15 @@ evaluation/reliability/<run-id>/     # 故障矩阵、恢复记录
 
 新增证据目录：`evaluation/voi-v2/2026-11-08T17-00-16-896Z/`。
 本轮验证：后端 142/142、前端 16/16、构建与两个 demo 通过。
+
+## 18. V6.5 进展（2026-11-09）
+
+| ID | 状态 | 证据 |
+| --- | --- | --- |
+| G05 | **完成（单实例）** | 工单创建预留、审批确认、拒绝/取消/过期/失败释放、完成结算、幂等指纹、并发同人拒绝、派发前复核；`reservations.test.ts` |
+| G08 | **完成（单实例）** | `MVP_STATE_FILE` 原子快照、SHA-256/revision、backup/temp、损坏 fail closed、跨业务恢复与事务范围；`state-persistence.test.ts` 与进程重启实测 |
+| G01 | 强化（本地） | 重试/SSE/截断失败/会话 Trace/越权拒绝/反馈续接 stub 测试；仍无真实租户 |
+| G11 | 完成实验，局限保留 | `evaluation/v65/` 30 种子 × 6 机制；surge 95% 覆盖 0.738；自适应非机制最佳 |
+| 感知闭环 | 完成本地门禁 | `perception/adapter.ts`、质量 API、前端面积/密度；未标定数据 fail closed |
+
+仍为外部阻塞：AgentArts 租户、昇腾设备、真实场馆/用户研究、官方赛规检索、Docker daemon。

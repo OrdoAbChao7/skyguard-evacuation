@@ -20,10 +20,10 @@ import type {
   SafetyState,
   SafetyValidationResult,
 } from './types';
-import { assessObservation, buildObservation, ObservationStore, type ObservationAssessment } from './observations';
+import { assessObservation, buildObservation, ObservationStore, type ObservationAssessment, type ObservationStoreState } from './observations';
 import { assessRegionRisk, riskSummary, type RegionRisk } from './risk';
 import { resolveEffectiveNetwork, type EffectiveNetwork } from './network';
-import { IncidentStore, IncidentTransitionError, type CreateIncidentInput } from './incidents';
+import { IncidentStore, IncidentTransitionError, type CreateIncidentInput, type IncidentStoreState } from './incidents';
 import { AuditLog, type AuditActor, type DecisionTrace } from './audit';
 import { decideSafetyState, type SafetyStateSnapshot } from './state-machine';
 import { validateSafetyPlan } from './validator';
@@ -44,6 +44,24 @@ export interface SafetyDecisionOptions {
   /** 测试/诊断注入点：替换规划器实现。 */
   planBuilder?: (input: PlanInput) => PlanOutput;
   now?: () => Date;
+  /** 业务状态变化回调（统一持久化）。 */
+  onStateChange?: () => void;
+}
+
+export interface SafetyPersistedState {
+  schema_version: 1;
+  scenario: { id: string; version: string };
+  observation_store: ObservationStoreState;
+  incident_store: IncidentStoreState;
+  constraint_version: number;
+  published_plan: EvacuationPlan | null;
+  candidate_plan: EvacuationPlan | null;
+  validation: SafetyValidationResult | null;
+  last_valid_plan: { plan_id: string; created_at: string; state: SafetyState } | null;
+  state_snapshot: SafetyStateSnapshot | null;
+  state_entered_at: string;
+  inference_health: { healthy: boolean; reason?: string };
+  exclusions: Array<{ kind: string; id: string; reason: string }>;
 }
 
 export interface RecomputeResult {
@@ -131,6 +149,7 @@ export class SafetyDecisionService {
   private stateEnteredAt = new Date().toISOString();
   private inferenceHealth: { healthy: boolean; reason?: string } = { healthy: true };
   private lastPlanExclusions: Array<{ kind: string; id: string; reason: string }> = [];
+  private onStateChange?: () => void;
 
   constructor(options: SafetyDecisionOptions) {
     this.scenario = options.scenario;
@@ -140,6 +159,60 @@ export class SafetyDecisionService {
     this.simulationProvider = options.simulationProvider ?? new SimulationCrowdProvider();
     this.planBuilder = options.planBuilder ?? planEvacuation;
     this.now = options.now ?? (() => new Date());
+    this.onStateChange = options.onStateChange;
+  }
+
+  private notifyStateChange(): void {
+    this.onStateChange?.();
+  }
+
+  /** 由 MvpService 绑定统一持久化；覆盖旧的单服务回调。 */
+  setStateChangeHook(hook?: () => void): void {
+    this.onStateChange = hook;
+  }
+
+  exportState(): SafetyPersistedState {
+    return {
+      schema_version: 1,
+      scenario: { id: this.scenario.scenario_id, version: this.scenario.version },
+      observation_store: this.observations.exportState(),
+      incident_store: this.incidents.exportState(),
+      constraint_version: this.constraintVersion,
+      published_plan: this.publishedPlan ?? null,
+      candidate_plan: this.candidatePlan ?? null,
+      validation: this.lastValidation ?? null,
+      last_valid_plan: this.lastValidPlanRef ?? null,
+      state_snapshot: this.stateSnapshot ?? null,
+      state_entered_at: this.stateEnteredAt,
+      inference_health: { ...this.inferenceHealth },
+      exclusions: this.lastPlanExclusions.map(item => ({ ...item })),
+    };
+  }
+
+  restoreState(state: SafetyPersistedState): void {
+    if (!state || state.schema_version !== 1) throw new Error('安全状态版本不受支持');
+    if (!state.scenario || state.scenario.id !== this.scenario.scenario_id) {
+      throw new Error(`安全状态场景不匹配：文件 ${state.scenario?.id ?? 'unknown'}，当前 ${this.scenario.scenario_id}`);
+    }
+    if (state.scenario.version !== this.scenario.version) {
+      throw new Error(`安全状态场景版本不匹配：文件 ${state.scenario.version}，当前 ${this.scenario.version}`);
+    }
+    if (!Number.isInteger(state.constraint_version) || state.constraint_version < 0) {
+      throw new Error('安全状态约束版本非法');
+    }
+    this.observations.restoreState(state.observation_store);
+    this.incidents.restoreState(state.incident_store);
+    this.constraintVersion = state.constraint_version;
+    this.publishedPlan = state.published_plan ?? undefined;
+    this.candidatePlan = state.candidate_plan ?? undefined;
+    this.lastValidation = state.validation ?? undefined;
+    this.lastValidPlanRef = state.last_valid_plan ?? undefined;
+    this.stateSnapshot = state.state_snapshot ?? undefined;
+    this.stateEnteredAt = typeof state.state_entered_at === 'string' ? state.state_entered_at : new Date().toISOString();
+    this.inferenceHealth = state.inference_health && typeof state.inference_health.healthy === 'boolean'
+      ? { ...state.inference_health }
+      : { healthy: true };
+    this.lastPlanExclusions = Array.isArray(state.exclusions) ? state.exclusions.map(item => ({ ...item })) : [];
   }
 
   // -------------------------------------------------------------------------
@@ -353,6 +426,7 @@ export class SafetyDecisionService {
           observed_at: observation.observed_at,
         },
       });
+      this.notifyStateChange();
       return this.observations.latest(region.id) ?? observation;
     }
     this.audit.record({
@@ -372,6 +446,7 @@ export class SafetyDecisionService {
         valid: observation.valid,
       },
     });
+    this.notifyStateChange();
     return observation;
   }
 
@@ -392,6 +467,7 @@ export class SafetyDecisionService {
       result: 'success',
       after: { status: incident.status, affected: incident.affected, severity: incident.severity },
     });
+    this.notifyStateChange();
     return incident;
   }
 
@@ -412,6 +488,7 @@ export class SafetyDecisionService {
         before: before ? { status: before.status } : undefined,
         after: { status: confirmed.status, constraint_version: this.constraintVersion },
       });
+      this.notifyStateChange();
       return confirmed;
     } catch (error) {
       this.audit.record({
@@ -446,6 +523,7 @@ export class SafetyDecisionService {
         before: before ? { status: before.status } : undefined,
         after: { status: resolved.status, constraint_version: this.constraintVersion },
       });
+      this.notifyStateChange();
       return resolved;
     } catch (error) {
       this.audit.record({
@@ -476,6 +554,7 @@ export class SafetyDecisionService {
       result: 'success',
       after: { status: dismissed.status },
     });
+    this.notifyStateChange();
     return dismissed;
   }
 
@@ -684,6 +763,7 @@ export class SafetyDecisionService {
       validation_valid: validation.valid,
       violation_codes: validation.violations.map(violation => violation.code),
     });
+    this.notifyStateChange();
 
     return {
       trace,
@@ -719,6 +799,7 @@ export class SafetyDecisionService {
       reason: validation.valid ? undefined : validation.violations.map(violation => violation.code).join(','),
       after: { violations: validation.violations.map(violation => violation.code) },
     });
+    this.notifyStateChange();
     return validation;
   }
 
@@ -734,6 +815,7 @@ export class SafetyDecisionService {
       result: healthy ? 'success' : 'failure',
       reason,
     });
+    this.notifyStateChange();
   }
 
   // -------------------------------------------------------------------------
@@ -939,6 +1021,7 @@ export class SafetyDecisionService {
       summary: '重置安全决策状态（观测、事件、方案与版本）',
       result: 'success',
     });
+    this.notifyStateChange();
   }
 }
 

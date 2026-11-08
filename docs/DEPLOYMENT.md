@@ -30,6 +30,8 @@ npm start            # 由后端托管 frontend/dist，默认 8010
 | `SKYGUARD_ADMIN_USERNAME/PASSWORD` | `admin / skyguard2026` | 首次启动前修改 |
 | `OPS_PERSIST_FILE` | 未设置（纯内存） | `data/ops-state.json` 并挂载持久卷 |
 | `MVP_RUNS_FILE` | 未设置（纯内存） | `data/agent-runs.json` 并挂载持久卷 |
+| `MVP_STATE_FILE` | 未设置（分模块内存/旧快照） | **推荐**：`data/mvp-state.json`；统一原子快照，损坏时拒绝启动 |
+| `MCP_HTTP_TOKEN` | 未设置 | 生产必填；HTTP `/mcp` Bearer token，未配置时生产返回 503 |
 | `AGENT_RUNTIME` | `local` | 未完成真实租户验证前保持 `local` |
 | `AGENTARTS_BASE_URL` / `AGENTARTS_API_KEY` | 未设置 | 仅通过部署密钥注入 |
 | `AGENTARTS_RUNTIME_NAME` | 回退 `AGENTARTS_AGENT_ID` | 租户发布页的运行时名 |
@@ -68,8 +70,10 @@ docker run --rm -p 8010:8010 \
 - 审计日志 `data/audit/*.jsonl` 需集中采集与轮转；
 - 工单快照 `data/ops-state.json` 与 Agent 运行快照 `data/agent-runs.json` 需备份；
   单实例写入，不支持多副本并发。
-- HTTP MCP 端点 `POST /mcp` 与网页 API 同进程、共享状态；公网部署时必须在网关层
-  限制来源与身份，当前没有独立 MCP 鉴权层。
+- 推荐设置 `MVP_STATE_FILE`：统一快照（安全/工单/预算/Agent/审计）原子写入；
+  primary 损坏自动尝试 backup/temp，全部损坏时进程拒绝启动。不要手工清空文件绕过。
+- HTTP MCP 端点 `POST /mcp` 与网页 API 同进程、共享状态；生产必须设置
+  `MCP_HTTP_TOKEN`（未设置时返回 503），公网部署还需在网关限制来源。
 
 ## 6. 可观测性
 

@@ -297,6 +297,10 @@ export const SafetyConfigSchema = z.object({
   trend_window_seconds: z.number().int().positive(),
   /** 人数/密度一致性容忍度（相对误差）。 */
   density_consistency_tolerance: z.number().min(0).max(1),
+  /** 工单资源预留有效期（分钟）；过期后自动释放，需重新确认。 */
+  work_order_reservation_ttl_minutes: z.number().positive().max(1440).default(15),
+  /** 预测区间相对宽度超过该值时标记预测不可用于 VoI。 */
+  prediction_max_relative_interval_width: z.number().positive().max(5).default(0.5),
   default_thresholds: RiskThresholdSchema,
 });
 export type SafetyConfig = z.infer<typeof SafetyConfigSchema>;
@@ -378,7 +382,7 @@ export type SimulationBaseline = z.infer<typeof SimulationBaselineSchema>;
 // 场馆、规则、工作人员与调查策略（MVP 场景适配层）
 // ---------------------------------------------------------------------------
 
-export const STAFF_STATUS = ['available', 'busy', 'off_duty'] as const;
+export const STAFF_STATUS = ['available', 'reserved', 'busy', 'off_duty'] as const;
 export type StaffStatus = (typeof STAFF_STATUS)[number];
 
 export const STAFF_ROLE = ['crowd_control', 'security', 'medical', 'uav_operator', 'supervisor'] as const;

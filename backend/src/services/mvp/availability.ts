@@ -17,6 +17,9 @@ export interface InvestigationAvailabilityFacts {
   uavReason?: string;
   historyPoints: number;
   predictionAvailable?: boolean;
+  /** 预测可靠性 failed 时禁止把预测作为调查证据。 */
+  predictionReliable?: boolean;
+  predictionReason?: string;
 }
 
 export function buildInvestigationAvailability(
@@ -47,8 +50,8 @@ export function buildInvestigationAvailability(
           : { available: false, reason: '历史观测不足' };
         break;
       case 'prediction':
-        availability[action.id] = facts.predictionAvailable === false
-          ? { available: false, reason: '预测服务不可用' }
+        availability[action.id] = facts.predictionAvailable === false || facts.predictionReliable === false
+          ? { available: false, reason: facts.predictionReason ?? '预测可靠性不足' }
           : { available: true };
         break;
       default:
