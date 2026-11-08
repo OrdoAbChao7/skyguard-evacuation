@@ -51,6 +51,15 @@ export default function StaffPage() {
     return () => clearInterval(timer);
   }, [refresh]);
 
+  useEffect(() => {
+    if (!feedback) return undefined;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && busy === null) setFeedback(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [feedback, busy]);
+
   async function login() {
     setBusy('login');
     setError(null);
@@ -81,7 +90,7 @@ export default function StaffPage() {
     setOrders([]);
   }
 
-  async function act(key: string, action: () => Promise<unknown>, message: string) {
+  async function act(key: string, action: () => Promise<unknown>, message: string): Promise<boolean> {
     setBusy(key);
     setError(null);
     setNotice(null);
@@ -89,8 +98,10 @@ export default function StaffPage() {
       await action();
       setNotice(message);
       await refresh();
+      return true;
     } catch (caught) {
       setError(errorMessage(caught));
+      return false;
     } finally {
       setBusy(null);
     }
@@ -104,11 +115,11 @@ export default function StaffPage() {
       setError('请填写有效的人数和 0~1 置信度');
       return;
     }
-    await act('feedback', () => mvpApi.complete(feedback.orderId, {
+    const ok = await act('feedback', () => mvpApi.complete(feedback.orderId, {
       note: feedback.note || '现场反馈',
       observation: { count, confidence, valid: true },
     }), '反馈已提交，指挥中心将重新评估');
-    setFeedback(null);
+    if (ok) setFeedback(null);
   }
 
   if (!token) {

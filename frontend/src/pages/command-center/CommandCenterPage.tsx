@@ -23,10 +23,11 @@ import type {
   SafetyStatus,
   SafetyValidationResult,
 } from '../../services/safetyApi';
-import { AppstoreOutlined, RadarChartOutlined, EyeOutlined, SafetyCertificateOutlined, AlertOutlined, HistoryOutlined, SettingOutlined, AimOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, RadarChartOutlined, EyeOutlined, SafetyCertificateOutlined, AlertOutlined, HistoryOutlined, SettingOutlined, AimOutlined, TeamOutlined, ApiOutlined } from '@ant-design/icons';
 import MvpPanels from './MvpPanels';
 import PerceptionReplayPanel from './PerceptionReplayPanel';
 import './CommandCenterPage.css';
+import ThemeSettings, { useWorkspaceTheme } from './ThemeSettings';
 
 const STATE_LABEL: Record<SafetyStateName, string> = {
   NORMAL: '常态运行',
@@ -44,6 +45,12 @@ const RISK_LABEL: Record<string, string> = {
 };
 
 const POLL_INTERVAL_MS = 5000;
+const MAP_MIN_ZOOM = 1;
+const MAP_MAX_ZOOM = 3;
+const MAP_ZOOM_STEP = 0.25;
+const MAP_WHEEL_FACTOR = 1.25;
+const MAP_FOCUS_ZOOM = 1.5;
+const MAP_DRAG_CLICK_THRESHOLD_PX = 4;
 
 function formatTime(iso: string | null | undefined): string {
   if (!iso) return '—';
@@ -54,13 +61,28 @@ function formatTime(iso: string | null | undefined): string {
 
 function formatSince(iso: string | null | undefined): string {
   if (!iso) return '无';
-  const seconds = Math.round((Date.now() - new Date(iso).getTime()) / 1000);
+  const time = new Date(iso).getTime();
+  if (Number.isNaN(time)) return '时间未知';
+  const seconds = Math.max(0, Math.round((Date.now() - time) / 1000));
   if (seconds < 60) return `${seconds}s 前`;
   if (seconds < 3600) return `${Math.round(seconds / 60)}min 前`;
   return `${(seconds / 3600).toFixed(1)}h 前`;
 }
 
+const NAV_ITEMS = [
+  { icon: <AppstoreOutlined />, label: '总览', target: 'overview' },
+  { icon: <RadarChartOutlined />, label: '态势监控', target: 'situation' },
+  { icon: <EyeOutlined />, label: 'AI 感知', target: 'sensors' },
+  { icon: <AimOutlined />, label: '感知回放', target: 'perception-replay' },
+  { icon: <SafetyCertificateOutlined />, label: '可信决策', target: 'decision' },
+  { icon: <AlertOutlined />, label: '事件管理', target: 'incidents' },
+  { icon: <HistoryOutlined />, label: '审计记录', target: 'audit' },
+  { icon: <SettingOutlined />, label: '演示场景', target: 'demos' },
+] as const;
+
 export default function CommandCenterPage() {
+  const workspaceTheme = useWorkspaceTheme();
+  const [activeNav, setActiveNav] = useState<string>('overview');
   const [layers, setLayers] = useState({landmarks: true, regions: true, risks: true, corridors: true, validated: true, candidate: true, incidents: true});
   const [showLayers, setShowLayers] = useState(false);
   const [videoRegion, setVideoRegion] = useState<string | null>(null);
@@ -155,7 +177,8 @@ export default function CommandCenterPage() {
 
   if (!status) {
     return (
-      <div className="cc-root cc-loading">
+      <div className="cc-root cc-loading" style={workspaceTheme.style} data-theme={workspaceTheme.mode}>
+        <span className="cc-loading-ring" aria-hidden="true" />
         <p>{error ?? '正在连接安全决策服务…'}</p>
         {error ? (
           <button type="button" onClick={() => void refresh()}>
@@ -170,26 +193,34 @@ export default function CommandCenterPage() {
   const candidate = !error && status.state.candidate_route_display_allowed ? status.candidate_plan : null;
   const displayPlan = plan ?? candidate;
   const isCandidate = !plan && Boolean(candidate);
-  const selectRegion = (id: string) => { const region = status.regions.find(item => item.id === id); setSelectedRegion(id); if (region) { setMapCenter(centreOf(region)); setMapZoom(value => Math.max(value, 1.5)); } };
+  const selectRegion = (id: string) => { const region = status.regions.find(item => item.id === id); setSelectedRegion(id); if (region) { setMapCenter(centreOf(region)); setMapZoom(value => Math.max(value, MAP_FOCUS_ZOOM)); } };
 
   return (
-    <div className="cc-root">
+    <div className="cc-root" style={workspaceTheme.style} data-theme={workspaceTheme.mode}>
+      <h1 className="cc-sr-only">SkyGuard 可信安全决策指挥中心</h1>
       <nav className="cc-sidebar" aria-label="指挥中心导航">
-        {[
-          { icon: <AppstoreOutlined />, label: '总览', target: 'overview' },
-          { icon: <RadarChartOutlined />, label: '态势监控', target: 'situation' },
-          { icon: <EyeOutlined />, label: 'AI 感知', target: 'sensors' },
-          { icon: <AimOutlined />, label: '感知回放', target: 'perception-replay' },
-          { icon: <SafetyCertificateOutlined />, label: '可信决策', target: 'decision' },
-          { icon: <AlertOutlined />, label: '事件管理', target: 'incidents' },
-          { icon: <HistoryOutlined />, label: '审计记录', target: 'audit' },
-          { icon: <SettingOutlined />, label: '演示场景', target: 'demos' },
-        ].map(item => <a key={item.target} href={`#${item.target}`} title={item.label} aria-label={item.label}>{item.icon}</a>)}
+        <div className="cc-sidebar-brand" aria-hidden="true"><SafetyCertificateOutlined /></div>
+        {NAV_ITEMS.map(item => (
+          <a
+            key={item.target}
+            href={`#${item.target}`}
+            title={item.label}
+            aria-label={item.label}
+            aria-current={activeNav === item.target ? 'page' : undefined}
+            className={activeNav === item.target ? 'active' : undefined}
+            onClick={() => setActiveNav(item.target)}
+          >
+            {item.icon}<span>{item.label}</span>
+          </a>
+        ))}
       </nav>
       <header className="cc-topbar" id="overview">
         <div className="cc-brand">
-          <span className="cc-brand-mark">SkyGuard</span>
-          <span className="cc-brand-sub">可信安全决策指挥大屏</span>
+          <span className="cc-brand-emblem" aria-hidden="true"><SafetyCertificateOutlined /></span>
+          <span className="cc-brand-copy">
+            <span className="cc-brand-mark">SKYGUARD</span>
+            <span className="cc-brand-sub">可信安全决策指挥中心</span>
+          </span>
         </div>
         {error ? <div className="cc-state-badge cc-bad" role="status"><strong>连接中断</strong><span>状态不可确认</span></div> : <StateBadge state={status.state.state} headline={status.state.headline} />}
         <div className="cc-meta">
@@ -201,11 +232,51 @@ export default function CommandCenterPage() {
             推理链路 {status.inference_health.healthy ? '正常' : `异常（${status.inference_health.reason ?? '未知'}）`}
           </span>
         </div>
+        <ThemeSettings {...workspaceTheme} />
       </header>
 
-      {status.scenario.notice ? <div className="cc-disclaimer">⚠ {status.scenario.notice}</div> : null}
+      {status.scenario.notice ? <div className="cc-disclaimer"><AlertOutlined aria-hidden="true" />{status.scenario.notice}</div> : null}
       {error ? <div className="cc-banner cc-banner-error">{error}</div> : null}
       {notice ? <div className="cc-banner">{notice}</div> : null}
+
+      <div className="cc-kpis" role="group" aria-label="关键指标">
+        <div className="cc-kpi">
+          <span className="cc-kpi-icon" aria-hidden="true"><AppstoreOutlined /></span>
+          <div><span>感知区域</span><strong>{status.regions.length}</strong><small>个区域</small></div>
+        </div>
+        <div className="cc-kpi">
+          <span className="cc-kpi-icon" aria-hidden="true"><TeamOutlined /></span>
+          <div>
+            <span>观测人数</span>
+            <strong>{status.observations.length ? status.observations.reduce((sum, item) => sum + item.estimated_count, 0) : '—'}</strong>
+            <small>{status.state.state === 'DEGRADED' ? '数据可能过期' : '观测值'}</small>
+          </div>
+        </div>
+        <div className="cc-kpi" data-tone="warn">
+          <span className="cc-kpi-icon" aria-hidden="true"><AlertOutlined /></span>
+          <div>
+            <span>高风险区域</span>
+            <strong>{status.risks.some(risk => risk.trusted) ? (status.risk_summary.counts.high ?? 0) + (status.risk_summary.counts.critical ?? 0) : '—'}</strong>
+            <small>{status.risks.some(risk => risk.trusted) ? '个区域' : '无可信观测'}</small>
+          </div>
+        </div>
+        <div className="cc-kpi" data-tone={!error && status.state.publishable ? 'ok' : 'bad'}>
+          <span className="cc-kpi-icon" aria-hidden="true"><SafetyCertificateOutlined /></span>
+          <div>
+            <span>可信方案</span>
+            <strong>{!error && status.state.publishable ? '可发布' : '不可发布'}</strong>
+            <small>方案状态 {status.state.state}</small>
+          </div>
+        </div>
+        <div className="cc-kpi" data-tone={status.inference_health.healthy ? 'ok' : 'bad'}>
+          <span className="cc-kpi-icon" aria-hidden="true"><ApiOutlined /></span>
+          <div>
+            <span>推理链路</span>
+            <strong>{status.inference_health.healthy ? '正常' : '异常'}</strong>
+            <small>健康状态</small>
+          </div>
+        </div>
+      </div>
 
       <div className="cc-grid">
         {/* ---------------- 左列：感知输入 ---------------- */}
@@ -239,7 +310,7 @@ export default function CommandCenterPage() {
           <ProviderList providers={providers} />
 
           <h4 className="cc-subtitle">各区域观测</h4>
-          <table className="cc-table">
+          <div className="cc-observations" role="region" aria-label="各区域观测表" tabIndex={0}><table className="cc-table">
             <thead>
               <tr>
                 <th>区域</th>
@@ -276,7 +347,7 @@ export default function CommandCenterPage() {
                 );
               })}
             </tbody>
-          </table>
+          </table></div>
           <p className="cc-muted cc-small">
             面积来源：{status.regions.map(region => region.area_provenance).filter((value, index, array) => array.indexOf(value) === index).join(' / ')}
             ；摄像机标定：{status.regions.map(region => region.camera.calibration_status).filter((value, index, array) => array.indexOf(value) === index).join(' / ')}
@@ -285,19 +356,12 @@ export default function CommandCenterPage() {
 
         {/* ---------------- 中列：态势图 ---------------- */}
         <section className="cc-panel cc-col-center" id="situation">
-          <div className="cc-kpis">
-            <div><span>感知区域</span><strong>{status.regions.length}</strong><small>个区域</small></div>
-            <div><span>观测人数</span><strong>{status.observations.length ? status.observations.reduce((sum, item) => sum + item.estimated_count, 0) : '—'}</strong><small>{status.state.state === 'DEGRADED' ? '数据可能过期' : '观测值'}</small></div>
-            <div><span>高风险区域</span><strong>{status.risks.some(risk => risk.trusted) ? (status.risk_summary.counts.high ?? 0) + (status.risk_summary.counts.critical ?? 0) : '—'}</strong><small>{status.risks.some(risk => risk.trusted) ? '个区域' : '无可信观测'}</small></div>
-            <div><span>可信方案</span><strong className={!error && status.state.publishable ? 'cc-ok' : 'cc-bad'}>{!error && status.state.publishable ? '可发布' : '不可发布'}</strong><small>{status.state.state}</small></div>
-            <div><span>推理链路</span><strong className={status.inference_health.healthy ? 'cc-ok' : 'cc-bad'}>{status.inference_health.healthy ? '正常' : '异常'}</strong><small>健康状态</small></div>
-          </div>
           <PanelTitle
             title="区域态势与疏散路线"
             subtitle={`时限 ${status.scenario.horizon_minutes} 分钟 · ${displayPlan ? `方案 ${displayPlan.plan_id}` : '暂无方案'}`}
           />
           <div className="cc-map-wrap"><div className="cc-map-caption"><strong>场馆态势</strong><span>{scenario?.map?.caption ?? '合成场景 · 区域未空间标定'}</span></div><NetworkMap map={scenario?.map} status={status} selectedRegion={selectedRegion} onSelectRegion={selectRegion} allowRoutes={!error} zoom={mapZoom} setZoom={setMapZoom} center={mapCenter} setCenter={setMapCenter} showBackdrop={showBackdrop} layers={layers} />
-            <div className="cc-map-tools" aria-label="地图工具"><button type="button" title="放大" aria-label="放大地图" disabled={mapZoom >= 1.5} onClick={() => setMapZoom(value => Math.min(1.5, value + .25))}>+</button><button type="button" title="缩小" aria-label="缩小地图" disabled={mapZoom <= 1} onClick={() => setMapZoom(value => Math.max(1, value - .25))}>−</button><button type="button" onClick={() => setShowLayers(value => !value)} aria-expanded={showLayers} title="选择地图图层">图层</button><button type="button" onClick={() => { setMapZoom(1); setMapCenter(null); setSelectedRegion(null); }} title="重置视图">复位</button></div>
+            <div className="cc-map-tools" aria-label="地图工具"><button type="button" title="放大" aria-label="放大地图" disabled={mapZoom >= MAP_MAX_ZOOM} onClick={() => setMapZoom(value => Math.min(MAP_MAX_ZOOM, value + MAP_ZOOM_STEP))}>+</button><button type="button" title="缩小" aria-label="缩小地图" disabled={mapZoom <= MAP_MIN_ZOOM} onClick={() => setMapZoom(value => Math.max(MAP_MIN_ZOOM, value - MAP_ZOOM_STEP))}>−</button><button type="button" onClick={() => setShowLayers(value => !value)} aria-expanded={showLayers} title="选择地图图层">图层</button><button type="button" onClick={() => { setMapZoom(MAP_MIN_ZOOM); setMapCenter(null); setSelectedRegion(null); }} title="重置视图">复位</button></div>
             {showLayers ? <div className="cc-layer-menu"><label><input type="checkbox" checked={showBackdrop} onChange={() => setShowBackdrop(value => !value)} />概念底图</label>{([['landmarks','场景地标'],['regions','模拟区域'],['risks','风险区域'],['corridors','通道与出口'],['validated','已验证路线'],['candidate','候选路线'],['incidents','事件标记']] as const).map(([key,label]) => <label key={key}><input type="checkbox" checked={layers[key]} onChange={() => setLayers(value => ({...value,[key]: !value[key]}))} />{label}</label>)}</div> : null}
             {selectedRegion ? <div className="cc-map-detail"><strong>{status.regions.find(region => region.id === selectedRegion)?.name}</strong><span>风险：{RISK_LABEL[status.risks.find(risk => risk.regionId === selectedRegion)?.level ?? 'unknown']}</span><span>人数：{status.risks.find(risk => risk.regionId === selectedRegion)?.count ?? '—'} · 密度：{status.risks.find(risk => risk.regionId === selectedRegion)?.density?.toFixed(2) ?? '—'}</span><span>置信度：{status.risks.find(risk => risk.regionId === selectedRegion)?.confidence ?? '—'} · 时效：{formatSince(status.observations.find(item => item.region_id === selectedRegion)?.observed_at)}</span><span>来源：{status.observations.find(item => item.region_id === selectedRegion)?.source ?? '无数据'}</span><button type="button" onClick={() => setSelectedRegion(null)}>关闭</button></div> : null}</div>
           <Legend isCandidate={isCandidate} hasPlan={Boolean(displayPlan)} />
@@ -339,8 +403,6 @@ export default function CommandCenterPage() {
 
         {/* ---------------- 右列：决策与操作 ---------------- */}
         <section className="cc-panel cc-col-right" id="decision">
-          <div className="cc-video"><h4>视频与感知画面 <span className="cc-muted">视频源未接入</span></h4><div className="cc-video-empty"><EyeOutlined /><strong>{status.regions.find(region => region.id === videoRegion)?.name ?? '请选择监测区域'}</strong><span>无可播放视频 · 非实时画面</span></div><div className="cc-video-thumbs" aria-label="选择监测区域">{status.regions.slice(0,4).map(region => <button type="button" key={region.id} className={videoRegion === region.id ? 'selected' : ''} aria-pressed={videoRegion === region.id} onClick={() => setVideoRegion(region.id)}><EyeOutlined /><span>{region.name}</span><small>未接入</small></button>)}</div><div className="cc-video-foot">来源：未配置视频流 · 时间：—</div></div>
-          <h4 className="cc-subtitle">风险告警 · {status.incidents.length} 条</h4><div className="cc-alert-summary">{status.incidents.length ? status.incidents.slice(0,4).map(incident => <button key={incident.id} type="button" onClick={() => { const c = status.corridors.find(item => incident.affected.corridor_ids.includes(item.id)); const e = status.exits.find(item => incident.affected.exit_ids.includes(item.id)); const id = incident.affected.region_ids[0] ?? c?.from_region_id ?? e?.region_id; if (id) selectRegion(id); }}><span className={`cc-alert-dot severity-${incident.severity}`} /><strong>{incident.type}</strong><span>{formatAffected(incident.affected)}</span><small>{incident.status} · {formatTime(incident.reported_at)}</small></button>) : <p className="cc-muted">暂无事件告警</p>}</div>
           <PanelTitle title="决策状态" subtitle={`进入于 ${formatTime(status.state_entered_at)}`} />
           <div className={`cc-state-block state-${status.state.state}`}>
             <div className="cc-state-name">
@@ -364,6 +426,8 @@ export default function CommandCenterPage() {
 
           <h4 className="cc-subtitle">独立校验结果</h4>
           <ValidationPanel validation={status.validation} candidateShown={isCandidate} />
+          <h4 className="cc-subtitle">风险告警 · {status.incidents.length} 条</h4><div className="cc-alert-summary">{status.incidents.length ? status.incidents.slice(0,4).map(incident => <button key={incident.id} type="button" onClick={() => { const c = status.corridors.find(item => incident.affected.corridor_ids.includes(item.id)); const e = status.exits.find(item => incident.affected.exit_ids.includes(item.id)); const id = incident.affected.region_ids[0] ?? c?.from_region_id ?? e?.region_id; if (id) selectRegion(id); }}><span className={`cc-alert-dot severity-${incident.severity}`} /><strong>{incident.type}</strong><span>{formatAffected(incident.affected)}</span><small>{incident.status} · {formatTime(incident.reported_at)}</small></button>) : <p className="cc-muted">暂无事件告警</p>}</div>
+          <div className="cc-video"><h4>视频与感知画面 <span className="cc-muted">视频源未接入</span></h4><div className="cc-video-empty"><span className="cc-video-signal" aria-hidden="true"><EyeOutlined /></span><strong>{status.regions.find(region => region.id === videoRegion)?.name ?? '请选择监测区域'}</strong><span>无可播放视频 · 非实时画面</span><small className="cc-video-offline">SIGNAL OFFLINE</small></div><div className="cc-video-thumbs" aria-label="选择监测区域">{status.regions.slice(0,4).map(region => <button type="button" key={region.id} className={videoRegion === region.id ? 'selected' : ''} aria-pressed={videoRegion === region.id} onClick={() => setVideoRegion(region.id)}><EyeOutlined /><span>{region.name}</span><small>未接入</small></button>)}</div><div className="cc-video-foot">来源：未配置视频流 · 时间：—</div></div>
 
           <h4 className="cc-subtitle">出口分配</h4>
           <ExitAllocation status={status} plan={displayPlan} />
@@ -375,7 +439,12 @@ export default function CommandCenterPage() {
               const corridor = status.corridors.find(item => incident.affected.corridor_ids.includes(item.id));
               const exit = status.exits.find(item => incident.affected.exit_ids.includes(item.id));
               const regionId = incident.affected.region_ids[0] ?? corridor?.from_region_id ?? exit?.region_id;
-              if (regionId) { selectRegion(regionId); document.getElementById('situation')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+              if (regionId) {
+                selectRegion(regionId);
+                const reduceMotion = typeof window.matchMedia === 'function'
+                  && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                document.getElementById('situation')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+              }
             }}
             busy={busy}
             onConfirm={id =>
@@ -529,13 +598,31 @@ export default function CommandCenterPage() {
           </ul>
         </section>
       </div>
-      <div id="perception-replay">
-        <PerceptionReplayPanel />
-      </div>
-      <MvpPanels
-        selectedRegion={selectedRegion}
-        onSelectRegion={id => { if (id) selectRegion(id); }}
-      />
+      <section className="cc-lower" aria-label="业务闭环与感知回放">
+        <div className="cc-section-head">
+          <div>
+            <span className="cc-eyebrow">OPERATIONS WORKSPACE</span>
+            <h2>业务闭环与感知回放</h2>
+            <p>从感知证据到工单闭环的可审计链路；所有面板数据均来自后端 API，前端不做安全判定。</p>
+          </div>
+          <div className="cc-section-meta">
+            <span><i aria-hidden="true" />只读大屏</span>
+            <span>Agent 仅创建待审批工单</span>
+          </div>
+        </div>
+        <div id="perception-replay">
+          <PerceptionReplayPanel />
+        </div>
+        <MvpPanels
+          selectedRegion={selectedRegion}
+          onSelectRegion={id => { if (id) selectRegion(id); }}
+        />
+      </section>
+      <footer className="cc-footer">
+        <span>SKYGUARD · 研究原型</span>
+        <span>不得用于真实应急指挥 · 安全判定由后端安全内核完成</span>
+        <span className="cc-footer-version">SCENARIO v{status.versions.scenario}</span>
+      </footer>
     </div>
   );
 }
@@ -714,10 +801,10 @@ function IncidentPanel({
 function Legend({ isCandidate, hasPlan }: { isCandidate: boolean; hasPlan: boolean }) {
   return (
     <div className="cc-legend">
-      <span className="legend-swatch validated" /> 已验证路线{hasPlan && !isCandidate ? '（当前显示）' : ''}
-      <span className="legend-swatch candidate" /> 候选路线（未校验）
-      <span className="legend-swatch closed" /> 已关闭通道/出口
-      <span className="legend-swatch unknown" /> 状态未知
+      <span><i className="legend-swatch validated" /> 已验证路线{hasPlan && !isCandidate ? '（当前显示）' : ''}</span>
+      <span><i className="legend-swatch candidate" /> 候选路线（未校验）</span>
+      <span><i className="legend-swatch closed" /> 已关闭通道/出口</span>
+      <span><i className="legend-swatch unknown" /> 状态未知</span>
     </div>
   );
 }
@@ -799,7 +886,9 @@ function buildRoutePoints(
 }
 
 function NetworkMap({ map, status, selectedRegion, onSelectRegion, allowRoutes, zoom, setZoom, center, setCenter, showBackdrop, layers }: { map?: ScenarioMap; allowRoutes: boolean; status: SafetyStatus; selectedRegion: string | null; onSelectRegion: (id: string) => void; zoom: number; setZoom: (value: number) => void; center: {x:number; y:number} | null; setCenter: (value: {x:number; y:number}) => void; showBackdrop: boolean; layers: {landmarks:boolean; regions:boolean; risks:boolean; corridors:boolean; validated:boolean; candidate:boolean; incidents:boolean} }) {
-  const dragging = useRef<{x:number; y:number; centerX:number; centerY:number; scaleX:number; scaleY:number} | null>(null);
+  const dragging = useRef<{x:number; y:number; centerX:number; centerY:number; scaleX:number; scaleY:number; pointerId:number; moved:boolean; captured:boolean} | null>(null);
+  const mapRef = useRef<SVGSVGElement | null>(null);
+  const suppressClick = useRef(false);
   const plan = status.plan;
   const candidate = status.candidate_plan;
   const showValidated = allowRoutes && Boolean(plan) && status.state.state !== 'REJECT' && status.state.validated_route_display_allowed;
@@ -829,19 +918,124 @@ function NetworkMap({ map, status, selectedRegion, onSelectRegion, allowRoutes, 
     for (const step of route.steps) highlighted.add(step.corridor_id);
   }
 
+  const clampCenter = (point: { x: number; y: number }, level: number) => {
+    const halfWidth = bounds.width / (2 * level);
+    const halfHeight = bounds.height / (2 * level);
+    return {
+      x: Math.min(Math.max(point.x, halfWidth), bounds.width - halfWidth),
+      y: Math.min(Math.max(point.y, halfHeight), bounds.height - halfHeight),
+    };
+  };
+
+  // React 的 onWheel 以 passive 方式挂载，无法阻止页面滚动，因此改用原生非 passive 监听。
+  const viewRef = useRef({ bounds, center, zoom });
+  viewRef.current = { bounds, center, zoom };
+  useEffect(() => {
+    const element = mapRef.current;
+    if (!element) return undefined;
+    const onWheel = (event: WheelEvent) => {
+      const { bounds: currentBounds, center: currentCenter, zoom: currentZoom } = viewRef.current;
+      const factor = event.deltaY < 0 ? MAP_WHEEL_FACTOR : 1 / MAP_WHEEL_FACTOR;
+      const next = Math.max(MAP_MIN_ZOOM, Math.min(MAP_MAX_ZOOM, currentZoom * factor));
+      // 到达缩放边界时不再拦截滚动，避免地图区域变成“滚动黑洞”。
+      if (next === currentZoom) return;
+      event.preventDefault();
+      const matrix = element.getScreenCTM();
+      if (!matrix) return;
+      const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
+      const origin = currentCenter ?? { x: currentBounds.width / 2, y: currentBounds.height / 2 };
+      const halfWidth = currentBounds.width / (2 * next);
+      const halfHeight = currentBounds.height / (2 * next);
+      setCenter({
+        x: Math.min(Math.max(point.x + (origin.x - point.x) * currentZoom / next, halfWidth), currentBounds.width - halfWidth),
+        y: Math.min(Math.max(point.y + (origin.y - point.y) * currentZoom / next, halfHeight), currentBounds.height - halfHeight),
+      });
+      setZoom(next);
+    };
+    element.addEventListener('wheel', onWheel, { passive: false });
+    return () => element.removeEventListener('wheel', onWheel);
+  }, [setCenter, setZoom]);
+
   return (
     <svg
+      ref={mapRef}
       className="cc-map"
+      style={{ touchAction: zoom > MAP_MIN_ZOOM ? 'none' : 'pan-y' }}
       viewBox={`${(center?.x ?? bounds.width / 2) - bounds.width / zoom / 2} ${(center?.y ?? bounds.height / 2) - bounds.height / zoom / 2} ${bounds.width / zoom} ${bounds.height / zoom}`}
-      onWheel={event => { const matrix = event.currentTarget.getScreenCTM(); if (!matrix) return; const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse()); const next = Math.max(1, Math.min(3, zoom * (event.deltaY < 0 ? 1.25 : .8))); const current = center ?? {x:bounds.width/2,y:bounds.height/2}; setCenter({x:point.x + (current.x-point.x)*zoom/next,y:point.y + (current.y-point.y)*zoom/next}); setZoom(next); }}
-      onPointerDown={event => { if (event.button !== 0) return; const matrix=event.currentTarget.getScreenCTM(); if (!matrix) return; dragging.current={x:event.clientX,y:event.clientY,centerX:center?.x ?? bounds.width/2,centerY:center?.y ?? bounds.height/2,scaleX:matrix.a,scaleY:matrix.d}; }}
-      onPointerMove={event => { const drag=dragging.current; if (drag) setCenter({x:drag.centerX-(event.clientX-drag.x)/drag.scaleX,y:drag.centerY-(event.clientY-drag.y)/drag.scaleY}); }}
-      onPointerUp={() => { dragging.current=null; }} onPointerCancel={() => { dragging.current=null; }}
-      role="img"
+      onPointerDown={event => {
+        if (event.button !== 0) return;
+        const matrix = event.currentTarget.getScreenCTM();
+        if (!matrix) return;
+        suppressClick.current = false;
+        dragging.current = {
+          x: event.clientX,
+          y: event.clientY,
+          centerX: center?.x ?? bounds.width / 2,
+          centerY: center?.y ?? bounds.height / 2,
+          scaleX: matrix.a,
+          scaleY: matrix.d,
+          pointerId: event.pointerId,
+          moved: false,
+          captured: false,
+        };
+      }}
+      onPointerMove={event => {
+        const drag = dragging.current;
+        if (!drag || drag.pointerId !== event.pointerId) return;
+        if (event.pointerType === 'mouse' && event.buttons === 0) {
+          dragging.current = null;
+          return;
+        }
+        const dx = event.clientX - drag.x;
+        const dy = event.clientY - drag.y;
+        if (!drag.moved && (Math.abs(dx) > MAP_DRAG_CLICK_THRESHOLD_PX || Math.abs(dy) > MAP_DRAG_CLICK_THRESHOLD_PX)) {
+          drag.moved = true;
+          // 仅在真正开始拖动后捕获指针，避免把普通点击重定向到 SVG 而丢失区域选择。
+          if (typeof event.currentTarget.setPointerCapture === 'function') {
+            try {
+              event.currentTarget.setPointerCapture(event.pointerId);
+              drag.captured = true;
+            } catch {
+              drag.captured = false;
+            }
+          }
+        }
+        setCenter(clampCenter({ x: drag.centerX - dx / drag.scaleX, y: drag.centerY - dy / drag.scaleY }, zoom));
+      }}
+      onPointerUp={event => {
+        const drag = dragging.current;
+        if (!drag) return;
+        if (drag.captured) {
+          try { event.currentTarget.releasePointerCapture(event.pointerId); } catch { /* capture already released */ }
+        }
+        if (drag.moved) {
+          // 拖动结束后浏览器仍会派发 click，短暂抑制以免误选区域。
+          suppressClick.current = true;
+          window.setTimeout(() => { suppressClick.current = false; }, 250);
+        }
+        dragging.current = null;
+      }}
+      onPointerCancel={event => {
+        const drag = dragging.current;
+        if (drag?.captured) {
+          try { event.currentTarget.releasePointerCapture(event.pointerId); } catch { /* capture already released */ }
+        }
+        dragging.current = null;
+      }}
+      onLostPointerCapture={() => { dragging.current = null; }}
+      role="group"
       aria-label="区域态势与疏散路线示意图"
+      aria-describedby="map-help"
     >
-      <defs><marker id="route-arrow-valid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#38ec83" /></marker><marker id="route-arrow-candidate" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ffc166" /></marker></defs>
+      <desc id="map-help">拖拽平移地图，滚轮缩放；使用 Tab 聚焦区域，按回车查看详情。</desc>
+      <defs>
+        <marker id="route-arrow-valid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#43e0a0" /></marker>
+        <marker id="route-arrow-candidate" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff9b57" /></marker>
+        <pattern id="map-grid" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M 44 0 L 0 0 0 44" className="map-grid-line" /></pattern>
+      </defs>
       <rect x={0} y={0} width={bounds.width} height={bounds.height} className="map-bg" />
+      <rect x={0} y={0} width={bounds.width} height={bounds.height} className="map-grid-bg" fill="url(#map-grid)" aria-hidden="true" />
+      <g className="map-corner" aria-hidden="true"><path d={`M 8 30 V 8 H 30`} /><path d={`M ${bounds.width - 30} 8 H ${bounds.width - 8} V 30`} /><path d={`M 8 ${bounds.height - 30} V ${bounds.height - 8} H 30`} /><path d={`M ${bounds.width - 30} ${bounds.height - 8} H ${bounds.width - 8} V ${bounds.height - 30}`} /></g>
       {showBackdrop && map?.backdrop ? <><image href={map.backdrop} x={0} y={0} width={bounds.width} height={bounds.height} preserveAspectRatio="xMidYMid slice" /><rect x={0} y={0} width={bounds.width} height={bounds.height} fill="#091310" opacity={map.backdrop_opacity ?? 0.48} /></> : null}
 
       {layers.landmarks && (map?.landmarks?.length ?? 0) > 0 ? <g className="map-landmarks" aria-label="场景地标，未空间标定">{(map?.landmarks ?? []).map(landmark => <g key={landmark.name}><circle cx={landmark.x * bounds.width} cy={landmark.y * bounds.height} r="3" /><text x={landmark.x * bounds.width + 7} y={landmark.y * bounds.height - 5}>{landmark.name}</text></g>)}</g> : null}
@@ -875,7 +1069,7 @@ function NetworkMap({ map, status, selectedRegion, onSelectRegion, allowRoutes, 
         const risk = status.risks.find(item => item.regionId === region.id);
         const geometry = region.geometry;
         return (
-          <g key={region.id} role="button" tabIndex={0} aria-label={`查看${region.name}详情`} onClick={() => onSelectRegion(region.id)} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') onSelectRegion(region.id); }} className={selectedRegion === region.id ? 'map-selected' : selectedRegion ? 'map-dimmed' : ''}>
+          <g key={region.id} role="button" tabIndex={0} aria-label={`查看${region.name}详情`} onClick={() => { if (suppressClick.current) return; onSelectRegion(region.id); }} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelectRegion(region.id); } }} className={selectedRegion === region.id ? 'map-selected' : selectedRegion ? 'map-dimmed' : ''}>
             <rect
               x={geometry.x}
               y={geometry.y}
@@ -905,16 +1099,18 @@ function NetworkMap({ map, status, selectedRegion, onSelectRegion, allowRoutes, 
         if (!region) return null;
         const y = region.geometry.y + region.geometry.height / 2 + index * 14 - 20;
         const x = region.geometry.x + region.geometry.width;
+        const labelWidth = Math.max(32, exit.id.length * 7 + 12);
         return (
           <g key={exit.id}>
             <rect
-              x={x - 6}
-              y={y - 6}
-              width={12}
-              height={12}
+              x={x - 4}
+              y={y - 10}
+              width={labelWidth}
+              height={20}
+              rx={6}
               className={`map-exit ${exit.effective_status === 'open' && exit.usable ? 'map-exit-open' : 'map-exit-closed'}`}
             />
-            <text x={x + 10} y={y + 4} className="map-exit-label">
+            <text x={x - 4 + labelWidth / 2} y={y + 4} textAnchor="middle" className="map-exit-label">
               {exit.id}
             </text>
             <title>

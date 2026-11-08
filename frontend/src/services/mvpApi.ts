@@ -167,6 +167,17 @@ export interface AgentArtsStatus {
   missing_config: string[];
   detail: string;
   checked_at: string | null;
+  /** 以下字段用于区分"平台可达"与"业务闭环已验证"。旧后端可能不返回。 */
+  runtime_requested?: 'local' | 'agentarts';
+  connectivity?: 'not_requested' | 'misconfigured' | 'unreachable' | 'reachable';
+  business_closure?: {
+    verified: boolean;
+    verified_at: string | null;
+    app_version: string | null;
+    note: string;
+  };
+  last_successful_call_at?: string | null;
+  last_tool_call_at?: string | null;
 }
 
 export interface MvpDashboard {

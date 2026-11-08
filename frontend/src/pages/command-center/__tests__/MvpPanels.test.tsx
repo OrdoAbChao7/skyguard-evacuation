@@ -164,4 +164,28 @@ describe('MVP 指挥面板', () => {
     expect(screen.getByText('请求现场工作人员核查')).toBeInTheDocument();
     expect(screen.getByText('get_crowd_status')).toBeInTheDocument();
   });
+
+  it('平台可达性与业务闭环分开显示', async () => {
+    mocks.dashboard.mockResolvedValue({
+      ...dashboard,
+      agentarts: {
+        mode: 'AGENTARTS_CONNECTED',
+        configured: true,
+        missing_config: [],
+        detail: '健康探测成功：平台网络可达（仅代表连通）',
+        checked_at: new Date().toISOString(),
+        runtime_requested: 'agentarts',
+        connectivity: 'reachable',
+        business_closure: {
+          verified: false,
+          verified_at: null,
+          app_version: null,
+          note: '业务闭环未验证',
+        },
+      },
+    });
+    render(<MvpPanels selectedRegion="R_EAST_STAND" onSelectRegion={() => {}} />);
+    await waitFor(() => expect(screen.getByText('AGENTARTS CONNECTED')).toBeInTheDocument());
+    expect(screen.getByText('可达性 可达 · 业务闭环 未验证')).toBeInTheDocument();
+  });
 });
