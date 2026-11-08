@@ -16,6 +16,8 @@ import type { ToolRegistry, ToolResult } from './tools';
 import type { OpsActor } from './ops';
 import type { AvailabilityMap } from './voi';
 import { applyEvidence, decideInvestigation, priorBelief, type BeliefEntry, type VoIDecision } from './voi';
+import { buildInvestigationAvailability } from './availability';
+import { actionAvailability, createInvestigationSession, recordAttempt } from './investigation-session';
 import type { PredictionResult } from './prediction';
 
 export type AgentRunStatus = 'completed' | 'awaiting_approval' | 'awaiting_evidence' | 'needs_human' | 'failed';
@@ -194,6 +196,7 @@ export class AgentService {
     const risk = riskResult.ok ? riskResult.data as Record<string, unknown> : null;
 
     const policy = this.scenario.investigation;
+    const session = policy ? createInvestigationSession(options.regionId) : null;
     const policyBelief = policy ? priorBelief(policy) : [];
     let belief = policyBelief;
     let beliefUpdatedFromEvidence = false;
@@ -239,21 +242,26 @@ export class AgentService {
         : 0;
 
       uavAvailable = uavUnits.some(unit => unit.status === 'available');
-      const availability: AvailabilityMap = {
-        A_CAMERA: camera && camera.state !== 'offline'
-          ? { available: true }
-          : { available: false, reason: `摄像头离线：${String(camera?.reason ?? '无可用设备')}` },
-        A_STAFF: staffRecommendation.recommended
-          ? { available: true }
-          : { available: false, reason: '没有满足技能与可达性要求的可用工作人员' },
-        A_UAV: uavAvailable
-          ? { available: true }
-          : { available: false, reason: '没有可用无人机或未获批准' },
-        A_HISTORY: trendPoints >= 2 ? { available: true } : { available: false, reason: '历史观测点不足' },
-        A_PREDICTION: { available: true },
-      };
+      const availability: AvailabilityMap = buildInvestigationAvailability(policy, {
+        cameraOnline: Boolean(camera && camera.state !== 'offline'),
+        cameraReason: `摄像头离线：${String(camera?.reason ?? '无可用设备')}`,
+        staffAvailable: Boolean(staffRecommendation.recommended),
+        staffReason: '没有满足技能与可达性要求的可用工作人员',
+        uavAvailable,
+        uavReason: '没有可用无人机或未获批准',
+        historyPoints: trendPoints,
+      });
 
       for (let round = 1; round <= policy.max_investigations; round += 1) {
+        // 每轮重新检查预算、冷却与重试次数；已用成本 + 候选成本必须放得进预算。
+        if (session) {
+          for (const policyAction of policy.actions) {
+            const status = actionAvailability(policy, policyAction, session);
+            if (!status.available) {
+              availability[policyAction.id] = { available: false, reason: status.reason ?? '当前不可用' };
+            }
+          }
+        }
         const decision = decideInvestigation(policy, belief, { availability, investigationsUsed });
         const selected = decision.recommended_action_id;
         const action = policy.actions.find(item => item.id === selected) ?? null;
@@ -357,6 +365,11 @@ export class AgentService {
         if (outcome !== 'unavailable') {
           belief = applyEvidence(policy, belief, action.kind, outcome);
           beliefUpdatedFromEvidence = true;
+        }
+
+        // 资源与时间成本按实际尝试结算；失败尝试也计费（不自动免费）。
+        if (session) {
+          recordAttempt(session, action, { success: outcome !== 'unavailable', outcome });
         }
 
         rounds.push({

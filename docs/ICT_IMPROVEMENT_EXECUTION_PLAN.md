@@ -437,3 +437,27 @@ evaluation/reliability/<run-id>/     # 故障矩阵、恢复记录
 8. 哪些结果没有支持原假设？并列保留 V6.1/V6.2、同预算重试无优势、新实验负面结果。
 
 本方案完成只代表设计已具体化。实机、现场、统计优势与比赛结果均不得提前标记为完成。
+
+---
+
+## 17. 实施进展（2026-11-09）
+
+本节记录对 G01–G11 的实际落实情况；未列出的条目仍未完成。事实状态以
+[`PROJECT_STATUS.md`](PROJECT_STATUS.md) 与 [`CLAIMS.md`](../research/CLAIMS.md) 为准。
+
+| ID | 状态 | 实际改动与证据 |
+| --- | --- | --- |
+| G01 | 部分完成 | 有界多步编排（默认 4 步）、重复调用停止、创建工单后 `awaiting_approval`、`AGENTARTS_AUTO_CONTINUE` 续接入口；stub 测试；无真实租户 |
+| G02 | 完成（本地） | `connectivity` 与 `business_closure` 分离；健康成功只标记可达；前端展示两者 |
+| G03 | 完成（单实例） | 新增 `POST /mcp` Streamable HTTP，与网页共享 `MvpService`；`mcp-http.test.ts` 验证同一工单 |
+| G04 | 完成 | `budget.ts` 统一 `used + reserved + candidate <= max`；本地 Agent/会话/多区域共用；边界与 NaN 测试 |
+| G05 | 部分完成 | 覆盖权重与冲突参数移入场景；派发预留尚未与工单联动 |
+| G06 | 完成（新实验） | `voi-v2-benchmark.ts`：相同动作覆盖、观测采样、统一预算；结果见 `evaluation/voi-v2/`；V6.2 冻结保留 |
+| G07 | 未完成 | 真实用户研究需外部参与者与场馆授权 |
+| G08 | 部分完成 | Agent 运行快照 `MVP_RUNS_FILE`；工单快照已有；跨工单/预算/事件共同事务未实现 |
+| G09 | 完成 | AgentArts 场景 ID、调查可用性按 kind、控制台推演数据移入 `ui_demos` |
+| G10 | 完成 | 官方运行时契约已实现并写入文档；旧“无公开 API”表述已更正 |
+| G11 | 未完成 | 预测区间覆盖率与真实场馆精度仍需后续实验 |
+
+新增证据目录：`evaluation/voi-v2/2026-11-08T17-00-16-896Z/`。
+本轮验证：后端 142/142、前端 16/16、构建与两个 demo 通过。

@@ -504,6 +504,17 @@ export const InvestigationPolicySchema = z.object({
     max_resource_cost: z.number().positive(),
   }),
   actions: z.array(InvestigationActionSchema).min(1),
+  /** 多区域覆盖权重（来自场景；缺省时沿用历史默认值并在输出中标记 legacy_default）。 */
+  coverage_weights: z.object({
+    neighbor: z.number().min(0).max(1),
+    global: z.number().min(0).max(1),
+  }).optional(),
+  /** 证据冲突处理参数（来自场景；缺省时沿用历史默认值并在输出中标记 legacy_default）。 */
+  conflict: z.object({
+    window_minutes: z.number().positive().max(120),
+    /** 冲突时后验与先验的混合系数：0 = 完全采用后验，1 = 完全保持先验。 */
+    blend_prior: z.number().min(0).max(1),
+  }).optional(),
   /** VoI 低于该值即停止调查、转人工。 */
   stop_threshold: z.number(),
   max_investigations: z.number().int().positive().max(6),
@@ -516,6 +527,45 @@ export const InvestigationPolicySchema = z.object({
 });
 export type InvestigationPolicy = z.infer<typeof InvestigationPolicySchema>;
 
+/** 控制台一键推演的数据（来自场景文件，禁止在代码里写死区域 ID 与人数序列）。 */
+export const UiDemoSeriesSchema = z.object({
+  region_id: z.string().min(1),
+  confidence: z.number().min(0).max(1),
+  /** region_id -> 按时间顺序的人数序列（合成数据）。 */
+  series: z.record(z.array(z.number().nonnegative()).min(1)),
+});
+
+export const UiDemoSchema = z.object({
+  normal: UiDemoSeriesSchema.optional(),
+  surge: UiDemoSeriesSchema.extend({
+    degraded: z.object({
+      region_id: z.string().min(1),
+      count: z.number().nonnegative(),
+      confidence: z.number().min(0).max(1),
+    }).optional(),
+  }).optional(),
+  reject: z.object({
+    region_id: z.string().min(1),
+    offline: z.object({
+      count: z.number().nonnegative(),
+      confidence: z.number().min(0).max(1),
+      reason: z.string().min(1),
+    }),
+    /** region_id -> 合成人数（用于演示容量压力）。 */
+    capacity_by_region: z.record(z.number().nonnegative()),
+    capacity_confidence: z.number().min(0).max(1).default(0.95),
+    incident: z.object({
+      type: z.enum(INCIDENT_TYPE),
+      description: z.string().min(1),
+      severity: z.enum(['low', 'medium', 'high', 'critical']),
+      exit_ids: z.array(z.string().min(1)).min(1),
+      region_ids: z.array(z.string().min(1)).default([]),
+      corridor_ids: z.array(z.string().min(1)).default([]),
+    }),
+  }).optional(),
+});
+export type UiDemo = z.infer<typeof UiDemoSchema>;
+
 export const SafetyScenarioSchema = z.object({
   scenario_id: z.string().min(1),
   name: z.string().min(1),
@@ -527,6 +577,8 @@ export const SafetyScenarioSchema = z.object({
   corridors: z.array(CorridorSchema).min(1),
   exits: z.array(ExitSchema).min(1),
   demo_scenarios: z.array(DemoScenarioSchema).default([]),
+  /** 控制台一键推演数据（可选；合成）。 */
+  ui_demos: UiDemoSchema.optional(),
   /** 大屏地图层（可选，不参与任何安全判定）。 */
   map: ScenarioMapSchema.optional(),
   /** "写入模拟观测"按钮的基线（可选）。 */

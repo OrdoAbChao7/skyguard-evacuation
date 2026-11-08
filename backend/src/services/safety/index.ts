@@ -40,9 +40,12 @@ export function getSafetyService(): SafetyDecisionService {
 }
 
 function loadSafetyScenarioWithFallback() {
+  const configured = process.env.SAFETY_SCENARIO_FILE?.trim();
   try {
     return loadSafetyScenario();
   } catch (error) {
+    // 显式配置的场景不存在时必须失败，不能静默换回默认场馆。
+    if (configured && configured !== 'undefined') throw error;
     const fallback = path.resolve(__dirname, '../../../../data/scenarios/stadium-evacuation.json');
     if (fs.existsSync(fallback)) {
       console.warn(

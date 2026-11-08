@@ -174,6 +174,37 @@ export function validateScenarioReferences(scenario: SafetyScenario): string[] {
     }
   }
 
+  if (scenario.ui_demos) {
+    for (const key of ['normal', 'surge'] as const) {
+      const demo = scenario.ui_demos[key];
+      if (!demo) continue;
+      if (!regionIds.has(demo.region_id)) errors.push(`ui_demos.${key} region_id unknown: ${demo.region_id}`);
+      for (const regionId of Object.keys(demo.series)) {
+        if (!regionIds.has(regionId)) errors.push(`ui_demos.${key} series references unknown region: ${regionId}`);
+      }
+      const degraded = 'degraded' in demo ? demo.degraded : undefined;
+      if (key === 'surge' && degraded && !regionIds.has(degraded.region_id)) {
+        errors.push(`ui_demos.surge degraded region_id unknown: ${degraded.region_id}`);
+      }
+    }
+    const reject = scenario.ui_demos.reject;
+    if (reject) {
+      if (!regionIds.has(reject.region_id)) errors.push(`ui_demos.reject region_id unknown: ${reject.region_id}`);
+      for (const regionId of Object.keys(reject.capacity_by_region)) {
+        if (!regionIds.has(regionId)) errors.push(`ui_demos.reject capacity references unknown region: ${regionId}`);
+      }
+      for (const id of reject.incident.region_ids) {
+        if (!regionIds.has(id)) errors.push(`ui_demos.reject incident references unknown region: ${id}`);
+      }
+      for (const id of reject.incident.corridor_ids) {
+        if (!corridorIds.has(id)) errors.push(`ui_demos.reject incident references unknown corridor: ${id}`);
+      }
+      for (const id of reject.incident.exit_ids) {
+        if (!exitIds.has(id)) errors.push(`ui_demos.reject incident references unknown exit: ${id}`);
+      }
+    }
+  }
+
   return errors;
 }
 

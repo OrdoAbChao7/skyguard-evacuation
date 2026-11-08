@@ -78,3 +78,43 @@ test('预算耗尽时停止调查', () => {
     fixture.cleanup();
   }
 });
+
+test('单个候选动作超预算只拒绝该候选，便宜动作仍可被推荐', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const policy = fixture.scenario.investigation!;
+    const graph = buildRegionGraph(fixture.scenario);
+    const risks = fixture.scenario.regions.map(region => risk(region.id, 'watch'));
+    const beliefs = priorBeliefsForRegions(policy, risks);
+    const tight = { ...policy, budget: { max_actions: 3, max_total_cost: 0.1, max_total_time_minutes: 8 } };
+    const decision = decideMultiRegionInvestigation(tight, 'R_EAST_STAND', beliefs, graph, {}, {
+      usedCost: 0.06,
+    });
+
+    const camera = decision.evaluations.find(item => item.action_id === 'A_CAMERA')!;
+    const history = decision.evaluations.find(item => item.action_id === 'A_HISTORY')!;
+    assert.equal(camera.available, false);
+    assert.equal(camera.budget.reason_code, 'COST_BUDGET_EXCEEDED');
+    assert.equal(history.available, true);
+    assert.notEqual(decision.stop_reason, 'budget_exhausted');
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('覆盖权重来自场景并标注来源', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const policy = fixture.scenario.investigation!;
+    const graph = buildRegionGraph(fixture.scenario);
+    const risks = fixture.scenario.regions.map(region => risk(region.id, 'watch'));
+    const beliefs = priorBeliefsForRegions(policy, risks);
+    const decision = decideMultiRegionInvestigation(policy, 'R_EAST_STAND', beliefs, graph);
+    assert.equal(decision.coverage_weight_source, 'scenario');
+    const uav = decision.evaluations.find(item => item.action_id === 'A_UAV')!;
+    const neighbor = uav.covered_regions.find(item => item.region_id !== 'R_EAST_STAND')!;
+    assert.equal(neighbor.weight, policy.coverage_weights!.neighbor);
+  } finally {
+    fixture.cleanup();
+  }
+});

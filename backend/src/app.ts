@@ -7,6 +7,7 @@ import { randomUUID } from 'node:crypto';
 import { apiRouter } from './api/v1/router';
 import { verifyToken } from './api/v1/auth';
 import { rateLimit, securityConfig } from './config/security';
+import { mcpHttpHandler } from './mcp/server';
 
 export function createApp(): Express {
   const app = express();
@@ -43,6 +44,8 @@ export function createApp(): Express {
 
   app.use(express.static(path.resolve(__dirname, '../../frontend/dist')));
   app.use('/api', rateLimit(security));
+  // 同一进程、同一 MvpService 单例：HTTP MCP 与网页读写同一份业务状态。
+  app.use('/mcp', rateLimit(security), mcpHttpHandler());
 
   if (security.readAuthRequired) {
     app.use('/api/v1', (req, res, next) => {

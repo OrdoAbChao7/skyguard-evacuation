@@ -318,6 +318,7 @@ export class SafetyDecisionService {
   ingestObservation(input: IngestObservationInput, actor: AuditActor): DensityObservation {
     const region = this.scenario.regions.find(item => item.id === input.regionId);
     if (!region) throw new Error(`区域不存在：${input.regionId}`);
+    const previousVersion = this.observations.getVersion();
 
     const observation = buildObservation({
       region,
@@ -335,6 +336,25 @@ export class SafetyDecisionService {
     });
 
     this.observations.ingest(observation);
+    if (this.observations.getVersion() === previousVersion) {
+      // 重复上报：不产生新版本、不触发再规划，但保留审计记录。
+      this.audit.record({
+        actor: actor.username,
+        role: actor.role,
+        action: 'observation.duplicate_ignored',
+        entity_type: 'region',
+        entity_id: region.id,
+        summary: `忽略重复观测：${observation.estimated_count} 人（${observation.source}，${observation.observed_at}）`,
+        result: 'success',
+        after: {
+          observation_id: observation.id,
+          count: observation.estimated_count,
+          source: observation.source,
+          observed_at: observation.observed_at,
+        },
+      });
+      return this.observations.latest(region.id) ?? observation;
+    }
     this.audit.record({
       actor: actor.username,
       role: actor.role,

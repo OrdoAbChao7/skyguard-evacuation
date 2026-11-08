@@ -20,6 +20,7 @@ import {
   type BeliefEntry,
 } from './voi';
 import { neighborsOf, riskValue, type RegionGraph } from './risk-graph';
+import { allCandidatesBlocked, checkCandidateBudget, type BudgetDecision } from './budget';
 
 export interface MultiRegionActionEvaluation {
   action_id: string;
@@ -34,6 +35,8 @@ export interface MultiRegionActionEvaluation {
   resource_cost: number;
   failure_probability: number;
   score: number | null;
+  /** 候选动作的预算判定（含 used + candidate 的准入检查）。 */
+  budget: Pick<BudgetDecision, 'eligible' | 'reason_code' | 'reason' | 'remaining'>;
 }
 
 export interface MultiRegionDecision {
@@ -54,6 +57,8 @@ export interface MultiRegionDecision {
     max_total_cost: number | null;
     max_total_time_minutes: number | null;
   };
+  /** 覆盖权重来源：scenario = 场景显式配置；legacy_default = 历史默认值。 */
+  coverage_weight_source: 'scenario' | 'legacy_default';
   provenance: string;
 }
 
@@ -113,23 +118,25 @@ export function decideMultiRegionInvestigation(
   const usedCost = options.usedCost ?? 0;
   const usedTime = options.usedTimeMinutes ?? 0;
   const budget = policy.budget;
-  const budgetExhausted = Boolean(
-    budget
-    && (usedActions >= budget.max_actions
-      || usedCost >= budget.max_total_cost
-      || usedTime >= budget.max_total_time_minutes),
-  );
+  const usage = { used_actions: usedActions, used_cost: usedCost, used_time_minutes: usedTime };
+  // 预算耗尽 = 没有任何候选动作还能放进预算；单个候选超限只拒绝该候选。
+  const budgetExhausted = Boolean(budget) && allCandidatesBlocked(policy, usage);
+  const weightSource: MultiRegionDecision['coverage_weight_source'] =
+    policy.coverage_weights && !options.coverageWeights ? 'scenario' : 'legacy_default';
 
   const evaluations = policy.actions.map(action => {
     const runtime = availability[action.id];
-    const available = !budgetExhausted && Boolean(runtime?.available ?? action.base_availability === 'available');
+    const runtimeAvailable = Boolean(runtime?.available ?? action.base_availability === 'available');
+    // G04：预算准入必须计入候选动作自身成本（used + reserved + candidate <= max）。
+    const budgetDecision = checkCandidateBudget(policy, action, usage);
+    const available = runtimeAvailable && budgetDecision.eligible;
     const unavailableReason = available
       ? null
-      : budgetExhausted
-        ? '调查预算已耗尽'
+      : !budgetDecision.eligible
+        ? budgetDecision.reason
         : runtime?.reason ?? (action.base_availability === 'degraded' ? '数据源降级' : '当前不可用');
 
-    const covered = coverRegions(action, targetRegionId, graph, options.coverageWeights);
+    const covered = coverRegions(action, targetRegionId, graph, options.coverageWeights ?? policy.coverage_weights);
     const targetBelief = beliefs.get(targetRegionId) ?? priorBelief(policy);
     const riskBefore = expectedRisk(policy, targetBelief);
     let weightedRiskReduction = 0;
@@ -190,6 +197,12 @@ export function decideMultiRegionInvestigation(
       resource_cost: resourceCost,
       failure_probability: action.failure_probability,
       score: score === null ? null : Number(score.toFixed(6)),
+      budget: {
+        eligible: budgetDecision.eligible,
+        reason_code: budgetDecision.reason_code,
+        reason: budgetDecision.reason,
+        remaining: budgetDecision.remaining,
+      },
     };
   });
 
@@ -222,6 +235,7 @@ export function decideMultiRegionInvestigation(
       max_total_cost: budget?.max_total_cost ?? null,
       max_total_time_minutes: budget?.max_total_time_minutes ?? null,
     },
+    coverage_weight_source: weightSource,
     provenance: policy.provenance,
   };
 }
