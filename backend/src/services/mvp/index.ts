@@ -67,6 +67,10 @@ export interface MvpDashboard {
 
 let singleton: MvpService | null = null;
 
+function cloneJson<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
 /** 进程内单例：HTTP API、MCP Server 与演示脚本共用。 */
 export function getMvpService(): MvpService {
   if (!singleton) {
@@ -104,6 +108,10 @@ export class MvpService {
   private persisting = false;
   private transactionDepth = 0;
   private stateDirty = false;
+  private transactionSnapshot: {
+    safety: ReturnType<SafetyDecisionService['exportState']>;
+    ops: ReturnType<OpsService['exportState']>;
+  } | null = null;
 
   constructor(options: MvpServiceOptions = {}) {
     this.scenario = options.scenario ?? loadSafetyScenario();
@@ -115,6 +123,7 @@ export class MvpService {
 
     this.safety = options.safety ?? new SafetyDecisionService({ scenario: this.scenario, auditLog: this.audit });
     this.safety.setStateChangeHook(() => this.handleStateChange());
+    this.safety.setWritableGuard(() => this.assertStateWritable());
     this.prediction = new PredictionService(this.scenario, this.safety.getObservationStore());
     this.replay = new ReplayService(this.scenario);
     this.ops = new OpsService(
@@ -128,6 +137,7 @@ export class MvpService {
       this.stateStore ? undefined : (process.env.OPS_PERSIST_FILE?.trim() || undefined),
       () => this.handleStateChange(),
       fn => this.withTransaction(fn),
+      () => this.assertStateWritable(),
     );
 
     const context: ToolContext = {
@@ -232,17 +242,91 @@ export class MvpService {
     this.persistState();
   }
 
-  /** 把跨安全域/工单/反馈的多步变更合并为一次统一状态提交。 */
+  /** 把跨安全域/工单/反馈的多步变更合并为一次统一状态提交；失败时回滚内存状态。 */
   private withTransaction<T>(fn: () => T): T {
+    this.assertStateWritable();
+    if (this.transactionDepth === 0) {
+      this.transactionSnapshot = {
+        safety: cloneJson(this.safety.exportState()),
+        ops: cloneJson(this.ops.exportState()),
+      };
+    }
     this.transactionDepth += 1;
+    let result!: T;
+    let failed = false;
+    let failure: unknown;
     try {
-      return fn();
-    } finally {
-      this.transactionDepth -= 1;
-      if (this.transactionDepth === 0 && this.stateDirty && !this.restoring) {
-        this.stateDirty = false;
-        this.persistState();
+      result = fn();
+    } catch (error) {
+      failed = true;
+      failure = error;
+    }
+    this.transactionDepth -= 1;
+    if (this.transactionDepth === 0) {
+      if (failed) {
+        this.rollbackTransaction(failure);
+        throw failure;
       }
+      if (this.stateDirty && !this.restoring) {
+        this.stateDirty = false;
+        try {
+          this.persistState();
+        } catch (error) {
+          this.rollbackTransaction(error);
+          throw error;
+        }
+      }
+      this.transactionSnapshot = null;
+    }
+    return result;
+  }
+
+  private rollbackTransaction(failure?: unknown): void {
+    const snapshot = this.transactionSnapshot;
+    this.transactionSnapshot = null;
+    this.stateDirty = false;
+    if (!snapshot) return;
+    const previousRestoring = this.restoring;
+    this.restoring = true;
+    try {
+      this.safety.restoreState(cloneJson(snapshot.safety));
+      this.ops.applyPersistedState(cloneJson(snapshot.ops));
+      try {
+        this.audit.record({
+          actor: 'system',
+          role: 'system',
+          action: 'system.transaction_rolled_back',
+          entity_type: 'state_store',
+          summary: '事务失败，工单/预算/安全内存状态已回滚；失败操作不应视为完成',
+          result: 'failure',
+          reason: failure instanceof Error ? failure.message : String(failure ?? 'unknown'),
+        });
+      } catch {
+        // 审计失败不改变回滚结果。
+      }
+    } catch (error) {
+      this.stateWritable = false;
+      try {
+        this.audit.record({
+          actor: 'system',
+          role: 'system',
+          action: 'system.state_rollback_failed',
+          entity_type: 'state_store',
+          summary: '事务失败后回滚内存状态失败；服务进入只读',
+          result: 'failure',
+          reason: (error as Error).message,
+        });
+      } catch {
+        // 审计失败不得掩盖回滚错误。
+      }
+    } finally {
+      this.restoring = previousRestoring;
+    }
+  }
+
+  private assertStateWritable(): void {
+    if (this.stateStore && !this.stateWritable) {
+      throw new StateStoreError('STATE_READ_ONLY', '统一状态存储不可写；请检查磁盘并重启服务');
     }
   }
 

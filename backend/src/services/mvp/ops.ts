@@ -327,14 +327,20 @@ export class OpsService {
     private readonly persistFile?: string,
     private readonly onStateChange?: () => void,
     private readonly transactionRunner?: (fn: () => void) => void,
+    private readonly canWrite?: () => void,
   ) {
     for (const member of scenario.staff) this.staffStatus.set(member.id, member.status);
     this.restorePersistedState();
     this.sweepExpiredReservations();
   }
 
+  private assertWritable(): void {
+    this.canWrite?.();
+  }
+
   /** 把多步业务变更合并为一次统一状态提交。 */
   private withTransaction<T>(fn: () => T): T {
+    this.assertWritable();
     if (!this.transactionRunner) return fn();
     let result!: T;
     this.transactionRunner(() => { result = fn(); });
@@ -811,6 +817,10 @@ export class OpsService {
   }
 
   createWorkOrder(actor: OpsActor, input: WorkOrderCreateInput): WorkOrder {
+    return this.withTransaction(() => this.createWorkOrderInternal(actor, input));
+  }
+
+  private createWorkOrderInternal(actor: OpsActor, input: WorkOrderCreateInput): WorkOrder {
     const parsed = WorkOrderCreateSchema.parse(input);
     const fingerprint = requestFingerprint(parsed);
     if (parsed.idempotency_key) {
@@ -921,6 +931,7 @@ export class OpsService {
     actor: OpsActor,
     options: { note?: string; patch?: Partial<WorkOrder> } = {},
   ): WorkOrder {
+    this.assertWritable();
     if (!ALLOWED_TRANSITIONS[order.status].includes(next)) {
       throw new WorkOrderTransitionError(`工单 ${order.id} 不能从 ${order.status} 流转到 ${next}`);
     }
@@ -944,8 +955,10 @@ export class OpsService {
   }
 
   submitForApproval(id: string, actor: OpsActor): WorkOrder {
-    const order = this.requireOrder(id);
-    return this.transition(order, 'PENDING_APPROVAL', actor, { note: '提交审批' });
+    return this.withTransaction(() => {
+      const order = this.requireOrder(id);
+      return this.transition(order, 'PENDING_APPROVAL', actor, { note: '提交审批' });
+    });
   }
 
   /** 校验预留仍然有效（未过期、未释放、场景版本一致）；无效则 fail closed。 */
@@ -975,19 +988,21 @@ export class OpsService {
 
   approve(id: string, actor: OpsActor, note?: string): WorkOrder {
     this.requireOperator(actor);
-    const order = this.requireOrder(id);
-    if (order.status !== 'PENDING_APPROVAL') {
-      throw new WorkOrderTransitionError(`工单 ${order.id} 当前为 ${order.status}，只有 PENDING_APPROVAL 可审批`);
-    }
-    const reservation = this.ensureReservationActive(order, '审批');
-    if (reservation && reservation.state === 'HELD') {
-      reservation.state = 'CONFIRMED';
-      reservation.confirmed_at = new Date().toISOString();
-    }
-    const now = new Date().toISOString();
-    return this.transition(order, 'APPROVED', actor, {
-      note: note ?? '审批通过',
-      patch: { approval: { decision: 'approved', by: actor.username, role: actor.role, at: now, note } },
+    return this.withTransaction(() => {
+      const order = this.requireOrder(id);
+      if (order.status !== 'PENDING_APPROVAL') {
+        throw new WorkOrderTransitionError(`工单 ${order.id} 当前为 ${order.status}，只有 PENDING_APPROVAL 可审批`);
+      }
+      const reservation = this.ensureReservationActive(order, '审批');
+      if (reservation && reservation.state === 'HELD') {
+        reservation.state = 'CONFIRMED';
+        reservation.confirmed_at = new Date().toISOString();
+      }
+      const now = new Date().toISOString();
+      return this.transition(order, 'APPROVED', actor, {
+        note: note ?? '审批通过',
+        patch: { approval: { decision: 'approved', by: actor.username, role: actor.role, at: now, note } },
+      });
     });
   }
 
@@ -1061,18 +1076,22 @@ export class OpsService {
   }
 
   accept(id: string, actor: OpsActor): WorkOrder {
-    const order = this.requireAssignedStaff(id, actor);
-    return this.transition(order, 'ACCEPTED', actor, {
-      note: '工作人员接单',
-      patch: { accepted_at: new Date().toISOString() },
+    return this.withTransaction(() => {
+      const order = this.requireAssignedStaff(id, actor);
+      return this.transition(order, 'ACCEPTED', actor, {
+        note: '工作人员接单',
+        patch: { accepted_at: new Date().toISOString() },
+      });
     });
   }
 
   start(id: string, actor: OpsActor): WorkOrder {
-    const order = this.requireAssignedStaff(id, actor);
-    return this.transition(order, 'IN_PROGRESS', actor, {
-      note: '开始执行',
-      patch: { started_at: new Date().toISOString() },
+    return this.withTransaction(() => {
+      const order = this.requireAssignedStaff(id, actor);
+      return this.transition(order, 'IN_PROGRESS', actor, {
+        note: '开始执行',
+        patch: { started_at: new Date().toISOString() },
+      });
     });
   }
 
@@ -1146,6 +1165,10 @@ export class OpsService {
 
   /** 管理员在环境变化或预留过期后重新确认工单上下文与资源。 */
   revalidate(id: string, actor: OpsActor, note?: string): WorkOrder {
+    return this.withTransaction(() => this.revalidateInternal(id, actor, note));
+  }
+
+  private revalidateInternal(id: string, actor: OpsActor, note?: string): WorkOrder {
     this.requireOperator(actor);
     const order = this.requireOrder(id);
     if (['COMPLETED', 'FAILED', 'REJECTED', 'CANCELLED', 'DRAFT'].includes(order.status)) {

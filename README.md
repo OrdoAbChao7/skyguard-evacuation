@@ -193,7 +193,7 @@ npm start              # 由后端托管 frontend/dist
 ## 测试与证据
 
 ```powershell
-npm test                              # 后端 170 用例 + 前端 16 用例
+npm test                              # 后端 175 用例 + 前端 16 用例
 npm run demo                          # 进程内跑完 A/B/C 三个演示场景并校验最终状态
 npm run bench                         # 实测规划/校验/决策延迟 → evaluation/performance.json
 npm run benchmark:voi-v2              # 公平 VoI 复跑 → evaluation/voi-v2/<run-id>/
@@ -202,7 +202,7 @@ npm run benchmark:v65                 # 预测实验 → evaluation/v65/<run-id>
 
 | 证据 | 当前结果 |
 | --- | --- |
-| 后端测试（安全 + MVP + V6/V6.1 + 感知 + 状态） | 170 / 170 通过 |
+| 后端测试（安全 + MVP + V6/V6.1 + 感知 + 状态） | 175 / 175 通过 |
 | 前端测试 | 16 / 16 通过 |
 | 演示场景 A（常规） | `NORMAL`，1000/1000 人分配完毕 |
 | 演示场景 B（出口火灾） | `REROUTE`，原方案重规划 |

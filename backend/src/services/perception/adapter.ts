@@ -13,6 +13,7 @@
  *  - 公开数据集（ShanghaiTech/P2PNet）结果只证明“图像→人数”链路，不代表现场标定。
  */
 import type { DisplayFrame, DisplayZone, LoadedDisplayPackage } from './display';
+import crypto from 'node:crypto';
 import type { SafetyDecisionService } from '../safety/decision-service';
 import type { DensityObservation, SafetyScenario } from '../safety/types';
 import type { OpsActor } from '../mvp/ops';
@@ -60,6 +61,25 @@ export interface PerceptionDraft {
   valid_for_safety: boolean;
   provenance: Record<string, unknown>;
   limitations: string[];
+  /** 进程内 HMAC 证明：只有本模块生成的草稿才能进入安全域。 */
+  attestation: string;
+}
+
+const DRAFT_ATTESTATION_KEY = crypto.randomBytes(32);
+
+function stableJson(value: unknown): string {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(stableJson).join(',')}]`;
+  const record = value as Record<string, unknown>;
+  return `{${Object.keys(record).sort().map(key => `${JSON.stringify(key)}:${stableJson(record[key])}`).join(',')}}`;
+}
+
+function signDraft(draft: Omit<PerceptionDraft, 'attestation'>): string {
+  return crypto.createHmac('sha256', DRAFT_ATTESTATION_KEY).update(stableJson(draft)).digest('hex');
+}
+
+function finalizeDraft(draft: Omit<PerceptionDraft, 'attestation'>): PerceptionDraft {
+  return { ...draft, attestation: signDraft(draft) };
 }
 
 export interface ImageCountInput {
@@ -119,7 +139,7 @@ export function adaptImageCount(input: ImageCountInput): PerceptionDraft {
     && input.confidence > 0
     && input.predicted_count >= 0,
   );
-  return {
+  const draft: Omit<PerceptionDraft, 'attestation'> = {
     source_kind: 'image_count',
     scene_id: input.image_id,
     camera_id: 'image',
@@ -152,6 +172,7 @@ export function adaptImageCount(input: ImageCountInput): PerceptionDraft {
       '公开数据集/外部模型结果不代表现场精度。',
     ],
   };
+  return finalizeDraft(draft);
 }
 
 export function adaptDisplayFrame(
@@ -181,7 +202,7 @@ export function adaptDisplayFrame(
     if (frame.frame_status !== 'ok') reasons.push(`frame_status_${frame.frame_status}`);
     if (confidence === null) reasons.push('no_person_confidence');
     const calibrated = mapping?.calibration === 'surveyed';
-    return {
+    const draft: Omit<PerceptionDraft, 'attestation'> = {
       source_kind: 'display_frame' as const,
       scene_id: loaded.summary.scene_id,
       camera_id: loaded.summary.camera_id,
@@ -200,13 +221,8 @@ export function adaptDisplayFrame(
         ground_truth_available: loaded.summary.ground_truth_available,
         license_status: loaded.summary.license_status,
       },
-      valid_for_safety: Boolean(
-        mapping
-        && calibrated
-        && frame.frame_status === 'ok'
-        && confidence !== null
-        && confidence > 0,
-      ),
+      // 派生显示数据即使有 surveyed 映射也不进入可信安全观测；需另立来源策略。
+      valid_for_safety: false,
       provenance: {
         package_id: loaded.summary.package_id,
         calibration_id: loaded.summary.calibration_id,
@@ -221,6 +237,7 @@ export function adaptDisplayFrame(
         '区域映射/配准为近似值；缺少 surveyed 标定时不得进入安全域。',
       ],
     };
+    return finalizeDraft(draft);
   });
 }
 
@@ -248,8 +265,27 @@ export function ingestPerceptionDraft(
     return { draft, observation: null, skipped_reason: `unknown_region:${draft.region_id}` };
   }
   const reasons = [...draft.quality.reasons];
-  let valid = draft.valid_for_safety;
-  if (draft.area_m2 === null || Math.abs(draft.area_m2 - region.area_m2) / region.area_m2 > 0.05) {
+  const { attestation, ...unsigned } = draft;
+  const attested = typeof attestation === 'string'
+    && attestation === signDraft(unsigned as Omit<PerceptionDraft, 'attestation'>);
+  let valid = attested && draft.valid_for_safety;
+  if (!attested) {
+    valid = false;
+    reasons.push('unattested_or_tampered_draft');
+  }
+  if (draft.source_kind === 'display_frame') {
+    // 派生显示数据即使被 caller 标注 valid，也不得进入可信安全域。
+    valid = false;
+    reasons.push('derived_display_source_not_allowed');
+  }
+  if (!draft.quality.calibrated
+    || draft.quality.status === 'unusable'
+    || draft.quality.reasons.includes('missing_region_mapping')
+    || draft.quality.reasons.includes('uncalibrated_region_mapping')) {
+    valid = false;
+    reasons.push('uncalibrated_or_unusable_source');
+  }
+  if (draft.area_m2 === null || Math.abs(draft.area_m2 - region.area_m2) / region.area_m2 > 1e-6) {
     valid = false;
     reasons.push('area_mismatch_with_scenario_region');
   }

@@ -51,8 +51,8 @@ npm start            # 由后端托管 frontend/dist，默认 8010
 ```bash
 docker build -t skyguard:mvp .
 docker run --rm -p 8010:8010 \
-  -e SECRET_KEY='change-me' \
-  -e SKYGUARD_ADMIN_PASSWORD='change-me' \
+  -e SECRET_KEY='change-me-long-random-secret' \
+  -e SKYGUARD_ADMIN_PASSWORD='change-me-strong-2026' \
   -e OPS_PERSIST_FILE=/app/data/ops-state.json \
   -e MVP_RUNS_FILE=/app/data/agent-runs.json \
   -v skyguard-data:/app/data \
@@ -60,6 +60,8 @@ docker run --rm -p 8010:8010 \
 ```
 
 > Dockerfile 未在目标生产环境实机验证；构建依赖公网 npm。
+> 生产模式会拒绝默认/过短的 `SECRET_KEY` 与 `SKYGUARD_ADMIN_PASSWORD`（启动退出）；
+> 运行镜像必须显式传入强凭证。镜像以非 root 用户运行，`/app/data` 为数据卷。
 
 ## 5. 反向代理与安全
 

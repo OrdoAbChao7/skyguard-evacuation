@@ -132,24 +132,36 @@ export class PersistentStateStore<T> {
     if (candidates.length === 0) return null;
 
     const errors: string[] = [];
+    const valid: Array<{ source: LoadedState<T>['source']; envelope: StateEnvelope<T> }> = [];
     for (const candidate of candidates) {
       try {
         const envelope = readCandidate<T>(candidate.file, this.supportedVersion);
-        this.lastRevision = envelope.revision;
-        return {
-          payload: envelope.payload,
-          revision: envelope.revision,
-          saved_at: envelope.saved_at,
-          source: candidate.source,
-        };
+        valid.push({ source: candidate.source, envelope });
       } catch (error) {
+        // 未来版本的 schema 不能被旧代码静默降级恢复。
+        if (error instanceof StateStoreError && error.code === 'STATE_VERSION_UNSUPPORTED') throw error;
         errors.push((error as Error).message);
       }
     }
-    throw new StateStoreError(
-      'STATE_CORRUPT',
-      `状态文件全部校验失败，拒绝以空状态启动：${errors.join(' | ')}`,
-    );
+    if (valid.length === 0) {
+      throw new StateStoreError(
+        'STATE_CORRUPT',
+        `状态文件全部校验失败，拒绝以空状态启动：${errors.join(' | ')}`,
+      );
+    }
+    // 崩溃恢复必须选择最新完整快照；primary/backup/temp 只作为同 revision 的优先级。
+    const rank: Record<LoadedState<T>['source'], number> = { primary: 0, backup: 1, temp: 2 };
+    valid.sort((a, b) =>
+      b.envelope.revision - a.envelope.revision
+      || rank[a.source] - rank[b.source]);
+    const selected = valid[0];
+    this.lastRevision = selected.envelope.revision;
+    return {
+      payload: selected.envelope.payload,
+      revision: selected.envelope.revision,
+      saved_at: selected.envelope.saved_at,
+      source: selected.source,
+    };
   }
 
   save(payload: T, expectedRevision: number): number {

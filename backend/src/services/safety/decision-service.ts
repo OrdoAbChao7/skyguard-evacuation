@@ -46,6 +46,8 @@ export interface SafetyDecisionOptions {
   now?: () => Date;
   /** 业务状态变化回调（统一持久化）。 */
   onStateChange?: () => void;
+  /** 统一状态不可写时的保护回调；应抛错。 */
+  assertWritable?: () => void;
 }
 
 export interface SafetyPersistedState {
@@ -150,6 +152,7 @@ export class SafetyDecisionService {
   private inferenceHealth: { healthy: boolean; reason?: string } = { healthy: true };
   private lastPlanExclusions: Array<{ kind: string; id: string; reason: string }> = [];
   private onStateChange?: () => void;
+  private assertWritable?: () => void;
 
   constructor(options: SafetyDecisionOptions) {
     this.scenario = options.scenario;
@@ -160,6 +163,11 @@ export class SafetyDecisionService {
     this.planBuilder = options.planBuilder ?? planEvacuation;
     this.now = options.now ?? (() => new Date());
     this.onStateChange = options.onStateChange;
+    this.assertWritable = options.assertWritable;
+  }
+
+  private ensureWritable(): void {
+    this.assertWritable?.();
   }
 
   private notifyStateChange(): void {
@@ -169,6 +177,10 @@ export class SafetyDecisionService {
   /** 由 MvpService 绑定统一持久化；覆盖旧的单服务回调。 */
   setStateChangeHook(hook?: () => void): void {
     this.onStateChange = hook;
+  }
+
+  setWritableGuard(guard?: () => void): void {
+    this.assertWritable = guard;
   }
 
   exportState(): SafetyPersistedState {
@@ -389,6 +401,7 @@ export class SafetyDecisionService {
   // -------------------------------------------------------------------------
 
   ingestObservation(input: IngestObservationInput, actor: AuditActor): DensityObservation {
+    this.ensureWritable();
     const region = this.scenario.regions.find(item => item.id === input.regionId);
     if (!region) throw new Error(`区域不存在：${input.regionId}`);
     const previousVersion = this.observations.getVersion();
@@ -455,6 +468,7 @@ export class SafetyDecisionService {
   // -------------------------------------------------------------------------
 
   createIncident(input: CreateIncidentInput): Incident {
+    this.ensureWritable();
     const incident = this.incidents.create(input, this.now());
     this.audit.record({
       actor: input.actor,
@@ -472,6 +486,7 @@ export class SafetyDecisionService {
   }
 
   confirmIncident(id: string, actor: AuditActor): Incident {
+    this.ensureWritable();
     const before = this.incidents.get(id);
     try {
       const confirmed = this.incidents.confirm(id, actor.username, this.now());
@@ -507,6 +522,7 @@ export class SafetyDecisionService {
   }
 
   resolveIncident(id: string, actor: AuditActor, note?: string): Incident {
+    this.ensureWritable();
     const before = this.incidents.get(id);
     try {
       const resolved = this.incidents.resolve(id, actor.username, note, this.now());
@@ -542,6 +558,7 @@ export class SafetyDecisionService {
   }
 
   dismissIncident(id: string, actor: AuditActor, note?: string): Incident {
+    this.ensureWritable();
     const dismissed = this.incidents.dismiss(id, actor.username, note, this.now());
     this.audit.record({
       actor: actor.username,
@@ -563,6 +580,7 @@ export class SafetyDecisionService {
   // -------------------------------------------------------------------------
 
   recompute(actor: AuditActor, trigger: string): RecomputeResult {
+    this.ensureWritable();
     const trace = this.audit.startTrace({
       actor: actor.username,
       trigger,
@@ -776,6 +794,7 @@ export class SafetyDecisionService {
 
   /** 对任意候选方案执行独立校验（不改变当前发布状态）。 */
   validateCandidate(plan: EvacuationPlan, actor: AuditActor): SafetyValidationResult {
+    this.ensureWritable();
     const network = resolveEffectiveNetwork(this.scenario, this.incidents.list());
     const validation = validateSafetyPlan({
       plan,
@@ -804,6 +823,7 @@ export class SafetyDecisionService {
   }
 
   setInferenceHealth(healthy: boolean, reason?: string): void {
+    this.ensureWritable();
     if (this.inferenceHealth.healthy === healthy && this.inferenceHealth.reason === reason) return;
     this.inferenceHealth = { healthy, reason };
     this.audit.record({
@@ -1002,6 +1022,7 @@ export class SafetyDecisionService {
   }
 
   reset(actor: AuditActor): void {
+    this.ensureWritable();
     this.observations.reset();
     this.incidents.clear();
     this.publishedPlan = undefined;

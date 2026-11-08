@@ -21,6 +21,21 @@ if (SECRET === DEV_SECRET) {
   console.warn('[auth] 未设置 SECRET_KEY/JWT_SECRET，正在使用开发默认密钥（勿用于生产）。');
 }
 
+/** 生产启动前的凭证门槛；返回空数组表示通过。 */
+export function productionAuthConfigErrors(env: NodeJS.ProcessEnv = process.env): string[] {
+  if (env.NODE_ENV !== 'production') return [];
+  const errors: string[] = [];
+  const secret = env.SECRET_KEY?.trim() || env.JWT_SECRET?.trim() || '';
+  if (!secret || secret === DEV_SECRET || secret.length < 16) {
+    errors.push('生产环境必须设置长度至少 16 的 SECRET_KEY/JWT_SECRET');
+  }
+  const password = env.SKYGUARD_ADMIN_PASSWORD?.trim() || '';
+  if (!password || password === 'skyguard2026' || password.length < 12) {
+    errors.push('生产环境必须设置长度至少 12 且非默认值的 SKYGUARD_ADMIN_PASSWORD');
+  }
+  return errors;
+}
+
 const ADMIN_CONFIG_FILE = path.resolve(__dirname, '../../../../data/admin_config.json');
 const DEFAULT_ADMIN = {
   username: process.env.SKYGUARD_ADMIN_USERNAME || 'admin',

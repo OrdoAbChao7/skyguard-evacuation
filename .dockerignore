@@ -8,6 +8,11 @@ frontend/dist
 data/audit
 data/admin_config.json
 data/ops-state.json
+data/mvp-state.json
+data/mvp-state.json.bak
+data/mvp-state.json.tmp
+data/agent-runs.json
+data/*.tmp
 evaluation/competition
 .env
 *.log
