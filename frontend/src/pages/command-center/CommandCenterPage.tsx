@@ -23,8 +23,9 @@ import type {
   SafetyStatus,
   SafetyValidationResult,
 } from '../../services/safetyApi';
-import { AppstoreOutlined, RadarChartOutlined, EyeOutlined, SafetyCertificateOutlined, AlertOutlined, HistoryOutlined, SettingOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, RadarChartOutlined, EyeOutlined, SafetyCertificateOutlined, AlertOutlined, HistoryOutlined, SettingOutlined, AimOutlined } from '@ant-design/icons';
 import MvpPanels from './MvpPanels';
+import PerceptionReplayPanel from './PerceptionReplayPanel';
 import './CommandCenterPage.css';
 
 const STATE_LABEL: Record<SafetyStateName, string> = {
@@ -178,6 +179,7 @@ export default function CommandCenterPage() {
           { icon: <AppstoreOutlined />, label: '总览', target: 'overview' },
           { icon: <RadarChartOutlined />, label: '态势监控', target: 'situation' },
           { icon: <EyeOutlined />, label: 'AI 感知', target: 'sensors' },
+          { icon: <AimOutlined />, label: '感知回放', target: 'perception-replay' },
           { icon: <SafetyCertificateOutlined />, label: '可信决策', target: 'decision' },
           { icon: <AlertOutlined />, label: '事件管理', target: 'incidents' },
           { icon: <HistoryOutlined />, label: '审计记录', target: 'audit' },
@@ -526,6 +528,9 @@ export default function CommandCenterPage() {
             {audit.length === 0 ? <li className="cc-muted">暂无审计记录</li> : null}
           </ul>
         </section>
+      </div>
+      <div id="perception-replay">
+        <PerceptionReplayPanel />
       </div>
       <MvpPanels
         selectedRegion={selectedRegion}

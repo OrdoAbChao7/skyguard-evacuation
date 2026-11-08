@@ -48,3 +48,40 @@ data/perception/<dataset>/
 4. 在验证集上评测 MAE/RMSE，保存原始结果到 `evaluation/perception/`；
 5. 现场标定摄像机，更新场景 `calibration_status/version`；
 6. 在文档中区分 measured / estimated / simulated。
+
+## 6. 感知回放展示包（已接入，demo_only）
+
+`data/perception/citystreet-display/` 是一个**已落地的感知派生回放包**，用于验证前端时间轴、
+热力与区域查询，并为"真实视频 → 跟踪 → 地面投影 → 区域统计"这条链路提供可回放的样本。
+
+| 组成 | 说明 |
+| --- | --- |
+| `citystreet_display.json` | 60 帧（C3 机位 2280–2339）、13 个区域、逐人点位与 `zone_stats` |
+| `PROVENANCE.json` | 来源、时间基、标定、真值状态、许可状态、已知误差、文件 SHA-256 |
+| `PACKAGE_README.md` | 数据包原始说明（保留原始字节，纳入哈希） |
+| `orthophoto-z20.jpg` | 航拍底图。**许可未确认，不随仓库分发**（`.gitignore`），需部署方本地提供 |
+
+只读 API（无需鉴权，与其它读接口一致）：
+
+```text
+GET /api/v1/perception/displays                          # 摘要列表
+GET /api/v1/perception/displays/:id                      # 底图坐标系、区域边界、来源与已知误差
+GET /api/v1/perception/displays/:id/frames?from=&limit=   # 逐帧点位分页（limit 1–240）
+GET /api/v1/perception/displays/:id/basemap               # 底图；缺失时 404 BASEMAP_NOT_BUNDLED
+```
+
+### 6.1 硬边界
+
+- 展示包 schema（`people / frames / zone_stats`）与 `data/scenarios/*.json`
+  （`zones / corridors / exits / capacity`）**没有任何映射关系**，不得进入规划器或独立校验器；
+- 包在加载时做 zod 结构校验 + 跨字段一致性校验（区域引用、时间单调、方向人数不超过总人数、
+  点位不越界），**任何一项不通过即整包 422 拒绝**，不做"跳过坏帧"的降级；
+- 包内缺失 `PROVENANCE.json` 时只能上报 `license_status: UNKNOWN` 与 `provenance_complete: false`；
+- 无逐帧真值，**不得**据此计算或宣称 MAE/RMSE/F1；
+- 航拍底图许可未确认，缺失时前端退回无底图坐标系，**不得**用占位图冒充真实底图。
+
+### 6.2 与"真实精度"的距离
+
+本包是**派生显示数据**，回答了"链路能否跑通、前端能否正确展示"，**没有**回答
+"人数估计有多准"。补齐真值需要：C3 机位逐帧人工标注 → 用 `matchPoints`/`countMetrics`
+评测 → 结果落到 `evaluation/perception/`，并在 `research/CLAIMS.md` 登记后才可升级主张等级。

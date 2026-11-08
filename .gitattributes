@@ -1,0 +1,10 @@
+# 字节稳定性约定
+#
+# data/perception/<package>/PROVENANCE.json 登记了各文件的 SHA-256，校验以
+# "检出后的工作区字节"为准（见 backend/tests/perception/display-api.test.ts）。
+# 因此该目录禁止 Git 做换行符转换，否则在 Windows(autocrlf=true) 与 Linux 之间
+# 来回检出会改变文件字节数并使哈希校验失败。
+data/perception/** -text
+
+# 本仓库自己维护的来源清单保持文本 + LF，便于 review 与 diff。
+data/perception/**/PROVENANCE.json text eol=lf

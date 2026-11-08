@@ -23,6 +23,7 @@
 | C16 | 冷却+退避重试提高调查成功率 | V6.1：同 2 次尝试预算下 92% vs 92%，检测/决策相同 | **不支持** | V6-B 的 91% vs 68.6% 是 2 次 vs 1 次尝试，不是重试效应 |
 | C17 | 邻居信息可改善短时预测 | V6-C：相对改进 4.8%/5.1%/8.4% | 部分验证（合成） | 共享趋势假设；真实数据未验证 |
 | C18 | 人群计数评测流程可用 | `evaluation/real-data/`：数据加载、P2PNet 适配、per-image 结果、复算与复跑 | VERIFIED | 仅单数据集；不证明真实场馆精度 |
+| C19 | 感知派生数据可端到端进入前端展示（时间轴/热力/区域查询） | `data/perception/citystreet-display/`（CityStreet C3，60 帧）+ `tests/perception/display-api.test.ts` 12 用例 + `PerceptionReplayPanel.test.tsx` 7 用例 | VERIFIED（仅展示链路） | 派生显示数据、近似配准、**无真值**；不得用于报告精度，且不参与规划/校验 |
 
 ## 引用规则
 
@@ -53,6 +54,7 @@
 | C16 | PARTIALLY_SUPPORTED | 重试机制存在，但同预算不提高成功率 |
 | C17 | PARTIALLY_SUPPORTED | 合成相关序列；真实数据未验证 |
 | C18 | VERIFIED | 真实数据流水线已运行；精度范围有限 |
+| C19 | VERIFIED | 仅证明展示链路与数据治理；无精度含义 |
 
 ### 判定规则
 
