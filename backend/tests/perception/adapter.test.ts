@@ -111,6 +111,7 @@ test('面积与场景区域不一致或置信度不足时降级为不可信观�
       model: 'test-model',
       model_version: '1.0.0',
       confidence: 0.9,
+      observed_at: '2026-11-05T12:00:01.000Z',
       mapping: {
         region_id: region.id,
         zone_id: 'demo',
@@ -130,6 +131,7 @@ test('面积与场景区域不一致或置信度不足时降级为不可信观�
       model_version: '1.0.0',
       confidence: 0.3,
       min_confidence: 0.6,
+      observed_at: '2026-11-05T12:00:02.000Z',
       mapping: {
         region_id: region.id,
         zone_id: 'demo',
