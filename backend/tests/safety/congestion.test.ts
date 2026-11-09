@@ -65,3 +65,26 @@ test('拥堵感知规划会折减容量并给出迭代与有效容量证据', ()
   assert.ok(aware.plan.unresolved_persons >= staticPlan.plan.unresolved_persons,
     '容量折减不得让方案更乐观');
 });
+
+test('拥堵仿真：出口服务人数不应脱离上游通道供给', () => {
+  const scenario = loadScenario();
+  const network = resolveEffectiveNetwork(scenario, []);
+  const region = scenario.regions.find(item => item.id === 'R_MAIN')!;
+  const plan = planEvacuation({
+    scenario,
+    network,
+    demandByRegion: new Map([[region.id, 20]]),
+    scenarioVersion: scenario.version,
+    constraintVersion: 0,
+    observationVersion: 0,
+  }).plan;
+  const blockedScenario = {
+    ...scenario,
+    corridors: scenario.corridors.map(corridor => ({
+      ...corridor,
+      capacity_per_min: corridor.capacity_per_min === null ? null : 0,
+    })),
+  };
+  const simulation = simulateCongestion({ scenario: blockedScenario, plan });
+  assert.equal(simulation.served_persons, 0);
+});

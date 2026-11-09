@@ -186,16 +186,33 @@ export function simulateCongestion(
   const exitCap = new Map(input.scenario.exits.map(e => [e.id, e.capacity_per_min]));
 
   const corridorArrivals = new Map<string, Map<number, number>>();
-  const exitArrivals = new Map<string, Map<number, number>>();
+  const directExitArrivals = new Map<string, Map<number, number>>();
+  const lastCorridorExitWeights = new Map<string, Map<string, number>>();
   for (const route of plan.routes) {
     for (const step of route.steps) {
       const perMinute = corridorArrivals.get(step.corridor_id) ?? new Map<number, number>();
       perMinute.set(step.depart_minute, (perMinute.get(step.depart_minute) ?? 0) + route.persons);
       corridorArrivals.set(step.corridor_id, perMinute);
     }
-    const perMinute = exitArrivals.get(route.exit_id) ?? new Map<number, number>();
-    perMinute.set(route.arrive_minute, (perMinute.get(route.arrive_minute) ?? 0) + route.persons);
-    exitArrivals.set(route.exit_id, perMinute);
+    if (route.steps.length === 0) {
+      const perMinute = directExitArrivals.get(route.exit_id) ?? new Map<number, number>();
+      perMinute.set(route.arrive_minute, (perMinute.get(route.arrive_minute) ?? 0) + route.persons);
+      directExitArrivals.set(route.exit_id, perMinute);
+      continue;
+    }
+    const lastStep = route.steps[route.steps.length - 1];
+    const byExit = lastCorridorExitWeights.get(lastStep.corridor_id) ?? new Map<string, number>();
+    byExit.set(route.exit_id, (byExit.get(route.exit_id) ?? 0) + route.persons);
+    lastCorridorExitWeights.set(lastStep.corridor_id, byExit);
+  }
+  const lastCorridorExitShares = new Map<string, Array<{ exitId: string; share: number }>>();
+  for (const [corridorId, byExit] of lastCorridorExitWeights) {
+    const total = [...byExit.values()].reduce((sum, value) => sum + value, 0);
+    if (total <= 0) continue;
+    lastCorridorExitShares.set(corridorId, [...byExit.entries()].map(([exitId, value]) => ({
+      exitId,
+      share: value / total,
+    })));
   }
 
   const corridorQueue = new Map<string, number>();
@@ -214,6 +231,7 @@ export function simulateCongestion(
     let effectiveCorridor = 0;
     let effectiveExit = 0;
 
+    const dynamicExitArrivals = new Map<string, number>();
     for (const [corridorId, perMinute] of corridorArrivals) {
       const base = corridorCap.get(corridorId);
       if (base === null || base === undefined) continue;
@@ -223,6 +241,15 @@ export function simulateCongestion(
       const cap = effectiveCapacity(base, utilization, policy);
       const take = Math.min(attempt, cap);
       servedCorridor += take;
+      const shares = lastCorridorExitShares.get(corridorId);
+      if (shares) {
+        for (const entry of shares) {
+          dynamicExitArrivals.set(
+            entry.exitId,
+            (dynamicExitArrivals.get(entry.exitId) ?? 0) + take * entry.share,
+          );
+        }
+      }
       const queue = attempt - take;
       corridorQueue.set(corridorId, queue);
       maxCorridorQueue = Math.max(maxCorridorQueue, queue);
@@ -230,12 +257,14 @@ export function simulateCongestion(
       if (queue > 0) congestionMinutes += 1;
     }
 
-    for (const [exitId, perMinute] of exitArrivals) {
-      const base = exitCap.get(exitId);
+    for (const [exitId, base] of exitCap) {
       if (base === null || base === undefined) continue;
-      const attempt = (perMinute.get(minute) ?? 0) + (exitQueue.get(exitId) ?? 0);
+      const direct = directExitArrivals.get(exitId)?.get(minute) ?? 0;
+      const fromCorridors = dynamicExitArrivals.get(exitId) ?? 0;
+      const inflow = direct + fromCorridors;
+      const attempt = inflow + (exitQueue.get(exitId) ?? 0);
       if (attempt <= 0) continue;
-      scheduled += perMinute.get(minute) ?? 0;
+      scheduled += inflow;
       const utilization = attempt / Math.max(1, base);
       const cap = effectiveCapacity(base, utilization, policy);
       const take = Math.min(attempt, cap);
@@ -247,7 +276,6 @@ export function simulateCongestion(
       effectiveExit += cap;
       if (queue > 0) congestionMinutes += 1;
     }
-
     if (servedCorridor > 0 || servedExit > 0) completion = minute;
     minutes.push({
       minute,
