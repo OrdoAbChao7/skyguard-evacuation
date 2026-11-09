@@ -39,6 +39,8 @@ export interface AgentArtsConfig {
   invokeRetries: number;
   /** 重试退避基数（毫秒，最终按 2^attempt 截断）。 */
   retryBaseMs: number;
+  /** SSE 是否必须收到显式 [DONE] 完成标记；默认 true（fail closed）。 */
+  sseRequireDone: boolean;
 }
 
 export interface AgentArtsBusinessClosure {
@@ -134,7 +136,7 @@ function sleep(ms: number): Promise<void> {
  * 任何以 `{`/`[` 开头但无法解析的 data 事件都视为截断/损坏并显式失败，
  * 不允许回退到更早的决策（否则平台断流会执行过期决策）。
  */
-function parseAgentArtsText(text: string): unknown {
+function parseAgentArtsText(text: string, requireDone = true): unknown {
   const trimmed = text.trim();
   if (!trimmed) throw new Error('响应为空');
   if (/^data:/m.test(trimmed)) {
@@ -153,6 +155,9 @@ function parseAgentArtsText(text: string): unknown {
     }
     if (payloads.length === 0) {
       throw new Error(sawDone ? 'SSE 只包含 [DONE]，没有决策事件' : 'SSE 没有 data 事件');
+    }
+    if (requireDone && !sawDone) {
+      throw new Error('SSE 流未收到 [DONE] 完成标记，拒绝执行可能被截断的决策（可用 AGENTARTS_SSE_REQUIRE_DONE=false 显式放宽）');
     }
     const parsed: unknown[] = [];
     for (const payload of payloads) {
@@ -195,6 +200,7 @@ export function loadAgentArtsConfig(env: NodeJS.ProcessEnv = process.env): Agent
     healthRetries: Math.max(0, Math.min(3, Number(env.AGENTARTS_HEALTH_RETRIES ?? 1))),
     invokeRetries: Math.max(0, Math.min(3, Number(env.AGENTARTS_INVOKE_RETRIES ?? 1))),
     retryBaseMs: Math.max(10, Math.min(5000, Number(env.AGENTARTS_RETRY_BASE_MS ?? 250))),
+    sseRequireDone: env.AGENTARTS_SSE_REQUIRE_DONE !== 'false',
   };
 }
 
@@ -442,9 +448,11 @@ export class AgentArtsClient {
     }
     let parsed: unknown;
     try {
-      parsed = parseAgentArtsText(text);
-    } catch {
-      throw new AgentArtsUnavailableError(`AgentArts 返回不是有效 JSON/SSE：${text.slice(0, 200)}`);
+      parsed = parseAgentArtsText(text, this.config.sseRequireDone);
+    } catch (error) {
+      throw new AgentArtsUnavailableError(
+        `AgentArts 返回解析失败：${(error as Error).message}；原文：${text.slice(0, 200)}`,
+      );
     }
 
     if (this.config.contract === 'official') {

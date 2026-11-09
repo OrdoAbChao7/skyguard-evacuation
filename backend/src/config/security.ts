@@ -35,7 +35,9 @@ const buckets = new Map<string, Bucket>();
 /** 进程内固定窗口限流（单实例 MVP）；生产多实例需替换为共享存储。 */
 export function rateLimit(config: SecurityConfig) {
   return (req: any, res: any, next: any): void => {
-    if (req.path === '/health' || req.path === '/api/v1/auth/login' || req.path === '/api/v1/mvp/auth/staff-login') {
+    // 该中间件挂在 /api 下：req.path 不含挂载前缀，需用 baseUrl + path（或 originalUrl）。
+    const pathname = `${req.baseUrl ?? ''}${req.path ?? ''}`;
+    if (pathname === '/health' || pathname === '/api/v1/auth/login' || pathname === '/api/v1/mvp/auth/staff-login') {
       next();
       return;
     }

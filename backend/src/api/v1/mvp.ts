@@ -9,7 +9,7 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { SECRET, verifyToken } from './auth';
 import { getMvpService } from '../../services/mvp';
-import { WorkOrderCreateSchema, type OpsActor } from '../../services/mvp/ops';
+import { WorkOrderCreateSchema, publicStaffMember, type OpsActor } from '../../services/mvp/ops';
 import { securityConfig } from '../../config/security';
 
 export function createMvpRouter(): Router {
@@ -109,7 +109,7 @@ export function createMvpRouter(): Router {
       notice: scenario.notice,
       venue: scenario.venue ?? null,
       map: scenario.map ?? null,
-      staff: scenario.staff,
+      staff: scenario.staff.map(publicStaffMember),
       investigation: scenario.investigation ?? null,
       regions: scenario.regions,
       corridors: scenario.corridors,

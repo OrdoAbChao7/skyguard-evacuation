@@ -1,0 +1,130 @@
+{
+  "config": {
+    "seeds": [
+      20261105,
+      20261106,
+      20261107,
+      20261108,
+      20261109,
+      20261110,
+      20261111,
+      20261112,
+      20261113,
+      20261114,
+      20261115,
+      20261116,
+      20261117,
+      20261118,
+      20261119,
+      20261120,
+      20261121,
+      20261122,
+      20261123,
+      20261124,
+      20261125,
+      20261126,
+      20261127,
+      20261128,
+      20261129,
+      20261130,
+      20261131,
+      20261132,
+      20261133,
+      20261134
+    ],
+    "trials_per_seed": 10,
+    "target": "R_EAST_STAND",
+    "max_steps": 3,
+    "strategies": [
+      "random",
+      "fixed",
+      "greedy",
+      "multi",
+      "joint"
+    ],
+    "shared_pressure_weight": 0.45,
+    "budget": {
+      "max_actions": 3,
+      "max_total_cost": 1.2,
+      "max_total_time_minutes": 8
+    },
+    "data_nature": "合成实验；共享压力权重未标定。"
+  },
+  "by_strategy": {
+    "random": {
+      "n": 300,
+      "mean_total_risk_reduction": 0.134005,
+      "mean_worst_risk_reduction": -0.001303,
+      "mean_cost": 0.6282,
+      "mean_actions": 3,
+      "mean_covered_regions": 2.547,
+      "mean_final_worst_risk": 0.113803
+    },
+    "fixed": {
+      "n": 300,
+      "mean_total_risk_reduction": 0.056936,
+      "mean_worst_risk_reduction": -0.000678,
+      "mean_cost": 0.15,
+      "mean_actions": 3,
+      "mean_covered_regions": 1,
+      "mean_final_worst_risk": 0.113178
+    },
+    "greedy": {
+      "n": 300,
+      "mean_total_risk_reduction": 0.052621,
+      "mean_worst_risk_reduction": 0,
+      "mean_cost": 0.1,
+      "mean_actions": 2,
+      "mean_covered_regions": 1,
+      "mean_final_worst_risk": 0.1125
+    },
+    "multi": {
+      "n": 300,
+      "mean_total_risk_reduction": 0.181579,
+      "mean_worst_risk_reduction": -0.00139,
+      "mean_cost": 0.6825,
+      "mean_actions": 2.55,
+      "mean_covered_regions": 3,
+      "mean_final_worst_risk": 0.11389
+    },
+    "joint": {
+      "n": 300,
+      "mean_total_risk_reduction": 0.168294,
+      "mean_worst_risk_reduction": -0.002443,
+      "mean_cost": 0.66,
+      "mean_actions": 2,
+      "mean_covered_regions": 3,
+      "mean_final_worst_risk": 0.114943
+    }
+  },
+  "paired_vs_joint": {
+    "random": {
+      "mean": 0.034289,
+      "n": 300,
+      "seed_mean": 0.034289,
+      "seed_min": -0.04775,
+      "seed_max": 0.100657
+    },
+    "fixed": {
+      "mean": 0.111359,
+      "n": 300,
+      "seed_mean": 0.111359,
+      "seed_min": 0.062933,
+      "seed_max": 0.153009
+    },
+    "greedy": {
+      "mean": 0.115674,
+      "n": 300,
+      "seed_mean": 0.115674,
+      "seed_min": 0.068466,
+      "seed_max": 0.156084
+    },
+    "multi": {
+      "mean": -0.013285,
+      "n": 300,
+      "seed_mean": -0.013285,
+      "seed_min": -0.0413,
+      "seed_max": 0.021564
+    }
+  }
+}

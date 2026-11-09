@@ -4,14 +4,21 @@ from __future__ import annotations
 import json
 import math
 import sys
+import argparse
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from metrics import CountPair, count_metrics, density_bin_metrics  # noqa: E402
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--output", default="evaluation/real-data", help="directory containing RESULTS.json")
+args = parser.parse_args()
 ROOT = Path(__file__).resolve().parents[3]
-results_path = ROOT / "evaluation/real-data/RESULTS.json"
-out_path = ROOT / "evaluation/real-data/VERIFICATION.json"
+out_root = Path(args.output)
+if not out_root.is_absolute():
+    out_root = ROOT / out_root
+results_path = out_root / "RESULTS.json"
+out_path = out_root / "VERIFICATION.json"
 
 if not results_path.exists():
     print("RESULTS.json missing")

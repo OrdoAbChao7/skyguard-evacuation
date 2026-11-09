@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "2026-11-09T06-26-12-092Z",
+  "note": "v65 预测实验独立清单；根 evaluation/MANIFEST.json 保持冻结。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7679,
+      "sha256": "974c9b20c314f056be5c6b51ca750bb76b861084c491eda1f718e012d5f48bb6"
+    },
+    {
+      "path": "rows.json",
+      "bytes": 12040503,
+      "sha256": "7c4372be86d3a697700a466ff73c71bbe2d48c39c1a2f9b175ee57348822bcca"
+    },
+    {
+      "path": "run_metadata.json",
+      "bytes": 223,
+      "sha256": "8f7125eccb20c6f1d95544009e12f1c84d874a178741eccaf0dcc561191377e5"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 71359,
+      "sha256": "6c5fe3deef9c5fe5162e8f70c646dfd1ef95a94f62026ec79371c19b2e127017"
+    }
+  ]
+}

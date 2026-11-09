@@ -1,0 +1,107 @@
+{
+  "generated_at": "2026-11-09T06:25:02Z",
+  "checks": 6,
+  "passed": 6,
+  "failed": 0,
+  "skipped": 0,
+  "results": [
+    {
+      "name": "images",
+      "expected": 316,
+      "actual": 316,
+      "pass": true
+    },
+    {
+      "name": "mae",
+      "expected": 22.1614,
+      "actual": 22.1614,
+      "pass": true
+    },
+    {
+      "name": "rmse",
+      "expected": 34.0471,
+      "actual": 34.0471,
+      "pass": true
+    },
+    {
+      "name": "nae",
+      "expected": 0.1786,
+      "actual": 0.1786,
+      "pass": true
+    },
+    {
+      "name": "density_bins",
+      "expected": [
+        {
+          "low": 0,
+          "high": 50,
+          "n": 60,
+          "mae": 4.4833
+        },
+        {
+          "low": 50,
+          "high": 100,
+          "n": 109,
+          "mae": 9.3853
+        },
+        {
+          "low": 100,
+          "high": 200,
+          "n": 97,
+          "mae": 25.4639
+        },
+        {
+          "low": 200,
+          "high": 500,
+          "n": 47,
+          "mae": 60.0426
+        },
+        {
+          "low": 500,
+          "high": null,
+          "n": 3,
+          "mae": 139.6667
+        }
+      ],
+      "actual": [
+        {
+          "low": 0,
+          "high": 50,
+          "n": 60,
+          "mae": 4.4833
+        },
+        {
+          "low": 50,
+          "high": 100,
+          "n": 109,
+          "mae": 9.3853
+        },
+        {
+          "low": 100,
+          "high": 200,
+          "n": 97,
+          "mae": 25.4639
+        },
+        {
+          "low": 200,
+          "high": 500,
+          "n": 47,
+          "mae": 60.0426
+        },
+        {
+          "low": 500,
+          "high": null,
+          "n": 3,
+          "mae": 139.6667
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "weights_sha256",
+      "expected": "506047732b128ff09efef18e94bfacbe35fcfef300e5e9eeeece259b0488c63f",
+      "actual": "506047732b128ff09efef18e94bfacbe35fcfef300e5e9eeeece259b0488c63f",
+      "pass": true
+    }
+  ]
+}

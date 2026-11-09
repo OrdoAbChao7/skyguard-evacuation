@@ -302,3 +302,33 @@ test('昇腾不可用时 /observations/ascend 返回 503，不伪造观测', asy
     if (savedModel === undefined) delete process.env.SKYGUARD_ASCEND_MODEL; else process.env.SKYGUARD_ASCEND_MODEL = savedModel;
   }
 });
+
+test('观测人数上限与未来时间戳被拒绝（D12）', async () => {
+  const server = await startSafetyServer();
+  try {
+    const headers = await authHeaders(server);
+    const scenario = await server.request('/api/v1/safety/scenario');
+    const regionId = (scenario.body.regions as Array<{ id: string }>)[0].id;
+    const huge = await server.request('/api/v1/safety/observations', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ region_id: regionId, count: 1e12, confidence: 0.9, source: 'simulation' }),
+    });
+    assert.equal(huge.status, 400);
+    const future = await server.request('/api/v1/safety/observations', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        region_id: regionId,
+        count: 10,
+        confidence: 0.9,
+        source: 'simulation',
+        observed_at: new Date(Date.now() + 3_600_000).toISOString(),
+      }),
+    });
+    assert.equal(future.status, 400);
+    assert.equal(future.body.error.code, 'FUTURE_OBSERVATION');
+  } finally {
+    await server.close();
+  }
+});

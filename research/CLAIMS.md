@@ -33,6 +33,11 @@
 | C26 | 预测可靠性失败时 VoI 预测动作被阻断，且不替代四态 | `prediction.ts` reliability、`availability.ts`、`prediction.test.ts`；场景显式 `prediction_max_relative_interval_width` | VERIFIED | 阈值已写入场景；门槛只看区间宽度，surge 欠覆盖仍会放行，见 R-01 |
 | C27 | 人数只有在校准/面积/置信度同时满足时才生成可信区域观测；显示 API 与 ingest 共用同一判据 | `perception/adapter.ts` 的 `deriveSafetyValidity`、`adapter.test.ts`、质量 API | VERIFIED（门禁逻辑） | CityStreet/P2PNet 无现场标定；不产生精度主张 |
 | C28 | 冻结证据按 LF 字节在 Windows/Linux 一致；校验命令默认只读 | `.gitattributes`、`verify-evidence.ts`、根清单 46/46、`verify:evidence` 134/134 | VERIFIED | 仅覆盖已登记清单；新证据需单独 manifest |
+| C29 | 预测可驱动规划需求，但只允许上调、不可靠时回退；静态规划中无吞吐收益 | `decision-service.ts` demand_mode；`evaluation/final/prediction-planning/2026-11-09T06-33-13-854Z/` | PARTIALLY_SUPPORTED | 合成压力实验；robust 需求平均 +25.6 人但未解决人数同向增加；不得声称提升疏散效率 |
+| C30 | 联合粒子 VoI 在总风险/最坏区域风险上未超过现有多区域加权 VoI | `joint-voi.ts`；`evaluation/final/joint-voi/2026-11-09T06-47-12-412Z/` | **不支持（负向结果）** | 合成实验，30 seeds × 10 trials × 3 相关性；联合优于随机/固定/单区域贪心，但劣于多区域加权 |
+| C31 | 拥堵感知规划显著降低仿真队列，但不改变最终吞吐 | `planning/congestion.ts`；`evaluation/final/congestion/2026-11-09T06-32-03-427Z/` | PARTIALLY_SUPPORTED | BPR 参数未标定；仿真不重新选路；最大队列 76.1→0，已服务/未服务不变 |
+| C32 | Validator 独立检查 horizon、在留容量、出口等待、全区域观测、总量重算与求解器截断 | `validator.ts`；`safety-acceptance.test.ts` | VERIFIED（注入/构造故障） | 仍与规划器共享 EffectiveNetwork；需求源仍依赖观测 |
+| C33 | 生产默认不暴露 staff 登录码；读接口需鉴权；审计参数/请求体有界 | `auth.ts`、`mvp.ts`、`audit.ts`、`app.ts`；`security.test.ts` | VERIFIED | 真实身份系统仍需替换演示登录码 |
 
 ## 引用规则
 

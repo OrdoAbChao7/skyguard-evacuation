@@ -115,9 +115,9 @@ test('预算边界：恰好等于允许，超出拒绝；动作数也受限', ()
     }), ResourceUnavailableError);
 
     // 动作数上限 3：已预留 2 个，再建 1 个允许，第 4 个拒绝。
-    ops.createWorkOrder(ADMIN, { ...BASE, title: '预算 4', resource_request: { budget_units: 0, person_minutes: 0 } });
+    ops.createWorkOrder(ADMIN, { ...BASE, title: '预算 4', resource_request: { budget_units: 0, person_minutes: 1e-12 } });
     assert.throws(() => ops.createWorkOrder(ADMIN, {
-      ...BASE, title: '预算 5', resource_request: { budget_units: 0, person_minutes: 0 },
+      ...BASE, title: '预算 5', resource_request: { budget_units: 0, person_minutes: 1e-12 },
     }), ResourceUnavailableError);
   } finally {
     fixture.cleanup();
@@ -286,6 +286,68 @@ test('缺省 resource_request 从场景动作派生预算并计入动作/时间�
     assert.equal(preview.eligible, false);
     assert.ok(['ACTION_BUDGET_EXCEEDED', 'TIME_BUDGET_EXCEEDED', 'COST_BUDGET_EXCEEDED'].includes(preview.reason_code));
     assert.throws(() => ops.createWorkOrder(ADMIN, { ...BASE, title: '派生预算 3' }), ResourceUnavailableError);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('显式空/零 resource_request 不得绕过场景动作成本（D3）', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const ops = fixture.mvp.ops;
+    const order = ops.createWorkOrder(ADMIN, {
+      ...BASE,
+      title: '空资源请求',
+      resource_request: {},
+    });
+    assert.ok(order.reservation);
+    assert.ok((order.reservation?.person_minutes ?? 0) > 0);
+    assert.ok((order.reservation?.budget_units ?? 0) > 0);
+    assert.equal(order.reservation?.budget_tracked, true);
+    const zero = ops.createWorkOrder(ADMIN, {
+      ...BASE,
+      title: '零资源请求',
+      resource_request: { person_minutes: 0, budget_units: 0 },
+    });
+    assert.ok((zero.reservation?.person_minutes ?? 0) > 0);
+    assert.ok((zero.reservation?.budget_units ?? 0) > 0);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Agent 不能自选人员或申请超长预留 TTL（D11）', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const ops = fixture.mvp.ops;
+    const agent = { username: 'skyguard-agent', role: 'agent' as const, kind: 'agent' as const };
+    const order = ops.createWorkOrder(agent, {
+      ...BASE,
+      title: 'Agent 资源请求',
+      resource_request: { staff_id: 'STF-02', budget_units: 0.2, person_minutes: 1, ttl_minutes: 1440 },
+    });
+    const reservation = order.reservation!;
+    const ttlMinutes = (new Date(reservation.expires_at).getTime() - new Date(reservation.created_at).getTime()) / 60_000;
+    assert.ok(ttlMinutes <= (fixture.scenario.config.work_order_reservation_ttl_minutes ?? 15) + 1e-6);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('接单后未开始即失败也结算预算，防止“接单即失败”绕过（D16）', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const ops = fixture.mvp.ops;
+    const order = ops.createWorkOrder(ADMIN, {
+      ...BASE, resource_request: { staff_id: 'STF-03', budget_units: 0.2, person_minutes: 1 },
+    });
+    ops.approve(order.id, ADMIN);
+    ops.assignStaff(order.id, ADMIN, 'STF-03');
+    const staff = staffActor(fixture, 'STF-03');
+    ops.accept(order.id, staff);
+    ops.fail(order.id, staff, '接单后无法执行');
+    assert.equal(ops.getBudgetStatus().settled.actions, 1);
+    assert.equal(ops.getBudgetStatus().settled.cost, 0.2);
   } finally {
     fixture.cleanup();
   }

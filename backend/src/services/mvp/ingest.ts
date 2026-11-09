@@ -286,8 +286,8 @@ export function replayObservationInputs(
       count: row.count,
       confidence: row.confidence,
       observedAt: new Date(row.timestamp),
-      source: row.source ?? 'csv_replay',
-      provider: 'csv_replay',
+      source: 'csv_replay',
+      provider: row.source && row.source !== 'csv_replay' ? `replay:${row.source}` : 'csv_replay',
     };
   });
 }

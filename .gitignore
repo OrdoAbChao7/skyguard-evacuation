@@ -39,3 +39,6 @@ data/perception/**/*.png
 # Python cache
 __pycache__/
 *.pyc
+frontend/test-results
+frontend/playwright-report
+frontend/.playwright

@@ -139,3 +139,32 @@ test('摄像头降级但未离线时，Agent 仍会先尝试摄像头查询', as
     fixture.cleanup();
   }
 });
+
+test('agent 无权通过工具发布方案（D8）', async () => {
+  const fixture = makeMvpFixture();
+  try {
+    const agent = { username: 'skyguard-agent', role: 'agent', kind: 'agent' } as const;
+    const result = await fixture.mvp.registry.invoke('calculate_candidate_plan', { trigger: 'tool_test' }, agent);
+    assert.equal(result.ok, false);
+    assert.equal(result.error_code, 'FORBIDDEN');
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('超大工具参数被拒绝且审计字段有界（D2/D22）', async () => {
+  const fixture = makeMvpFixture();
+  try {
+    const agent = { username: 'skyguard-agent', role: 'agent', kind: 'agent' } as const;
+    const huge = 'x'.repeat(200_000);
+    const result = await fixture.mvp.registry.invoke('get_crowd_status', { region_id: huge }, agent);
+    assert.equal(result.ok, false);
+    assert.equal(result.error_code, 'INVALID_ARGUMENT');
+    const entry = fixture.audit.list(10).find(item => item.action === 'tool.get_crowd_status');
+    assert.ok(entry);
+    const serialized = JSON.stringify(entry);
+    assert.ok(Buffer.byteLength(serialized, 'utf8') < 10_000);
+  } finally {
+    fixture.cleanup();
+  }
+});

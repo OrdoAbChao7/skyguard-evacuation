@@ -64,7 +64,7 @@ function fail(res: Response, status: number, code: string, message: string, deta
 
 const ObservationBody = z.object({
   region_id: z.string().min(1),
-  count: z.number().nonnegative(),
+  count: z.number().nonnegative().max(1_000_000),
   confidence: z.number().min(0).max(1),
   source: z.enum(['simulation', 'recorded_video', 'live_video', 'csv_replay', 'field_report', 'uav_observation']),
   provider: z.string().min(1).default('manual'),
@@ -78,7 +78,7 @@ const ObservationBody = z.object({
 
 const SimulateBody = z.object({
   observations: z.record(
-    z.object({ count: z.number().nonnegative(), confidence: z.number().min(0).max(1) }),
+    z.object({ count: z.number().nonnegative().max(1_000_000), confidence: z.number().min(0).max(1) }),
   ),
   recompute: z.boolean().optional(),
 });
@@ -224,6 +224,13 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
       return;
     }
     const service = getSafetyService();
+    if (parsed.data.observed_at) {
+      const observedAt = new Date(parsed.data.observed_at).getTime();
+      if (observedAt > Date.now() + 60_000) {
+        fail(res, 400, 'FUTURE_OBSERVATION', '观测时间不得晚于当前时间（允许 60 秒时钟偏差）');
+        return;
+      }
+    }
     try {
       const observation = service.ingestObservation(
         {
@@ -582,7 +589,13 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
         state: status.state.state,
       });
     } catch (error) {
-      fail(res, 400, 'SCENARIO_RELOAD_FAILED', '场景重载失败，已保持原场景不变', (error as Error).message);
+      fail(
+        res,
+        400,
+        'SCENARIO_RELOAD_FAILED',
+        '场景重载失败，已保持原场景不变',
+        process.env.NODE_ENV === 'production' ? undefined : (error as Error).message,
+      );
       // 重新加载原场景，避免服务处于不可用状态
       process.env.SAFETY_SCENARIO_FILE = '';
       resetSafetyServiceForTests();

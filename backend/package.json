@@ -25,7 +25,11 @@
     "manifest:release": "tsx scripts/release-manifest.ts",
     "benchmark:v62": "tsx scripts/v62-benchmark.ts",
     "benchmark:voi-v2": "tsx scripts/voi-v2-benchmark.ts",
-    "benchmark:v65": "tsx scripts/v65-prediction-benchmark.ts"
+    "benchmark:v65": "tsx scripts/v65-prediction-benchmark.ts",
+    "benchmark:prediction-planning": "tsx scripts/prediction-planning-benchmark.ts",
+    "benchmark:congestion": "tsx scripts/congestion-benchmark.ts",
+    "benchmark:joint-voi": "tsx scripts/joint-voi-benchmark.ts",
+    "manifest:final": "tsx scripts/final-manifest.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

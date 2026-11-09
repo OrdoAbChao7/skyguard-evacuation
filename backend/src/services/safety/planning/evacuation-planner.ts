@@ -30,6 +30,16 @@ export interface PlanInput {
   scenario: SafetyScenario;
   network: EffectiveNetwork;
   demandByRegion: Map<string, number>;
+  /** 需求来源审计信息（预测驱动规划时必填；observed 模式可省略）。 */
+  demandProvenance?: Array<{
+    region_id: string;
+    observed_count: number;
+    planned_count: number;
+    source: string;
+    predicted_count: number | null;
+    interval_upper: number | null;
+    reliability: string;
+  }>;
   scenarioVersion: string;
   constraintVersion: number;
   observationVersion: number;
@@ -217,7 +227,7 @@ export function planEvacuation(input: PlanInput): PlanOutput {
   }
 
   const solve = flow.minCostMaxFlow(sourceNode, sinkNode);
-  const solverTruncated = solve.iterations >= 200000;
+  let solverTruncated = solve.iterations >= 200000;
   if (process.env.SKYGUARD_DEBUG_FLOW) {
     const exits = flow.debugEdgeFlows().filter(e => e.meta?.kind === 'exit' && e.flow > 0);
     console.error('[flow] exit arcs:', JSON.stringify(exits.map(e => ({ exit: e.meta!.exitId, t: e.meta!.departMinute, flow: e.flow, cap: e.capacity }))));
@@ -254,6 +264,17 @@ export function planEvacuation(input: PlanInput): PlanOutput {
         persons: path.persons,
       })),
     }));
+
+  // 自检：路径分解不得出现方向/链路错配（双向共享闸门的潜在后处理风险）。
+  const decompositionInvalid = routes.some(route => {
+    let cursor = route.from_region_id;
+    for (const step of route.steps) {
+      if (step.from_region_id !== cursor) return true;
+      cursor = step.to_region_id;
+    }
+    return false;
+  });
+  if (decompositionInvalid) solverTruncated = true;
 
   // 未解决需求
   const evacuatedByRegion = new Map<string, number>();
@@ -311,6 +332,7 @@ export function planEvacuation(input: PlanInput): PlanOutput {
     demand_by_region: regions
       .filter(region => region.demand > 0)
       .map(region => ({ region_id: region.id, persons: region.demand })),
+    ...(input.demandProvenance ? { demand_provenance: input.demandProvenance } : {}),
     total_persons: totalPersons,
     evacuated_persons: evacuated,
     unresolved_persons: unresolvedPersons,
@@ -322,11 +344,18 @@ export function planEvacuation(input: PlanInput): PlanOutput {
         '区域在留容量是硬约束；超出部分只能通过通道离开或计入未解决需求。',
         '未建模拥挤减速、恐慌、逆行等群体动力学效应，结果不可作为精确疏散时间预测。',
         '未知状态或未知容量的通道/出口一律排除，不按无限容量处理。',
+        ...(input.demandProvenance
+          ? ['需求可来自预测；预测只用于上调需求，不可靠或数据不足时回退最新观测。来源见 demand_provenance。']
+          : []),
         ...(solverTruncated
           ? ['求解器达到 200000 次增广上限，结果可能未达到最大流；未解决需求不一定是真实容量不足。']
           : []),
+        ...(decompositionInvalid
+          ? ['路径分解出现方向/链路错配，方案已标记为不可发布（solver_truncated）。']
+          : []),
       ],
     },
+    ...(solverTruncated ? { solver_truncated: true } : {}),
   };
 
   return { plan, exclusions, solveMs: Date.now() - startedAt, solverTruncated };

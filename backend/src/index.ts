@@ -36,9 +36,12 @@ const server = app.listen(PORT, () => {
 process.on('uncaughtException', (err) => {
   console.error('[FATAL] Uncaught exception:', err.message);
   console.error(err.stack);
+  // 未捕获异常后内存可能不一致：fail closed，交由编排器重启。
+  process.exit(1);
 });
 process.on('unhandledRejection', (reason) => {
   console.error('[FATAL] Unhandled rejection:', reason);
+  process.exit(1);
 });
 
 export { app, server };

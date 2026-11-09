@@ -146,3 +146,20 @@ test('生产 5xx 统一脱敏且保留 request_id（P1-8）', () => {
     restoreEnv();
   }
 });
+
+test('公开场景接口不得返回 staff 登录码（D1/D15）', async () => {
+  saveEnv();
+  resetRateLimiterForTests();
+  const server = await startTestServer();
+  try {
+    const response = await server.request('/api/v1/mvp/scenario');
+    assert.equal(response.status, 200);
+    const staff = response.body.staff as Array<Record<string, unknown>>;
+    assert.ok(staff.length > 0);
+    for (const member of staff) assert.equal(Object.prototype.hasOwnProperty.call(member, 'access_code'), false);
+  } finally {
+    await server.close();
+    restoreEnv();
+    resetRateLimiterForTests();
+  }
+});

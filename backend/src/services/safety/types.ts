@@ -233,13 +233,23 @@ export const EvacuationPlanSchema = z.object({
   scenario_version: z.string().min(1),
   constraint_version: z.number().int().nonnegative(),
   observation_version: z.number().int().nonnegative(),
-  horizon_minutes: z.number().int().positive(),
+  horizon_minutes: z.number().int().positive().max(1440),
   status: z.enum(PLAN_STATUS),
   routes: z.array(EvacuationRouteSchema),
   unresolved: z.array(UnresolvedDemandSchema),
   exit_totals: z.array(z.object({ exit_id: z.string(), persons: z.number().int().nonnegative() })),
   corridor_totals: z.array(z.object({ corridor_id: z.string(), persons: z.number().int().nonnegative() })),
   demand_by_region: z.array(z.object({ region_id: z.string(), persons: z.number().int().nonnegative() })),
+  /** 需求来源：observed / prediction_predicted / prediction_robust / observed_fallback。 */
+  demand_provenance: z.array(z.object({
+    region_id: z.string(),
+    observed_count: z.number().nonnegative(),
+    planned_count: z.number().nonnegative(),
+    source: z.string(),
+    predicted_count: z.number().nonnegative().nullable(),
+    interval_upper: z.number().nonnegative().nullable(),
+    reliability: z.string(),
+  })).optional(),
   total_persons: z.number().int().nonnegative(),
   evacuated_persons: z.number().int().nonnegative(),
   unresolved_persons: z.number().int().nonnegative(),
@@ -248,6 +258,8 @@ export const EvacuationPlanSchema = z.object({
     model: z.string().min(1),
     notes: z.array(z.string()),
   }),
+  /** 求解器达到增广/分解上限时为 true；该方案不得作为可行方案发布。 */
+  solver_truncated: z.boolean().optional(),
 });
 export type EvacuationPlan = z.infer<typeof EvacuationPlanSchema>;
 
@@ -301,6 +313,8 @@ export const SafetyConfigSchema = z.object({
   work_order_reservation_ttl_minutes: z.number().positive().max(1440).default(15),
   /** 预测区间相对宽度超过该值时标记预测不可用于 VoI。 */
   prediction_max_relative_interval_width: z.number().positive().max(5).default(0.5),
+  /** 预测动作是否允许进入 VoI；只有完成覆盖率校准后才应设为 true。 */
+  prediction_action_enabled: z.boolean().default(false),
   default_thresholds: RiskThresholdSchema,
 });
 export type SafetyConfig = z.infer<typeof SafetyConfigSchema>;
@@ -519,6 +533,15 @@ export const InvestigationPolicySchema = z.object({
     /** 冲突时后验与先验的混合系数：0 = 完全采用后验，1 = 完全保持先验。 */
     blend_prior: z.number().min(0).max(1),
   }).optional(),
+  /**
+   * 区域间风险相关结构（联合 VoI 用）：共享压力潜变量的权重。
+   * 0 = 区域独立；接近 1 = 区域状态高度同向。粒子数与种子用于可复现实验。
+   */
+  correlation: z.object({
+    shared_pressure_weight: z.number().min(0).max(0.95),
+    particles: z.number().int().positive().max(5000).default(2000),
+    seed: z.number().int().default(20261109),
+  }).optional(),
   /** VoI 低于该值即停止调查、转人工。 */
   stop_threshold: z.number(),
   max_investigations: z.number().int().positive().max(6),
@@ -530,6 +553,26 @@ export const InvestigationPolicySchema = z.object({
   }).optional(),
 });
 export type InvestigationPolicy = z.infer<typeof InvestigationPolicySchema>;
+
+/**
+ * 规划需求来源策略（来自场景，禁止写死在代码里）。
+ *  - observed：使用最新可信观测人数（历史行为）。
+ *  - predicted：预测点估计，但需求不低于当前观测（预测不得减少在场上报人数）。
+ *  - robust：预测区间上界，需求不低于当前观测；预测不可靠时回退 observed。
+ */
+export const PlanningPolicySchema = z.object({
+  demand_mode: z.enum(['observed', 'predicted', 'robust']).default('observed'),
+  prediction_horizon_minutes: z.number().int().positive().max(30).default(5),
+  /** 拥堵感知规划参数（BPR 启发式，未标定；默认关闭）。 */
+  congestion: z.object({
+    enabled: z.boolean().default(false),
+    bpr_alpha: z.number().nonnegative().max(2).default(0.15),
+    bpr_beta: z.number().positive().max(10).default(4),
+    max_capacity_reduction: z.number().min(0).max(0.95).default(0.6),
+    max_iterations: z.number().int().positive().max(10).default(4),
+  }).optional(),
+});
+export type PlanningPolicy = z.infer<typeof PlanningPolicySchema>;
 
 /** 控制台一键推演的数据（来自场景文件，禁止在代码里写死区域 ID 与人数序列）。 */
 export const UiDemoSeriesSchema = z.object({
@@ -593,5 +636,7 @@ export const SafetyScenarioSchema = z.object({
   staff: z.array(StaffMemberSchema).default([]),
   /** 主动调查（VoI）策略（可选）。 */
   investigation: InvestigationPolicySchema.optional(),
+  /** 规划需求来源（可选；缺省 observed 以保持历史行为）。 */
+  planning: PlanningPolicySchema.optional(),
 });
 export type SafetyScenario = z.infer<typeof SafetyScenarioSchema>;

@@ -312,6 +312,20 @@ export function ingestPerceptionDraft(
     valid = false;
     reasons.push('unattested_or_tampered_draft');
   }
+  // image_count 的 surveyed 不能由调用方自报：必须以场景中该区域摄像头的
+  // measured/calibrated 标定及其版本为准。
+  if (draft.source_kind === 'image_count') {
+    if (region.camera.calibration_status !== 'measured' && region.camera.calibration_status !== 'calibrated') {
+      valid = false;
+      reasons.push('region_camera_not_surveyed');
+    } else {
+      const calibrationId = draft.provenance.calibration_id;
+      if (calibrationId !== undefined && String(calibrationId) !== region.camera.calibration_version) {
+        valid = false;
+        reasons.push('calibration_id_mismatch_with_scenario_camera');
+      }
+    }
+  }
   // 显示/质量 API 与 ingest 共用同一判据，避免“展示可信、入库 invalid”。
   const derived = deriveSafetyValidity(draft, {
     regionAreaM2: region.area_m2,
@@ -384,6 +398,7 @@ export function runPerceptionDecisionLoop(input: {
       uavAvailable: false,
       historyPoints,
       predictionReliable: prediction.reliability?.status !== 'failed',
+      predictionAvailable: input.scenario.config.prediction_action_enabled,
       predictionReason: `预测可靠性 ${prediction.reliability?.status ?? 'unknown'}`,
     });
     const decision = decideMultiRegionInvestigation(policy, input.target_region_id, beliefs, graph, availability);

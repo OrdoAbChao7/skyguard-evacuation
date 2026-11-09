@@ -103,7 +103,13 @@ function readCandidate<T>(file: string, supportedVersion: number): StateEnvelope
     throw new StateStoreError('STATE_INVALID_SHAPE', `${file} 缺少 payload`);
   }
   const expected = sha256Text(JSON.stringify(envelope.payload));
-  if (expected !== envelope.checksum) {
+  const expectedEnvelope = sha256Text(JSON.stringify({
+    schema_version: envelope.schema_version,
+    revision: envelope.revision,
+    saved_at: envelope.saved_at,
+    payload: envelope.payload,
+  }));
+  if (expected !== envelope.checksum && expectedEnvelope !== envelope.checksum) {
     throw new StateStoreError('STATE_CHECKSUM_MISMATCH', `${file} 校验和不匹配（可能部分写入或损坏）`);
   }
   return envelope as StateEnvelope<T>;
@@ -245,14 +251,21 @@ export class PersistentStateStore<T> {
         );
       }
       const revision = expectedRevision + 1;
+      const savedAt = new Date().toISOString();
       const envelope: StateEnvelope<T> = {
         schema_version: this.supportedVersion,
         revision,
-        saved_at: new Date().toISOString(),
+        saved_at: savedAt,
         checksum_algorithm: 'sha256',
-        checksum: sha256Text(JSON.stringify(payload)),
+        checksum: '',
         payload,
       };
+      envelope.checksum = sha256Text(JSON.stringify({
+        schema_version: envelope.schema_version,
+        revision: envelope.revision,
+        saved_at: envelope.saved_at,
+        payload: envelope.payload,
+      }));
       const serialized = `${JSON.stringify(envelope, null, 2)}\n`;
       try {
         fs.mkdirSync(path.dirname(this.primary), { recursive: true });

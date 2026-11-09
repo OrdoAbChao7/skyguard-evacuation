@@ -388,3 +388,44 @@ SkyGuard 是面向**大型活动散场**场景的主动感知、风险评估与�
   `verify:evidence` 134/134、根证据清单 46/46 通过。未运行 Docker（daemon 未启动）与浏览器 E2E。
 - 仍未关闭：预测区间校准、多区域联合熵、预测进入规划、拥堵反馈、真实 AgentArts/昇腾/场馆、
   Docker/CI 实跑、官方赛规核验、论文/PPT/视频/PDF 生成。详见 `docs/COMPETITION_GAP_AUDIT_2026-11-09.md`。
+
+### 2026-11-09：第二轮总攻（安全红队 + 算法升级 + E2E）
+
+本轮以 `99d7d00` 为基线，完成第二轮独立红队、核心算法实现与全量验证。**未 commit/push。**
+
+**安全与工程**
+
+- 第二轮红队 D1–D22：默认生产匿名 staff 登录码、审计参数 DoS、`resource_request:{}` 绕过、
+  Validator 伪造 horizon、SSE 无 `[DONE]`、多工单续接幂等前缀、AgentArts 中途失败丢 run、
+  agent 越权发布、自报 surveyed 感知、未来观测绕过时效、生产读接口默认开放等已修复；
+  残余项（平台幂等语义、锁陈旧双写、状态文件签名、多实例）见 `docs/SECURITY_REDTEAM_REPORT.md`。
+- Playwright E2E：管理员登录、错误口令、staff 登录 3/3；CI 已加入浏览器安装与 E2E。
+- 生产读接口强制 `READ_AUTH_REQUIRED=true`；审计字段有界；请求体上限 2MB。
+- Validator 新增：场景 horizon、区域在留容量、出口等待占用、全区域观测/传感器故障、
+  停用区域、总量重算、step.persons、预测 provenance、求解器截断、路径方向自检。
+
+**算法（详见 `docs/RESEARCH_ALGORITHM_UPGRADE.md`）**
+
+- 预测驱动规划需求：observed / predicted / robust；预测只上调、不可靠回退；方案带 `demand_provenance`。
+- 预测方法选择与 horizon 一致；regime-aware 区间；V6.5 surge 95% 覆盖 0.7376 → **0.8667**
+  （起点 <38：0.7881；≥38：0.9314），仍低于 0.95；`prediction_action_enabled=false`，预测动作默认禁用。
+- 联合粒子 VoI：实现联合熵/最坏区域风险/相关性敏感性；**负向结果**——未超过现有多区域加权
+  （0.45 相关性下配对差 -0.0133 [-0.0413, 0.0216]），原始数据保留。
+- 拥堵反馈：BPR 容量折减 + 逐分钟队列仿真；拥堵感知规划最大队列 76.1 → 0，但最终吞吐不变。
+- 公开数据集：ShanghaiTech Part B 跨域评测（A 权重）MAE 22.1614 / RMSE 34.0471 / NAE 0.1786 /
+  F1@8px 0.7052，6/6 复算；不是现场精度。
+
+**验证（本机，2026-11-09）**
+
+- 后端 **205/205**、前端 **16/16**、E2E **3/3**；构建、安全 demo、MVP demo 全部通过；
+- `verify:evidence` 134/134；根清单 46/46；`evaluation/final` 63/63；发布清单 179/179；
+- 新证据：`evaluation/v65/2026-11-09T06-33-02-508Z/`、`evaluation/final/*`、
+  `evaluation/real-data-partB-cross/`；
+- Docker daemon 仍不可用，未实跑镜像。
+
+**仍未完成 / 外部阻塞**
+
+- AgentArts 真实租户/平台 Trace、昇腾实机、场馆测绘/标定/人员研究、无人机、官方赛规；
+- 强基线（CSRNet/ARIMA/LSTM/MILP/POMDP）、预测区间达标、联合 VoI 改进、风险传播标定；
+- PPT、演示视频、论文 PDF/LaTeX、release 归档；
+- 多实例一致性、锁陈旧双写探针、状态文件签名、审计轮转。

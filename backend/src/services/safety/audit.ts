@@ -9,8 +9,30 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, createHash } from 'node:crypto';
 import { resolveDataPath } from '../../config/paths';
+
+const MAX_AUDIT_VALUE_BYTES = 4096;
+const MAX_AUDIT_TEXT = 1024;
+
+/** 审计字段有界化：防止 20MB 请求参数把 JSONL/内存撑爆。 */
+function boundedValue(value: unknown): unknown {
+  let text: string;
+  try { text = JSON.stringify(value ?? null); } catch { return { truncated: true, error: 'unserializable' }; }
+  const bytes = Buffer.byteLength(text, 'utf8');
+  if (bytes <= MAX_AUDIT_VALUE_BYTES) return value;
+  return {
+    truncated: true,
+    bytes,
+    sha256: createHash('sha256').update(text).digest('hex'),
+    preview: text.slice(0, MAX_AUDIT_TEXT),
+  };
+}
+
+function boundedText(value: string | undefined): string | undefined {
+  if (value === undefined) return undefined;
+  return value.length > MAX_AUDIT_TEXT ? `${value.slice(0, MAX_AUDIT_TEXT)}…[truncated ${value.length}]` : value;
+}
 
 export type AuditResult = 'success' | 'failure' | 'rejected';
 
@@ -86,6 +108,10 @@ export class AuditLog {
       ts: new Date().toISOString(),
       persisted: false,
       ...entry,
+      summary: boundedText(entry.summary) ?? '',
+      reason: boundedText(entry.reason),
+      before: entry.before === undefined ? undefined : boundedValue(entry.before) as Record<string, unknown>,
+      after: entry.after === undefined ? undefined : boundedValue(entry.after) as Record<string, unknown>,
     };
     try {
       fs.mkdirSync(this.auditDir, { recursive: true });

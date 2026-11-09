@@ -1,0 +1,277 @@
+{
+  "config": {
+    "seeds": [
+      20261105,
+      20261106,
+      20261107,
+      20261108,
+      20261109,
+      20261110,
+      20261111,
+      20261112,
+      20261113,
+      20261114,
+      20261115,
+      20261116,
+      20261117,
+      20261118,
+      20261119,
+      20261120,
+      20261121,
+      20261122,
+      20261123,
+      20261124,
+      20261125,
+      20261126,
+      20261127,
+      20261128,
+      20261129,
+      20261130,
+      20261131,
+      20261132,
+      20261133,
+      20261134
+    ],
+    "mechanisms": [
+      "stable",
+      "surge",
+      "decline",
+      "periodic",
+      "missing",
+      "noisy"
+    ],
+    "target": "R_EAST_STAND",
+    "points": 20,
+    "horizon_minutes": 5
+  },
+  "summary": {
+    "stable": {
+      "observed": {
+        "n": 30,
+        "target_demand": 908.5,
+        "total_persons": 2183.5,
+        "evacuated": 2183.5,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 1
+      },
+      "predicted": {
+        "n": 30,
+        "target_demand": 914.03,
+        "total_persons": 2189.03,
+        "evacuated": 2189.03,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 1
+      },
+      "robust": {
+        "n": 30,
+        "target_demand": 980.77,
+        "total_persons": 2255.77,
+        "evacuated": 2255.77,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 1
+      }
+    },
+    "surge": {
+      "observed": {
+        "n": 30,
+        "target_demand": 1314.7,
+        "total_persons": 2589.7,
+        "evacuated": 2589.7,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 0
+      },
+      "predicted": {
+        "n": 30,
+        "target_demand": 1314.7,
+        "total_persons": 2589.7,
+        "evacuated": 2589.7,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 0
+      },
+      "robust": {
+        "n": 30,
+        "target_demand": 1314.7,
+        "total_persons": 2589.7,
+        "evacuated": 2589.7,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 0
+      }
+    },
+    "decline": {
+      "observed": {
+        "n": 30,
+        "target_demand": 1100.3,
+        "total_persons": 2375.3,
+        "evacuated": 2375.3,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 1
+      },
+      "predicted": {
+        "n": 30,
+        "target_demand": 1100.3,
+        "total_persons": 2375.3,
+        "evacuated": 2375.3,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 1
+      },
+      "robust": {
+        "n": 30,
+        "target_demand": 1106.23,
+        "total_persons": 2381.23,
+        "evacuated": 2381.23,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 1
+      }
+    },
+    "periodic": {
+      "observed": {
+        "n": 30,
+        "target_demand": 872.2,
+        "total_persons": 2147.2,
+        "evacuated": 2147.2,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 0.0667
+      },
+      "predicted": {
+        "n": 30,
+        "target_demand": 872.2,
+        "total_persons": 2147.2,
+        "evacuated": 2147.2,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 0.0667
+      },
+      "robust": {
+        "n": 30,
+        "target_demand": 886.1,
+        "total_persons": 2161.1,
+        "evacuated": 2161.1,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 0.0667
+      }
+    },
+    "missing": {
+      "observed": {
+        "n": 30,
+        "target_demand": 900,
+        "total_persons": 2175,
+        "evacuated": 2175,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 1
+      },
+      "predicted": {
+        "n": 30,
+        "target_demand": 900,
+        "total_persons": 2175,
+        "evacuated": 2175,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 1
+      },
+      "robust": {
+        "n": 30,
+        "target_demand": 905,
+        "total_persons": 2180,
+        "evacuated": 2180,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 1
+      }
+    },
+    "noisy": {
+      "observed": {
+        "n": 30,
+        "target_demand": 852.2,
+        "total_persons": 2127.2,
+        "evacuated": 2127.2,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 0.0667
+      },
+      "predicted": {
+        "n": 30,
+        "target_demand": 852.2,
+        "total_persons": 2127.2,
+        "evacuated": 2127.2,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 0.0667
+      },
+      "robust": {
+        "n": 30,
+        "target_demand": 865.43,
+        "total_persons": 2140.43,
+        "evacuated": 2140.43,
+        "unresolved": 0,
+        "target_unresolved": 0,
+        "reliable_rate": 0.0667
+      }
+    }
+  },
+  "paired": {
+    "predicted": {
+      "stable": {
+        "mean_demand_increase": 5.53,
+        "n": 30
+      },
+      "surge": {
+        "mean_demand_increase": 0,
+        "n": 30
+      },
+      "decline": {
+        "mean_demand_increase": 0,
+        "n": 30
+      },
+      "periodic": {
+        "mean_demand_increase": 0,
+        "n": 30
+      },
+      "missing": {
+        "mean_demand_increase": 0,
+        "n": 30
+      },
+      "noisy": {
+        "mean_demand_increase": 0,
+        "n": 30
+      }
+    },
+    "robust": {
+      "stable": {
+        "mean_demand_increase": 72.27,
+        "n": 30
+      },
+      "surge": {
+        "mean_demand_increase": 0,
+        "n": 30
+      },
+      "decline": {
+        "mean_demand_increase": 5.93,
+        "n": 30
+      },
+      "periodic": {
+        "mean_demand_increase": 13.9,
+        "n": 30
+      },
+      "missing": {
+        "mean_demand_increase": 5,
+        "n": 30
+      },
+      "noisy": {
+        "mean_demand_increase": 13.23,
+        "n": 30
+      }
+    }
+  }
+}

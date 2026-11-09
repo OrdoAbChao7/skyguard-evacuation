@@ -39,7 +39,7 @@ export function createApp(): Express {
     res.setHeader('X-Request-Id', requestId);
     next();
   });
-  app.use(express.json({ limit: '20mb' }));
+  app.use(express.json({ limit: '2mb' }));
   app.use(express.urlencoded({ extended: true }));
 
   app.use(express.static(path.resolve(__dirname, '../../frontend/dist')));

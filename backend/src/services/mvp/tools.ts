@@ -20,6 +20,35 @@ import { cameraHealthFor } from './ingest';
 const ALL_ROLES = ['agent', 'admin', 'safety_operator', 'staff', 'viewer'];
 const OPERATOR_ROLES = ['agent', 'admin', 'safety_operator'];
 
+/** 工具输入统一资源上限：防止超长字符串/超大数组进入审计或处理器。 */
+function oversizedInputProblem(value: unknown): string | null {
+  const maxString = 1000;
+  const maxArray = 50;
+  const maxDepth = 6;
+  const maxBytes = 16 * 1024;
+  let bytes = 0;
+  try { bytes = Buffer.byteLength(JSON.stringify(value ?? null), 'utf8'); } catch { return '参数不可序列化'; }
+  if (bytes > maxBytes) return `参数序列化后 ${bytes} 字节，超过 ${maxBytes} 字节上限`;
+  const walk = (item: unknown, depth: number): string | null => {
+    if (depth > maxDepth) return `参数嵌套超过 ${maxDepth} 层`;
+    if (typeof item === 'string' && item.length > maxString) return `字符串长度 ${item.length} 超过 ${maxString}`;
+    if (Array.isArray(item)) {
+      if (item.length > maxArray) return `数组长度 ${item.length} 超过 ${maxArray}`;
+      for (const child of item) {
+        const problem = walk(child, depth + 1);
+        if (problem) return problem;
+      }
+    } else if (item && typeof item === 'object') {
+      for (const child of Object.values(item as Record<string, unknown>)) {
+        const problem = walk(child, depth + 1);
+        if (problem) return problem;
+      }
+    }
+    return null;
+  };
+  return walk(value, 0);
+}
+
 export interface ToolContext {
   scenario: SafetyScenario;
   safety: SafetyDecisionService;
@@ -535,7 +564,7 @@ export function createToolDefinitions(ctx: ToolContext): ToolDefinition[] {
       title: '计算候选疏散方案',
       description: '调用时间扩展最小费用流规划器与独立校验器，返回状态、方案与校验结果。Agent 不自行计算路线。',
       inputSchema: z.object({ trigger: z.string().max(200).optional() }),
-      roles: OPERATOR_ROLES,
+      roles: ['admin', 'safety_operator'],
       source: 'safety-planner+validator',
       timeout_ms: 10000,
       async handler(args, actor) {
@@ -743,8 +772,7 @@ export class ToolRegistry {
     }
 
     const parsed = definition.inputSchema.safeParse(rawArgs ?? {});
-    if (!parsed.success) {
-      const message = `参数校验失败：${parsed.error.issues.map(issue => `${issue.path.join('.') || '(root)'} ${issue.message}`).join('; ')}`;
+    if (!parsed.success) {      const message = `参数校验失败：${parsed.error.issues.map(issue => `${issue.path.join('.') || '(root)'} ${issue.message}`).join('; ')}`;
       this.recordAudit({
         tool: name,
         actor: effectiveActor,
@@ -761,6 +789,30 @@ export class ToolRegistry {
         source: definition.source,
         confidence: null,
         error: message,
+        error_code: 'INVALID_ARGUMENT',
+        generated_at: generatedAt,
+        duration_ms: Date.now() - startedAt,
+      };
+    }
+
+    const oversized = oversizedInputProblem(parsed.data);
+    if (oversized) {
+      this.recordAudit({
+        tool: name,
+        actor: effectiveActor,
+        args: parsed.data,
+        result: 'failure',
+        error: oversized,
+        duration_ms: Date.now() - startedAt,
+        source: definition.source,
+      });
+      return {
+        tool: name,
+        ok: false,
+        data: null,
+        source: definition.source,
+        confidence: null,
+        error: `参数校验失败：${oversized}`,
         error_code: 'INVALID_ARGUMENT',
         generated_at: generatedAt,
         duration_ms: Date.now() - startedAt,

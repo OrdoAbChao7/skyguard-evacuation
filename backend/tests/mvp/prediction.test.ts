@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { PredictionService } from '../../src/services/mvp/prediction';
+import { SafetyDecisionService } from '../../src/services/safety/decision-service';
+import { planEvacuation } from '../../src/services/safety/planning/evacuation-planner';
 import { makeMvpFixture } from './fixtures';
 
 function seed(fixture: ReturnType<typeof makeMvpFixture>, now: Date, counts: number[]) {
@@ -21,11 +23,11 @@ test('线性上升序列预测为上升趋势且区间包住预测值', () => {
   const fixture = makeMvpFixture();
   try {
     const now = new Date('2026-11-05T12:00:00.000Z');
-    seed(fixture, now, [300, 330, 360, 390, 420, 450]);
+    seed(fixture, now, Array.from({ length: 12 }, (_, index) => 300 + index * 30));
     const service = new PredictionService(fixture.scenario, fixture.safety.getObservationStore());
-    const result = service.predict('R_EAST_STAND', { now, horizonMinutes: 5 });
+    const result = service.predict('R_EAST_STAND', { now, horizonMinutes: 5, windowMinutes: 12 });
     assert.equal(result.sufficient, true);
-    assert.equal(result.algorithm, 'adaptive-forecast-v3');
+    assert.equal(result.algorithm, 'adaptive-forecast-v4');
     assert.equal(result.trend.direction, 'rising');
     assert.ok((result.trend.rate_per_minute ?? 0) > 10);
     assert.ok(result.predicted_count !== null && result.current_count !== null);
@@ -33,7 +35,7 @@ test('线性上升序列预测为上升趋势且区间包住预测值', () => {
     assert.ok(result.interval !== null);
     assert.ok(result.interval.lower <= (result.predicted_count ?? 0));
     assert.ok(result.interval.upper >= (result.predicted_count ?? 0));
-    assert.equal(result.input.points, 6);
+    assert.equal(result.input.points, 12);
     assert.deepEqual(result.input.sources, ['simulation']);
     assert.match(result.uncertainty_note, /不是安全保证/);
     assert.equal(result.selection.selected_by, 'rolling_validation');
@@ -156,6 +158,53 @@ test('预测结果携带可靠性字段，并在区间过宽时标记 failed', (
     if (result.reliability.relative_interval_width !== null) {
       assert.ok(result.reliability.relative_interval_width >= 0);
     }
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('场景启用 robust 需求时预测上界进入规划，不可靠时回退观测', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const now = new Date('2026-11-05T12:00:00.000Z');
+    fixture.scenario.planning = { demand_mode: 'robust', prediction_horizon_minutes: 5 };
+    const seedRegion = (regionId: string, counts: number[]) => {
+      counts.forEach((count, index) => {
+        fixture.safety.ingestObservation({
+          regionId,
+          count,
+          confidence: 0.92,
+          source: 'simulation',
+          provider: 'planning-test',
+          modelVersion: 'test/1.0.0',
+          observedAt: new Date(now.getTime() - (counts.length - 1 - index) * 60_000),
+        }, { username: 'test', role: 'admin' });
+      });
+    };
+    for (const region of fixture.scenario.regions) {
+      seedRegion(region.id, region.id === 'R_EAST_STAND'
+        ? Array.from({ length: 12 }, (_, index) => 400 + index * 2)
+        : [150, 150, 150]);
+    }
+    const captured: Array<Parameters<typeof planEvacuation>[0]> = [];
+    const service = new SafetyDecisionService({
+      scenario: fixture.scenario,
+      observationStore: fixture.safety.getObservationStore(),
+      now: () => now,
+      planBuilder: input => {
+        captured.push(input);
+        return planEvacuation({ ...input, now });
+      },
+    });
+    service.recompute({ username: 'test', role: 'admin' }, 'prediction_planning_test');
+    assert.equal(captured.length, 1);
+    const input = captured[0];
+    const target = input.demandProvenance?.find(item => item.region_id === 'R_EAST_STAND');
+    assert.ok(target);
+    assert.equal(target.source, 'prediction_robust');
+    assert.ok(target.planned_count >= (target.interval_upper ?? 0));
+    assert.ok(target.planned_count > target.observed_count);
+    assert.ok((input.demandByRegion.get('R_EAST_STAND') ?? 0) >= target.planned_count);
   } finally {
     fixture.cleanup();
   }

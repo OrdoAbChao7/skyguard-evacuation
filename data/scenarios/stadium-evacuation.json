@@ -11,6 +11,7 @@
     "trend_window_seconds": 300,
     "density_consistency_tolerance": 0.25,
   "prediction_max_relative_interval_width": 0.5,
+  "prediction_action_enabled": false,
     "default_thresholds": {
       "watch_density": 1.0,
       "high_density": 2.0,
@@ -777,6 +778,17 @@
       "verified": false
     }
   ],
+  "planning": {
+    "demand_mode": "robust",
+    "prediction_horizon_minutes": 5,
+    "congestion": {
+      "enabled": true,
+      "bpr_alpha": 0.15,
+      "bpr_beta": 4,
+      "max_capacity_reduction": 0.6,
+      "max_iterations": 4
+    }
+  },
   "investigation": {
     "model_version": "voi-evidence-v1",
     "provenance": "合成参数：先验/似然/损失/成本由本仓库场景文件显式给出，未经真实场馆标定；不得表述为实测模型。",
@@ -1053,6 +1065,11 @@
       "max_actions": 3,
       "max_total_cost": 1.2,
       "max_total_time_minutes": 8
+    },
+    "correlation": {
+      "shared_pressure_weight": 0.45,
+      "particles": 800,
+      "seed": 20261109
     }
   }
 }

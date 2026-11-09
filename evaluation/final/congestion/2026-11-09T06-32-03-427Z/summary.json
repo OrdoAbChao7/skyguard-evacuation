@@ -1,0 +1,25 @@
+{
+  "config": {
+    "scales": [
+      0.5,
+      1,
+      2,
+      4
+    ],
+    "alphas": [
+      0.05,
+      0.15,
+      0.3
+    ],
+    "scenario": "E:\\Projects\\skyguard-evacuation\\.claude\\worktrees\\dreamy-kilby-0e1dc8\\data\\scenarios\\stadium-evacuation.json"
+  },
+  "summary": {
+    "rows": 12,
+    "mean_static_served": 2349.1,
+    "mean_aware_served": 2349.1,
+    "mean_static_abandoned": 604.15,
+    "mean_aware_abandoned": 604.15,
+    "mean_static_max_queue": 76.08,
+    "mean_aware_max_queue": 0
+  }
+}

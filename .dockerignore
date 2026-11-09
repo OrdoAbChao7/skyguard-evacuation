@@ -16,3 +16,5 @@ data/*.tmp
 evaluation/competition
 .env
 *.log
+
+data/*.lock

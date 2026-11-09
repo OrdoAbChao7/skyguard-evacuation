@@ -36,6 +36,7 @@ function config(baseUrl: string, overrides: Partial<AgentArtsConfig> = {}): Agen
     healthRetries: 0,
     invokeRetries: 0,
     retryBaseMs: 10,
+    sseRequireDone: true,
     ...overrides,
   };
 }
@@ -144,7 +145,7 @@ test('本地模式/缺配置时可达性状态明确区分', () => {
     runtime: 'local', baseUrl: null, apiKey: null, agentId: null, projectId: null,
     contract: 'template', runtimeName: '', invokeMode: null, sessionHeader: 'x-hw-agentarts-session-id',
     invokePath: '/v1/agents/{agent_id}/invoke', healthPath: '/health', timeoutMs: 1000, healthRetries: 0,
-    invokeRetries: 0, retryBaseMs: 10,
+    invokeRetries: 0, retryBaseMs: 10, sseRequireDone: true,
   });
   assert.equal(local.status().connectivity, 'not_requested');
 
@@ -152,7 +153,7 @@ test('本地模式/缺配置时可达性状态明确区分', () => {
     runtime: 'agentarts', baseUrl: 'http://127.0.0.1:9', apiKey: null, agentId: null, projectId: null,
     contract: 'official', runtimeName: '', invokeMode: null, sessionHeader: 'x-hw-agentarts-session-id',
     invokePath: '/runtimes/{runtime_name}/invocations', healthPath: '/health', timeoutMs: 100, healthRetries: 0,
-    invokeRetries: 0, retryBaseMs: 10,
+    invokeRetries: 0, retryBaseMs: 10, sseRequireDone: true,
   });
   assert.equal(misconfigured.status().connectivity, 'misconfigured');
 });
@@ -362,6 +363,7 @@ test('SSE 响应可解析；截断的 SSE 显式失败', async () => {
     res.end([
       'event: message',
       `data: ${JSON.stringify({ event: 'message', data: { text: JSON.stringify({ tool: 'get_crowd_status', arguments: {} }) } })}`,
+      'data: [DONE]',
       '',
       '',
     ].join('\n'));
@@ -434,6 +436,29 @@ test('同一次运行的所有步骤共用会话头，步骤 trace_id 不同', a
     await client.select({ scenarioId: 's', regionId: 'R', trigger: 't', traceId: 'RUN-TRACE-S2', sessionId: 'SESSION-X', context: {}, tools: [] });
     assert.deepEqual(headers, ['SESSION-X', 'SESSION-X']);
     assert.deepEqual(traces, ['RUN-TRACE-S1', 'RUN-TRACE-S2']);
+  } finally {
+    stub.server.close();
+  }
+});
+
+test('SSE 无 [DONE] 完成标记时默认 fail closed（D5）', async () => {
+  const stub = await startStub((_req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/event-stream' });
+    res.end([`data: ${JSON.stringify({ event: 'message', data: { text: JSON.stringify({ tool: 'get_crowd_status', arguments: {} }) } })}`, ''].join('\n'));
+  });
+  try {
+    const strict = new AgentArtsClient(config(stub.baseUrl, {
+      contract: 'official', runtimeName: 'rt-42', invokePath: '/runtimes/{runtime_name}/invocations', sseRequireDone: true,
+    }));
+    await assert.rejects(
+      () => strict.select({ scenarioId: 's', regionId: 'R', trigger: 't', traceId: 'RUN-SSE-NODONE', context: {}, tools: [] }),
+      /\[DONE\]|截断/,
+    );
+    const relaxed = new AgentArtsClient(config(stub.baseUrl, {
+      contract: 'official', runtimeName: 'rt-42', invokePath: '/runtimes/{runtime_name}/invocations', sseRequireDone: false,
+    }));
+    const decision = await relaxed.select({ scenarioId: 's', regionId: 'R', trigger: 't', traceId: 'RUN-SSE-RELAXED', context: {}, tools: [] });
+    assert.equal(decision.tool, 'get_crowd_status');
   } finally {
     stub.server.close();
   }

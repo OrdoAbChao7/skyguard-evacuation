@@ -1,0 +1,743 @@
+[
+  {
+    "demand_scale": 0.5,
+    "bpr_alpha": 0.05,
+    "total_demand": 788,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 788,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 9.5238,
+      "congestion_minutes": 1,
+      "completion_minute": 3
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 2,
+      "served": 788,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 9.5238,
+      "congestion_minutes": 1,
+      "completion_minute": 3,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 419.3679952810314
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 419.65862317851077
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 258.9117204565384
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 259.96313677028394
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 259.8134873286165
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 0.5,
+    "bpr_alpha": 0.15,
+    "total_demand": 788,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 788,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 26.087,
+      "congestion_minutes": 1,
+      "completion_minute": 3
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 2,
+      "served": 788,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 26.087,
+      "congestion_minutes": 1,
+      "completion_minute": 3,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 418.1096748640766
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 418.97753166405914
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 256.7622656775405
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 259.88944166113987
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 259.4412636121287
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 0.5,
+    "bpr_alpha": 0.3,
+    "total_demand": 788,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 788,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 54.5993,
+      "congestion_minutes": 2,
+      "completion_minute": 3
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 2,
+      "served": 788,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 54.5993,
+      "congestion_minutes": 2,
+      "completion_minute": 3,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 416.2362893397376
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 417.96002953100106
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 253.60417741015596
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 259.7789773065177
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 258.8849235081468
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 1,
+    "bpr_alpha": 0.05,
+    "total_demand": 1575,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 1575,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 34.7326,
+      "congestion_minutes": 6,
+      "completion_minute": 4
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 2,
+      "served": 1575,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 34.7326,
+      "congestion_minutes": 6,
+      "completion_minute": 4,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 418.92297198188544
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 418.92297198188544
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 259.190031152648
+        },
+        {
+          "corridor_id": "C_W_S",
+          "base": 260,
+          "effective": 259.7158320873663
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 259.9317145707122
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 255.52665083789273
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 1,
+    "bpr_alpha": 0.15,
+    "total_demand": 1575,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 1575,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 128.9556,
+      "congestion_minutes": 6,
+      "completion_minute": 4
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 2,
+      "served": 1575,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 128.9556,
+      "congestion_minutes": 6,
+      "completion_minute": 4,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 416.78540266658496
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 416.78540266658496
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 257.58513931888547
+        },
+        {
+          "corridor_id": "C_W_S",
+          "base": 260,
+          "effective": 259.1493556914648
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 259.7952512610254
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 247.02637969462094
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 1,
+    "bpr_alpha": 0.3,
+    "total_demand": 1575,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 1575,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 247.697,
+      "congestion_minutes": 9,
+      "completion_minute": 6
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 2,
+      "served": 1575,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 247.697,
+      "congestion_minutes": 9,
+      "completion_minute": 6,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 413.61963935771035
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 413.61963935771035
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 255.21472392638037
+        },
+        {
+          "corridor_id": "C_W_S",
+          "base": 260,
+          "effective": 258.30425935266186
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 259.59082474557914
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 235.2859541839612
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 2,
+    "bpr_alpha": 0.05,
+    "total_demand": 3150,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 3150,
+      "abandoned": 0,
+      "max_corridor_queue": 20,
+      "max_exit_queue": 146.9861,
+      "congestion_minutes": 17,
+      "completion_minute": 8
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 4,
+      "served": 3150,
+      "abandoned": 0,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 146.9861,
+      "congestion_minutes": 15,
+      "completion_minute": 8,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 400
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 400
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 255.52665083789273
+        },
+        {
+          "corridor_id": "C_W_S",
+          "base": 260,
+          "effective": 257.04756646549475
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 255.52665083789273
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 255.52665083789273
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 2,
+    "bpr_alpha": 0.15,
+    "total_demand": 3150,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 2483.8715,
+      "abandoned": 666.1285,
+      "max_corridor_queue": 54.7826,
+      "max_exit_queue": 633.6173,
+      "congestion_minutes": 24,
+      "completion_minute": 10
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 4,
+      "served": 2483.8715,
+      "abandoned": 666.1285,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 633.6173,
+      "congestion_minutes": 22,
+      "completion_minute": 10,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 365.21739130434787
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 365.21739130434787
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 247.02637969462094
+        },
+        {
+          "corridor_id": "C_W_S",
+          "base": 260,
+          "effective": 251.33939072910442
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 247.02637969462094
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 247.02637969462094
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 2,
+    "bpr_alpha": 0.3,
+    "total_demand": 3150,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 2214.6059,
+      "abandoned": 935.3941,
+      "max_corridor_queue": 96.9231,
+      "max_exit_queue": 767.697,
+      "congestion_minutes": 24,
+      "completion_minute": 10
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 4,
+      "served": 2214.6059,
+      "abandoned": 935.3941,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 767.697,
+      "congestion_minutes": 22,
+      "completion_minute": 10,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 323.07692307692304
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 323.07692307692304
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 235.2859541839612
+        },
+        {
+          "corridor_id": "C_W_S",
+          "base": 260,
+          "effective": 243.2371525059533
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 235.2859541839612
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 235.2859541839612
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 4,
+    "bpr_alpha": 0.05,
+    "total_demand": 6300,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 5214.3837,
+      "abandoned": 1085.6163,
+      "max_corridor_queue": 43.858,
+      "max_exit_queue": 542.8081,
+      "congestion_minutes": 39,
+      "completion_minute": 10
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 4,
+      "served": 5214.3837,
+      "abandoned": 1085.6163,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 542.8081,
+      "congestion_minutes": 25,
+      "completion_minute": 10,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 400
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 400
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 247.6190476190476
+        },
+        {
+          "corridor_id": "C_W_S",
+          "base": 260,
+          "effective": 247.6190476190476
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 247.6190476190476
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 247.6190476190476
+        },
+        {
+          "corridor_id": "C_NE",
+          "base": 300,
+          "effective": 291.7696465432861
+        },
+        {
+          "corridor_id": "C_NW",
+          "base": 300,
+          "effective": 293.97930385700846
+        },
+        {
+          "corridor_id": "C_SE",
+          "base": 300,
+          "effective": 293.97930385700846
+        },
+        {
+          "corridor_id": "C_SW",
+          "base": 300,
+          "effective": 291.7696465432861
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 4,
+    "bpr_alpha": 0.15,
+    "total_demand": 6300,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 4152.7653,
+      "abandoned": 2147.2347,
+      "max_corridor_queue": 205.2703,
+      "max_exit_queue": 1073.6173,
+      "congestion_minutes": 45,
+      "completion_minute": 10
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 4,
+      "served": 4152.7653,
+      "abandoned": 2147.2347,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 1073.6173,
+      "congestion_minutes": 27,
+      "completion_minute": 10,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 365.21739130434787
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 365.21739130434787
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 226.08695652173915
+        },
+        {
+          "corridor_id": "C_W_S",
+          "base": 260,
+          "effective": 226.08695652173915
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 226.08695652173915
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 226.08695652173915
+        },
+        {
+          "corridor_id": "C_NE",
+          "base": 300,
+          "effective": 276.59324538806374
+        },
+        {
+          "corridor_id": "C_NW",
+          "base": 300,
+          "effective": 282.6349110642147
+        },
+        {
+          "corridor_id": "C_SE",
+          "base": 300,
+          "effective": 282.6349110642147
+        },
+        {
+          "corridor_id": "C_SW",
+          "base": 300,
+          "effective": 276.59324538806374
+        }
+      ]
+    }
+  },
+  {
+    "demand_scale": 4,
+    "bpr_alpha": 0.3,
+    "total_demand": 6300,
+    "static": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "served": 3884.6059,
+      "abandoned": 2415.3941,
+      "max_corridor_queue": 492.1638,
+      "max_exit_queue": 1207.697,
+      "congestion_minutes": 51,
+      "completion_minute": 10
+    },
+    "congestion_aware": {
+      "plan_status": "feasible",
+      "plan_unresolved": 0,
+      "iterations": 4,
+      "served": 3884.6059,
+      "abandoned": 2415.3941,
+      "max_corridor_queue": 0,
+      "max_exit_queue": 1207.697,
+      "congestion_minutes": 28,
+      "completion_minute": 10,
+      "capacity_reductions": [
+        {
+          "corridor_id": "C_N_STAND",
+          "base": 420,
+          "effective": 323.07692307692304
+        },
+        {
+          "corridor_id": "C_S_STAND",
+          "base": 420,
+          "effective": 323.07692307692304
+        },
+        {
+          "corridor_id": "C_W_N",
+          "base": 260,
+          "effective": 199.99999999999997
+        },
+        {
+          "corridor_id": "C_W_S",
+          "base": 260,
+          "effective": 199.99999999999997
+        },
+        {
+          "corridor_id": "C_E_N",
+          "base": 260,
+          "effective": 199.99999999999997
+        },
+        {
+          "corridor_id": "C_E_S",
+          "base": 260,
+          "effective": 199.99999999999997
+        },
+        {
+          "corridor_id": "C_NE",
+          "base": 300,
+          "effective": 256.5746461170437
+        },
+        {
+          "corridor_id": "C_NW",
+          "base": 300,
+          "effective": 267.1701339412938
+        },
+        {
+          "corridor_id": "C_SE",
+          "base": 300,
+          "effective": 267.1701339412938
+        },
+        {
+          "corridor_id": "C_SW",
+          "base": 300,
+          "effective": 256.5746461170437
+        }
+      ]
+    }
+  }
+]

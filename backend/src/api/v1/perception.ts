@@ -8,6 +8,7 @@
  * 响应里 license_status 为 UNKNOWN，前端必须按"来源未标明"展示。
  */
 import { Router, type Request, type Response } from 'express';
+import { failFromError } from './errors';
 import fs from 'node:fs';
 import path from 'node:path';
 import {
@@ -43,7 +44,7 @@ function resolvePackage(req: Request, res: Response) {
       );
       return null;
     }
-    fail(res, 500, 'DISPLAY_PACKAGE_ERROR', (error as Error).message);
+    failFromError(req, res, 500, 'DISPLAY_PACKAGE_ERROR', error);
     return null;
   }
 }
@@ -51,11 +52,11 @@ function resolvePackage(req: Request, res: Response) {
 export const perceptionRouter = Router();
 
 /** 列出全部可用的展示包（只返回摘要，不含逐帧点位）。 */
-perceptionRouter.get('/displays', (_req, res) => {
+perceptionRouter.get('/displays', (req, res) => {
   try {
     res.json({ displays: listDisplayPackages() });
   } catch (error) {
-    fail(res, 500, 'DISPLAY_LIST_FAILED', (error as Error).message);
+    failFromError(req, res, 500, 'DISPLAY_LIST_FAILED', error);
   }
 });
 
@@ -114,7 +115,7 @@ perceptionRouter.get('/displays/:id/frames/:frameId/quality', (req, res) => {
 });
 
 /** 公开数据集真实推理结果摘要（只读；没有结果文件时明确 404）。 */
-perceptionRouter.get('/real-data/summary', (_req, res) => {
+perceptionRouter.get('/real-data/summary', (req, res) => {
   const file = path.resolve(__dirname, '../../../../evaluation/real-data/RESULTS.json');
   if (!fs.existsSync(file)) {
     fail(res, 404, 'REAL_DATA_RESULTS_MISSING', '尚未生成真实数据评测结果');
@@ -140,7 +141,7 @@ perceptionRouter.get('/real-data/summary', (_req, res) => {
       ],
     });
   } catch (error) {
-    fail(res, 500, 'REAL_DATA_RESULTS_INVALID', `真实数据结果无法解析：${(error as Error).message}`);
+    failFromError(req, res, 500, 'REAL_DATA_RESULTS_INVALID', error);
   }
 });
 

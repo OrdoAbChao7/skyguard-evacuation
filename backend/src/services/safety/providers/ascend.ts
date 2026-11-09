@@ -20,6 +20,7 @@
  */
 import { execFile } from 'node:child_process';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import { z } from 'zod';
 import type {
   CrowdInferenceProvider,
@@ -89,6 +90,16 @@ export class AscendCrowdProvider implements CrowdInferenceProvider {
     }
     if (!fs.existsSync(model)) {
       return { name: 'model', ok: false, detail: `模型文件不存在：${model}` };
+    }
+    const expected = process.env.SKYGUARD_ASCEND_MODEL_SHA256?.trim().toLowerCase();
+    if (expected) {
+      const actual = crypto.createHash('sha256').update(fs.readFileSync(model)).digest('hex');
+      if (!/^[a-f0-9]{64}$/.test(expected)) {
+        return { name: 'model_sha256', ok: false, detail: 'SKYGUARD_ASCEND_MODEL_SHA256 不是 64 位十六进制' };
+      }
+      if (actual !== expected) {
+        return { name: 'model_sha256', ok: false, detail: `模型哈希不匹配：期望 ${expected}，实际 ${actual}` };
+      }
     }
     return { name: 'model', ok: true, detail: `模型文件 ${model}` };
   }

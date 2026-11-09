@@ -33,7 +33,9 @@ import {
   type PlanInput,
   type PlanOutput,
 } from './planning/evacuation-planner';
+import { planWithCongestion } from './planning/congestion';
 import { SimulationCrowdProvider } from './providers/simulation';
+import { PredictionService } from '../mvp/prediction';
 
 export interface SafetyDecisionOptions {
   scenario: SafetyScenario;
@@ -153,6 +155,7 @@ export class SafetyDecisionService {
   private lastPlanExclusions: Array<{ kind: string; id: string; reason: string }> = [];
   private onStateChange?: () => void;
   private assertWritable?: () => void;
+  private predictionService?: PredictionService;
 
   constructor(options: SafetyDecisionOptions) {
     this.scenario = options.scenario;
@@ -160,7 +163,18 @@ export class SafetyDecisionService {
     this.observations = options.observationStore ?? new ObservationStore();
     this.incidents = options.incidentStore ?? new IncidentStore();
     this.simulationProvider = options.simulationProvider ?? new SimulationCrowdProvider();
-    this.planBuilder = options.planBuilder ?? planEvacuation;
+    this.planBuilder = options.planBuilder ?? ((input: PlanInput) => {
+      const policy = this.scenario.planning?.congestion;
+      return policy?.enabled
+        ? planWithCongestion(input, {
+          enabled: true,
+          bpr_alpha: policy.bpr_alpha,
+          bpr_beta: policy.bpr_beta,
+          max_capacity_reduction: policy.max_capacity_reduction,
+          max_iterations: policy.max_iterations,
+        })
+        : planEvacuation(input);
+    });
     this.now = options.now ?? (() => new Date());
     this.onStateChange = options.onStateChange;
     this.assertWritable = options.assertWritable;
@@ -642,11 +656,56 @@ export class SafetyDecisionService {
       return { trace, snapshot, exclusions: [] };
     }
 
+    // 需求来源：默认最新观测；场景可启用预测驱动。预测只能上调需求，
+    // 不可靠/数据不足时回退观测，确保预测错误不会导致少规划。
+    const demandPolicy = this.scenario.planning;
+    const demandMode = demandPolicy?.demand_mode ?? 'observed';
+    const demandHorizon = demandPolicy?.prediction_horizon_minutes ?? 5;
+    const predictor = demandMode === 'observed'
+      ? null
+      : (this.predictionService ??= new PredictionService(this.scenario, this.observations));
     const demand = new Map<string, number>();
+    const demandProvenance: NonNullable<PlanInput['demandProvenance']> = [];
     for (const region of this.scenario.regions) {
       if (!region.enabled) continue;
       const observation = this.observations.latest(region.id);
-      demand.set(region.id, observation ? observation.estimated_count : 0);
+      const observed = observation ? observation.estimated_count : 0;
+      let planned = observed;
+      let source = 'observed';
+      let predicted: number | null = null;
+      let intervalUpper: number | null = null;
+      let reliability = 'not_requested';
+      if (predictor) {
+        const forecast = predictor.predict(region.id, {
+          horizonMinutes: demandHorizon,
+          now: this.now(),
+        });
+        predicted = forecast.predicted_count;
+        intervalUpper = forecast.interval?.upper ?? null;
+        reliability = forecast.reliability.status;
+        const reliable = forecast.sufficient
+          && forecast.reliability.status !== 'failed'
+          && forecast.predicted_count !== null;
+        if (reliable) {
+          const candidate = demandMode === 'robust'
+            ? (forecast.interval?.upper ?? forecast.predicted_count ?? observed)
+            : (forecast.predicted_count ?? observed);
+          planned = Math.max(observed, candidate);
+          source = planned > observed ? `prediction_${demandMode}` : 'observed';
+        } else {
+          source = 'observed_fallback';
+        }
+      }
+      demand.set(region.id, planned);
+      demandProvenance.push({
+        region_id: region.id,
+        observed_count: observed,
+        planned_count: planned,
+        source,
+        predicted_count: predicted,
+        interval_upper: intervalUpper,
+        reliability,
+      });
     }
 
     const constraintVersionAtPlanningStart = this.constraintVersion;
@@ -657,6 +716,7 @@ export class SafetyDecisionService {
       scenario: this.scenario,
       network,
       demandByRegion: demand,
+      demandProvenance,
       scenarioVersion: this.scenario.version,
       constraintVersion: constraintVersionAtPlanningStart,
       observationVersion: observationVersionAtPlanningStart,

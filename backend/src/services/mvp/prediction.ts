@@ -8,7 +8,7 @@
 import type { SafetyScenario } from '../safety/types';
 import type { ObservationStore } from '../safety/observations';
 
-export const PREDICTION_ALGORITHM = 'adaptive-forecast-v3';
+export const PREDICTION_ALGORITHM = 'adaptive-forecast-v4';
 export const PREDICTION_VERSION = '1.0.0';
 
 export type TrendDirection = 'rising' | 'falling' | 'stable' | 'unknown';
@@ -28,6 +28,8 @@ export function assessPredictionReliability(input: {
   interval: { lower: number; upper: number } | null;
   data_quality: { stale: boolean; low_confidence: boolean; missing: boolean };
   max_relative_interval_width: number;
+  /** 近期斜率/加速度显著：区间在机制切换下不可靠，直接失败。 */
+  regime_unstable?: boolean;
 }): PredictionReliability {
   const max = input.max_relative_interval_width;
   if (!input.sufficient || input.predicted_count === null || input.interval === null) {
@@ -41,10 +43,12 @@ export function assessPredictionReliability(input: {
   const relative = (input.interval.upper - input.interval.lower) / Math.max(1, input.predicted_count);
   const reasons: string[] = [];
   if (relative > max) reasons.push('interval_too_wide');
+  if (input.regime_unstable) reasons.push('regime_unstable');
   if (input.data_quality.stale) reasons.push('stale_observation');
   if (input.data_quality.low_confidence) reasons.push('low_confidence');
   const status: PredictionReliabilityStatus = reasons.includes('interval_too_wide')
     || reasons.includes('insufficient_data')
+    || reasons.includes('regime_unstable')
     ? 'failed'
     : reasons.length > 0 ? 'warning' : 'ok';
   return {
@@ -174,8 +178,32 @@ export type ForecastMethod = 'persistence' | 'ema' | 'linear' | 'damped' | 'blen
 
 export const FORECAST_METHODS: ForecastMethod[] = ['persistence', 'ema', 'damped', 'blend', 'linear'];
 const DAMPING_PHI = 0.8;
-/** 区间保守系数：经验分位在突增场景仍会低估，乘 1.5 以降低过度自信（非正式统计校准）。 */
+/** 区间保守系数：经验分位在突增场景仍会低估，乘系数以降低过度自信（非正式统计校准）。 */
 const INTERVAL_SAFETY_FACTOR = 1.5;
+
+/**
+ * Regime-aware 区间放大：近期斜率或加速度显著时使用更大的安全系数。
+ * 这是对“突增/机制切换”失败模式的保守补丁，不是正式统计校准；只会加宽区间。
+ */
+export function regimeIntervalFactor(
+  samples: Array<{ x: number; y: number }>,
+  base = INTERVAL_SAFETY_FACTOR,
+): number {
+  if (samples.length < 5) return base;
+  const last = samples.slice(-3);
+  const previous = samples.slice(-6, -3);
+  if (previous.length < 3) return base;
+  const recentSlope = linearSlope(last).slope;
+  const previousSlope = linearSlope(previous).slope;
+  const meanY = samples.reduce((sum, item) => sum + item.y, 0) / samples.length;
+  const threshold = Math.max(5, meanY * 0.05);
+  const accelerated = Math.abs(recentSlope - previousSlope) > threshold;
+  const steep = Math.abs(recentSlope) > threshold;
+  const lookback = samples[Math.max(0, samples.length - 11)];
+  const growth = Math.abs(samples[samples.length - 1].y - lookback.y) / Math.max(1, meanY);
+  if (accelerated || steep || growth > 0.15) return Math.min(8, base * 4);
+  return base;
+}
 
 /** 对给定训练样本，用指定方法外推 horizon 分钟（不接触未来数据）。 */
 export function forecastWithMethod(
@@ -207,20 +235,48 @@ export function forecastWithMethod(
   return Math.max(0, (1 - weight) * smoothed + weight * trendAtNow + slope * horizonMinutes);
 }
 
+/** 在 samples 中查找相对 originIndex 至少领先 horizonMinutes 的第一个目标点。 */
+function targetAfter(
+  samples: Array<{ x: number; y: number }>,
+  originIndex: number,
+  horizonMinutes: number,
+): { index: number; point: { x: number; y: number } } | null {
+  const base = samples[originIndex].x + horizonMinutes - 1e-9;
+  for (let index = originIndex + 1; index < samples.length; index += 1) {
+    if (samples[index].x >= base) return { index, point: samples[index] };
+  }
+  return null;
+}
+
 /**
- * 用滚动一步预测回测选择预测方法。
- * 回测只使用训练窗口内的历史点，目标点的时间差即预测步长。
+ * 用滚动验证选择预测方法。
+ * v4：验证目标步长与最终预测 horizon 一致，且按时间戳（而非固定索引）取目标，
+ * 支持 missing/不规则采样；只使用当前窗口内的历史点。
  */
 export function selectForecastMethod(
   samples: Array<{ x: number; y: number }>,
   validationPoints = 3,
   candidates: ForecastMethod[] = FORECAST_METHODS,
+  horizonMinutes = 1,
 ): {
   method: ForecastMethod;
   selectedBy: 'rolling_validation' | 'default';
   scores: Array<{ method: ForecastMethod; validation_mae: number | null; validation_q95: number | null }>;
 } {
-  if (samples.length < Math.max(5, validationPoints + 3)) {
+  const minimum = Math.max(5, validationPoints + Math.ceil(horizonMinutes) + 3);
+  if (samples.length < minimum) {
+    const fallback = candidates.includes('blend') ? 'blend' : candidates[0] ?? 'blend';
+    return {
+      method: fallback,
+      selectedBy: 'default',
+      scores: candidates.map(method => ({ method, validation_mae: null, validation_q95: null })),
+    };
+  }
+  const origins: number[] = [];
+  for (let index = samples.length - 2; index >= 3 && origins.length < validationPoints; index -= 1) {
+    if (targetAfter(samples, index, horizonMinutes)) origins.push(index);
+  }
+  if (origins.length === 0) {
     const fallback = candidates.includes('blend') ? 'blend' : candidates[0] ?? 'blend';
     return {
       method: fallback,
@@ -230,12 +286,13 @@ export function selectForecastMethod(
   }
   const scores = candidates.map(method => {
     const errors: number[] = [];
-    for (let index = samples.length - validationPoints; index < samples.length; index += 1) {
-      const train = samples.slice(0, index);
-      if (train.length < 3) continue;
-      const horizon = samples[index].x - train[train.length - 1].x;
+    for (const originIndex of origins) {
+      const train = samples.slice(0, originIndex + 1);
+      const target = targetAfter(samples, originIndex, horizonMinutes);
+      if (!target || train.length < 3) continue;
+      const horizon = target.point.x - train[train.length - 1].x;
       if (horizon <= 0) continue;
-      errors.push(Math.abs(forecastWithMethod(method, train, horizon) - samples[index].y));
+      errors.push(Math.abs(forecastWithMethod(method, train, horizon) - target.point.y));
     }
     const sortedErrors = [...errors].sort((a, b) => a - b);
     return {
@@ -266,17 +323,19 @@ export function selectIntervalQuantile(
   validationPoints = 3,
   quantile = 0.95,
 ): number | null {
-  if (samples.length < Math.max(5, validationPoints + horizonMinutes + 3)) return null;
+  if (samples.length < Math.max(5, validationPoints + Math.ceil(horizonMinutes) + 3)) return null;
+  const origins: number[] = [];
+  for (let index = samples.length - 2; index >= 3 && origins.length < validationPoints; index -= 1) {
+    if (targetAfter(samples, index, horizonMinutes)) origins.push(index);
+  }
   const errors: number[] = [];
-  const lastOrigin = samples.length - horizonMinutes - 1;
-  const firstOrigin = Math.max(3, lastOrigin - validationPoints + 1);
-  for (let origin = firstOrigin; origin <= lastOrigin; origin += 1) {
-    const train = samples.slice(0, origin);
-    const target = samples[origin + horizonMinutes];
+  for (const originIndex of origins) {
+    const train = samples.slice(0, originIndex + 1);
+    const target = targetAfter(samples, originIndex, horizonMinutes);
     if (!target || train.length < 3) continue;
-    const horizon = target.x - train[train.length - 1].x;
+    const horizon = target.point.x - train[train.length - 1].x;
     if (horizon <= 0) continue;
-    errors.push(Math.abs(forecastWithMethod(method, train, horizon) - target.y));
+    errors.push(Math.abs(forecastWithMethod(method, train, horizon) - target.point.y));
   }
   if (errors.length === 0) return null;
   const sorted = errors.sort((a, b) => a - b);
@@ -390,7 +449,7 @@ export class PredictionService {
     const smoothed = ema(samples.map(item => item.y));
     const lastX = samples[samples.length - 1].x;
     const trendAtNow = intercept + slope * lastX;
-    const selection = selectForecastMethod(samples);
+    const selection = selectForecastMethod(samples, 3, FORECAST_METHODS, horizonMinutes);
     const predicted = clampCount(forecastWithMethod(selection.method, samples, horizonMinutes));
 
     const residuals = samples.map(item => item.y - (intercept + slope * item.x));
@@ -403,7 +462,7 @@ export class PredictionService {
       ? 1
       : Number(Math.max(1, empiricalQ95 / Math.max(1, residualStd)).toFixed(4));
     const margin = empiricalQ95 !== null
-      ? Math.max(5, empiricalQ95 * INTERVAL_SAFETY_FACTOR * Math.sqrt(1 + horizonMinutes / Math.max(1, samples.length)))
+      ? Math.max(5, empiricalQ95 * regimeIntervalFactor(samples) * Math.sqrt(1 + horizonMinutes / Math.max(1, samples.length)))
       : Math.max(
         5,
         1.96 * residualStd * Math.sqrt(1 + horizonMinutes / Math.max(1, samples.length)) * intervalCalibration,
@@ -418,6 +477,7 @@ export class PredictionService {
       interval,
       data_quality: base.data_quality,
       max_relative_interval_width: this.scenario.config.prediction_max_relative_interval_width,
+      regime_unstable: regimeIntervalFactor(samples) > INTERVAL_SAFETY_FACTOR,
     });
 
     return {

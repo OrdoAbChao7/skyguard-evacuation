@@ -296,3 +296,46 @@ test('人工反馈后自动续接平台运行（AGENTARTS_AUTO_CONTINUE=true）'
     fixture.cleanup();
   }
 });
+
+test('平台中途失败仍保留已执行工具与 failed run（D7）', async () => {
+  let calls = 0;
+  const { createServer } = await import('node:http');
+  const server = createServer((req, res) => {
+    if (req.url === '/health') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end('{"status":"ok"}');
+      return;
+    }
+    if (req.url?.includes('/invoke')) {
+      calls += 1;
+      if (calls === 1) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ decision: { tool: 'get_crowd_status', arguments: { region_id: 'R_EAST_STAND' } } }));
+        return;
+      }
+      res.writeHead(500);
+      res.end('platform unavailable');
+      return;
+    }
+    res.writeHead(404);
+    res.end();
+  });
+  await new Promise<void>(resolve => server.listen(0, '127.0.0.1', () => resolve()));
+  const address = server.address();
+  if (!address || typeof address === 'string') throw new Error('no port');
+  const fixture = makeMvpFixture();
+  try {
+    setAgentArtsEnv(`http://127.0.0.1:${address.port}`);
+    const mvp = new MvpService({ scenario: fixture.scenario, safety: fixture.safety, audit: fixture.audit });
+    const run = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'agentarts_midway_failure', runtime: 'agentarts' });
+    assert.equal(run.status, 'failed');
+    assert.ok(run.trace.length >= 1);
+    assert.equal(run.trace[0].tool, 'get_crowd_status');
+    assert.ok(run.investigation.stopped_reason?.startsWith('platform_error:'));
+    assert.ok(fixture.audit.list(50).some(item => item.action === 'agent.run' && item.entity_id === run.run_id));
+  } finally {
+    clearAgentArtsEnv();
+    await new Promise<void>(resolve => server.close(() => resolve()));
+    fixture.cleanup();
+  }
+});

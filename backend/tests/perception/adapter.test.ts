@@ -72,6 +72,8 @@ test('surveyed 映射且面积一致、置信度足够时才写入可信观测',
   const fixture = makeMvpFixture();
   try {
     const region = fixture.scenario.regions.find(item => item.id === 'R_EAST_STAND')!;
+    region.camera.calibration_status = 'measured';
+    region.camera.calibration_version = 'test-calibration';
     const mapping: RegionMapping = {
       region_id: region.id,
       zone_id: 'demo',
@@ -174,6 +176,34 @@ test('感知→观测→预测→VoI→风险链路可运行，且不可信输�
     assert.ok(result.voi);
     assert.ok(Array.isArray((result.voi as { evaluations: unknown[] }).evaluations));
     assert.ok(result.limitations.some(item => item.includes('无真值')));
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('调用方自报 surveyed 但场景摄像头未标定时不得进入安全域（D9）', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const region = fixture.scenario.regions.find(item => item.id === 'R_EAST_STAND')!;
+    assert.notEqual(region.camera.calibration_status, 'measured');
+    const draft = adaptImageCount({
+      image_id: 'self-declared.jpg',
+      predicted_count: 600,
+      model: 'external-model',
+      model_version: '1.0.0',
+      confidence: 0.95,
+      mapping: {
+        region_id: region.id,
+        zone_id: 'demo',
+        area_m2: region.area_m2,
+        calibration: 'surveyed',
+        calibration_id: 'self-declared',
+        source: 'caller',
+      },
+    });
+    const result = ingestPerceptionDraft(fixture.safety, draft, ADMIN);
+    assert.equal(result.observation?.valid, false);
+    assert.match(result.observation?.invalid_reason ?? '', /region_camera_not_surveyed/);
   } finally {
     fixture.cleanup();
   }

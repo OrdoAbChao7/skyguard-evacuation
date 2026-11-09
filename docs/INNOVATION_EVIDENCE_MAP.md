@@ -25,3 +25,15 @@
 | AgentArts 失败语义 | 官方契约、重试/SSE/越权/续接 stub 测试 | 5xx/超时重试、4xx 不重试、截断 SSE 拒绝、越权无副作用 | **无真实租户/Trace** |
 | 预测不确定性传播 | `prediction.ts` reliability、`availability.ts`、`prediction.test.ts` | 30 种子 × 6 机制；surge 95% 覆盖 0.738；periodic/noisy 预测动作几乎全阻断 | 合成机制；区间非正式置信区间 |
 | 感知→决策门禁 | `perception/adapter.ts`、`adapter.test.ts`、质量 API、前端面积/密度 | 图像/显示帧→人数→面积→密度；未标定/面积不符/低置信度 fail closed | CityStreet 无真值；P2PNet 非现场 |
+
+## 2026-11-09 第二轮新增
+
+| 创新点 | 实现 | 实验/证据 | 主张边界 |
+| --- | --- | --- | --- |
+| 预测驱动规划需求 | `decision-service.ts` observed/predicted/robust + `demand_provenance` | `evaluation/final/prediction-planning/2026-11-09T06-33-13-854Z/` | 只上调、不可靠回退；静态模型无吞吐收益 |
+| regime-aware 预测区间 | `prediction.ts` `regimeIntervalFactor` | `evaluation/v65/2026-11-09T06-33-02-508Z/`；surge 0.8667 | 未达 0.95；预测动作默认禁用 |
+| 联合粒子 VoI | `joint-voi.ts` 联合熵/最坏区域风险/相关性 | `evaluation/final/joint-voi/2026-11-09T06-47-12-412Z/` | 负向：未超过多区域加权 |
+| 拥堵反馈规划 | `planning/congestion.ts` BPR + 队列仿真 | `evaluation/final/congestion/2026-11-09T06-32-03-427Z/` | 最大队列 76.1→0；最终吞吐不变 |
+| Validator 独立约束 | horizon/在留/出口等待/全区域/总量/截断 | `safety-acceptance.test.ts`、`congestion.test.ts` | 仍共享 EffectiveNetwork |
+| 公开数据集跨域 | P2PNet A 权重 → Part B test | `evaluation/real-data-partB-cross/` | MAE 22.16；域迁移，非现场 |
+| 浏览器 E2E | Playwright 管理员/staff | `frontend/e2e/smoke.spec.ts` | 本地/CI，非真机 |

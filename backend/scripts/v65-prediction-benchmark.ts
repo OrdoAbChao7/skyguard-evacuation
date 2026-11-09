@@ -22,6 +22,7 @@ import crypto from 'node:crypto';
 import {
   FORECAST_METHODS,
   forecastWithMethod,
+  regimeIntervalFactor,
   selectForecastMethod,
   type ForecastMethod,
 } from '../src/services/mvp/prediction';
@@ -171,6 +172,7 @@ interface Row {
   covered95: boolean;
   width: number;
   reliability_failed: boolean;
+  safety_factor: number;
 }
 
 function predictAtOrigin(
@@ -190,6 +192,7 @@ function predictAtOrigin(
     train,
     methodOptions.validationPoints ?? 3,
     methodOptions.candidates ?? FORECAST_METHODS,
+    Math.max(1, Math.round(horizon)),
   );
   return {
     predicted: forecastWithMethod(selection.method, train, horizon, { alpha: methodOptions.alpha }),
@@ -242,8 +245,9 @@ function runRow(
   const q90 = historicalErrorQuantile(train, methodUsed, horizon, 0.90);
   const q95 = historicalErrorQuantile(train, methodUsed, horizon, 0.95);
   const fallback = 1.96 * residualStd(train) * Math.sqrt(1 + horizon / Math.max(1, train.length));
-  const margin90 = Math.max(5, (q90 ?? fallback) * SAFETY_FACTOR);
-  const margin95 = Math.max(5, (q95 ?? fallback) * SAFETY_FACTOR);
+  const safetyFactor = regimeIntervalFactor(train);
+  const margin90 = Math.max(5, (q90 ?? fallback) * safetyFactor);
+  const margin95 = Math.max(5, (q95 ?? fallback) * safetyFactor);
   const relativeWidth = (margin95 * 2) / Math.max(1, predicted);
   const error = predicted - target.y;
   return {
@@ -260,7 +264,8 @@ function runRow(
     covered90: Math.abs(error) <= margin90,
     covered95: Math.abs(error) <= margin95,
     width: Number((margin95 * 2).toFixed(4)),
-    reliability_failed: relativeWidth > RELIABILITY_THRESHOLD,
+    reliability_failed: relativeWidth > RELIABILITY_THRESHOLD || safetyFactor > 1.5,
+    safety_factor: Number(safetyFactor.toFixed(4)),
   };
 }
 
@@ -436,7 +441,7 @@ for (const mechanism of MECHANISMS) {
     }
   }
   const rawSafetyCoverage = subset.filter(row => {
-    const margin = row.width / (2 * SAFETY_FACTOR);
+    const margin = row.width / (2 * (row.safety_factor || SAFETY_FACTOR));
     return Math.abs(row.predicted - row.actual) <= margin;
   }).length / Math.max(1, subset.length);
   ablation[mechanism] = {
@@ -473,7 +478,7 @@ write('summary.json', {
     horizon_steps: HORIZON,
     min_train_points: MIN_TRAIN,
     reliability_threshold: RELIABILITY_THRESHOLD,
-    interval_safety_factor: SAFETY_FACTOR,
+    interval_safety_factor: 'regime-aware (1.5 base, up to 3.0 on steep/accelerating windows)',
     data_nature: '全部为合成数据；不代表真实场馆或公开数据集精度。',
     protocol: '每个起点只用过去数据训练/选择方法/校准区间；目标点完全不参与训练。',
   },

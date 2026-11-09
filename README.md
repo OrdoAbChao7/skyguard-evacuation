@@ -193,17 +193,22 @@ npm start              # 由后端托管 frontend/dist
 ## 测试与证据
 
 ```powershell
-npm test                              # 后端 183 用例 + 前端 16 用例
+npm test                              # 后端 205 用例 + 前端 16 用例
+npm run test:e2e                      # Playwright：管理员/staff 登录 3 用例
 npm run demo                          # 进程内跑完 A/B/C 三个演示场景并校验最终状态
 npm run bench                         # 实测规划/校验/决策延迟 → evaluation/performance.json
 npm run benchmark:voi-v2              # 公平 VoI 复跑 → evaluation/voi-v2/<run-id>/
 npm run benchmark:v65                 # 预测实验 → evaluation/v65/<run-id>/
+npm run benchmark:prediction-planning --prefix backend  # 预测驱动规划 → evaluation/final/
+npm run benchmark:congestion --prefix backend           # 拥堵反馈 → evaluation/final/
+npm run benchmark:joint-voi --prefix backend            # 联合 VoI → evaluation/final/
 ```
 
 | 证据 | 当前结果 |
 | --- | --- |
-| 后端测试（安全 + MVP + V6/V6.1 + 感知 + 状态） | 175 / 175 通过 |
+| 后端测试（安全 + MVP + V6/V6.1 + 感知 + 状态 + 算法） | 205 / 205 通过 |
 | 前端测试 | 16 / 16 通过 |
+| 浏览器 E2E | 3 / 3 通过（管理员/错误口令/staff） |
 | 演示场景 A（常规） | `NORMAL`，1000/1000 人分配完毕 |
 | 演示场景 B（出口火灾） | `REROUTE`，原方案重规划 |
 | 演示场景 C（容量不足） | `REJECT`，明确给出 180 人未解决并要求人工介入 |
@@ -211,7 +216,9 @@ npm run benchmark:v65                 # 预测实验 → evaluation/v65/<run-id>
 | MVP 业务闭环 | `npm run demo:mvp`：A 正常 / B 局部积聚 / C 不可信与容量不足 全部通过 |
 | MVP 自动化测试 | 预测、VoI、预算、证据生命周期、人员工单、感知、Agent、HTTP 闭环、MCP stdio/HTTP、AgentArts 官方契约 |
 | 公平 VoI 复跑 | 见 [`evaluation/voi-v2/`](evaluation/voi-v2/)（相同动作覆盖 + 观测采样；不覆盖 V6.2） |
-| V6.5 预测实验 | 见 [`evaluation/v65/`](evaluation/v65/)（30 种子 × 6 机制；surge 覆盖率 0.738） |
+| V6.5 预测实验 | 见 [`evaluation/v65/`](evaluation/v65/)（30 种子 × 6 机制；regime-aware 后 surge 覆盖 0.867，仍不达标） |
+| 预测驱动规划/联合 VoI/拥堵 | 见 [`evaluation/final/`](evaluation/final/)；联合 VoI 为负向结果 |
+| 公开数据集 Part B 跨域 | 见 [`evaluation/real-data-partB-cross/`](evaluation/real-data-partB-cross/)（A 权重，域迁移） |
 | 统一状态/资源预留 | `MVP_STATE_FILE` 原子快照；工单创建预留、重启恢复、损坏 fail closed |
 | MVP 实验 | 见 [`evaluation/MVP_REPORT.md`](evaluation/MVP_REPORT.md)（固定种子，可复现） |
 | 竞赛级基准 | 见 [`evaluation/COMPETITION_REPORT.md`](evaluation/COMPETITION_REPORT.md)（5 种子、CI、故障注入） |

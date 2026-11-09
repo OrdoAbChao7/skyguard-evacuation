@@ -12,6 +12,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
+import { resolveDataPath } from '../../config/paths';
 
 const authRouter = Router();
 
@@ -50,6 +51,9 @@ export function productionAuthConfigErrors(env: NodeJS.ProcessEnv = process.env)
   } else if (looksLikePlaceholder(password)) {
     errors.push('SKYGUARD_ADMIN_PASSWORD 仍是示例占位符；生产环境必须使用强随机口令');
   }
+  if (env.READ_AUTH_REQUIRED !== 'true') {
+    errors.push('生产环境必须设置 READ_AUTH_REQUIRED=true，禁止匿名读取场景/工单/审计/监控数据');
+  }
   return errors;
 }
 
@@ -87,7 +91,7 @@ export function productionAdminConfigErrors(
   return errors;
 }
 
-const ADMIN_CONFIG_FILE = path.resolve(__dirname, '../../../../data/admin_config.json');
+const ADMIN_CONFIG_FILE = resolveDataPath('admin_config.json');
 const DEFAULT_ADMIN = {
   username: process.env.SKYGUARD_ADMIN_USERNAME || 'admin',
   password: process.env.SKYGUARD_ADMIN_PASSWORD || 'skyguard2026',
@@ -152,9 +156,9 @@ authRouter.post('/login', (req: Request, res: Response) => {
 authRouter.post('/refresh', (req: Request, res: Response) => {
   const { token } = req.body ?? {};
   try {
-    const decoded = jwt.verify(token, SECRET) as { username?: string; role?: string };
+    const decoded = jwt.verify(token, SECRET) as { username?: string; role?: string; staff_id?: string };
     const newToken = jwt.sign(
-      { username: decoded.username, role: decoded.role },
+      { username: decoded.username, role: decoded.role, ...(decoded.staff_id ? { staff_id: decoded.staff_id } : {}) },
       SECRET,
       { expiresIn: '24h' },
     );

@@ -151,6 +151,7 @@ test('P0-5 生产环境缺少强 SECRET/管理员口令时拒绝启动配置', (
       NODE_ENV: 'production',
       SECRET_KEY: 'a-strong-production-secret-123',
       SKYGUARD_ADMIN_PASSWORD: 'strong-admin-password',
+      READ_AUTH_REQUIRED: 'true',
     } as NodeJS.ProcessEnv),
     [],
   );

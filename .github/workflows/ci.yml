@@ -26,6 +26,10 @@ jobs:
         run: npm run demo
       - name: MVP end-to-end demo
         run: npm run demo:mvp
+      - name: Install Playwright browser
+        run: npx --prefix frontend playwright install --with-deps chromium
+      - name: Browser E2E (admin/staff smoke)
+        run: npm run test:e2e
       - name: V6.5 prediction experiment
         env:
           V65_OUTPUT_ROOT: ${{ runner.temp }}/skyguard-v65

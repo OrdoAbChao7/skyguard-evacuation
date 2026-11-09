@@ -499,3 +499,245 @@ function makeTempDir(): string {
   const path = require('node:path') as typeof import('node:path');
   return fs.mkdtempSync(path.join(os.tmpdir(), 'skyguard-audit-'));
 }
+
+test('Validator 独立检查区域在留容量（规划器硬约束之外）', () => {
+  const scenario = loadScenario();
+  scenario.planning = { demand_mode: 'observed', prediction_horizon_minutes: 5 };
+  const region = scenario.regions.find(item => item.id === 'R_MAIN')!;
+  region.holding_capacity_persons = 10;
+  const network = resolveEffectiveNetwork(scenario, []);
+  const observation = buildObservationFor(scenario, region.id, 50);
+  const plan = emptyPlan({
+    scenario_version: scenario.version,
+    horizon_minutes: 8,
+    routes: [{
+      route_id: 'R-HOLD',
+      from_region_id: region.id,
+      exit_id: 'E_A',
+      persons: 20,
+      depart_minute: 0,
+      arrive_minute: 0,
+      steps: [],
+    }],
+    demand_by_region: [{ region_id: region.id, persons: 50 }],
+    total_persons: 50,
+    evacuated_persons: 20,
+    unresolved_persons: 30,
+    unresolved: [{ region_id: region.id, persons: 30, reason: 'test' }],
+  });
+  const validation = validateSafetyPlan({
+    plan,
+    scenario,
+    network,
+    latestObservations: new Map([[region.id, observation]]),
+    config: scenario.config,
+    constraintVersion: 0,
+    observationVersion: 0,
+  });
+  assert.ok(validation.violations.some(item => item.code === 'holding_capacity_exceeded'));
+});
+
+test('预测驱动需求必须有 provenance，且不得超过区间上界', () => {
+  const scenario = loadScenario();
+  scenario.planning = { demand_mode: 'robust', prediction_horizon_minutes: 5 };
+  const region = scenario.regions.find(item => item.id === 'R_MAIN')!;
+  const network = resolveEffectiveNetwork(scenario, []);
+  const observation = buildObservationFor(scenario, region.id, 50);
+  const base = {
+    scenario_version: scenario.version,
+    horizon_minutes: 8,
+    routes: [{
+      route_id: 'R-PRED',
+      from_region_id: region.id,
+      exit_id: 'E_A',
+      persons: 20,
+      depart_minute: 0,
+      arrive_minute: 0,
+      steps: [],
+    }],
+    total_persons: 100,
+    evacuated_persons: 20,
+    unresolved_persons: 80,
+    unresolved: [{ region_id: region.id, persons: 80, reason: 'test' }],
+  };
+  const withoutProvenance = emptyPlan({
+    ...base,
+    demand_by_region: [{ region_id: region.id, persons: 100 }],
+  });
+  const first = validateSafetyPlan({
+    plan: withoutProvenance,
+    scenario,
+    network,
+    latestObservations: new Map([[region.id, observation]]),
+    config: scenario.config,
+    constraintVersion: 0,
+    observationVersion: 0,
+  });
+  assert.ok(first.violations.some(item => item.code === 'demand_provenance_missing'));
+
+  const exceeding = emptyPlan({
+    ...base,
+    demand_by_region: [{ region_id: region.id, persons: 100 }],
+    demand_provenance: [{
+      region_id: region.id,
+      observed_count: 50,
+      planned_count: 100,
+      source: 'prediction_robust',
+      predicted_count: 60,
+      interval_upper: 70,
+      reliability: 'ok',
+    }],
+  });
+  const second = validateSafetyPlan({
+    plan: exceeding,
+    scenario,
+    network,
+    latestObservations: new Map([[region.id, observation]]),
+    config: scenario.config,
+    constraintVersion: 0,
+    observationVersion: 0,
+  });
+  assert.ok(second.violations.some(item => item.code === 'prediction_demand_exceeds_interval'));
+});
+
+function allRegionObservations(scenario: SafetyScenario, overrides: Record<string, number> = {}) {
+  const map = new Map<string, ReturnType<typeof buildObservationFor>>();
+  for (const region of scenario.regions) {
+    if (!region.enabled) continue;
+    map.set(region.id, buildObservationFor(scenario, region.id, overrides[region.id] ?? 0));
+  }
+  return map;
+}
+
+test('Validator 拒绝伪造 horizon，并使用场景窗口而非方案自报值（C1）', () => {
+  const scenario = loadScenario();
+  const network = resolveEffectiveNetwork(scenario, []);
+  const plan = emptyPlan({
+    scenario_version: scenario.version,
+    horizon_minutes: scenario.config.horizon_minutes + 1000,
+    demand_by_region: [{ region_id: 'R_MAIN', persons: 1 }],
+    total_persons: 1,
+    routes: [{
+      route_id: 'R-HORIZON',
+      from_region_id: 'R_MAIN',
+      exit_id: 'E_A',
+      persons: 1,
+      depart_minute: 0,
+      arrive_minute: 0,
+      steps: [],
+    }],
+    exit_totals: [{ exit_id: 'E_A', persons: 1 }],
+  });
+  const validation = validateSafetyPlan({
+    plan,
+    scenario,
+    network,
+    latestObservations: allRegionObservations(scenario, { R_MAIN: 1 }),
+    config: scenario.config,
+    constraintVersion: 0,
+    observationVersion: 0,
+  });
+  assert.ok(validation.violations.some(item => item.code === 'horizon_mismatch'));
+});
+
+test('Validator 独立重算 exit_totals/corridor_totals（C4）', () => {
+  const scenario = loadScenario();
+  const network = resolveEffectiveNetwork(scenario, []);
+  const plan = emptyPlan({
+    scenario_version: scenario.version,
+    horizon_minutes: scenario.config.horizon_minutes,
+    demand_by_region: [{ region_id: 'R_MAIN', persons: 10 }],
+    total_persons: 10,
+    evacuated_persons: 10,
+    routes: [{
+      route_id: 'R-TOTALS',
+      from_region_id: 'R_MAIN',
+      exit_id: 'E_A',
+      persons: 10,
+      depart_minute: 0,
+      arrive_minute: 0,
+      steps: [],
+    }],
+    exit_totals: [{ exit_id: 'E_A', persons: 999 }],
+    corridor_totals: [{ corridor_id: 'NO_SUCH', persons: 999 }],
+  });
+  const validation = validateSafetyPlan({
+    plan,
+    scenario,
+    network,
+    latestObservations: allRegionObservations(scenario, { R_MAIN: 10 }),
+    config: scenario.config,
+    constraintVersion: 0,
+    observationVersion: 0,
+  });
+  assert.ok(validation.violations.some(item => item.code === 'totals_recompute_mismatch'));
+});
+
+test('Validator 拒绝出口前排队绕过在留容量（C3）', () => {
+  const scenario = loadScenario();
+  const region = scenario.regions.find(item => item.id === 'R_MAIN')!;
+  region.holding_capacity_persons = 50;
+  const network = resolveEffectiveNetwork(scenario, []);
+  const plan = emptyPlan({
+    scenario_version: scenario.version,
+    horizon_minutes: scenario.config.horizon_minutes,
+    demand_by_region: [{ region_id: 'R_SOUTH', persons: 200 }],
+    total_persons: 200,
+    evacuated_persons: 200,
+    routes: [{
+      route_id: 'R-QUEUE',
+      from_region_id: 'R_SOUTH',
+      exit_id: 'E_A',
+      persons: 200,
+      depart_minute: 0,
+      arrive_minute: 5,
+      steps: [{ corridor_id: 'C05', from_region_id: 'R_SOUTH', to_region_id: 'R_MAIN', depart_minute: 0, arrive_minute: 1, persons: 200 }],
+    }],
+    exit_totals: [{ exit_id: 'E_A', persons: 200 }],
+    corridor_totals: [{ corridor_id: 'C05', persons: 200 }],
+  });
+  const validation = validateSafetyPlan({
+    plan,
+    scenario,
+    network,
+    latestObservations: allRegionObservations(scenario, { R_SOUTH: 200 }),
+    config: scenario.config,
+    constraintVersion: 0,
+    observationVersion: 0,
+  });
+  assert.ok(validation.violations.some(item => item.code === 'holding_capacity_exceeded'));
+});
+
+test('Validator 检查所有启用区域的观测与传感器故障（C6）', () => {
+  const scenario = loadScenario();
+  const network = resolveEffectiveNetwork(scenario, []);
+  const observations = allRegionObservations(scenario, { R_MAIN: 1 });
+  observations.delete('R_NORTH');
+  const plan = emptyPlan({
+    scenario_version: scenario.version,
+    horizon_minutes: scenario.config.horizon_minutes,
+    demand_by_region: [{ region_id: 'R_MAIN', persons: 1 }],
+    total_persons: 1,
+    evacuated_persons: 1,
+    routes: [{
+      route_id: 'R-OBS',
+      from_region_id: 'R_MAIN',
+      exit_id: 'E_A',
+      persons: 1,
+      depart_minute: 0,
+      arrive_minute: 0,
+      steps: [],
+    }],
+    exit_totals: [{ exit_id: 'E_A', persons: 1 }],
+  });
+  const validation = validateSafetyPlan({
+    plan,
+    scenario,
+    network,
+    latestObservations: observations,
+    config: scenario.config,
+    constraintVersion: 0,
+    observationVersion: 0,
+  });
+  assert.ok(validation.violations.some(item => item.code === 'observation_missing' && item.region_id === 'R_NORTH'));
+});

@@ -252,6 +252,7 @@ export class AgentService {
         uavReason: '没有可用无人机或未获批准',
         historyPoints: trendPoints,
         predictionReliable,
+        predictionAvailable: this.scenario.config.prediction_action_enabled,
         predictionReason: prediction
           ? `预测可靠性 ${prediction.reliability?.status ?? 'unknown'}：${(prediction.reliability?.reasons ?? []).join('、') || '区间过宽或数据不足'}`
           : '预测服务不可用',

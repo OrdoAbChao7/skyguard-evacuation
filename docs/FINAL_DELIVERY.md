@@ -103,3 +103,16 @@ npm run manifest:evidence --prefix backend
 
 **Research Prototype Candidate**：可复现、可审计、可演示；
 不是生产系统，不替代现场指挥，不构成获奖承诺。
+
+## 2026-11-09 第二轮交付状态
+
+- 测试：后端 **205/205**、前端 **16/16**、Playwright E2E **3/3**；构建、安全 demo、MVP demo 通过。
+- 证据：`verify:evidence` 134/134；根清单 46/46；`evaluation/final` 63/63；发布清单 179/179（约 147.7 MB）。
+- 新增实验：`evaluation/v65/2026-11-09T06-33-02-508Z/`（预测区间）、
+  `evaluation/final/prediction-planning/`（预测驱动规划）、
+  `evaluation/final/joint-voi/`（联合 VoI，负向结果）、
+  `evaluation/final/congestion/`（拥堵反馈）、`evaluation/real-data-partB-cross/`（跨域公开数据）。
+- 新交付文档：[最终差距审计](COMPETITION_FINAL_GAP_AUDIT.md)、
+  [研究算法升级](RESEARCH_ALGORITHM_UPGRADE.md)、[安全红队报告](SECURITY_REDTEAM_REPORT.md)。
+- 仍未完成：AgentArts 实机、昇腾实机、场馆/人员/无人机、官方赛规、PPT/视频/论文 PDF、强基线。
+- **未 commit/push**；提交时必须同时包含新证据目录与两个 manifest。

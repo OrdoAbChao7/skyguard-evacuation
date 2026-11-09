@@ -18,6 +18,7 @@ import { AgentService, type AgentRun, type ToolCallTrace } from './agent';
 import { AgentArtsClient, loadAgentArtsConfig, type AgentArtsStatus } from './agentarts';
 import { buildRegionGraph, propagateRisk, rankInvestigationPriorities } from './risk-graph';
 import { decideMultiRegionInvestigation, priorBeliefsForRegions } from './multi-voi';
+import { decideJointInvestigation } from './joint-voi';
 import { buildInvestigationAvailability } from './availability';
 import { PersistentStateStore, StateStoreError, type LoadedState } from '../state/persistent-store';
 import type { PersistedAppState } from '../state/app-state';
@@ -604,6 +605,7 @@ export class MvpService {
     let lastSignature: string | null = null;
 
     // 有界多步：平台可以连续选择工具；本地负责每一步的权限、参数与超时校验。
+    try {
     for (let step = 1; step <= maxSteps; step += 1) {
       const current = this.safety.getStatus();
       const versions = this.safety.getVersions();
@@ -694,6 +696,11 @@ export class MvpService {
       }
       if (step === maxSteps) stoppedReason = 'max_steps_reached';
     }
+    } catch (error) {
+      // 平台中途失败：保留已执行工具的 trace，并落一条 failed run，避免副作用无来源。
+      runStatus = 'failed';
+      stoppedReason = `platform_error:${(error as Error).message}`;
+    }
 
     const finalStatus = this.safety.getStatus();
     const currentCamera = this.cameraHealth(options.regionId)[0] ?? null;
@@ -777,7 +784,7 @@ export class MvpService {
       previousRunId: previous.run_id,
       workOrderId,
       feedback,
-      idempotencyPrefix: `agentarts-cont:${previous.run_id}`,
+      idempotencyPrefix: `agentarts-cont:${previous.run_id}:${workOrderId ?? 'none'}`,
     });
     this.storeRun(run);
     this.audit.record({
@@ -801,7 +808,7 @@ export class MvpService {
     for (const run of this.listAgentRuns(100)) {
       if (!run.investigation.pending_work_order_ids.includes(orderId)) continue;
       if (!['awaiting_approval', 'awaiting_evidence'].includes(run.status)) continue;
-      void this.continueAgentRun(run.run_id).catch(error => {
+      void this.continueAgentRun(run.run_id, undefined, orderId).catch(error => {
         this.audit.record({
           actor: 'system',
           role: 'system',
@@ -850,14 +857,23 @@ export class MvpService {
   }
 
   private storeRun(run: AgentRun): void {
+    const snapshot = new Map(this.runs);
+    const orderSnapshot = [...this.runOrder];
     this.runs.set(run.run_id, run);
     this.runOrder.push(run.run_id);
     if (this.runOrder.length > 100) {
       const evicted = this.runOrder.shift();
       if (evicted) this.runs.delete(evicted);
     }
-    if (this.stateStore) this.persistState();
-    else this.persistRuns();
+    try {
+      if (this.stateStore) this.persistState();
+      else this.persistRuns();
+    } catch (error) {
+      // 持久化失败时回滚内存，避免只读状态下仍显示未落盘的 run。
+      this.runs = snapshot;
+      this.runOrder = orderSnapshot;
+      throw error;
+    }
   }
 
   listAgentRuns(limit = 20): AgentRun[] {
@@ -948,16 +964,22 @@ export class MvpService {
       uavReason: '没有可用无人机',
       historyPoints,
       predictionReliable: prediction.reliability?.status !== 'failed',
+      predictionAvailable: this.scenario.config.prediction_action_enabled,
       predictionReason: `预测可靠性 ${prediction.reliability?.status ?? 'unknown'}：${(prediction.reliability?.reasons ?? []).join('、') || '区间过宽或数据不足'}`,
     });
     const decision = decideMultiRegionInvestigation(policy, target, beliefs, graph, availability);
+    // 场景配置了区域相关性时，附带真正的联合 VoI 结果（粒子联合熵/最坏区域风险）。
+    const jointDecision = policy.correlation
+      ? decideJointInvestigation(policy, target, beliefs, graph, availability)
+      : null;
     return {
       available: true,
       target_region_id: target,
       propagated_risks: propagated,
       priorities: priorities.slice(0, 8),
       decision,
-      note: '风险传播与覆盖权重为配置化启发式，不是真实人群迁移模型。',
+      joint_decision: jointDecision,
+      note: '风险传播与覆盖权重为配置化启发式，不是真实人群迁移模型；联合 VoI 使用未标定的共享压力权重。',
     };
   }
 

@@ -23,6 +23,12 @@ export const WORK_ORDER_TYPE = [
 ] as const;
 export type WorkOrderType = (typeof WORK_ORDER_TYPE)[number];
 
+/** 对外 staff 视图：绝不返回演示登录码。 */
+export function publicStaffMember(member: StaffMember): Omit<StaffMember, 'access_code'> {
+  const { access_code: _accessCode, ...view } = member;
+  return view;
+}
+
 /**
  * 工单类型到场景调查动作的固定映射。
  * 未显式提供 resource_request 时，必须从场景动作成本派生预算；
@@ -517,22 +523,32 @@ export class OpsService {
    * 场景存在 investigation 策略但缺少对应动作时拒绝，避免绕过动作/成本/时间预算。
    */
   private deriveResourceRequest(input: WorkOrderCreateInput): ResourceRequest | undefined {
-    if (input.resource_request) return input.resource_request;
     const policy = this.scenario.investigation;
-    if (!policy) return undefined;
+    if (!policy) return input.resource_request;
     const kind = WORK_ORDER_ACTION_KIND[input.type];
     const action = policy.actions.find(item => item.kind === kind);
     if (!action) {
+      if (input.resource_request) return input.resource_request;
       throw new ResourceUnavailableError(
         `场景 investigation 缺少 ${input.type} 对应的 ${kind} 动作成本，拒绝创建未计预算工单`,
       );
     }
-    return {
+    const derived: ResourceRequest = {
       person_minutes: action.time_cost_minutes,
       // 疏导/管控是执行动作而非 VoI 调查动作：计入动作数与人员时间，
       // 但不消耗调查信息成本预算。
       budget_units: input.type === 'crowd_control' ? 0 : action.resource_cost,
     };
+    if (!input.resource_request) return derived;
+    // 空对象/全零请求视为“未声明”，按场景动作成本派生；显式正数视为操作员估算。
+    if (input.resource_request.person_minutes <= 0 && input.resource_request.budget_units <= 0) {
+      return {
+        ...derived,
+        ...(input.resource_request.staff_id ? { staff_id: input.resource_request.staff_id } : {}),
+        ...(input.resource_request.ttl_minutes === undefined ? {} : { ttl_minutes: input.resource_request.ttl_minutes }),
+      };
+    }
+    return input.resource_request;
   }
 
   /** 候选工单的资源与预算预检；不产生任何预留。 */
@@ -764,9 +780,9 @@ export class OpsService {
     return this.scenario;
   }
 
-  listStaff(): Array<StaffMember & { runtime_status: string }> {
+  listStaff(): Array<Omit<StaffMember, 'access_code'> & { runtime_status: string }> {
     return this.scenario.staff.map(member => ({
-      ...member,
+      ...publicStaffMember(member),
       runtime_status: this.staffStatus.get(member.id) ?? member.status,
     }));
   }
@@ -874,7 +890,8 @@ export class OpsService {
     if (parsed.idempotency_key) {
       const existingRecord = this.idempotency.get(parsed.idempotency_key);
       if (existingRecord) {
-        if (existingRecord.fingerprint && existingRecord.fingerprint !== fingerprint) {
+        // 旧快照可能没有指纹：此时宁可按冲突拒绝，也不静默复用不同参数。
+        if (existingRecord.fingerprint !== fingerprint) {
           throw new IdempotencyConflictError(
             `幂等键 ${parsed.idempotency_key} 已用于不同的请求参数；拒绝复用`,
           );
@@ -899,12 +916,26 @@ export class OpsService {
     if (parsed.region_id && !this.scenario.regions.some(region => region.id === parsed.region_id)) {
       throw new Error(`unknown region: ${parsed.region_id}`);
     }
+    // 状态文件有 32MB 硬上限；工单无限增长最终会让服务只读/无法重启。
+    if (this.workOrders.size >= 5000) {
+      throw new ResourceUnavailableError('工单数量达到 5000 条上限，请归档后再创建');
+    }
 
     // 创建前预检：预算 + 人员；不通过则不建立任何副作用。
     // 缺省 resource_request 时从场景动作派生，确保所有调查类工单计入预算。
+    let resourceRequest = this.deriveResourceRequest(parsed);
+    if (actor.role === 'agent' && resourceRequest) {
+      // Agent 不得自选人员或申请超长 TTL；人员由推荐算法决定，TTL 受场景上限约束。
+      const policyTtl = this.scenario.config.work_order_reservation_ttl_minutes ?? 15;
+      resourceRequest = {
+        person_minutes: resourceRequest.person_minutes,
+        budget_units: resourceRequest.budget_units,
+        ttl_minutes: Math.min(resourceRequest.ttl_minutes ?? policyTtl, policyTtl),
+      };
+    }
     const resolved: WorkOrderCreateInput = {
       ...parsed,
-      resource_request: this.deriveResourceRequest(parsed),
+      resource_request: resourceRequest,
     };
     const preview = this.previewReservation(resolved);
     if (!preview.eligible) {
@@ -1203,9 +1234,14 @@ export class OpsService {
         patch: { failure_reason: reason },
       });
       this.releaseStaff(order.assigned_staff_id);
-      // 已开始执行的失败工单按声明值结算预算，防止“执行→失败”反复绕过预算；
-      // 尚未开始的取消/拒绝/失败不消耗预算。
-      this.releaseReservation(order, 'RELEASED', `failed:${reason}`, Boolean(order.started_at));
+      // 已接单（承诺投入）或已开始执行的失败工单按声明值结算，防止“接单即失败”反复
+      // 绕过预算；仅未接单的取消/拒绝/失败不结算。
+      this.releaseReservation(
+        order,
+        'RELEASED',
+        `failed:${reason}`,
+        Boolean(order.started_at || order.accepted_at),
+      );
       this.persist();
       return updated;
     });

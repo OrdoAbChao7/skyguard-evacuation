@@ -35,6 +35,7 @@ export interface ValidateSafetyPlanInput {
 
 const CHECK_NAMES = [
   'version_match',
+  'horizon_match',
   'reference_integrity',
   'corridor_direction',
   'path_chain',
@@ -43,8 +44,10 @@ const CHECK_NAMES = [
   'exit_status',
   'exit_capacity',
   'flow_conservation',
+  'holding_capacity',
   'demand_completeness',
   'demand_matches_observations',
+  'demand_provenance',
   'observation_trust',
   'horizon_bounds',
   'totals_consistency',
@@ -57,9 +60,26 @@ export function validateSafetyPlan(input: ValidateSafetyPlanInput): SafetyValida
   const push = (violation: SafetyViolation) => violations.push(violation);
 
   const regionIds = new Set(scenario.regions.map(region => region.id));
+  const enabledRegionIds = new Set(scenario.regions.filter(region => region.enabled).map(region => region.id));
   const corridorById = new Map(scenario.corridors.map(corridor => [corridor.id, corridor]));
   const exitById = new Map(scenario.exits.map(exit => [exit.id, exit]));
-  const horizon = plan.horizon_minutes;
+  // 时间窗口只信任场景约束，不信任方案自报的 horizon（防止伪造/DoS）。
+  const horizon = scenario.config.horizon_minutes;
+  if (plan.horizon_minutes !== horizon) {
+    push({
+      code: 'horizon_mismatch',
+      severity: 'hard',
+      message: `方案 horizon=${plan.horizon_minutes} 与场景 ${horizon} 不一致`,
+      detail: { plan_horizon: plan.horizon_minutes, scenario_horizon: horizon },
+    });
+  }
+  if (plan.solver_truncated) {
+    push({
+      code: 'solver_truncated',
+      severity: 'hard',
+      message: '求解器达到增广/分解上限，方案不得作为可行方案发布',
+    });
+  }
 
   // --- 1. 版本一致性 -------------------------------------------------------
   if (plan.scenario_version !== scenario.version) {
@@ -101,6 +121,13 @@ export function validateSafetyPlan(input: ValidateSafetyPlanInput): SafetyValida
         message: `路线 ${route.route_id} 引用了不存在的区域 ${route.from_region_id}`,
         region_id: route.from_region_id,
       });
+    } else if (!enabledRegionIds.has(route.from_region_id)) {
+      push({
+        code: 'region_disabled',
+        severity: 'hard',
+        message: `路线 ${route.route_id} 使用了已停用区域 ${route.from_region_id}`,
+        region_id: route.from_region_id,
+      });
     }
     const exit = exitById.get(route.exit_id);
     if (!exit) {
@@ -109,6 +136,13 @@ export function validateSafetyPlan(input: ValidateSafetyPlanInput): SafetyValida
         severity: 'hard',
         message: `路线 ${route.route_id} 引用了不存在的出口 ${route.exit_id}`,
         exit_id: route.exit_id,
+      });
+    } else if (!enabledRegionIds.has(exit.region_id)) {
+      push({
+        code: 'exit_owner_disabled',
+        severity: 'hard',
+        message: `路线 ${route.route_id} 使用了停用区域 ${exit.region_id} 上的出口 ${exit.id}`,
+        exit_id: exit.id,
       });
     }
     if (route.persons <= 0) {
@@ -150,7 +184,24 @@ export function validateSafetyPlan(input: ValidateSafetyPlanInput): SafetyValida
         });
         continue;
       }
-
+      if (!enabledRegionIds.has(step.from_region_id) || !enabledRegionIds.has(step.to_region_id)) {
+        push({
+          code: 'corridor_endpoint_disabled',
+          severity: 'hard',
+          message: `路线 ${route.route_id} 使用了停用区域端点上的通道 ${corridor.id}`,
+          corridor_id: corridor.id,
+          detail: { from: step.from_region_id, to: step.to_region_id },
+        });
+      }
+      if (step.persons !== route.persons) {
+        push({
+          code: 'step_persons_mismatch',
+          severity: 'hard',
+          message: `路线 ${route.route_id} 第 ${i + 1} 段人数 ${step.persons} 与路线人数 ${route.persons} 不一致`,
+          corridor_id: corridor.id,
+          detail: { step_persons: step.persons, route_persons: route.persons },
+        });
+      }
       if (step.from_region_id !== cursorRegion) {
         push({
           code: 'path_broken_chain',
@@ -346,7 +397,23 @@ export function validateSafetyPlan(input: ValidateSafetyPlanInput): SafetyValida
   // --- 5. 流量守恒（逐区域逐分钟） ----------------------------------------
   const demandByRegion = new Map<string, number>();
   for (const entry of plan.demand_by_region) {
-    demandByRegion.set(entry.region_id, entry.persons);
+    if (demandByRegion.has(entry.region_id)) {
+      push({
+        code: 'duplicate_demand_region',
+        severity: 'hard',
+        message: `需求列表中区域 ${entry.region_id} 重复出现`,
+        region_id: entry.region_id,
+      });
+    }
+    if (!regionIds.has(entry.region_id)) {
+      push({
+        code: 'unknown_demand_region',
+        severity: 'hard',
+        message: `需求列表引用了不存在的区域 ${entry.region_id}`,
+        region_id: entry.region_id,
+      });
+    }
+    demandByRegion.set(entry.region_id, (demandByRegion.get(entry.region_id) ?? 0) + entry.persons);
   }
 
   const departures = new Map<string, Map<number, number>>();
@@ -375,6 +442,7 @@ export function validateSafetyPlan(input: ValidateSafetyPlanInput): SafetyValida
     }
   }
 
+  const holdingByRegion = new Map(scenario.regions.map(region => [region.id, region.holding_capacity_persons]));
   for (const regionId of new Set([...demandByRegion.keys(), ...departures.keys(), ...arrivals.keys(), ...exitByRegion.keys()])) {
     let occupancy = demandByRegion.get(regionId) ?? 0;
     for (let minute = 0; minute <= horizon; minute += 1) {
@@ -392,12 +460,71 @@ export function validateSafetyPlan(input: ValidateSafetyPlanInput): SafetyValida
         break;
       }
       occupancy = available - leaving;
+      const holding = holdingByRegion.get(regionId);
+      if (holding !== undefined && occupancy > holding) {
+        push({
+          code: 'holding_capacity_exceeded',
+          severity: 'hard',
+          message: `区域 ${regionId} 在 t=${minute} 分钟滞留 ${occupancy} 人，超过在留容量 ${holding} 人`,
+          region_id: regionId,
+          detail: { minute, occupancy, holding_capacity: holding },
+        });
+        break;
+      }
     }
   }
 
   // --- 6. 需求完整性 -------------------------------------------------------
   const routedPersons = plan.routes.reduce((sum, route) => sum + route.persons, 0);
   const totalDemand = [...demandByRegion.values()].reduce((sum, value) => sum + value, 0);
+
+  // 从路线独立重算出口/通道总量，禁止方案自带总量字段与路线不一致。
+  const computedExitTotals = new Map<string, number>();
+  const computedCorridorTotals = new Map<string, number>();
+  for (const route of plan.routes) {
+    computedExitTotals.set(route.exit_id, (computedExitTotals.get(route.exit_id) ?? 0) + route.persons);
+    for (const step of route.steps) {
+      computedCorridorTotals.set(step.corridor_id, (computedCorridorTotals.get(step.corridor_id) ?? 0) + route.persons);
+    }
+  }
+  const compareTotals = (
+    label: 'exit_totals' | 'corridor_totals',
+    reported: Array<{ id: string; persons: number }>,
+    computed: Map<string, number>,
+  ) => {
+    const reportedMap = new Map(reported.map(item => [item.id, item.persons]));
+    for (const [id, persons] of computed) {
+      if ((reportedMap.get(id) ?? 0) !== persons) {
+        push({
+          code: 'totals_recompute_mismatch',
+          severity: 'hard',
+          message: `${label} 中 ${id} 自报 ${reportedMap.get(id) ?? 0} 人，路线重算 ${persons} 人`,
+          detail: { field: label, id, reported: reportedMap.get(id) ?? 0, computed: persons },
+        });
+      }
+      reportedMap.delete(id);
+    }
+    for (const [id, persons] of reportedMap) {
+      if (persons !== 0) {
+        push({
+          code: 'totals_recompute_mismatch',
+          severity: 'hard',
+          message: `${label} 中 ${id} 自报 ${persons} 人，但路线中没有对应流量`,
+          detail: { field: label, id, reported: persons, computed: 0 },
+        });
+      }
+    }
+  };
+  compareTotals(
+    'exit_totals',
+    plan.exit_totals.map(item => ({ id: item.exit_id, persons: item.persons })),
+    computedExitTotals,
+  );
+  compareTotals(
+    'corridor_totals',
+    plan.corridor_totals.map(item => ({ id: item.corridor_id, persons: item.persons })),
+    computedCorridorTotals,
+  );
 
   if (plan.unresolved_persons > 0 || plan.unresolved.length > 0) {
     push({
@@ -435,32 +562,120 @@ export function validateSafetyPlan(input: ValidateSafetyPlanInput): SafetyValida
       message: `按区域需求合计 ${totalDemand} 人与方案总人数 ${plan.total_persons} 不一致`,
     });
   }
+  if (plan.status === 'feasible' && plan.unresolved_persons > 0) {
+    push({
+      code: 'status_mismatch',
+      severity: 'hard',
+      message: `方案自报 feasible，但仍有 ${plan.unresolved_persons} 人未解决`,
+    });
+  }
+  if (plan.status !== 'feasible' && plan.unresolved_persons === 0) {
+    push({
+      code: 'status_mismatch',
+      severity: 'hard',
+      message: `方案自报 ${plan.status}，但没有未解决人数`,
+    });
+  }
 
-  // 区域需求必须与当前观测一致
-  const allRegions = new Set<string>([...demandByRegion.keys(), ...input.latestObservations.keys()]);
+  // 区域需求来源校验：观测模式必须精确一致；预测模式只允许“上调”，
+  // 且必须与方案自带的 demand_provenance 独立核对，防止任意放大需求。
+  const demandMode = scenario.planning?.demand_mode ?? 'observed';
+  const provenanceByRegion = new Map((plan.demand_provenance ?? []).map(item => [item.region_id, item]));
+  const allRegions = new Set<string>([...demandByRegion.keys(), ...input.latestObservations.keys(), ...provenanceByRegion.keys()]);
   for (const regionId of allRegions) {
-    if (!regionIds.has(regionId)) continue;
+    if (!regionIds.has(regionId) || !enabledRegionIds.has(regionId)) continue;
     const observed = input.latestObservations.get(regionId)?.estimated_count ?? 0;
     const planned = demandByRegion.get(regionId) ?? 0;
-    if (observed !== planned) {
+    if (demandMode === 'observed') {
+      if (observed !== planned) {
+        push({
+          code: 'demand_mismatch',
+          severity: 'hard',
+          message: `区域 ${regionId} 规划需求 ${planned} 人与当前观测 ${observed} 人不一致`,
+          region_id: regionId,
+          detail: { planned, observed },
+        });
+      }
+      continue;
+    }
+    const provenance = provenanceByRegion.get(regionId);
+    if (!provenance) {
+      if (planned !== observed) {
+        push({
+          code: 'demand_provenance_missing',
+          severity: 'hard',
+          message: `区域 ${regionId} 在预测需求模式下缺少 demand_provenance，且需求 ${planned} 与观测 ${observed} 不一致`,
+          region_id: regionId,
+          detail: { planned, observed, demand_mode: demandMode },
+        });
+      }
+      continue;
+    }
+    if (provenance.observed_count !== observed || provenance.planned_count !== planned) {
       push({
-        code: 'demand_mismatch',
+        code: 'demand_provenance_mismatch',
         severity: 'hard',
-        message: `区域 ${regionId} 规划需求 ${planned} 人与当前观测 ${observed} 人不一致`,
+        message: `区域 ${regionId} 的 demand_provenance 与方案/观测不一致`,
+        region_id: regionId,
+        detail: { provenance, observed, planned },
+      });
+    }
+    if (planned < observed) {
+      push({
+        code: 'prediction_reduced_demand',
+        severity: 'hard',
+        message: `区域 ${regionId} 预测驱动需求 ${planned} 低于当前观测 ${observed}；预测不得减少在场上报人数`,
+        region_id: regionId,
+        detail: { planned, observed },
+      });
+    }
+    if (demandMode === 'robust' && planned > Math.max(observed, provenance.interval_upper ?? observed)) {
+      push({
+        code: 'prediction_demand_exceeds_interval',
+        severity: 'hard',
+        message: `区域 ${regionId} 规划需求 ${planned} 超过预测区间上界 ${provenance.interval_upper}`,
+        region_id: regionId,
+        detail: { planned, upper: provenance.interval_upper },
+      });
+    }
+    if (demandMode === 'predicted'
+      && provenance.predicted_count !== null
+      && planned !== Math.max(observed, provenance.predicted_count)) {
+      push({
+        code: 'prediction_demand_mismatch',
+        severity: 'hard',
+        message: `区域 ${regionId} 规划需求 ${planned} 与预测点估计 ${provenance.predicted_count} 不一致`,
+        region_id: regionId,
+        detail: { planned, predicted: provenance.predicted_count, observed },
+      });
+    }
+    if (provenance.source === 'observed_fallback' && planned !== observed) {
+      push({
+        code: 'prediction_fallback_mismatch',
+        severity: 'hard',
+        message: `区域 ${regionId} 预测已回退观测，但规划需求 ${planned} 与观测 ${observed} 不一致`,
         region_id: regionId,
         detail: { planned, observed },
       });
     }
   }
 
-  // --- 7. 观测可信度 -------------------------------------------------------
-  for (const regionId of demandByRegion.keys()) {
+  // --- 7. 观测可信度（覆盖所有启用区域，而不是只覆盖方案声明的需求） ----
+  for (const regionId of enabledRegionIds) {
+    if (network.sensorFailedRegionIds.has(regionId)) {
+      push({
+        code: 'sensor_failure_region',
+        severity: 'hard',
+        message: `区域 ${regionId} 存在已确认的传感器故障，不得基于该区域生成/发布方案`,
+        region_id: regionId,
+      });
+    }
     const observation = input.latestObservations.get(regionId);
     if (!observation) {
       push({
         code: 'observation_missing',
         severity: 'hard',
-        message: `区域 ${regionId} 需要疏散但没有任何有效观测`,
+        message: `启用区域 ${regionId} 没有任何有效观测`,
         region_id: regionId,
       });
       continue;

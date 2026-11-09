@@ -217,4 +217,6 @@ npm run build     # backend tsc + frontend vite build
 6. **感知密度门禁**：人数只有在 surveyed 标定、与场景区域一致面积、足够置信度同时满足时
    才能生成可信观测；CityStreet/P2PNet 等外部数据不得伪造密度或报告精度。
 7. **验证门槛**：涉及安全域/工单/状态/预测/感知的修改至少运行 `npm test`、`npm run build`、
-   `npm run demo`、`npm run demo:mvp`；预测修改另跑 `npm run benchmark:v65 --prefix backend`。
+   `npm run demo`、`npm run demo:mvp`；预测修改另跑 `npm run benchmark:v65 --prefix backend`；
+   浏览器/认证修改运行 `npm run test:e2e`；算法实验修改运行对应 `benchmark:prediction-planning` /
+   `benchmark:congestion` / `benchmark:joint-voi` 并更新 `evaluation/final` 清单。
