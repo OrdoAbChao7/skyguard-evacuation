@@ -28,10 +28,11 @@
 | C21 | 调查预算准入计入候选动作自身成本与预留，越界候选被拒绝 | `backend/src/services/mvp/budget.ts`；`budget.test.ts`（0.9+1.0>1.0、等值允许、NaN、预留）；`agent-budget.test.ts` | VERIFIED | 仅业务预算；派发时的资源预留尚未与工单联动 |
 | C22 | MCP HTTP 与网页 API 共享同一业务状态 | `tests/mvp/mcp-http.test.ts`：通过 `/mcp` 创建工单，网页侧 `getMvpService()` 读到同一工单 | VERIFIED（单实例） | 无独立 MCP 鉴权层；多实例一致性未实现 |
 | C23 | 重复观测被忽略且乱序旧观测不覆盖较新观测 | `ObservationStore.ingest`；`tests/safety/observations.test.ts` | VERIFIED（存储层） | 仅按来源/提供方/模型/观测时间/人数判重；未做跨来源相关性建模 |
-| C24 | 工单创建时预留人员/预算，审批确认，拒绝/取消/过期/失败释放，完成结算 | `ops.ts`、`reservations.test.ts`（8 组）、HTTP 409 | VERIFIED（单实例） | 预算结算用声明值；多实例并发未支持 |
-| C25 | 统一状态快照跨安全/工单/预算/Agent/审计原子提交，损坏时拒绝启动 | `persistent-store.ts`、`state-persistence.test.ts`、进程重启与双副本损坏实测 | VERIFIED（单实例） | 不是分布式事务；内存审计视图可能落后于 JSONL |
-| C26 | 预测可靠性失败时 VoI 预测动作被阻断，且不替代四态 | `prediction.ts` reliability、`availability.ts`、`prediction.test.ts` | VERIFIED | 阈值来自场景；预测本身仍是启发式 |
-| C27 | 人数只有在校准/面积/置信度同时满足时才生成可信区域观测 | `perception/adapter.ts`、`adapter.test.ts`、质量 API | VERIFIED（门禁逻辑） | CityStreet/P2PNet 无现场标定；不产生精度主张 |
+| C24 | 工单创建时预留人员/预算；审批确认；拒绝/取消/过期释放；完成或已开始后失败按声明值结算 | `ops.ts`、`reservations.test.ts`（11 组）、HTTP 409 | VERIFIED（单实例） | 预算结算用声明值；未开始失败/取消不结算；多实例陈旧读未支持 |
+| C25 | 统一状态快照跨安全/工单/预算/Agent/审计原子提交；损坏时拒绝启动；跨进程写入有文件锁+磁盘 revision CAS | `persistent-store.ts`、`state-persistence.test.ts`（含双实例 CAS）、进程重启与双副本损坏实测 | VERIFIED（单写者） | 不是分布式事务；多实例陈旧读仍需重启；内存审计视图可能落后于 JSONL |
+| C26 | 预测可靠性失败时 VoI 预测动作被阻断，且不替代四态 | `prediction.ts` reliability、`availability.ts`、`prediction.test.ts`；场景显式 `prediction_max_relative_interval_width` | VERIFIED | 阈值已写入场景；门槛只看区间宽度，surge 欠覆盖仍会放行，见 R-01 |
+| C27 | 人数只有在校准/面积/置信度同时满足时才生成可信区域观测；显示 API 与 ingest 共用同一判据 | `perception/adapter.ts` 的 `deriveSafetyValidity`、`adapter.test.ts`、质量 API | VERIFIED（门禁逻辑） | CityStreet/P2PNet 无现场标定；不产生精度主张 |
+| C28 | 冻结证据按 LF 字节在 Windows/Linux 一致；校验命令默认只读 | `.gitattributes`、`verify-evidence.ts`、根清单 46/46、`verify:evidence` 134/134 | VERIFIED | 仅覆盖已登记清单；新证据需单独 manifest |
 
 ## 引用规则
 

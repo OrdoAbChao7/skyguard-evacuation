@@ -23,6 +23,19 @@ export const WORK_ORDER_TYPE = [
 ] as const;
 export type WorkOrderType = (typeof WORK_ORDER_TYPE)[number];
 
+/**
+ * 工单类型到场景调查动作的固定映射。
+ * 未显式提供 resource_request 时，必须从场景动作成本派生预算；
+ * 场景缺少对应动作时 fail closed，禁止创建“不计预算”的工单。
+ */
+export const WORK_ORDER_ACTION_KIND: Record<WorkOrderType, string> = {
+  scene_verification: 'staff_check',
+  crowd_control: 'staff_check',
+  corridor_check: 'staff_check',
+  camera_observation: 'camera_query',
+  uav_observation: 'uav_request',
+};
+
 export const WORK_ORDER_STATUS = [
   'DRAFT',
   'PENDING_APPROVAL',
@@ -93,23 +106,23 @@ export interface ReservationPreview {
 }
 
 export const EvidenceRefSchema = z.object({
-  evidence_id: z.string().min(1),
-  kind: z.string().min(1),
-  summary: z.string().min(1),
-  source: z.string().min(1),
+  evidence_id: z.string().min(1).max(100),
+  kind: z.string().min(1).max(64),
+  summary: z.string().min(1).max(500),
+  source: z.string().min(1).max(200),
   confidence: z.number().min(0).max(1).nullable().optional(),
   observed_at: z.string().datetime({ offset: true }).optional(),
 });
 
 export const WorkOrderCreateSchema = z.object({
   type: z.enum(WORK_ORDER_TYPE),
-  title: z.string().min(1),
-  description: z.string().min(1),
+  title: z.string().min(1).max(200),
+  description: z.string().min(1).max(2000),
   priority: z.enum(['low', 'medium', 'high', 'critical']).default('medium'),
-  region_id: z.string().min(1).optional(),
-  target: z.string().min(1).optional(),
-  required_skills: z.array(z.string()).default([]),
-  evidence: z.array(EvidenceRefSchema).default([]),
+  region_id: z.string().min(1).max(100).optional(),
+  target: z.string().min(1).max(200).optional(),
+  required_skills: z.array(z.string().min(1).max(64)).max(20).default([]),
+  evidence: z.array(EvidenceRefSchema).max(20).default([]),
   recommendation: z.object({
     staff_id: z.string().min(1).nullable(),
     reasons: z.array(z.string()).default([]),
@@ -499,14 +512,49 @@ export class OpsService {
     };
   }
 
+  /**
+   * 解析工单的资源请求：显式请求优先；缺省时从场景调查动作派生。
+   * 场景存在 investigation 策略但缺少对应动作时拒绝，避免绕过动作/成本/时间预算。
+   */
+  private deriveResourceRequest(input: WorkOrderCreateInput): ResourceRequest | undefined {
+    if (input.resource_request) return input.resource_request;
+    const policy = this.scenario.investigation;
+    if (!policy) return undefined;
+    const kind = WORK_ORDER_ACTION_KIND[input.type];
+    const action = policy.actions.find(item => item.kind === kind);
+    if (!action) {
+      throw new ResourceUnavailableError(
+        `场景 investigation 缺少 ${input.type} 对应的 ${kind} 动作成本，拒绝创建未计预算工单`,
+      );
+    }
+    return {
+      person_minutes: action.time_cost_minutes,
+      // 疏导/管控是执行动作而非 VoI 调查动作：计入动作数与人员时间，
+      // 但不消耗调查信息成本预算。
+      budget_units: input.type === 'crowd_control' ? 0 : action.resource_cost,
+    };
+  }
+
   /** 候选工单的资源与预算预检；不产生任何预留。 */
   previewReservation(input: WorkOrderCreateInput): ReservationPreview {
     this.sweepExpiredReservations();
     const parsed = WorkOrderCreateSchema.parse(input);
+    let resolved: WorkOrderCreateInput;
+    try {
+      resolved = { ...parsed, resource_request: this.deriveResourceRequest(parsed) };
+    } catch (error) {
+      return {
+        eligible: false,
+        reason_code: 'INVALID_REQUEST',
+        reason: (error as Error).message,
+        staff_id: null,
+        budget: this.budgetSnapshot(),
+      };
+    }
     const budget = this.budgetSnapshot();
     let staffId: string | null = null;
     try {
-      staffId = this.chooseHoldStaff(parsed, true);
+      staffId = this.chooseHoldStaff(resolved, true);
     } catch (error) {
       return {
         eligible: false,
@@ -519,7 +567,7 @@ export class OpsService {
       };
     }
 
-    const request = parsed.resource_request;
+    const request = resolved.resource_request;
     if (!request) {
       return { eligible: true, reason_code: 'NO_BUDGET', reason: null, staff_id: staffId, budget };
     }
@@ -832,7 +880,20 @@ export class OpsService {
           );
         }
         const existing = this.workOrders.get(existingRecord.orderId);
-        if (existing) return this.refreshStaleness(existing);
+        if (existing) {
+          // 幂等键只在同一调用者、同一场景内可复用，防止跨用户/跨场景串单。
+          if (existing.created_by.username !== actor.username || existing.created_by.role !== actor.role) {
+            throw new IdempotencyConflictError(
+              `幂等键 ${parsed.idempotency_key} 属于其他调用者；拒绝复用`,
+            );
+          }
+          if (existing.context_version.scenario !== this.currentVersion().scenario) {
+            throw new IdempotencyConflictError(
+              `幂等键 ${parsed.idempotency_key} 属于旧场景版本；拒绝复用`,
+            );
+          }
+          return this.refreshStaleness(existing);
+        }
       }
     }
     if (parsed.region_id && !this.scenario.regions.some(region => region.id === parsed.region_id)) {
@@ -840,14 +901,19 @@ export class OpsService {
     }
 
     // 创建前预检：预算 + 人员；不通过则不建立任何副作用。
-    const preview = this.previewReservation(parsed);
+    // 缺省 resource_request 时从场景动作派生，确保所有调查类工单计入预算。
+    const resolved: WorkOrderCreateInput = {
+      ...parsed,
+      resource_request: this.deriveResourceRequest(parsed),
+    };
+    const preview = this.previewReservation(resolved);
     if (!preview.eligible) {
       throw new ResourceUnavailableError(preview.reason ?? '资源或预算不足，无法创建工单');
     }
 
     const now = new Date().toISOString();
     const status: WorkOrderStatus = parsed.submit ? 'PENDING_APPROVAL' : 'DRAFT';
-    const reservation = this.buildReservation(parsed, preview.staff_id);
+    const reservation = this.buildReservation(resolved, preview.staff_id);
     const order: WorkOrder = {
       id: `WO-${randomUUID().slice(0, 8).toUpperCase()}`,
       type: parsed.type,
@@ -1043,15 +1109,15 @@ export class OpsService {
     if (!member) throw new Error(`unknown staff: ${targetStaffId}`);
 
     return this.withTransaction(() => {
-      // 改派到其他人时，先释放原预留人员；再检查目标人员可用性。
-      if (reservation?.staff_id && reservation.staff_id !== targetStaffId) {
-        const previous = this.staffStatus.get(reservation.staff_id);
-        if (previous === 'reserved') this.staffStatus.set(reservation.staff_id, 'available');
-      }
+      // 先校验目标人员可用性，再改动原预留；失败时不产生任何状态变化。
       const reservedByThisOrder = reservation?.staff_id === targetStaffId
         && this.staffStatus.get(targetStaffId) === 'reserved';
       if (member.runtime_status !== 'available' && !reservedByThisOrder) {
         throw new WorkOrderTransitionError(`工作人员 ${targetStaffId} 当前为 ${member.runtime_status}，不可派发`);
+      }
+      if (reservation?.staff_id && reservation.staff_id !== targetStaffId) {
+        const previous = this.staffStatus.get(reservation.staff_id);
+        if (previous === 'reserved') this.staffStatus.set(reservation.staff_id, 'available');
       }
       if (reservation) {
         if (reservation.staff_id && reservation.staff_id !== targetStaffId) {
@@ -1137,7 +1203,9 @@ export class OpsService {
         patch: { failure_reason: reason },
       });
       this.releaseStaff(order.assigned_staff_id);
-      this.releaseReservation(order, 'RELEASED', `failed:${reason}`);
+      // 已开始执行的失败工单按声明值结算预算，防止“执行→失败”反复绕过预算；
+      // 尚未开始的取消/拒绝/失败不消耗预算。
+      this.releaseReservation(order, 'RELEASED', `failed:${reason}`, Boolean(order.started_at));
       this.persist();
       return updated;
     });

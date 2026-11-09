@@ -72,11 +72,11 @@
 | S02 | 可达 | 200 | Redirecting | https://doi.org/10.1016/0004-3702(91)90015-C |
 | S03 | 可达 | 200 | — | https://doi.org/10.1214/aos/1176344552 |
 | S04 | 可达 | 200 | [1802.10062] CSRNet: Dilated Convolutional Neural Networks for Understanding the Highly Congested Sc | https://arxiv.org/abs/1802.10062 |
-| S05 | 可达 | 200 | [1602.06564] Automatic Building Extraction in Aerial Scenes Using Convolutional Networks | https://arxiv.org/abs/1602.06564 |
-| S06 | 可达 | 200 | [2101.02383] On the moduli spaces of parabolic symplectic orthogonal bundles on curves | https://arxiv.org/abs/2101.02383 |
+| S05 | 可达 | 200 | Single-Image Crowd Counting via Multi-Column Convolutional Neural Network (CVPR 2016) | https://doi.org/10.1109/CVPR.2016.70 |
+| S06 | 可达 | 200 | Rethinking Counting and Localization in Crowds: A Purely Point-Based Framework (ICCV 2021) | https://doi.org/10.1109/ICCV48922.2021.00335 |
 | S07 | 可达 | 200 | GitHub - TencentYoutuResearch/CrowdCounting-P2PNet: The official codes for the ICCV2021 Oral present | https://github.com/TencentYoutuResearch/CrowdCounting-P2PNet |
 | S08 | 不可达/错误 | — | fetch failed | https://www.crowdbenchmark.com/nwpucrowd.html |
-| S09 | 可达 | 200 | [2001.08086] Measurement-Device-Independent Quantum Key Distribution with Leaky Sources | https://arxiv.org/abs/2001.08086 |
+| S09 | 可达 | 200 | NWPU-Crowd: A Large-Scale Benchmark for Crowd Counting and Localization (TPAMI 2020) | https://doi.org/10.1109/TPAMI.2020.3013269 |
 | S10 | 不可达/错误 | — | fetch failed | https://www.crowdbenchmark.com/shanghaitech.html |
 | S11 | 可达 | 200 | Specification - Model Context Protocol | https://modelcontextprotocol.io/specification/2025-06-18 |
 | S12 | 可达 | 200 | GitHub - modelcontextprotocol/typescript-sdk: The official TypeScript SDK for Model Context Protocol | https://github.com/modelcontextprotocol/typescript-sdk |

@@ -10,6 +10,7 @@
     "min_confidence": 0.6,
     "trend_window_seconds": 300,
     "density_consistency_tolerance": 0.25,
+  "prediction_max_relative_interval_width": 0.5,
     "default_thresholds": {
       "watch_density": 1.0,
       "high_density": 2.0,

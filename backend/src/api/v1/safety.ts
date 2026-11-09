@@ -9,6 +9,7 @@
 import { Router, type NextFunction, type Request, type Response } from 'express';
 import { z } from 'zod';
 import { verifyToken } from './auth';
+import { failFromError } from './errors';
 import { EvacuationPlanSchema } from '../../services/safety/types';
 import { listScenarioFiles, getScenarioFileName } from '../../services/safety/scenario';
 import { resetMvpServiceForTests } from '../../services/mvp';
@@ -90,6 +91,13 @@ const VideoBody = z.object({
   recompute: z.boolean().optional(),
 });
 
+const AscendBody = z.object({
+  region_id: z.string().min(1),
+  video_path: z.string().min(1).optional(),
+  max_frames: z.number().int().positive().max(2000).optional(),
+  recompute: z.boolean().optional(),
+});
+
 const IncidentBody = z.object({
   type: z.enum(['fire', 'corridor_closure', 'crowd_surge', 'sensor_failure', 'other']),
   description: z.string().min(1),
@@ -118,11 +126,11 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
     : [(req: Request, res: Response, next: NextFunction) => verifyToken(req, res, next), requireOperator(options)];
 
   // ------------------------------------------------------------------ 读取
-  router.get('/status', (_req, res) => {
+  router.get('/status', (req, res) => {
     try {
       res.json(getSafetyService().getStatus());
     } catch (error) {
-      fail(res, 500, 'STATUS_UNAVAILABLE', (error as Error).message);
+      failFromError(req, res, 500, 'STATUS_UNAVAILABLE', error);
     }
   });
 
@@ -190,7 +198,7 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
     res.json(trace);
   });
 
-  router.get('/providers', async (_req, res) => {
+  router.get('/providers', async (req, res) => {
     try {
       const { video, ascend } = getProviders();
       const service = getSafetyService();
@@ -204,7 +212,7 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
         inference_health: service.getStatus().inference_health,
       });
     } catch (error) {
-      fail(res, 500, 'PROVIDER_STATUS_FAILED', (error as Error).message);
+      failFromError(req, res, 500, 'PROVIDER_STATUS_FAILED', error);
     }
   });
 
@@ -331,7 +339,60 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
         fail(res, 503, 'PROVIDER_UNAVAILABLE', error.message, error.checks);
         return;
       }
-      fail(res, 500, 'VIDEO_INFERENCE_FAILED', (error as Error).message);
+      failFromError(req, res, 500, 'VIDEO_INFERENCE_FAILED', error);
+    }
+  });
+
+  // ------------------------------------------------------------------ 昇腾推理
+  router.post('/observations/ascend', ...writeGuard, async (req, res) => {
+    const parsed = AscendBody.safeParse(req.body);
+    if (!parsed.success) {
+      fail(res, 400, 'INVALID_INPUT', '昇腾观测参数不符合契约', parsed.error.issues.map(issue => issue.path.join('.')));
+      return;
+    }
+    const service = getSafetyService();
+    const region = service.getScenario().regions.find(item => item.id === parsed.data.region_id);
+    if (!region) {
+      fail(res, 400, 'UNKNOWN_REGION', `区域不存在：${parsed.data.region_id}`);
+      return;
+    }
+    const { ascend } = getProviders();
+    try {
+      // 没有真实 NPU/CANN/.om 时 provider 会抛 ProviderUnavailableError，绝不伪造结果。
+      const inference = await ascend.infer({
+        region,
+        videoPath: parsed.data.video_path,
+        maxFrames: parsed.data.max_frames,
+      });
+      service.setInferenceHealth(true);
+      const observation = service.ingestObservation(
+        {
+          regionId: region.id,
+          count: inference.count,
+          confidence: inference.confidence,
+          source: parsed.data.video_path ? 'recorded_video' : 'live_video',
+          provider: inference.provider,
+          modelVersion: inference.modelVersion,
+          calibrationVersion: inference.calibrationVersion,
+          evidence: { ...inference.evidence, warnings: inference.warnings },
+        },
+        actorOf(req),
+      );
+      const result = parsed.data.recompute === false ? undefined : service.recompute(actorOf(req), 'observation.ascend');
+      res.status(201).json({
+        observation,
+        inference,
+        state: (result?.snapshot ?? service.getStatus().state).state,
+        plan_id: result?.plan?.plan_id,
+        validation_valid: result?.validation?.valid,
+      });
+    } catch (error) {
+      if (error instanceof ProviderUnavailableError) {
+        service.setInferenceHealth(false, error.message);
+        fail(res, 503, 'PROVIDER_UNAVAILABLE', error.message, error.checks);
+        return;
+      }
+      failFromError(req, res, 500, 'ASCEND_INFERENCE_FAILED', error);
     }
   });
 

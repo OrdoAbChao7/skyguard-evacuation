@@ -193,7 +193,7 @@ npm start              # 由后端托管 frontend/dist
 ## 测试与证据
 
 ```powershell
-npm test                              # 后端 175 用例 + 前端 16 用例
+npm test                              # 后端 183 用例 + 前端 16 用例
 npm run demo                          # 进程内跑完 A/B/C 三个演示场景并校验最终状态
 npm run bench                         # 实测规划/校验/决策延迟 → evaluation/performance.json
 npm run benchmark:voi-v2              # 公平 VoI 复跑 → evaluation/voi-v2/<run-id>/

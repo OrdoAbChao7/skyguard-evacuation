@@ -708,9 +708,27 @@ export class ToolRegistry {
     const effectiveActor = actor ?? this.actor;
 
     if (!definition) {
+      this.recordAudit({
+        tool: name,
+        actor: effectiveActor,
+        args: rawArgs,
+        result: 'failure',
+        error: `unknown tool: ${name}`,
+        duration_ms: Date.now() - startedAt,
+        source: 'tool-registry',
+      });
       return { tool: name, ok: false, data: null, source: 'tool-registry', confidence: null, error: `unknown tool: ${name}`, error_code: 'UNKNOWN_TOOL', generated_at: generatedAt };
     }
     if (!definition.roles.includes(effectiveActor.role)) {
+      this.recordAudit({
+        tool: name,
+        actor: effectiveActor,
+        args: rawArgs,
+        result: 'failure',
+        error: `role ${effectiveActor.role} not allowed`,
+        duration_ms: Date.now() - startedAt,
+        source: definition.source,
+      });
       return {
         tool: name,
         ok: false,
@@ -726,13 +744,23 @@ export class ToolRegistry {
 
     const parsed = definition.inputSchema.safeParse(rawArgs ?? {});
     if (!parsed.success) {
+      const message = `参数校验失败：${parsed.error.issues.map(issue => `${issue.path.join('.') || '(root)'} ${issue.message}`).join('; ')}`;
+      this.recordAudit({
+        tool: name,
+        actor: effectiveActor,
+        args: rawArgs,
+        result: 'failure',
+        error: message,
+        duration_ms: Date.now() - startedAt,
+        source: definition.source,
+      });
       return {
         tool: name,
         ok: false,
         data: null,
         source: definition.source,
         confidence: null,
-        error: `参数校验失败：${parsed.error.issues.map(issue => `${issue.path.join('.') || '(root)'} ${issue.message}`).join('; ')}`,
+        error: message,
         error_code: 'INVALID_ARGUMENT',
         generated_at: generatedAt,
         duration_ms: Date.now() - startedAt,

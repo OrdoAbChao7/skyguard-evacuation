@@ -3,9 +3,9 @@ import { app } from './app';
 import { getSafetyService } from './services/safety';
 import { getMvpService } from './services/mvp';
 import { scenarioPath } from './services/safety/scenario';
-import { productionAuthConfigErrors } from './api/v1/auth';
+import { productionAuthConfigErrors, productionAdminConfigErrors } from './api/v1/auth';
 
-const authErrors = productionAuthConfigErrors();
+const authErrors = [...productionAuthConfigErrors(), ...productionAdminConfigErrors()];
 if (authErrors.length > 0) {
   for (const error of authErrors) console.error(`[FATAL] ${error}`);
   process.exit(1);

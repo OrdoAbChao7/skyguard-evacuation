@@ -292,8 +292,10 @@ test('官方运行时只返回文本时成功调用但不伪造工具决策', as
 
 test('5xx 与超时按有界重试恢复；4xx 不重试', async () => {
   let flakyCalls = 0;
-  const flaky = await startStub((_req, res) => {
+  const requestIds: string[] = [];
+  const flaky = await startStub((req, res) => {
     flakyCalls += 1;
+    requestIds.push(String(req.headers['x-request-id'] ?? ''));
     if (flakyCalls === 1) {
       res.writeHead(503);
       res.end('busy');
@@ -307,6 +309,10 @@ test('5xx 与超时按有界重试恢复；4xx 不重试', async () => {
     const decision = await client.select({ regionId: 'R', trigger: 't', traceId: 'RUN-RETRY', context: {}, tools: [] });
     assert.equal(decision.tool, 'get_crowd_status');
     assert.equal(flakyCalls, 2);
+    // 重试必须复用同一个稳定请求 ID，平台才能去重。
+    assert.equal(requestIds.length, 2);
+    assert.equal(requestIds[0], 'RUN-RETRY');
+    assert.equal(new Set(requestIds).size, 1);
   } finally {
     flaky.server.close();
   }
@@ -386,6 +392,27 @@ test('SSE 响应可解析；截断的 SSE 显式失败', async () => {
     );
   } finally {
     truncated.server.close();
+  }
+
+  // 回归：前一个事件完整、后一个事件截断时，不得回退执行较早的决策。
+  const tailTruncated = await startStub((_req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/event-stream' });
+    res.end([
+      `data: ${JSON.stringify({ event: 'message', data: { text: JSON.stringify({ tool: 'get_crowd_status', arguments: {} }) } })}`,
+      'data: {"event":"message","data":{"text":',
+      '',
+    ].join('\n'));
+  });
+  try {
+    const client = new AgentArtsClient(config(tailTruncated.baseUrl, {
+      contract: 'official', runtimeName: 'rt-42', invokePath: '/runtimes/{runtime_name}/invocations',
+    }));
+    await assert.rejects(
+      () => client.select({ scenarioId: 's', regionId: 'R', trigger: 't', traceId: 'RUN-SSE-TAIL', context: {}, tools: [] }),
+      /截断|SSE|JSON/,
+    );
+  } finally {
+    tailTruncated.server.close();
   }
 });
 

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { jsonBody, startTestServer } from '../helpers/api-fixtures';
 import { resetRateLimiterForTests } from '../../src/config/security';
+import { failFromError } from '../../src/api/v1/errors';
 
 const ENV_KEYS = ['RATE_LIMIT_MAX', 'RATE_LIMIT_WINDOW_MS', 'READ_AUTH_REQUIRED', 'CORS_ORIGINS', 'NODE_ENV'];
 const saved: Record<string, string | undefined> = {};
@@ -116,5 +117,32 @@ test('响应包含请求 ID，便于审计关联', async () => {
     await server.close();
     restoreEnv();
     resetRateLimiterForTests();
+  }
+});
+
+test('生产 5xx 统一脱敏且保留 request_id（P1-8）', () => {
+  saveEnv();
+  process.env.NODE_ENV = 'production';
+  try {
+    let status = 0;
+    let payload: any = null;
+    const res = {
+      status(code: number) { status = code; return this; },
+      json(body: unknown) { payload = body; return this; },
+    };
+    failFromError(
+      { requestId: 'req-prod-1' } as any,
+      res as any,
+      500,
+      'INTERNAL',
+      new Error('C:\secret\path 数据库连接失败'),
+    );
+    assert.equal(status, 500);
+    assert.equal(payload.error.code, 'INTERNAL');
+    assert.equal(payload.error.message, '服务器内部错误');
+    assert.equal(payload.error.request_id, 'req-prod-1');
+    assert.ok(!JSON.stringify(payload).includes('secret'));
+  } finally {
+    restoreEnv();
   }
 });

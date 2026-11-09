@@ -8,3 +8,8 @@ data/perception/** -text
 
 # 本仓库自己维护的来源清单保持文本 + LF，便于 review 与 diff。
 data/perception/**/PROVENANCE.json text eol=lf
+
+# 冻结证据（evaluation/**）的 MANIFEST 按原始字节登记 SHA-256/大小。
+# 统一以 LF 作为跨平台规范字节，避免 Windows(autocrlf=true) 检出成 CRLF 后
+# 使根清单与 V6.5 证据测试在本机失败。
+evaluation/** text eol=lf

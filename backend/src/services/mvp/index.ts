@@ -581,10 +581,19 @@ export class MvpService {
     regionId: string;
     trigger: string;
     actor?: OpsActor;
+    /** 续接时复用原运行的会话 ID，保持平台侧 Trace 关联。 */
+    sessionId?: string;
+    previousRunId?: string;
+    workOrderId?: string;
+    feedback?: Record<string, unknown>;
+    /** 续接时使用稳定前缀，保证同一逻辑步骤的幂等键不随新 run_id 漂移。 */
+    idempotencyPrefix?: string;
   }): Promise<AgentRun> {
     const actor: OpsActor = options.actor ?? { username: 'skyguard-agent', role: 'agent', kind: 'agent' };
     const startedAt = new Date().toISOString();
     const traceId = `RUN-${randomUUID().slice(0, 8)}`;
+    const sessionId = options.sessionId ?? traceId;
+    const idempotencyPrefix = options.idempotencyPrefix ?? `agentarts:${traceId}`;
     const maxSteps = Math.max(1, Math.min(10, Number(process.env.AGENTARTS_MAX_STEPS ?? 4)));
     const trace: ToolCallTrace[] = [];
     const pendingIds: string[] = [];
@@ -603,7 +612,8 @@ export class MvpService {
         regionId: options.regionId,
         trigger: options.trigger,
         traceId: `${traceId}-S${step}`,
-        sessionId: traceId,
+        sessionId,
+        requestId: `${traceId}-S${step}`,
         context: {
           step,
           safety_state: current.state,
@@ -613,6 +623,9 @@ export class MvpService {
           camera: this.cameraHealth(options.regionId)[0] ?? null,
           prediction: this.prediction.predict(options.regionId),
           venue: this.scenario.venue ?? null,
+          previous_run_id: options.previousRunId ?? null,
+          work_order_id: options.workOrderId ?? null,
+          feedback: options.feedback ?? null,
           previous_steps: decisions,
           pending_work_orders: pendingIds,
         },
@@ -638,7 +651,7 @@ export class MvpService {
         ? {
           ...decision.arguments,
           idempotency_key: decision.arguments.idempotency_key
-            ?? `agentarts:${traceId}:${step}`,
+            ?? `${idempotencyPrefix}:${step}`,
         }
         : decision.arguments;
 
@@ -737,14 +750,34 @@ export class MvpService {
    * 人工反馈后的续接入口：仅在显式开启时自动调用平台。
    * 平台故障或超时不改写工单状态；本地业务闭环仍可继续。
    */
-  async continueAgentRun(runId: string, actor?: OpsActor): Promise<AgentRun | null> {
+  async continueAgentRun(runId: string, actor?: OpsActor, triggerOrderId?: string): Promise<AgentRun | null> {
     const previous = this.runs.get(runId);
     if (!previous || !['awaiting_approval', 'awaiting_evidence'].includes(previous.status)) return null;
     if (this.agentArts.getConfig().runtime !== 'agentarts') return null;
+    const workOrderId = triggerOrderId
+      ?? previous.investigation.pending_work_order_ids[0]
+      ?? undefined;
+    const workOrder = workOrderId ? this.ops.getWorkOrder(workOrderId) : undefined;
+    const feedback = workOrder?.feedback
+      ? {
+        work_order_id: workOrder.id,
+        status: workOrder.status,
+        staff_id: workOrder.feedback.staff_id,
+        note: workOrder.feedback.note,
+        at: workOrder.feedback.at,
+        observation: workOrder.feedback.observation ?? null,
+      }
+      : undefined;
+    // 复用原运行的会话 ID 与稳定幂等前缀，平台才能把人工反馈关联回原 Trace。
     const run = await this.runWithAgentArts({
       regionId: previous.region_id,
       trigger: `continuation:${runId}`,
       actor,
+      sessionId: previous.trace_id,
+      previousRunId: previous.run_id,
+      workOrderId,
+      feedback,
+      idempotencyPrefix: `agentarts-cont:${previous.run_id}`,
     });
     this.storeRun(run);
     this.audit.record({

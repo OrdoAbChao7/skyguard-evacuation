@@ -75,7 +75,11 @@ test('拒绝、取消、执行失败都会释放人员与预留；完成会结�
     ops.fail(failed.id, staff, '现场无法到达');
     assert.equal(ops.getWorkOrder(failed.id)?.reservation?.state, 'RELEASED');
     assert.equal(ops.getStaff('STF-03')?.runtime_status, 'available');
-    assert.equal(ops.getBudgetStatus().settled.actions, 0);
+    // 已开始执行的失败必须结算声明资源，防止反复失败绕过预算。
+    const failedBudget = ops.getBudgetStatus();
+    assert.equal(failedBudget.settled.actions, 1);
+    assert.equal(failedBudget.settled.cost, 0.2);
+    assert.equal(failedBudget.settled.person_minutes, 1);
 
     const completed = create('完成工单', 'STF-04');
     ops.approve(completed.id, ADMIN);
@@ -87,9 +91,9 @@ test('拒绝、取消、执行失败都会释放人员与预留；完成会结�
     assert.equal(ops.getWorkOrder(completed.id)?.reservation?.state, 'RELEASED');
     assert.equal(ops.getStaff('STF-04')?.runtime_status, 'available');
     const budget = ops.getBudgetStatus();
-    assert.equal(budget.settled.actions, 1);
-    assert.equal(budget.settled.cost, 0.2);
-    assert.equal(budget.settled.person_minutes, 1);
+    assert.equal(budget.settled.actions, 2);
+    assert.equal(budget.settled.cost, 0.4);
+    assert.equal(budget.settled.person_minutes, 2);
   } finally {
     fixture.cleanup();
   }
@@ -212,5 +216,77 @@ test('派发前校验场景版本；重新确认后可派发', () => {
     fixture.cleanup();
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('改派到不可用人员失败时不释放原预留（P1-1）', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const ops = fixture.mvp.ops;
+    const order = ops.createWorkOrder(ADMIN, {
+      ...BASE, resource_request: { staff_id: 'STF-02', budget_units: 0.1, person_minutes: 1 },
+    });
+    ops.approve(order.id, ADMIN);
+    assert.equal(ops.getStaff('STF-06')?.runtime_status, 'off_duty');
+    assert.throws(() => ops.assignStaff(order.id, ADMIN, 'STF-06'), /不可派发/);
+    const reloaded = ops.getWorkOrder(order.id)!;
+    assert.equal(reloaded.status, 'APPROVED');
+    assert.equal(reloaded.reservation?.state, 'CONFIRMED');
+    assert.equal(reloaded.reservation?.staff_id, 'STF-02');
+    assert.equal(ops.getStaff('STF-02')?.runtime_status, 'reserved');
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('未开始执行的失败工单不结算预算（P1-2 边界）', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const ops = fixture.mvp.ops;
+    const order = ops.createWorkOrder(ADMIN, {
+      ...BASE, resource_request: { staff_id: 'STF-04', budget_units: 0.2, person_minutes: 1 },
+    });
+    ops.approve(order.id, ADMIN);
+    ops.assignStaff(order.id, ADMIN, 'STF-04');
+    ops.fail(order.id, staffActor(fixture, 'STF-04'), '到达前任务取消');
+    assert.equal(ops.getBudgetStatus().settled.actions, 0);
+    assert.equal(ops.getBudgetStatus().settled.cost, 0);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('幂等键按调用者隔离，跨用户复用被拒绝（P1-4）', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const ops = fixture.mvp.ops;
+    const userA = { username: 'operator-a', role: 'admin' as const };
+    const userB = { username: 'operator-b', role: 'admin' as const };
+    const input = { ...BASE, idempotency_key: 'shared-key', resource_request: { staff_id: 'STF-02', budget_units: 0 } };
+    const first = ops.createWorkOrder(userA, input);
+    assert.throws(() => ops.createWorkOrder(userB, input), IdempotencyConflictError);
+    assert.equal(ops.listWorkOrders({}).length, 1);
+    assert.equal(ops.getWorkOrder(first.id)?.created_by.username, 'operator-a');
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('缺省 resource_request 从场景动作派生预算并计入动作/时间上限（P1-3）', () => {
+  const fixture = makeMvpFixture();
+  try {
+    const ops = fixture.mvp.ops;
+    const created = [1, 2].map(index => ops.createWorkOrder(ADMIN, { ...BASE, title: `派生预算 ${index}` }));
+    assert.equal(created.length, 2);
+    const budget = ops.getBudgetStatus();
+    assert.equal(budget.reserved.actions, 2);
+    assert.ok(budget.reserved.cost > 0);
+    assert.ok(budget.reserved.person_minutes > 0);
+    const preview = ops.previewReservation({ ...BASE, title: '派生预算 3' });
+    assert.equal(preview.eligible, false);
+    assert.ok(['ACTION_BUDGET_EXCEEDED', 'TIME_BUDGET_EXCEEDED', 'COST_BUDGET_EXCEEDED'].includes(preview.reason_code));
+    assert.throws(() => ops.createWorkOrder(ADMIN, { ...BASE, title: '派生预算 3' }), ResourceUnavailableError);
+  } finally {
+    fixture.cleanup();
   }
 });

@@ -127,6 +127,7 @@ test('面积与场景区域不一致或置信度不足时降级为不可信观�
       model: 'test-model',
       model_version: '1.0.0',
       confidence: 0.3,
+      min_confidence: 0.6,
       mapping: {
         region_id: region.id,
         zone_id: 'demo',
@@ -135,6 +136,8 @@ test('面积与场景区域不一致或置信度不足时降级为不可信观�
         source: 'unit-test',
       },
     });
+    // API 展示与 ingest 必须给出一致结论（P1-12）。
+    assert.equal(lowConfidence.valid_for_safety, false);
     const lowResult = ingestPerceptionDraft(fixture.safety, lowConfidence, ADMIN);
     assert.equal(lowResult.observation?.valid, false);
     assert.match(lowResult.observation?.invalid_reason ?? '', /confidence_below_safety_threshold/);

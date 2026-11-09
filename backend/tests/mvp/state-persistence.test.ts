@@ -174,3 +174,28 @@ test('schema_version 超前时拒绝启动', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('跨实例写入做磁盘 revision CAS，后写者拒绝覆盖（P1-7）', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'skyguard-state-cas-'));
+  const file = path.join(dir, 'mvp-state.json');
+  try {
+    const seed = new PersistentStateStore<{ owner: string }>(file, 1);
+    assert.equal(seed.save({ owner: 'seed' }, 0), 1);
+
+    const first = new PersistentStateStore<{ owner: string }>(file, 1);
+    const second = new PersistentStateStore<{ owner: string }>(file, 1);
+    assert.equal(first.load()?.revision, 1);
+    assert.equal(second.load()?.revision, 1);
+
+    assert.equal(first.save({ owner: 'A' }, 1), 2);
+    assert.throws(
+      () => second.save({ owner: 'B' }, 1),
+      (error: unknown) => error instanceof StateStoreError && error.code === 'STATE_REVISION_CONFLICT',
+    );
+    const reloaded = new PersistentStateStore<{ owner: string }>(file, 1).load();
+    assert.equal(reloaded?.revision, 2);
+    assert.equal(reloaded?.payload.owner, 'A');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

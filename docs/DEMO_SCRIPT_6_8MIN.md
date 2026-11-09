@@ -47,7 +47,7 @@
 
 ## 6:30–7:20 证据
 
-- `npm test`：80 后端 + 6 前端；
+- `npm test`：后端 ≥175 + 前端 16（以实测输出为准）；
 - `npm run demo:mvp`：三场景通过；
 - `evaluation/COMPETITION_REPORT.md`：
   - VoI vs 固定策略成本对比；

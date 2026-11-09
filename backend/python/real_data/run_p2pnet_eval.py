@@ -38,6 +38,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--repo", required=True)
     parser.add_argument("--weights", required=True)
     parser.add_argument("--output", default="evaluation/real-data")
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="allow replacing an existing RESULTS.json/REPORT.md in --output",
+    )
     parser.add_argument("--threshold", type=float, default=0.5)
     parser.add_argument("--radius", type=float, default=8.0)
     parser.add_argument("--limit", type=int, default=0)
@@ -83,6 +88,14 @@ def write_blocked(output: Path, reason: str, args: argparse.Namespace) -> None:
 def main() -> int:
     args = parse_args()
     output = Path(args.output)
+    # 冻结证据保护：默认拒绝覆盖既有结果，避免缺数据时把 blocked 写进已提交证据。
+    if (output / "RESULTS.json").exists() and not args.overwrite:
+        print(
+            f"[real-data] refusing to overwrite existing {output / 'RESULTS.json'}; "
+            "choose a new --output or pass --overwrite",
+            file=sys.stderr,
+        )
+        return 3
     dataset_root = Path(args.dataset_root)
     repo = Path(args.repo)
     weights = Path(args.weights)

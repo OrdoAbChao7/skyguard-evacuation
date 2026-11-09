@@ -94,6 +94,8 @@ export interface AgentArtsSelectInput {
   traceId: string;
   /** 全链路会话 ID（同一次运行的多个步骤共用）；缺省使用 traceId。 */
   sessionId?: string;
+  /** 稳定请求 ID：重试时保持不变，便于平台去重与 Trace 关联。 */
+  requestId?: string;
   /** 官方运行时契约的 query 字段（单/多智能体必填）。 */
   query?: string;
   context: Record<string, unknown>;
@@ -128,28 +130,43 @@ function sleep(ms: number): Promise<void> {
 }
 
 /**
- * 解析平台响应：普通 JSON，或 SSE/流式 `data:` 事件（取最后一个可解析事件）。
- * 截断/部分写入的 JSON 会显式失败，不会当作成功。
+ * 解析平台响应：普通 JSON，或 SSE/流式 `data:` 事件（取最后一个完整事件）。
+ * 任何以 `{`/`[` 开头但无法解析的 data 事件都视为截断/损坏并显式失败，
+ * 不允许回退到更早的决策（否则平台断流会执行过期决策）。
  */
 function parseAgentArtsText(text: string): unknown {
   const trimmed = text.trim();
   if (!trimmed) throw new Error('响应为空');
   if (/^data:/m.test(trimmed)) {
-    const payloads = trimmed
-      .split(/\r?\n/)
-      .map(line => line.trim())
-      .filter(line => line.startsWith('data:'))
-      .map(line => line.slice(5).trim())
-      .filter(payload => payload && payload !== '[DONE]');
-    let lastError: Error | null = null;
-    for (let index = payloads.length - 1; index >= 0; index -= 1) {
+    const payloads: string[] = [];
+    let sawDone = false;
+    for (const line of trimmed.split(/\r?\n/)) {
+      const trimmedLine = line.trim();
+      if (!trimmedLine.startsWith('data:')) continue;
+      const payload = trimmedLine.slice(5).trim();
+      if (!payload) continue;
+      if (payload === '[DONE]') {
+        sawDone = true;
+        break;
+      }
+      payloads.push(payload);
+    }
+    if (payloads.length === 0) {
+      throw new Error(sawDone ? 'SSE 只包含 [DONE]，没有决策事件' : 'SSE 没有 data 事件');
+    }
+    const parsed: unknown[] = [];
+    for (const payload of payloads) {
       try {
-        return JSON.parse(payloads[index]);
+        parsed.push(JSON.parse(payload));
       } catch (error) {
-        lastError = error as Error;
+        if (/^[[{]/.test(payload)) {
+          throw new Error(`SSE 事件被截断或不是有效 JSON：${(error as Error).message}`);
+        }
+        // 非 JSON 的保活/注释文本不参与决策。
       }
     }
-    throw new Error(`SSE 事件中没有可解析的 JSON${lastError ? `：${lastError.message}` : ''}`);
+    if (parsed.length === 0) throw new Error('SSE 事件中没有可解析的 JSON');
+    return parsed[parsed.length - 1];
   }
   return JSON.parse(trimmed);
 }
@@ -275,7 +292,7 @@ export class AgentArtsClient {
     return new URL(replaced, this.config.baseUrl).toString();
   }
 
-  private async request(pathTemplate: string, init: RequestInit, sessionId?: string): Promise<Response> {
+  private async request(pathTemplate: string, init: RequestInit, sessionId?: string, requestId?: string): Promise<Response> {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.config.timeoutMs);
     try {
@@ -288,6 +305,7 @@ export class AgentArtsClient {
           ...(this.config.projectId ? { 'X-Project-Id': this.config.projectId } : {}),
           ...(this.config.invokeMode ? { 'X-Invoke-Mode': this.config.invokeMode } : {}),
           ...(sessionId ? { [this.config.sessionHeader]: sessionId.slice(0, 64) } : {}),
+          ...(requestId ? { 'X-Request-Id': requestId.slice(0, 128) } : {}),
           ...(init.headers ?? {}),
         },
       });
@@ -298,9 +316,10 @@ export class AgentArtsClient {
 
   /**
    * 有界重试：只对超时/网络错误/429/5xx 重试；4xx 业务错误立即返回。
+   * 同一逻辑步骤的每次尝试复用同一个 X-Request-Id，平台可据此去重。
    * 平台决策请求本身不执行本地工具，重试不会重复产生本地副作用。
    */
-  private async invokeWithRetry(body: unknown, sessionId: string): Promise<Response> {
+  private async invokeWithRetry(body: unknown, sessionId: string, requestId: string): Promise<Response> {
     const attempts = this.config.invokeRetries + 1;
     let lastError: Error | null = null;
     for (let attempt = 0; attempt < attempts; attempt += 1) {
@@ -308,7 +327,7 @@ export class AgentArtsClient {
         const response = await this.request(this.config.invokePath, {
           method: 'POST',
           body: JSON.stringify(body),
-        }, sessionId);
+        }, sessionId, requestId);
         if (response.ok) return response;
         if ((response.status === 429 || response.status >= 500) && attempt < attempts - 1) {
           await response.text().catch(() => undefined);
@@ -412,7 +431,11 @@ export class AgentArtsClient {
         contract_version: 'skyguard-agentarts-v1',
       };
 
-    const response = await this.invokeWithRetry(body, input.sessionId ?? input.traceId);
+    const response = await this.invokeWithRetry(
+      body,
+      input.sessionId ?? input.traceId,
+      input.requestId ?? input.traceId,
+    );
     const text = await response.text();
     if (!response.ok) {
       throw new AgentArtsUnavailableError(`AgentArts 调用失败：HTTP ${response.status} ${text.slice(0, 300)}`);

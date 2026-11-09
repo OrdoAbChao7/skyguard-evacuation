@@ -8,7 +8,7 @@ import { SafetyDecisionService } from '../../src/services/safety/decision-servic
 import { loadSafetyScenario } from '../../src/services/safety/scenario';
 import { MvpService } from '../../src/services/mvp';
 import { PersistentStateStore } from '../../src/services/state/persistent-store';
-import { productionAuthConfigErrors } from '../../src/api/v1/auth';
+import { productionAuthConfigErrors, productionAdminConfigErrors, hashPassword } from '../../src/api/v1/auth';
 import { loadDisplayPackage } from '../../src/services/perception/display';
 import { adaptDisplayFrame, ingestPerceptionDraft } from '../../src/services/perception/adapter';
 import { ADMIN } from './fixtures';
@@ -155,4 +155,47 @@ test('P0-5 生产环境缺少强 SECRET/管理员口令时拒绝启动配置', (
     [],
   );
   assert.deepEqual(productionAuthConfigErrors({ NODE_ENV: 'development' } as NodeJS.ProcessEnv), []);
+});
+
+test('生产凭证占位符与旧默认 admin_config 均被拒绝（B5）', () => {
+  const placeholder = productionAuthConfigErrors({
+    NODE_ENV: 'production',
+    SECRET_KEY: 'replace-with-a-long-random-string',
+    SKYGUARD_ADMIN_PASSWORD: 'replace-with-a-strong-password',
+  } as NodeJS.ProcessEnv);
+  assert.ok(placeholder.some(item => item.includes('占位符')));
+
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'skyguard-auth-'));
+  try {
+    const file = path.join(dir, 'admin_config.json');
+    const salt = 'fixed-salt-for-test';
+    const defaultPassword = 'skyguard2026';
+    fs.writeFileSync(file, JSON.stringify({
+      username: 'admin',
+      salt,
+      hash: hashPassword(defaultPassword, salt).hash,
+    }));
+    const defaultErrors = productionAdminConfigErrors(
+      { NODE_ENV: 'production', SKYGUARD_ADMIN_PASSWORD: 'a-new-strong-password' } as NodeJS.ProcessEnv,
+      file,
+    );
+    assert.ok(defaultErrors.some(item => item.includes('默认管理员口令')));
+
+    fs.writeFileSync(file, JSON.stringify({
+      username: 'admin',
+      salt,
+      hash: hashPassword('a-new-strong-password', salt).hash,
+    }));
+    assert.deepEqual(productionAdminConfigErrors({
+      NODE_ENV: 'production',
+      SKYGUARD_ADMIN_USERNAME: 'admin',
+      SKYGUARD_ADMIN_PASSWORD: 'a-new-strong-password',
+    } as NodeJS.ProcessEnv, file), []);
+    assert.ok(productionAdminConfigErrors({
+      NODE_ENV: 'production',
+      SKYGUARD_ADMIN_PASSWORD: 'another-strong-password',
+    } as NodeJS.ProcessEnv, file).some(item => item.includes('不一致')));
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });

@@ -79,7 +79,7 @@ npm run manifest:evidence --prefix backend
 | 序贯调查 | 同 2 次尝试预算：成功率 90.9%，检测 77.7%，决策 96.0% |
 | 预测 | stable/decline/missing 自适应更好；surge/periodic persistence 略优；区间覆盖率未稳定达标 |
 | 安全 | 故障注入 5/5，状态机 6/6，错误发布 0，闭环 20/20 |
-| 测试 | 后端 104/104，前端 8/8 |
+| 测试 | 后端 183/183，前端 16/16（2026-11-09 差距审计后快照；以 `docs/PROJECT_STATUS.md` 为准） |
 | 证据一致性 | 134/134 checks；46/46 文件哈希 |
 
 ## 8. 外部依赖
@@ -88,7 +88,7 @@ npm run manifest:evidence --prefix backend
 - 昇腾 NPU/CANN/`.om`（未实测）
 - 真实场地测绘、人流/视频、无人机（未接入）
 - Docker daemon / GitHub Actions 运行环境（未验证）
-- 公开人群数据集与模型权重（未运行）
+- 公开人群数据集与模型权重（**已运行 ShanghaiTech Part A test，182 图；P2PNet 官方权重，CPU**；许可未核验，不可再分发）
 
 ## 9. 已知限制
 

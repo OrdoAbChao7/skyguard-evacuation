@@ -41,6 +41,8 @@ export interface PlanOutput {
   /** 规划过程中被排除的元素与原因，用于 Trace 与前端说明。 */
   exclusions: Array<{ kind: 'corridor' | 'exit' | 'region'; id: string; reason: string }>;
   solveMs: number;
+  /** 求解器达到增广上限时为 true；未解决需求不能据此判定为容量不足。 */
+  solverTruncated: boolean;
 }
 
 interface RegionIndex {
@@ -87,8 +89,17 @@ export function planEvacuation(input: PlanInput): PlanOutput {
   const nodeIndex = (regionIndex: number, minute: number): number => regionIndex * timeSteps + minute;
   const sourceNode = regions.length * timeSteps;
   const sinkNode = sourceNode + 1;
+  // 双向通道需要一对「闸门」节点共享同一分钟容量，保证正反方向合计不超过 capacity_per_min。
+  const gateSlots = scenario.corridors.reduce((sum, corridor) => {
+    if (corridor.direction !== 'both') return sum;
+    const transit = traversalMinutes(corridor);
+    if (transit > horizon) return sum;
+    return sum + (horizon - transit + 1) * 2;
+  }, 0);
+  const gateBase = sinkNode + 1;
 
-  const flow = new MinCostFlowNetwork(sinkNode + 1);
+  const flow = new MinCostFlowNetwork(gateBase + gateSlots);
+  let gateCursor = gateBase;
   for (const region of regions) {
     for (let t = 0; t < timeSteps; t += 1) {
       flow.setNodeMeta(nodeIndex(region.index, t), { kind: 'region', regionId: region.id, minute: t });
@@ -107,9 +118,9 @@ export function planEvacuation(input: PlanInput): PlanOutput {
   }
 
   // 2. 区域内的等待/滞留弧 (r,t) -> (r,t+1)
-  //    容量取「区域在留容量」与「当前需求」的较大值，避免把区域内既有人群判为无处可待。
+  //    在留容量是硬约束：超出部分不得被静默放大吸收，只能通过通道离开或计入未解决需求。
   for (const region of regions) {
-    const holdCapacity = Math.max(region.holdingCapacity, region.demand, 1);
+    const holdCapacity = Math.max(0, Math.floor(region.holdingCapacity));
     for (let t = 0; t < horizon; t += 1) {
       const meta: FlowEdgeMeta = { kind: 'hold', regionId: region.id };
       flow.addEdge(nodeIndex(region.index, t), nodeIndex(region.index, t + 1), holdCapacity, 0, meta);
@@ -127,6 +138,7 @@ export function planEvacuation(input: PlanInput): PlanOutput {
     const capacity = corridor.capacity_per_min ?? 0;
     const transit = traversalMinutes(corridor);
     const directions = corridorDirections(corridor);
+    const usableDirections: Array<{ from: RegionIndex; to: RegionIndex }> = [];
     for (const direction of directions) {
       const from = regionById.get(direction.from);
       const to = regionById.get(direction.to);
@@ -134,16 +146,46 @@ export function planEvacuation(input: PlanInput): PlanOutput {
         exclusions.push({ kind: 'corridor', id: corridor.id, reason: '端点区域未启用或不存在' });
         continue;
       }
+      usableDirections.push({ from, to });
+    }
+    if (usableDirections.length === 0) continue;
+
+    if (usableDirections.length === 1) {
+      const { from, to } = usableDirections[0];
       for (let t = 0; t + transit <= horizon; t += 1) {
-        const meta: FlowEdgeMeta = {
+        flow.addEdge(nodeIndex(from.index, t), nodeIndex(to.index, t + transit), capacity, transit, {
           kind: 'corridor',
           corridorId: corridor.id,
           fromRegionId: from.id,
           toRegionId: to.id,
           departMinute: t,
           arriveMinute: t + transit,
-        };
-        flow.addEdge(nodeIndex(from.index, t), nodeIndex(to.index, t + transit), capacity, transit, meta);
+        });
+      }
+      continue;
+    }
+
+    // 双向通道：正反两个方向共享同一分钟容量（与 Validator 的聚合口径一致）。
+    // 结构：from_t -> gateIn -> gateOut -> to_{t+transit}，gateIn->gateOut 的容量即通道容量。
+    for (let t = 0; t + transit <= horizon; t += 1) {
+      const gateIn = gateCursor++;
+      const gateOut = gateCursor++;
+      flow.setNodeMeta(gateIn, { kind: 'region', regionId: corridor.id, minute: t });
+      flow.setNodeMeta(gateOut, { kind: 'region', regionId: corridor.id, minute: t + transit });
+      flow.addEdge(gateIn, gateOut, capacity, 0, { kind: 'hold', regionId: corridor.id });
+      for (const { from, to } of usableDirections) {
+        flow.addEdge(nodeIndex(from.index, t), gateIn, capacity, 0, {
+          kind: 'hold',
+          regionId: from.id,
+        });
+        flow.addEdge(gateOut, nodeIndex(to.index, t + transit), capacity, transit, {
+          kind: 'corridor',
+          corridorId: corridor.id,
+          fromRegionId: from.id,
+          toRegionId: to.id,
+          departMinute: t,
+          arriveMinute: t + transit,
+        });
       }
     }
   }
@@ -175,6 +217,7 @@ export function planEvacuation(input: PlanInput): PlanOutput {
   }
 
   const solve = flow.minCostMaxFlow(sourceNode, sinkNode);
+  const solverTruncated = solve.iterations >= 200000;
   if (process.env.SKYGUARD_DEBUG_FLOW) {
     const exits = flow.debugEdgeFlows().filter(e => e.meta?.kind === 'exit' && e.flow > 0);
     console.error('[flow] exit arcs:', JSON.stringify(exits.map(e => ({ exit: e.meta!.exitId, t: e.meta!.departMinute, flow: e.flow, cap: e.capacity }))));
@@ -275,14 +318,18 @@ export function planEvacuation(input: PlanInput): PlanOutput {
       algorithm: 'time-expanded min-cost max-flow (successive shortest path, SPFA)',
       model: 'multi-path capacity-constrained assignment on a 1-minute time-expanded network',
       notes: [
-        '通道容量按人/分钟计入对应出发时刻的弧容量；出口容量按人/分钟计入对应到达时刻。',
+        '通道容量按人/分钟计入对应出发时刻的弧容量；双向通道正反方向共享同一分钟容量。',
+        '区域在留容量是硬约束；超出部分只能通过通道离开或计入未解决需求。',
         '未建模拥挤减速、恐慌、逆行等群体动力学效应，结果不可作为精确疏散时间预测。',
         '未知状态或未知容量的通道/出口一律排除，不按无限容量处理。',
+        ...(solverTruncated
+          ? ['求解器达到 200000 次增广上限，结果可能未达到最大流；未解决需求不一定是真实容量不足。']
+          : []),
       ],
     },
   };
 
-  return { plan, exclusions, solveMs: Date.now() - startedAt };
+  return { plan, exclusions, solveMs: Date.now() - startedAt, solverTruncated };
 }
 
 /** 在「可用」通道网络上判断区域是否能到达任一可用出口（用于区分未解决原因与风险评估）。 */

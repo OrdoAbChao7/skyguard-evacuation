@@ -9,15 +9,24 @@
  *  - 每次保存带 schema_version、revision 与 payload SHA-256；
  *  - 启动时依次尝试 primary / backup / temp，任一通过校验即可恢复；
  *  - 所有候选都损坏、版本超前或结构非法时 **fail closed**，不静默清空；
- *  - revision 必须连续递增，避免旧快照覆盖新状态。
+ *  - revision 必须连续递增，避免旧快照覆盖新状态；
+ *  - 保存前读取磁盘当前 revision 做 CAS，并用独占锁文件串行化跨进程写入；
+ *    发现其他实例已推进 revision 时拒绝覆盖（fail closed）。
  *
- * 仍是单实例方案：不支持多进程并发写入。
+ * 仍是单实例业务方案：锁只防止“后写静默覆盖”，其他进程仍需重启才能读到新状态。
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
 const MAX_STATE_BYTES = 32 * 1024 * 1024;
+const LOCK_STALE_MS = 60_000;
+const LOCK_RETRIES = 50;
+const LOCK_RETRY_MS = 10;
+
+function sleepSync(ms: number): void {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
 
 export class StateStoreError extends Error {
   readonly status = 500;
@@ -164,6 +173,60 @@ export class PersistentStateStore<T> {
     };
   }
 
+  /** 跨进程写入锁：wx 独占创建；超时清理陈旧锁；失败 fail closed。 */
+  private acquireLock(): () => void {
+    const lock = `${this.primary}.lock`;
+    fs.mkdirSync(path.dirname(lock), { recursive: true });
+    for (let attempt = 0; attempt < LOCK_RETRIES; attempt += 1) {
+      try {
+        const fd = fs.openSync(lock, 'wx');
+        try {
+          fs.writeFileSync(fd, JSON.stringify({ pid: process.pid, at: new Date().toISOString() }), 'utf8');
+        } finally {
+          fs.closeSync(fd);
+        }
+        return () => {
+          try { fs.unlinkSync(lock); } catch { /* 锁已被清理 */ }
+        };
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== 'EEXIST') {
+          throw new StateStoreError('STATE_LOCK_FAILED', `无法创建状态锁 ${lock}: ${(error as Error).message}`);
+        }
+        try {
+          const stat = fs.statSync(lock);
+          if (Date.now() - stat.mtimeMs > LOCK_STALE_MS) {
+            fs.unlinkSync(lock);
+            continue;
+          }
+        } catch {
+          // 锁刚被释放或无法 stat，短暂等待后重试。
+        }
+        sleepSync(LOCK_RETRY_MS);
+      }
+    }
+    throw new StateStoreError('STATE_LOCKED', `状态文件被其他进程锁定：${lock}`);
+  }
+
+  /** 读取磁盘上当前最高可用 revision（CAS 基线）；全部候选损坏时 fail closed。 */
+  private diskRevision(): number | null {
+    const candidates = [this.primary, this.backup, this.temp].filter(file => fs.existsSync(file));
+    const errors: string[] = [];
+    let maximum: number | null = null;
+    for (const file of candidates) {
+      try {
+        const envelope = readCandidate<T>(file, this.supportedVersion);
+        maximum = maximum === null ? envelope.revision : Math.max(maximum, envelope.revision);
+      } catch (error) {
+        if (error instanceof StateStoreError && error.code === 'STATE_VERSION_UNSUPPORTED') throw error;
+        errors.push((error as Error).message);
+      }
+    }
+    if (candidates.length > 0 && maximum === null) {
+      throw new StateStoreError('STATE_CORRUPT', `状态文件全部校验失败，拒绝覆盖：${errors.join(' | ')}`);
+    }
+    return maximum;
+  }
+
   save(payload: T, expectedRevision: number): number {
     if (this.lastRevision !== null && expectedRevision !== this.lastRevision) {
       throw new StateStoreError(
@@ -171,38 +234,52 @@ export class PersistentStateStore<T> {
         `状态 revision 冲突：期望 ${this.lastRevision}，收到 ${expectedRevision}`,
       );
     }
-    const revision = expectedRevision + 1;
-    const envelope: StateEnvelope<T> = {
-      schema_version: this.supportedVersion,
-      revision,
-      saved_at: new Date().toISOString(),
-      checksum_algorithm: 'sha256',
-      checksum: sha256Text(JSON.stringify(payload)),
-      payload,
-    };
-    const serialized = `${JSON.stringify(envelope, null, 2)}\n`;
+    const release = this.acquireLock();
     try {
-      fs.mkdirSync(path.dirname(this.primary), { recursive: true });
-      const fd = fs.openSync(this.temp, 'w');
-      try {
-        fs.writeFileSync(fd, serialized, 'utf8');
-        fs.fsyncSync(fd);
-      } finally {
-        fs.closeSync(fd);
+      // CAS：磁盘上的状态可能已被其他进程推进，禁止静默覆盖。
+      const onDisk = this.diskRevision();
+      if (onDisk !== null && onDisk !== expectedRevision) {
+        throw new StateStoreError(
+          'STATE_REVISION_CONFLICT',
+          `磁盘状态 revision=${onDisk}，调用方期望 ${expectedRevision}；拒绝覆盖其他写入方`,
+        );
       }
-      if (fs.existsSync(this.backup)) fs.unlinkSync(this.backup);
-      if (fs.existsSync(this.primary)) fs.renameSync(this.primary, this.backup);
-      fs.renameSync(this.temp, this.primary);
+      const revision = expectedRevision + 1;
+      const envelope: StateEnvelope<T> = {
+        schema_version: this.supportedVersion,
+        revision,
+        saved_at: new Date().toISOString(),
+        checksum_algorithm: 'sha256',
+        checksum: sha256Text(JSON.stringify(payload)),
+        payload,
+      };
+      const serialized = `${JSON.stringify(envelope, null, 2)}\n`;
       try {
-        const dirFd = fs.openSync(path.dirname(this.primary), 'r');
-        try { fs.fsyncSync(dirFd); } finally { fs.closeSync(dirFd); }
-      } catch {
-        // Windows 不支持目录 fsync；文件本身已 fsync。
+        fs.mkdirSync(path.dirname(this.primary), { recursive: true });
+        const fd = fs.openSync(this.temp, 'w');
+        try {
+          fs.writeFileSync(fd, serialized, 'utf8');
+          fs.fsyncSync(fd);
+        } finally {
+          fs.closeSync(fd);
+        }
+        if (fs.existsSync(this.backup)) fs.unlinkSync(this.backup);
+        if (fs.existsSync(this.primary)) fs.renameSync(this.primary, this.backup);
+        fs.renameSync(this.temp, this.primary);
+        try {
+          const dirFd = fs.openSync(path.dirname(this.primary), 'r');
+          try { fs.fsyncSync(dirFd); } finally { fs.closeSync(dirFd); }
+        } catch {
+          // Windows 不支持目录 fsync；文件本身已 fsync。
+        }
+        this.lastRevision = revision;
+        return revision;
+      } catch (error) {
+        if (error instanceof StateStoreError) throw error;
+        throw new StateStoreError('STATE_WRITE_FAILED', `状态写入失败：${(error as Error).message}`);
       }
-      this.lastRevision = revision;
-      return revision;
-    } catch (error) {
-      throw new StateStoreError('STATE_WRITE_FAILED', `状态写入失败：${(error as Error).message}`);
+    } finally {
+      release();
     }
   }
 }

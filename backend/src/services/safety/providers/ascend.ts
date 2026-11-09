@@ -10,7 +10,8 @@
  *   2) 导出现成的人群计数模型为 .om；
  *   3) 配置 SKYGUARD_ASCEND_CMD（接收 stdin JSON、输出 stdout JSON 的推理程序）
  *      与 SKYGUARD_ASCEND_MODEL；
- * 即可通过该 provider 产出观测，业务层无需改动。
+ * 该 provider 提供环境探针与 infer 契约，但**当前尚未接入 HTTP 观测/推理业务调用路径**；
+ * 启用前还需在 API 层增加调用点并完成端到端测试。
  *
  * 外部推理程序契约（stdin → stdout）：
  *   请求: { "region_id", "camera_id", "roi", "video_path", "model_path", "max_frames" }

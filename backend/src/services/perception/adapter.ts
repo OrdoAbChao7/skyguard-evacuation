@@ -92,6 +92,43 @@ export interface ImageCountInput {
   latency_ms?: number | null;
   mapping?: RegionMapping;
   observed_at?: string;
+  /** 场景安全阈值；提供时与 ingest 使用同一判据。 */
+  min_confidence?: number;
+}
+
+/**
+ * 单一可信性推导函数：显示/质量 API 与 ingest 必须共用，避免
+ * “展示为可信、入库却 invalid”的不一致。
+ */
+export function deriveSafetyValidity(
+  draft: Pick<PerceptionDraft, 'source_kind' | 'area_m2' | 'confidence' | 'valid_for_safety' | 'quality'>,
+  context: { regionAreaM2: number; minConfidence: number },
+): { valid: boolean; reasons: string[] } {
+  const reasons: string[] = [];
+  let valid = draft.valid_for_safety;
+  if (draft.source_kind === 'display_frame') {
+    valid = false;
+    reasons.push('derived_display_source_not_allowed');
+  }
+  if (!draft.quality.calibrated
+    || draft.quality.status === 'unusable'
+    || draft.quality.reasons.includes('missing_region_mapping')
+    || draft.quality.reasons.includes('uncalibrated_region_mapping')) {
+    valid = false;
+    reasons.push('uncalibrated_or_unusable_source');
+  }
+  if (draft.area_m2 === null
+    || !Number.isFinite(draft.area_m2)
+    || context.regionAreaM2 <= 0
+    || Math.abs(draft.area_m2 - context.regionAreaM2) / context.regionAreaM2 > 1e-6) {
+    valid = false;
+    reasons.push('area_mismatch_with_scenario_region');
+  }
+  if (draft.confidence === null || draft.confidence < context.minConfidence) {
+    valid = false;
+    reasons.push('confidence_below_safety_threshold');
+  }
+  return { valid, reasons: Array.from(new Set(reasons)) };
 }
 
 /** 鞋带公式：显示包中的地面多边形是米制坐标，可据此得到演示面积。 */
@@ -130,14 +167,23 @@ export function adaptImageCount(input: ImageCountInput): PerceptionDraft {
   if (typeof input.confidence !== 'number' || !Number.isFinite(input.confidence)) reasons.push('no_model_confidence');
   reasons.push('public_dataset_or_external_model');
   const calibrated = mapping?.calibration === 'surveyed';
-  const validForSafety = Boolean(
-    mapping
-    && calibrated
-    && area !== null
-    && area > 0
-    && typeof input.confidence === 'number'
-    && input.confidence > 0
-    && input.predicted_count >= 0,
+  const quality: PerceptionQuality = {
+    status: qualityStatus(reasons),
+    reasons: Array.from(new Set(reasons)),
+    calibrated,
+    demo_mapping: mapping?.calibration === 'assumed_demo',
+    ground_truth_available: typeof input.ground_truth === 'number',
+    license_status: 'UNKNOWN',
+  };
+  const validity = deriveSafetyValidity(
+    {
+      source_kind: 'image_count',
+      area_m2: area,
+      confidence: input.confidence ?? null,
+      valid_for_safety: true,
+      quality,
+    },
+    { regionAreaM2: area ?? 0, minConfidence: input.min_confidence ?? 0 },
   );
   const draft: Omit<PerceptionDraft, 'attestation'> = {
     source_kind: 'image_count',
@@ -150,15 +196,8 @@ export function adaptImageCount(input: ImageCountInput): PerceptionDraft {
     density_per_m2: density,
     confidence: input.confidence ?? null,
     region_id: mapping?.region_id ?? null,
-    quality: {
-      status: qualityStatus(reasons),
-      reasons: Array.from(new Set(reasons)),
-      calibrated,
-      demo_mapping: mapping?.calibration === 'assumed_demo',
-      ground_truth_available: typeof input.ground_truth === 'number',
-      license_status: 'UNKNOWN',
-    },
-    valid_for_safety: validForSafety,
+    quality,
+    valid_for_safety: validity.valid,
     provenance: {
       model: input.model,
       model_version: input.model_version,
@@ -273,26 +312,13 @@ export function ingestPerceptionDraft(
     valid = false;
     reasons.push('unattested_or_tampered_draft');
   }
-  if (draft.source_kind === 'display_frame') {
-    // 派生显示数据即使被 caller 标注 valid，也不得进入可信安全域。
-    valid = false;
-    reasons.push('derived_display_source_not_allowed');
-  }
-  if (!draft.quality.calibrated
-    || draft.quality.status === 'unusable'
-    || draft.quality.reasons.includes('missing_region_mapping')
-    || draft.quality.reasons.includes('uncalibrated_region_mapping')) {
-    valid = false;
-    reasons.push('uncalibrated_or_unusable_source');
-  }
-  if (draft.area_m2 === null || Math.abs(draft.area_m2 - region.area_m2) / region.area_m2 > 1e-6) {
-    valid = false;
-    reasons.push('area_mismatch_with_scenario_region');
-  }
-  if (draft.confidence === null || draft.confidence < scenario.config.min_confidence) {
-    valid = false;
-    reasons.push('confidence_below_safety_threshold');
-  }
+  // 显示/质量 API 与 ingest 共用同一判据，避免“展示可信、入库 invalid”。
+  const derived = deriveSafetyValidity(draft, {
+    regionAreaM2: region.area_m2,
+    minConfidence: scenario.config.min_confidence,
+  });
+  if (!derived.valid) valid = false;
+  reasons.push(...derived.reasons);
   const observation = safety.ingestObservation({
     regionId: region.id,
     count: draft.estimated_count,

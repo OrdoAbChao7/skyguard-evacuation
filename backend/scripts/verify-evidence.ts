@@ -190,7 +190,11 @@ const output = {
   failures: failed,
   results: checks,
 };
-fs.writeFileSync(path.join(V61, 'verification.json'), `${JSON.stringify(output, null, 2)}\n`);
+// 默认只读：校验命令不得改写冻结证据。需要更新记录时显式加 --write。
+if (process.argv.includes('--write')) {
+  fs.writeFileSync(path.join(V61, 'verification.json'), `${JSON.stringify(output, null, 2)}\n`);
+  console.log(`[verify] 已写入 evaluation/v61/verification.json`);
+}
 console.log(`[verify] ${output.passed}/${output.checks} checks passed; git=${output.git_head.slice(0, 8)}`);
 if (failed.length > 0) {
   console.error('失败项：');

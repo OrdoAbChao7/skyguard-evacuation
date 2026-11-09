@@ -16,14 +16,20 @@
 - 身份：服务端环境变量决定，客户端不能通过参数自报角色。
   `MCP_ACTOR_ROLE=agent|viewer|staff`（默认 `agent`）。
   - `staff` 模式必须同时提供 `MCP_STAFF_ID` 与 `MCP_STAFF_CODE`，否则降级为 `viewer`；
-  - HTTP 入口只接受 `agent` / `viewer`，其他值回退为 `agent`。
-- 参数：每个工具用 Zod Schema 校验，失败直接返回错误。
+  - HTTP 入口默认只接受 `agent` / `viewer`；`staff` 身份必须显式设置
+    `MCP_HTTP_ALLOW_STAFF=true`，否则返回 403。所有持有同一 token 的 HTTP 客户端共享同一进程身份，
+    审计无法区分具体调用者——公网/多用户部署前必须增加按 token 的身份映射。
+- 参数：每个工具用 Zod Schema 校验，失败直接返回错误；工单标题/描述/证据/技能数组有长度上限。
 - 权限：工具声明 `roles`，注册表统一检查；MCP 与本地 Agent 走同一检查。
-- 超时：每个工具有独立超时（2~10 秒）。
+- 超时：每个工具有独立超时（2~10 秒）。超时只拒绝返回，**不会取消已进入执行的处理函数**；
+  需要真正取消的副作用型工具必须自行支持 AbortSignal（当前未实现）。
 - 错误码：`UNKNOWN_TOOL / FORBIDDEN / INVALID_ARGUMENT / TIMEOUT / EXECUTION_ERROR`。
-- 幂等：`create_candidate_work_order` 支持 `idempotency_key`，重复调用返回同一工单。
-- 审计：每次调用写入 `data/audit/audit-YYYY-MM-DD.jsonl`，动作名为 `tool.<name>`。
-- 不暴露任意文件读写、任意命令执行或 shell 能力。
+- 幂等：`create_candidate_work_order` 支持 `idempotency_key`，重复调用返回同一工单；
+  幂等键按调用者/场景隔离，跨用户复用返回冲突。
+- 审计：每次调用（包括 `UNKNOWN_TOOL`、`FORBIDDEN`、`INVALID_ARGUMENT`）都写入
+  `data/audit/audit-YYYY-MM-DD.jsonl`，动作名为 `tool.<name>`。
+- 注入面：工具结果包含工单标题/描述/反馈等自由文本；外部 MCP 客户端把它们交给 LLM 时
+  必须按不可信数据处理，不得据此执行额外工具或命令。
 
 ## 2. 工具清单
 

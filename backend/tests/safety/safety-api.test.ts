@@ -272,3 +272,33 @@ test('审计日志记录操作者、动作与结果', async () => {
     await server.close();
   }
 });
+
+test('昇腾不可用时 /observations/ascend 返回 503，不伪造观测', async () => {
+  const savedCmd = process.env.SKYGUARD_ASCEND_CMD;
+  const savedModel = process.env.SKYGUARD_ASCEND_MODEL;
+  delete process.env.SKYGUARD_ASCEND_CMD;
+  delete process.env.SKYGUARD_ASCEND_MODEL;
+  const server = await startSafetyServer();
+  try {
+    const headers = await authHeaders(server);
+    const scenario = await server.request('/api/v1/safety/scenario');
+    const regionId = (scenario.body.regions as Array<{ id: string }>)[0].id;
+    const response = await server.request('/api/v1/safety/observations/ascend', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ region_id: regionId }),
+    });
+    assert.equal(response.status, 503);
+    assert.equal(response.body.error.code, 'PROVIDER_UNAVAILABLE');
+    const providers = await server.request('/api/v1/safety/providers');
+    assert.equal(providers.status, 200, JSON.stringify(providers.body));
+    const ascend = (providers.body.providers as Array<{ kind?: string; available?: boolean }>)
+      .find(item => item.kind === 'ascend');
+    assert.ok(ascend, JSON.stringify(providers.body));
+    assert.equal(ascend.available, false);
+  } finally {
+    await server.close();
+    if (savedCmd === undefined) delete process.env.SKYGUARD_ASCEND_CMD; else process.env.SKYGUARD_ASCEND_CMD = savedCmd;
+    if (savedModel === undefined) delete process.env.SKYGUARD_ASCEND_MODEL; else process.env.SKYGUARD_ASCEND_MODEL = savedModel;
+  }
+});

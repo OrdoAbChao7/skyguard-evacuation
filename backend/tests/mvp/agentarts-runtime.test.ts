@@ -98,23 +98,42 @@ test('健康探测失败时明确失败，不回退伪装为已连接', async ()
   }
 });
 
-async function withSequenceStub(decisions: Array<Record<string, unknown>>): Promise<{ baseUrl: string; close: () => Promise<void>; calls: () => number }> {
+interface CapturedCall {
+  url?: string;
+  headers: Record<string, string | string[] | undefined>;
+  body: any;
+}
+
+async function withSequenceStub(decisions: Array<Record<string, unknown>>): Promise<{
+  baseUrl: string;
+  close: () => Promise<void>;
+  calls: () => number;
+  requests: CapturedCall[];
+}> {
   let invokeCalls = 0;
+  const requests: CapturedCall[] = [];
   const server = createServer((req, res) => {
-    if (req.url === '/health') {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end('{"status":"ok"}');
-      return;
-    }
-    if (req.url?.includes('/invoke')) {
-      const decision = decisions[Math.min(invokeCalls, decisions.length - 1)];
-      invokeCalls += 1;
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ decision }));
-      return;
-    }
-    res.writeHead(404);
-    res.end();
+    let raw = '';
+    req.on('data', chunk => { raw += chunk; });
+    req.on('end', () => {
+      if (req.url === '/health') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end('{"status":"ok"}');
+        return;
+      }
+      if (req.url?.includes('/invoke')) {
+        let body: any = null;
+        try { body = raw ? JSON.parse(raw) : null; } catch { body = raw; }
+        requests.push({ url: req.url, headers: req.headers, body });
+        const decision = decisions[Math.min(invokeCalls, decisions.length - 1)];
+        invokeCalls += 1;
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ decision }));
+        return;
+      }
+      res.writeHead(404);
+      res.end();
+    });
   });
   await new Promise<void>(resolve => server.listen(0, '127.0.0.1', () => resolve()));
   const address = server.address();
@@ -123,6 +142,7 @@ async function withSequenceStub(decisions: Array<Record<string, unknown>>): Prom
     baseUrl: `http://127.0.0.1:${address.port}`,
     close: () => new Promise<void>(resolve => server.close(() => resolve())),
     calls: () => invokeCalls,
+    requests,
   };
 }
 
@@ -258,6 +278,18 @@ test('人工反馈后自动续接平台运行（AGENTARTS_AUTO_CONTINUE=true）'
     assert.ok(continued, '未观察到续接运行');
     assert.equal(continued?.mode, 'AGENTARTS_CONNECTED');
     assert.ok((continued?.trace.length ?? 0) >= 1);
+
+    // 续接必须复用原会话，并把 previous_run_id / 工单 / 反馈传给平台。
+    const continuationCalls = stub.requests.filter(call =>
+      typeof call.body?.input?.trigger === 'string'
+      && call.body.input.trigger.startsWith('continuation:'));
+    assert.ok(continuationCalls.length >= 1, '未捕获到续接请求');
+    const call = continuationCalls[0];
+    assert.equal(call.headers['x-hw-agentarts-session-id'], first.trace_id);
+    assert.equal(call.body.input.context.previous_run_id, first.run_id);
+    assert.equal(call.body.input.context.work_order_id, orderId);
+    assert.equal(call.body.input.context.feedback?.work_order_id, orderId);
+    assert.match(String(call.body.input.context.feedback?.note ?? ''), /现场核查完成/);
   } finally {
     clearAgentArtsEnv();
     await stub.close();

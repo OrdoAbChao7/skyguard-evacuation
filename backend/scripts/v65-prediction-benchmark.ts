@@ -28,7 +28,12 @@ import {
 
 const SEEDS = Array.from({ length: 30 }, (_, index) => 20261109 + index);
 const RUN_ID = new Date().toISOString().replace(/[:.]/g, '-');
-const OUT = path.resolve(__dirname, '../../evaluation/v65', RUN_ID);
+// CI 可把输出重定向到临时目录，避免每次运行都改写冻结证据与 LATEST。
+const OUTPUT_ROOT = process.env.V65_OUTPUT_ROOT?.trim()
+  ? path.resolve(process.env.V65_OUTPUT_ROOT)
+  : path.resolve(__dirname, '../../evaluation/v65');
+const UPDATE_LATEST = !process.env.V65_OUTPUT_ROOT?.trim();
+const OUT = path.join(OUTPUT_ROOT, RUN_ID);
 const HORIZON = 5;
 const SERIES_LENGTH = 60;
 const MIN_TRAIN = 25;
@@ -50,6 +55,54 @@ const ci = (values: number[]) => {
   return { mean: Number(m.toFixed(4)), lower: Number((m - half).toFixed(4)), upper: Number((m + half).toFixed(4)), sd: Number(std(values).toFixed(4)), n: values.length };
 };
 const dz = (diffs: number[]) => std(diffs) === 0 ? 0 : Number((mean(diffs) / std(diffs)).toFixed(4));
+
+/** 按 seed 聚类的确定性 Bootstrap 区间（主分析口径）。 */
+function bootstrapSeedCI(values: number[], resamples = 2000, seed = 20261109) {
+  if (values.length < 2) {
+    const m = mean(values);
+    return { mean: Number(m.toFixed(4)), lower: Number(m.toFixed(4)), upper: Number(m.toFixed(4)), n: values.length, resamples: 0 };
+  }
+  const random = mulberry32(seed);
+  const means: number[] = [];
+  for (let r = 0; r < resamples; r += 1) {
+    let total = 0;
+    for (let i = 0; i < values.length; i += 1) total += values[Math.floor(random() * values.length)];
+    means.push(total / values.length);
+  }
+  means.sort((a, b) => a - b);
+  const at = (q: number) => means[Math.min(means.length - 1, Math.max(0, Math.floor(q * means.length)))];
+  return {
+    mean: Number(mean(values).toFixed(4)),
+    lower: Number(at(0.025).toFixed(4)),
+    upper: Number(at(0.975).toFixed(4)),
+    n: values.length,
+    resamples,
+  };
+}
+
+/** 双侧正态近似 p 值（seed 级配对均值）；仅用于多重比较排序，不替代 Bootstrap 区间。 */
+function pairedSeedPValue(values: number[]): number {
+  if (values.length < 2) return 1;
+  const sd = std(values);
+  if (sd === 0) return values[0] === 0 ? 1 : 0;
+  const t = Math.abs(mean(values) / (sd / Math.sqrt(values.length)));
+  // Abramowitz-Stegun 正态 CDF 近似。
+  const z = t;
+  const b = 1 / (1 + 0.2316419 * z);
+  const density = 0.3989423 * Math.exp(-z * z / 2);
+  const cdf = 1 - density * b * (0.3193815 + b * (-0.3565638 + b * (1.781478 + b * (-1.821256 + b * 1.330274))));
+  return Number(Math.max(1e-6, Math.min(1, 2 * (1 - cdf))).toFixed(6));
+}
+
+function applyHolm<T extends { seed_level_p_value: number; holm_adjusted_p?: number }>(entries: Array<[string, T]>): void {
+  const ordered = [...entries].sort((a, b) => a[1].seed_level_p_value - b[1].seed_level_p_value);
+  let previous = 0;
+  ordered.forEach(([, value], index) => {
+    const adjusted = Math.min(1, Math.max(previous, value.seed_level_p_value * (ordered.length - index)));
+    value.holm_adjusted_p = Number(adjusted.toFixed(6));
+    previous = adjusted;
+  });
+}
 
 function mulberry32(seed: number): () => number {
   let state = seed >>> 0;
@@ -294,13 +347,21 @@ const paired = Object.fromEntries(FORECAST_METHODS.map(baseline => {
     perSeed[SEEDS.indexOf(row.seed)].push(row.abs_error - other.abs_error);
   }
   return [baseline, {
+    // 描述性（trial 级，存在伪重复）：保留以便与旧结果对照。
     adaptive_minus_baseline_abs_error: ci(diffs),
     cohen_dz: dz(diffs),
     coverage95_diff: ci(coverageDiffs),
-    seed_level: ci(perSeed.map(group => mean(group))),
+    // 主分析（seed 聚类）：同一 seed 内高度相关的起点先聚合成一个均值。
+    seed_level: ci(perSeed.filter(group => group.length > 0).map(group => mean(group))),
+    seed_cluster_bootstrap: bootstrapSeedCI(perSeed.filter(group => group.length > 0).map(group => mean(group))),
+    seed_level_p_value: pairedSeedPValue(perSeed.filter(group => group.length > 0).map(group => mean(group))),
     n_pairs: diffs.length,
+    n_seeds: perSeed.filter(group => group.length > 0).length,
   }];
 }));
+
+// 5 个基线构成同一主比较族：Holm 校正控制族错误率。
+applyHolm(Object.entries(paired) as Array<[string, any]>);
 
 // ---------------------------------------------------------------------------
 // 敏感性：EMA alpha、验证点数、可靠性阈值
@@ -392,6 +453,14 @@ const worst = [...rows.filter(row => row.method === 'adaptive')]
   .sort((a, b) => b.abs_error - a.abs_error)
   .slice(0, 20);
 
+// surge 分段：暴露“区间很宽但仍欠覆盖”的模型失效，而不是用总体均值掩盖。
+const surgeAdaptive = rows.filter(row => row.mechanism === 'surge' && row.method === 'adaptive');
+const surgeSegments = Object.fromEntries([
+  ['all', surgeAdaptive],
+  ['onset_lt_38', surgeAdaptive.filter(row => row.origin < 38)],
+  ['onset_ge_38', surgeAdaptive.filter(row => row.origin >= 38)],
+].map(([key, subset]) => [key as string, aggregate(subset as Row[])]));
+
 const write = (name: string, data: unknown) => fs.writeFileSync(path.join(OUT, name), `${JSON.stringify(data, null, 2)}\n`);
 
 write('rows.json', rows);
@@ -410,6 +479,7 @@ write('summary.json', {
   },
   summary,
   paired,
+  surge_segments: surgeSegments,
   sensitivity,
   reliability_sensitivity: reliabilitySensitivity,
   ablation,
@@ -424,7 +494,9 @@ write('run_metadata.json', {
   git_head: process.env.GIT_HEAD ?? 'uncommitted',
 });
 
-fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v65/LATEST.txt'), `${RUN_ID}\n`);
+if (UPDATE_LATEST) {
+  fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v65/LATEST.txt'), `${RUN_ID}\n`);
+}
 
 const report = `# V6.5 预测与风险模型实验
 
@@ -439,12 +511,15 @@ ${MECHANISMS.flatMap(mechanism => METHODS.map(method => {
   return `| ${mechanism} | ${method} | ${result.mae} | ${result.rmse} | ${result.nae} | ${result.coverage90} | ${result.coverage95} | ${result.mean_width} | ${result.failure_rate} |`;
 })).join('\n')}
 
-## 2. 自适应 vs 基线（配对绝对误差，正数表示自适应更差）
+## 2. 自适应 vs 基线（主分析：按 seed 聚类；正数表示自适应误差更大）
 
-| 基线 | 平均差 [95% CI] | d_z | 95% 覆盖差 | 配对数 |
-| --- | --- | --- | --- | --- |
+主区间为 seed 级均值差的确定性 Bootstrap（2000 次重采样）；trial 级区间保留为描述性对照，
+存在同 seed 内伪重复，不用于显著性结论。5 个基线为同一主比较族，报告 Holm 校正 p 值。
+
+| 基线 | seed 聚类 Bootstrap 95% CI | seed 数 | trial 级均值差（描述） | d_z | Holm 校正 p | 配对数 |
+| --- | --- | --- | --- | --- | --- | --- |
 ${Object.entries(paired).map(([baseline, value]: [string, any]) =>
-  `| ${baseline} | ${value.adaptive_minus_baseline_abs_error.mean} [${value.adaptive_minus_baseline_abs_error.lower}, ${value.adaptive_minus_baseline_abs_error.upper}] | ${value.cohen_dz} | ${value.coverage95_diff.mean} | ${value.n_pairs} |`,
+  `| ${baseline} | ${value.seed_cluster_bootstrap.mean} [${value.seed_cluster_bootstrap.lower}, ${value.seed_cluster_bootstrap.upper}] | ${value.n_seeds} | ${value.adaptive_minus_baseline_abs_error.mean} [${value.adaptive_minus_baseline_abs_error.lower}, ${value.adaptive_minus_baseline_abs_error.upper}] | ${value.cohen_dz} | ${value.holm_adjusted_p} | ${value.n_pairs} |`,
 ).join('\n')}
 
 ## 3. 关键观察
@@ -461,6 +536,7 @@ ${Object.entries(paired).map(([baseline, value]: [string, any]) =>
   return `${mechanism} ${adaptive <= persistence ? '优于或持平' : '劣于'}（${adaptive} vs ${persistence}）`;
 }).join('；')}。
 - 95% 覆盖率：${MECHANISMS.map(mechanism => `${mechanism} ${summary[mechanism].adaptive.aggregate.coverage95}`).join('，')}。**surge 明显低于名义 95%**，其余机制接近或高于名义；不得把区间用于安全告警阈值。
+- surge 分段（自适应）：起点 <38 覆盖率 ${surgeSegments.onset_lt_38.coverage95}、MAE ${surgeSegments.onset_lt_38.mae}、平均宽度 ${surgeSegments.onset_lt_38.mean_width}；起点 ≥38 覆盖率 ${surgeSegments.onset_ge_38.coverage95}、MAE ${surgeSegments.onset_ge_38.mae}、平均宽度 ${surgeSegments.onset_ge_38.mean_width}。**两段都欠覆盖**，说明不是可忽略的尾部噪声，而是模型失效。
 - 失效检测率（区间相对宽度 > ${RELIABILITY_THRESHOLD}）：${MECHANISMS.map(mechanism => `${mechanism} ${summary[mechanism].adaptive.aggregate.failure_rate}`).join('，')}。periodic/noisy 下预测动作几乎总被阻断，说明可靠性门槛确实会阻止不可靠预测进入 VoI。
 - 失败样本保留在 \`rows.json\` 与 \`worst_cases\`；未按结果删除场景或种子。
 
@@ -499,7 +575,7 @@ write('MANIFEST.json', {
   files: manifestFiles,
 });
 
-console.log(`V6.5 prediction benchmark complete: evaluation/v65/${RUN_ID}/`);
+console.log(`V6.5 prediction benchmark complete: ${OUT}/`);
 console.log(`rows=${rows.length}`);
 console.log(`surge adaptive MAE=${summary.surge.adaptive.aggregate.mae}, persistence=${summary.surge.persistence.aggregate.mae}`);
 console.log(`coverage95 stable=${summary.stable.adaptive.aggregate.coverage95}, surge=${summary.surge.adaptive.aggregate.coverage95}`);

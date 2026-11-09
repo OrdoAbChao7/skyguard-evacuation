@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, timingSafeEqual } from 'node:crypto';
 import { apiRouter } from './api/v1/router';
 import { verifyToken } from './api/v1/auth';
 import { rateLimit, securityConfig } from './config/security';
@@ -61,8 +61,18 @@ export function createApp(): Express {
     const authorization = req.header('authorization') ?? '';
     const bearer = authorization.replace(/^Bearer\s+/i, '').trim();
     const provided = bearer || req.header('x-mcp-token')?.trim() || '';
-    if (provided !== expected) {
+    const expectedBuf = Buffer.from(expected);
+    const providedBuf = Buffer.from(provided);
+    const matches = expectedBuf.length === providedBuf.length && timingSafeEqual(expectedBuf, providedBuf);
+    if (!matches) {
       res.status(401).json({ error: { code: 'MCP_UNAUTHORIZED', message: 'MCP 访问令牌无效' } });
+      return;
+    }
+    // HTTP MCP 是单一进程身份；staff 反馈权限默认不通过 HTTP 暴露，需显式开启。
+    if (process.env.MCP_ACTOR_ROLE?.trim() === 'staff' && process.env.MCP_HTTP_ALLOW_STAFF !== 'true') {
+      res.status(403).json({
+        error: { code: 'MCP_STAFF_HTTP_DISABLED', message: 'HTTP MCP 默认不允许 staff 身份；请显式设置 MCP_HTTP_ALLOW_STAFF=true' },
+      });
       return;
     }
     next();

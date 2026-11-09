@@ -27,13 +27,19 @@ jobs:
       - name: MVP end-to-end demo
         run: npm run demo:mvp
       - name: V6.5 prediction experiment
+        env:
+          V65_OUTPUT_ROOT: ${{ runner.temp }}/skyguard-v65
         run: npm run benchmark:v65 --prefix backend
       - name: Python syntax check (real-data tools)
         run: python -m py_compile backend/python/real_data/*.py backend/python/real_data/tests/*.py
       - name: Verify committed evidence manifest
         run: npx tsx backend/scripts/evidence-manifest.ts --verify
-      - name: Verify evidence consistency (no benchmark reruns)
+      - name: Verify evidence consistency (read-only)
         run: npm run verify:evidence --prefix backend
+      - name: Verify release evidence manifest
+        run: npm run manifest:release --prefix backend -- --verify
+      - name: Evidence must remain unchanged
+        run: git diff --exit-code -- evaluation/
       - name: Upload evidence
         uses: actions/upload-artifact@v4
         with:
