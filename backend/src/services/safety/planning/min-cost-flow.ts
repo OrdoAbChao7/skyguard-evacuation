@@ -149,6 +149,91 @@ export class MinCostFlowNetwork {
     return { flow: totalFlow, cost: totalCost, iterations };
   }
 
+  /**
+   * 最小费用最大流（Dijkstra + 势函数 / Johnson 重加权）。
+   *
+   * 与 SPFA 版本并存：安全主链路的 `minCostMaxFlow` 保持不变（避免改变既有演示与冻结结果），
+   * 研究用求解器使用本方法，以避免零费用残量环导致的路径回溯循环。
+   */
+  minCostMaxFlowDijkstra(source: number, sink: number, maxIterations = 200000): { flow: number; cost: number; iterations: number } {
+    const n = this.graph.length;
+    const potential = new Array<number>(n).fill(0);
+    let totalFlow = 0;
+    let totalCost = 0;
+    let iterations = 0;
+
+    while (iterations < maxIterations) {
+      const dist = new Array<number>(n).fill(Number.POSITIVE_INFINITY);
+      const prevNode = new Array<number>(n).fill(-1);
+      const prevEdge = new Array<number>(n).fill(-1);
+      const settled = new Array<boolean>(n).fill(false);
+      dist[source] = 0;
+
+      // O(V^2) Dijkstra（V ≈ 区域数 × 时间步，规模很小）。
+      for (let step = 0; step < n; step += 1) {
+        let u = -1;
+        let best = Number.POSITIVE_INFINITY;
+        for (let v = 0; v < n; v += 1) {
+          if (!settled[v] && dist[v] < best) {
+            best = dist[v];
+            u = v;
+          }
+        }
+        if (u < 0) break;
+        settled[u] = true;
+        if (u === sink) break;
+        const edges = this.graph[u];
+        for (let index = 0; index < edges.length; index += 1) {
+          const edge = edges[index];
+          if (edge.cap <= 0) continue;
+          const reduced = edge.cost + potential[u] - potential[edge.to];
+          if (reduced < 0) {
+            // 势函数不变量被破坏（理论上不应发生）；保守放弃本次增广。
+            continue;
+          }
+          const next = dist[u] + reduced;
+          if (next < dist[edge.to]) {
+            dist[edge.to] = next;
+            prevNode[edge.to] = u;
+            prevEdge[edge.to] = index;
+          }
+        }
+      }
+
+      if (dist[sink] === Number.POSITIVE_INFINITY) break;
+      for (let v = 0; v < n; v += 1) {
+        if (dist[v] < Number.POSITIVE_INFINITY) potential[v] += dist[v];
+      }
+
+      // 回溯路径（带步数上限，防止任何残量环导致的无限回溯）。
+      let bottleneck = Number.POSITIVE_INFINITY;
+      let cursor = sink;
+      let guard = 0;
+      while (cursor !== source && guard <= n) {
+        guard += 1;
+        const u = prevNode[cursor];
+        if (u < 0) break;
+        const edge = this.graph[u][prevEdge[cursor]];
+        bottleneck = Math.min(bottleneck, edge.cap);
+        cursor = u;
+      }
+      if (cursor !== source || !Number.isFinite(bottleneck) || bottleneck <= 0) break;
+
+      cursor = sink;
+      while (cursor !== source) {
+        const u = prevNode[cursor];
+        const edge = this.graph[u][prevEdge[cursor]];
+        edge.cap -= bottleneck;
+        this.graph[cursor][edge.rev].cap += bottleneck;
+        cursor = u;
+      }
+      totalFlow += bottleneck;
+      totalCost += bottleneck * (potential[sink] - potential[source]);
+      iterations += 1;
+    }
+    return { flow: totalFlow, cost: totalCost, iterations };
+  }
+
   /** 调试/审计用：返回所有原始弧及其净流量。 */
   debugEdgeFlows(): Array<{ from: number; to: number; capacity: number; flow: number; meta?: FlowEdgeMeta }> {
     const out: Array<{ from: number; to: number; capacity: number; flow: number; meta?: FlowEdgeMeta }> = [];

@@ -483,3 +483,24 @@
   .cc-root .mvp-multi { grid-template-columns: 1fr; }
   .cc-root .mvp-header h2 { font-size: 18px; }
 }
+
+/* V7 研究预览 */
+.cc-root .mvp-v70-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.cc-root .mvp-v70-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--panel-2) 34%, transparent);
+}
+@media (max-width: 900px) {
+  .cc-root .mvp-v70-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,1684 @@
+{
+  "config": {
+    "seeds": [
+      20261109,
+      20261110,
+      20261111,
+      20261112,
+      20261113,
+      20261114,
+      20261115,
+      20261116,
+      20261117,
+      20261118,
+      20261119,
+      20261120,
+      20261121,
+      20261122,
+      20261123,
+      20261124,
+      20261125,
+      20261126,
+      20261127,
+      20261128,
+      20261129,
+      20261130,
+      20261131,
+      20261132,
+      20261133,
+      20261134,
+      20261135,
+      20261136,
+      20261137,
+      20261138
+    ],
+    "strategies": [
+      "static_mcf",
+      "shortest_path",
+      "max_flow",
+      "milp_restricted",
+      "reactive_mcf",
+      "mpc_forecast",
+      "mpc_queue"
+    ],
+    "control_interval_minutes": 2,
+    "planning_horizon_minutes": 10,
+    "max_execution_minutes": 24,
+    "forecast_error_model": "时间 ±1 分钟、人数 ×[0.8,1.2]；显式合成误差，仅用于策略比较。",
+    "execution_model": "1 分钟离散 FIFO 队列 + BPR 行程时间放大（a=0.15, b=2，未标定）。",
+    "data_nature": "合成场景 + 合成入流；不代表真实场馆疏散效果。"
+  },
+  "summary": {
+    "static_mcf": {
+      "n": 30,
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.9161,
+        "lower": 0.9095,
+        "upper": 0.9226,
+        "sd": 0.0184,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 19,
+        "lower": 19,
+        "upper": 19,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 51395.0667,
+        "lower": 50294.1666,
+        "upper": 52495.9667,
+        "sd": 3076.4683,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 5228,
+        "lower": 5122.0195,
+        "upper": 5333.9805,
+        "sd": 296.1628,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 3.4091,
+        "lower": 3.3771,
+        "upper": 3.441,
+        "sd": 0.0893,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 12.1333,
+        "lower": 12.0096,
+        "upper": 12.2571,
+        "sd": 0.3457,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 1.3667,
+        "lower": 0.4293,
+        "upper": 2.304,
+        "sd": 2.6193,
+        "n": 30
+      },
+      "validator_valid_rate": 1,
+      "plan_unresolved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      }
+    },
+    "shortest_path": {
+      "n": 30,
+      "completed": {
+        "mean": 5841.1667,
+        "lower": 5777.4218,
+        "upper": 5904.9115,
+        "sd": 178.1352,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 1441.6,
+        "lower": 1338.0881,
+        "upper": 1545.1119,
+        "sd": 289.2642,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.8029,
+        "lower": 0.7905,
+        "upper": 0.8154,
+        "sd": 0.0347,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 24,
+        "lower": 24,
+        "upper": 24,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 70344.3,
+        "lower": 68118.9074,
+        "upper": 72569.6926,
+        "sd": 6218.866,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 4771.6,
+        "lower": 4687.2067,
+        "upper": 4855.9933,
+        "sd": 235.8374,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 7.1889,
+        "lower": 7.0964,
+        "upper": 7.2814,
+        "sd": 0.2586,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 19.9667,
+        "lower": 19.8522,
+        "upper": 20.0811,
+        "sd": 0.3198,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 0.2667,
+        "lower": 0.0803,
+        "upper": 0.453,
+        "sd": 0.5208,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      }
+    },
+    "max_flow": {
+      "n": 30,
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.9161,
+        "lower": 0.9095,
+        "upper": 0.9226,
+        "sd": 0.0184,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 17.1333,
+        "lower": 16.8255,
+        "upper": 17.4412,
+        "sd": 0.8604,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 37999.9333,
+        "lower": 36760.4656,
+        "upper": 39239.4011,
+        "sd": 3463.6962,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 3825.0667,
+        "lower": 3714.375,
+        "upper": 3935.7584,
+        "sd": 309.3283,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 2.8383,
+        "lower": 2.7583,
+        "upper": 2.9183,
+        "sd": 0.2236,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 6.6333,
+        "lower": 6.4344,
+        "upper": 6.8323,
+        "sd": 0.5561,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 1.6333,
+        "lower": 0.9656,
+        "upper": 2.301,
+        "sd": 1.8659,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      }
+    },
+    "milp_restricted": {
+      "n": 30,
+      "completed": {
+        "mean": 5833.7333,
+        "lower": 5752.5716,
+        "upper": 5914.8951,
+        "sd": 226.8068,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.8013,
+        "lower": 0.7927,
+        "upper": 0.81,
+        "sd": 0.0241,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 11.3,
+        "lower": 11.0487,
+        "upper": 11.5513,
+        "sd": 0.7022,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 18523.1333,
+        "lower": 17385.8128,
+        "upper": 19660.4539,
+        "sd": 3178.2455,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 2991.4,
+        "lower": 2925.7117,
+        "upper": 3057.0883,
+        "sd": 183.5661,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 1.9591,
+        "lower": 1.917,
+        "upper": 2.0011,
+        "sd": 0.1174,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 4.4667,
+        "lower": 4.2851,
+        "upper": 4.6482,
+        "sd": 0.5074,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 26,
+        "lower": 24.3163,
+        "upper": 27.6837,
+        "sd": 4.7051,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 835.7333,
+        "lower": 783.1295,
+        "upper": 888.3371,
+        "sd": 147.0015,
+        "n": 30
+      }
+    },
+    "reactive_mcf": {
+      "n": 30,
+      "completed": {
+        "mean": 7282.7667,
+        "lower": 7185.9636,
+        "upper": 7379.5698,
+        "sd": 270.5166,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 8.4,
+        "lower": 8.2217,
+        "upper": 8.5783,
+        "sd": 0.4983,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 13680.6667,
+        "lower": 13268.0017,
+        "upper": 14093.3317,
+        "sd": 1153.1935,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 3860.9,
+        "lower": 3784.5917,
+        "upper": 3937.2083,
+        "sd": 213.2436,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 0.4286,
+        "lower": 0.4234,
+        "upper": 0.4338,
+        "sd": 0.0146,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 3812.6333,
+        "lower": 3285.1338,
+        "upper": 4340.1329,
+        "sd": 1474.0989,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 2.5667,
+        "lower": 2.2455,
+        "upper": 2.8879,
+        "sd": 0.8976,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 861.3333,
+        "lower": 812.5694,
+        "upper": 910.0972,
+        "sd": 136.2709,
+        "n": 30
+      }
+    },
+    "mpc_forecast": {
+      "n": 30,
+      "completed": {
+        "mean": 7282.7667,
+        "lower": 7185.9636,
+        "upper": 7379.5698,
+        "sd": 270.5166,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 8.3,
+        "lower": 8.1332,
+        "upper": 8.4668,
+        "sd": 0.4661,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 13843.1667,
+        "lower": 13311.3892,
+        "upper": 14374.9441,
+        "sd": 1486.0536,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 3888.3667,
+        "lower": 3788.6426,
+        "upper": 3988.0907,
+        "sd": 278.6792,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 0.4329,
+        "lower": 0.4268,
+        "upper": 0.4389,
+        "sd": 0.0168,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 4165.4333,
+        "lower": 3654.1162,
+        "upper": 4676.7505,
+        "sd": 1428.8772,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 2.3667,
+        "lower": 2.1096,
+        "upper": 2.6237,
+        "sd": 0.7184,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 871.8667,
+        "lower": 806.2587,
+        "upper": 937.4747,
+        "sd": 183.3417,
+        "n": 30
+      }
+    },
+    "mpc_queue": {
+      "n": 30,
+      "completed": {
+        "mean": 7282.7667,
+        "lower": 7185.9636,
+        "upper": 7379.5698,
+        "sd": 270.5166,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 8.3333,
+        "lower": 8.1618,
+        "upper": 8.5049,
+        "sd": 0.4795,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 13866.4,
+        "lower": 13328.5468,
+        "upper": 14404.2532,
+        "sd": 1503.0323,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 3888.3667,
+        "lower": 3788.6426,
+        "upper": 3988.0907,
+        "sd": 278.6792,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 0.4269,
+        "lower": 0.4211,
+        "upper": 0.4327,
+        "sd": 0.0162,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 4110.2667,
+        "lower": 3575.8598,
+        "upper": 4644.6735,
+        "sd": 1493.4016,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 2.5667,
+        "lower": 2.3237,
+        "upper": 2.8096,
+        "sd": 0.6789,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 871.8667,
+        "lower": 806.2587,
+        "upper": 937.4747,
+        "sd": 183.3417,
+        "n": 30
+      }
+    }
+  },
+  "paired": {
+    "static_mcf": {
+      "unserved": {
+        "shortest_path": {
+          "mean_diff": 828.3,
+          "ci": {
+            "mean": 828.3,
+            "lower": 747.5699,
+            "upper": 909.0301,
+            "sd": 225.6005,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 749.6667,
+            "upper": 904.5667
+          },
+          "cohen_dz": 3.6715
+        },
+        "max_flow": {
+          "mean_diff": 0,
+          "ci": {
+            "mean": 0,
+            "lower": 0,
+            "upper": 0,
+            "sd": 0,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 0,
+            "upper": 0
+          },
+          "cohen_dz": 0
+        },
+        "milp_restricted": {
+          "mean_diff": 0,
+          "ci": {
+            "mean": 0,
+            "lower": 0,
+            "upper": 0,
+            "sd": 0,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 0,
+            "upper": 0
+          },
+          "cohen_dz": 0
+        },
+        "reactive_mcf": {
+          "mean_diff": -613.3,
+          "ci": {
+            "mean": -613.3,
+            "lower": -665.6528,
+            "upper": -560.9472,
+            "sd": 146.3002,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -663.2333,
+            "upper": -562.1667
+          },
+          "cohen_dz": -4.1921
+        },
+        "mpc_forecast": {
+          "mean_diff": -613.3,
+          "ci": {
+            "mean": -613.3,
+            "lower": -665.6528,
+            "upper": -560.9472,
+            "sd": 146.3002,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -663.2333,
+            "upper": -562.1667
+          },
+          "cohen_dz": -4.1921
+        },
+        "mpc_queue": {
+          "mean_diff": -613.3,
+          "ci": {
+            "mean": -613.3,
+            "lower": -665.6528,
+            "upper": -560.9472,
+            "sd": 146.3002,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -663.2333,
+            "upper": -562.1667
+          },
+          "cohen_dz": -4.1921
+        }
+      },
+      "makespan": {
+        "shortest_path": {
+          "mean_diff": 5,
+          "ci": {
+            "mean": 5,
+            "lower": 5,
+            "upper": 5,
+            "sd": 0,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 5,
+            "upper": 5
+          },
+          "cohen_dz": 0
+        },
+        "max_flow": {
+          "mean_diff": -1.8667,
+          "ci": {
+            "mean": -1.8667,
+            "lower": -2.1745,
+            "upper": -1.5588,
+            "sd": 0.8604,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -2.1667,
+            "upper": -1.5667
+          },
+          "cohen_dz": -2.1696
+        },
+        "milp_restricted": {
+          "mean_diff": -7.7,
+          "ci": {
+            "mean": -7.7,
+            "lower": -7.9513,
+            "upper": -7.4487,
+            "sd": 0.7022,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -7.9667,
+            "upper": -7.4333
+          },
+          "cohen_dz": -10.9653
+        },
+        "reactive_mcf": {
+          "mean_diff": -10.6,
+          "ci": {
+            "mean": -10.6,
+            "lower": -10.7783,
+            "upper": -10.4217,
+            "sd": 0.4983,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -10.7667,
+            "upper": -10.4333
+          },
+          "cohen_dz": -21.2735
+        },
+        "mpc_forecast": {
+          "mean_diff": -10.7,
+          "ci": {
+            "mean": -10.7,
+            "lower": -10.8668,
+            "upper": -10.5332,
+            "sd": 0.4661,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -10.8667,
+            "upper": -10.5333
+          },
+          "cohen_dz": -22.9569
+        },
+        "mpc_queue": {
+          "mean_diff": -10.6667,
+          "ci": {
+            "mean": -10.6667,
+            "lower": -10.8382,
+            "upper": -10.4951,
+            "sd": 0.4795,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -10.8333,
+            "upper": -10.5
+          },
+          "cohen_dz": -22.2471
+        }
+      },
+      "queue_person_minutes": {
+        "shortest_path": {
+          "mean_diff": 18949.2333,
+          "ci": {
+            "mean": 18949.2333,
+            "lower": 17151.2006,
+            "upper": 20747.2661,
+            "sd": 5024.6075,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 17192.3667,
+            "upper": 20674.0667
+          },
+          "cohen_dz": 3.7713
+        },
+        "max_flow": {
+          "mean_diff": -13395.1333,
+          "ci": {
+            "mean": -13395.1333,
+            "lower": -13985.5362,
+            "upper": -12804.7304,
+            "sd": 1649.8826,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -13952.3,
+            "upper": -12807.5
+          },
+          "cohen_dz": -8.1188
+        },
+        "milp_restricted": {
+          "mean_diff": -32871.9333,
+          "ci": {
+            "mean": -32871.9333,
+            "lower": -33209.5722,
+            "upper": -32534.2945,
+            "sd": 943.5327,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -33207.2333,
+            "upper": -32529.9
+          },
+          "cohen_dz": -34.8392
+        },
+        "reactive_mcf": {
+          "mean_diff": -37714.4,
+          "ci": {
+            "mean": -37714.4,
+            "lower": -38705.8025,
+            "upper": -36722.9975,
+            "sd": 2770.477,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -38715.8667,
+            "upper": -36767.8333
+          },
+          "cohen_dz": -13.613
+        },
+        "mpc_forecast": {
+          "mean_diff": -37551.9,
+          "ci": {
+            "mean": -37551.9,
+            "lower": -38462.0303,
+            "upper": -36641.7697,
+            "sd": 2543.3617,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -38470.0333,
+            "upper": -36677.8
+          },
+          "cohen_dz": -14.7647
+        },
+        "mpc_queue": {
+          "mean_diff": -37528.6667,
+          "ci": {
+            "mean": -37528.6667,
+            "lower": -38438.6049,
+            "upper": -36618.7285,
+            "sd": 2542.8249,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -38450.8333,
+            "upper": -36648.8667
+          },
+          "cohen_dz": -14.7587
+        }
+      }
+    },
+    "reactive_mcf": {
+      "unserved": {
+        "static_mcf": {
+          "mean_diff": 613.3,
+          "ci": {
+            "mean": 613.3,
+            "lower": 560.9472,
+            "upper": 665.6528,
+            "sd": 146.3002,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 562.8,
+            "upper": 663.6
+          },
+          "cohen_dz": 4.1921
+        },
+        "shortest_path": {
+          "mean_diff": 1441.6,
+          "ci": {
+            "mean": 1441.6,
+            "lower": 1338.0881,
+            "upper": 1545.1119,
+            "sd": 289.2642,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 1342.3333,
+            "upper": 1537.6
+          },
+          "cohen_dz": 4.9837
+        },
+        "max_flow": {
+          "mean_diff": 613.3,
+          "ci": {
+            "mean": 613.3,
+            "lower": 560.9472,
+            "upper": 665.6528,
+            "sd": 146.3002,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 562.8,
+            "upper": 663.6
+          },
+          "cohen_dz": 4.1921
+        },
+        "milp_restricted": {
+          "mean_diff": 613.3,
+          "ci": {
+            "mean": 613.3,
+            "lower": 560.9472,
+            "upper": 665.6528,
+            "sd": 146.3002,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 562.8,
+            "upper": 663.6
+          },
+          "cohen_dz": 4.1921
+        },
+        "mpc_forecast": {
+          "mean_diff": 0,
+          "ci": {
+            "mean": 0,
+            "lower": 0,
+            "upper": 0,
+            "sd": 0,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 0,
+            "upper": 0
+          },
+          "cohen_dz": 0
+        },
+        "mpc_queue": {
+          "mean_diff": 0,
+          "ci": {
+            "mean": 0,
+            "lower": 0,
+            "upper": 0,
+            "sd": 0,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 0,
+            "upper": 0
+          },
+          "cohen_dz": 0
+        }
+      },
+      "makespan": {
+        "static_mcf": {
+          "mean_diff": 10.6,
+          "ci": {
+            "mean": 10.6,
+            "lower": 10.4217,
+            "upper": 10.7783,
+            "sd": 0.4983,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 10.4333,
+            "upper": 10.7667
+          },
+          "cohen_dz": 21.2735
+        },
+        "shortest_path": {
+          "mean_diff": 15.6,
+          "ci": {
+            "mean": 15.6,
+            "lower": 15.4217,
+            "upper": 15.7783,
+            "sd": 0.4983,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 15.4333,
+            "upper": 15.7667
+          },
+          "cohen_dz": 31.3081
+        },
+        "max_flow": {
+          "mean_diff": 8.7333,
+          "ci": {
+            "mean": 8.7333,
+            "lower": 8.4087,
+            "upper": 9.058,
+            "sd": 0.9072,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 8.4,
+            "upper": 9.0333
+          },
+          "cohen_dz": 9.6268
+        },
+        "milp_restricted": {
+          "mean_diff": 2.9,
+          "ci": {
+            "mean": 2.9,
+            "lower": 2.6452,
+            "upper": 3.1548,
+            "sd": 0.712,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 2.6333,
+            "upper": 3.1667
+          },
+          "cohen_dz": 4.0732
+        },
+        "mpc_forecast": {
+          "mean_diff": -0.1,
+          "ci": {
+            "mean": -0.1,
+            "lower": -0.2092,
+            "upper": 0.0092,
+            "sd": 0.3051,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -0.2333,
+            "upper": 0
+          },
+          "cohen_dz": -0.3277
+        },
+        "mpc_queue": {
+          "mean_diff": -0.0667,
+          "ci": {
+            "mean": -0.0667,
+            "lower": -0.1575,
+            "upper": 0.0241,
+            "sd": 0.2537,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -0.1667,
+            "upper": 0
+          },
+          "cohen_dz": -0.2628
+        }
+      },
+      "queue_person_minutes": {
+        "static_mcf": {
+          "mean_diff": 37714.4,
+          "ci": {
+            "mean": 37714.4,
+            "lower": 36722.9975,
+            "upper": 38705.8025,
+            "sd": 2770.477,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 36767.9,
+            "upper": 38717.1
+          },
+          "cohen_dz": 13.613
+        },
+        "shortest_path": {
+          "mean_diff": 56663.6333,
+          "ci": {
+            "mean": 56663.6333,
+            "lower": 54752.2518,
+            "upper": 58575.0149,
+            "sd": 5341.3613,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 54829.5,
+            "upper": 58489.2333
+          },
+          "cohen_dz": 10.6085
+        },
+        "max_flow": {
+          "mean_diff": 24319.2667,
+          "ci": {
+            "mean": 24319.2667,
+            "lower": 23210.0694,
+            "upper": 25428.4639,
+            "sd": 3099.6549,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 23210,
+            "upper": 25379.3
+          },
+          "cohen_dz": 7.8458
+        },
+        "milp_restricted": {
+          "mean_diff": 4842.4667,
+          "ci": {
+            "mean": 4842.4667,
+            "lower": 3775.9252,
+            "upper": 5909.0081,
+            "sd": 2980.4531,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 3773.2,
+            "upper": 5890.1333
+          },
+          "cohen_dz": 1.6247
+        },
+        "mpc_forecast": {
+          "mean_diff": 162.5,
+          "ci": {
+            "mean": 162.5,
+            "lower": -141.5507,
+            "upper": 466.5507,
+            "sd": 849.6705,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -122.7667,
+            "upper": 477.5
+          },
+          "cohen_dz": 0.1913
+        },
+        "mpc_queue": {
+          "mean_diff": 185.7333,
+          "ci": {
+            "mean": 185.7333,
+            "lower": -126.9503,
+            "upper": 498.417,
+            "sd": 873.7953,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -110.7667,
+            "upper": 510
+          },
+          "cohen_dz": 0.2126
+        }
+      }
+    }
+  },
+  "holm_families": {
+    "static_mcf|unserved": {
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "reactive_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_forecast": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_queue": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 1,
+        "adjusted": 1,
+        "rejected_0_05": false
+      },
+      "milp_restricted": {
+        "raw": 1,
+        "adjusted": 1,
+        "rejected_0_05": false
+      }
+    },
+    "static_mcf|makespan": {
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "reactive_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_forecast": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_queue": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      }
+    },
+    "static_mcf|queue_person_minutes": {
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "reactive_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_forecast": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_queue": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      }
+    },
+    "reactive_mcf|unserved": {
+      "static_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_forecast": {
+        "raw": 1,
+        "adjusted": 1,
+        "rejected_0_05": false
+      },
+      "mpc_queue": {
+        "raw": 1,
+        "adjusted": 1,
+        "rejected_0_05": false
+      }
+    },
+    "reactive_mcf|makespan": {
+      "static_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_forecast": {
+        "raw": 0.072645,
+        "adjusted": 0.14529,
+        "rejected_0_05": false
+      },
+      "mpc_queue": {
+        "raw": 0.150081,
+        "adjusted": 0.150081,
+        "rejected_0_05": false
+      }
+    },
+    "reactive_mcf|queue_person_minutes": {
+      "static_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_queue": {
+        "raw": 0.244329,
+        "adjusted": 0.488658,
+        "rejected_0_05": false
+      },
+      "mpc_forecast": {
+        "raw": 0.294859,
+        "adjusted": 0.488658,
+        "rejected_0_05": false
+      }
+    }
+  },
+  "congestion_model_sensitivity": {
+    "scheduled": {
+      "makespan": {
+        "mean": 10,
+        "lower": 10,
+        "upper": 10,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "note": "计划口径：不考虑拥堵与队列，仅用于下界诊断；queue_person_minutes 未建模，记为 0。"
+    },
+    "queue_nominal": {
+      "makespan": {
+        "mean": 19,
+        "lower": 19,
+        "upper": 19,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 56876.5,
+        "lower": 55741.0807,
+        "upper": 58011.9193,
+        "sd": 3172.9324,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "note": "执行口径：显式 FIFO 队列，BPR 系数 a=0（无行程时间放大）。"
+    },
+    "queue_bpr": {
+      "makespan": {
+        "mean": 19,
+        "lower": 19,
+        "upper": 19,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 51395.0667,
+        "lower": 50294.1666,
+        "upper": 52495.9667,
+        "sd": 3076.4683,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "note": "执行口径：显式 FIFO 队列 + BPR 行程时间放大（a=0.15, b=2）。"
+    },
+    "mpc_queue": {
+      "makespan": {
+        "mean": 8.3333,
+        "lower": 8.1618,
+        "upper": 8.5049,
+        "sd": 0.4795,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 13866.4,
+        "lower": 13328.5468,
+        "upper": 14404.2532,
+        "sd": 1503.0323,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "completed": {
+        "mean": 7282.7667,
+        "lower": 7185.9636,
+        "upper": 7379.5698,
+        "sd": 270.5166,
+        "n": 30
+      },
+      "note": "MPC+Queue：预测 + 队列反馈 + 滚动重规划；执行口径同 queue_bpr。"
+    }
+  },
+  "worst_cases": {
+    "mpc_queue": [
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261109,
+        "total_input": 7363,
+        "completed": 7363,
+        "unserved": 0,
+        "completion_ratio": 1,
+        "makespan": 8,
+        "queue_person_minutes": 14624,
+        "max_queue": 4183,
+        "mean_wait": 0.4189,
+        "p95_wait": 1,
+        "switch_persons": 5885,
+        "runtime_ms": 4,
+        "plan_unresolved": 910,
+        "validator_valid": null,
+        "validator_codes": []
+      },
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261110,
+        "total_input": 7159,
+        "completed": 7159,
+        "unserved": 0,
+        "completion_ratio": 1,
+        "makespan": 8,
+        "queue_person_minutes": 12464,
+        "max_queue": 3766,
+        "mean_wait": 0.4466,
+        "p95_wait": 1,
+        "switch_persons": 6544,
+        "runtime_ms": 3,
+        "plan_unresolved": 421,
+        "validator_valid": null,
+        "validator_codes": []
+      },
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261111,
+        "total_input": 7519,
+        "completed": 7519,
+        "unserved": 0,
+        "completion_ratio": 1,
+        "makespan": 9,
+        "queue_person_minutes": 14706,
+        "max_queue": 4055,
+        "mean_wait": 0.4321,
+        "p95_wait": 1,
+        "switch_persons": 5033,
+        "runtime_ms": 3,
+        "plan_unresolved": 925,
+        "validator_valid": null,
+        "validator_codes": []
+      },
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261112,
+        "total_input": 6987,
+        "completed": 6987,
+        "unserved": 0,
+        "completion_ratio": 1,
+        "makespan": 8,
+        "queue_person_minutes": 12501,
+        "max_queue": 3672,
+        "mean_wait": 0.4136,
+        "p95_wait": 1,
+        "switch_persons": 1739,
+        "runtime_ms": 3,
+        "plan_unresolved": 826,
+        "validator_valid": null,
+        "validator_codes": []
+      },
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261113,
+        "total_input": 6664,
+        "completed": 6664,
+        "unserved": 0,
+        "completion_ratio": 1,
+        "makespan": 8,
+        "queue_person_minutes": 11599,
+        "max_queue": 3358,
+        "mean_wait": 0.3881,
+        "p95_wait": 1,
+        "switch_persons": 2990,
+        "runtime_ms": 2,
+        "plan_unresolved": 656,
+        "validator_valid": null,
+        "validator_codes": []
+      }
+    ],
+    "static_mcf": [
+      {
+        "strategy": "static_mcf",
+        "seed": 20261129,
+        "total_input": 7834,
+        "completed": 6905,
+        "unserved": 929,
+        "completion_ratio": 0.8814,
+        "makespan": 19,
+        "queue_person_minutes": 55615,
+        "max_queue": 5324,
+        "mean_wait": 3.2368,
+        "p95_wait": 12,
+        "switch_persons": 0,
+        "runtime_ms": 1,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      },
+      {
+        "strategy": "static_mcf",
+        "seed": 20261135,
+        "total_input": 7266,
+        "completed": 6382,
+        "unserved": 884,
+        "completion_ratio": 0.8783,
+        "makespan": 19,
+        "queue_person_minutes": 54576,
+        "max_queue": 4830,
+        "mean_wait": 3.4696,
+        "p95_wait": 12,
+        "switch_persons": 0,
+        "runtime_ms": 0,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      },
+      {
+        "strategy": "static_mcf",
+        "seed": 20261130,
+        "total_input": 7436,
+        "completed": 6584,
+        "unserved": 852,
+        "completion_ratio": 0.8854,
+        "makespan": 19,
+        "queue_person_minutes": 56580,
+        "max_queue": 4949,
+        "mean_wait": 3.4029,
+        "p95_wait": 12,
+        "switch_persons": 0,
+        "runtime_ms": 1,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      },
+      {
+        "strategy": "static_mcf",
+        "seed": 20261118,
+        "total_input": 7641,
+        "completed": 6840,
+        "unserved": 801,
+        "completion_ratio": 0.8952,
+        "makespan": 19,
+        "queue_person_minutes": 56548,
+        "max_queue": 5409,
+        "mean_wait": 3.3361,
+        "p95_wait": 13,
+        "switch_persons": 0,
+        "runtime_ms": 1,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      },
+      {
+        "strategy": "static_mcf",
+        "seed": 20261134,
+        "total_input": 7596,
+        "completed": 6795,
+        "unserved": 801,
+        "completion_ratio": 0.8945,
+        "makespan": 19,
+        "queue_person_minutes": 54717,
+        "max_queue": 5277,
+        "mean_wait": 3.3728,
+        "p95_wait": 12,
+        "switch_persons": 0,
+        "runtime_ms": 2,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      }
+    ]
+  }
+}

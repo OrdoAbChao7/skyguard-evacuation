@@ -190,7 +190,14 @@ const output = {
   failures: failed,
   results: checks,
 };
-fs.writeFileSync(path.join(V61, 'verification.json'), `${JSON.stringify(output, null, 2)}\n`);
+// 默认只校验、不写回：V6.1 verification.json 是冻结证据，普通校验不得改写其字节。
+// 需要更新冻结验证记录时必须显式传入 --write，并在变更说明中登记。
+const writeVerification = process.argv.includes('--write');
+if (writeVerification) {
+  fs.writeFileSync(path.join(V61, 'verification.json'), `${JSON.stringify(output, null, 2)}\n`);
+} else {
+  console.log('[verify] 未写入 v61/verification.json（如需更新请显式使用 --write）');
+}
 console.log(`[verify] ${output.passed}/${output.checks} checks passed; git=${output.git_head.slice(0, 8)}`);
 if (failed.length > 0) {
   console.error('失败项：');

@@ -23,6 +23,7 @@
     "manifest:evidence": "npm run manifest:evidence --prefix backend",
     "benchmark:v62": "npm run benchmark:v62 --prefix backend",
     "benchmark:voi-v2": "npm run benchmark:voi-v2 --prefix backend",
-    "benchmark:v65": "npm run benchmark:v65 --prefix backend"
+    "benchmark:v65": "npm run benchmark:v65 --prefix backend",
+    "benchmark:v70": "npm run benchmark:v70 --prefix backend"
   }
 }

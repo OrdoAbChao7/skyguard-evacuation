@@ -273,8 +273,33 @@ export interface DemoRunResult {
   status: SafetyStatus;
 }
 
+export interface V70MpcPreview {
+  available: boolean;
+  reason?: string;
+  steps?: Array<{
+    step: number;
+    start_minute: number;
+    control_end_minute: number;
+    plan_summary: { routes: number; executed_routes: number; evacuated_persons: number; unresolved_persons: number };
+    validation: { performed: boolean; valid: boolean | null; violation_codes: string[]; note: string };
+  }>;
+  projection?: {
+    total_input_persons: number;
+    completed_persons: number;
+    unserved_persons: number;
+    makespan_minute: number;
+    total_queue_person_minutes: number;
+    max_queue_persons: number;
+    p95_wait_minutes: number;
+    switch_events: number;
+    switch_persons: number;
+  };
+  provenance: { algorithm: string; safety_boundary: string; data_source: string };
+}
+
 export const safetyApi = {
   status: () => client.get<SafetyStatus>('/safety/status').then(response => response.data),
+  v70Mpc: () => client.get<V70MpcPreview>('/safety/v70/mpc-preview').then(response => response.data),
   scenario: () => client.get<SafetyScenarioSummary>('/safety/scenario').then(response => response.data),
   scenarios: () =>
     client.get<{ active: string; files: Array<Record<string, unknown>> }>('/safety/scenarios').then(response => response.data),

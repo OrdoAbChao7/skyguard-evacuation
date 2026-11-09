@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-11-09T11:44:18.604Z",
+  "run_id": "v70-final-20261109T194300",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "cpu": "AMD Ryzen 7 7745HX with Radeon Graphics        ",
+  "scenario": {
+    "id": "stadium-evacuation-v1",
+    "version": "1.0.0",
+    "path": "E:\\Projects\\skyguard-evacuation\\.claude\\worktrees\\ecstatic-feistel-74fd5b\\data\\scenarios\\stadium-evacuation.json"
+  },
+  "git_head": "uncommitted"
+}

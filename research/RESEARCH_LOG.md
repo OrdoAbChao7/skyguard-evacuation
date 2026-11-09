@@ -29,3 +29,11 @@
 4. 风险图敏感性：damping/覆盖权重会改变排序与推荐；仍为未标定启发式。
 5. 感知匹配：贪心改为最大基数二分匹配，补反例测试；仍无数据集/权重/真实精度。
 6. 来源审计：12 verified-search / 20 canonical-not-fetched / 6 known-literature；未逐条核验作者与许可证。
+
+## 2026-11-09 · V7.0 预测、动态规划与联合 VoI
+
+1. 预测：新增 Kalman/ARIMA/Holt-Winters/在线 LSTM/regime/conformal/漂移/状态感知集成；30 种子 × 7 机制 × 11 方法。集成显著优于 persistence/EMA/linear/Kalman/LSTM，但劣于 ARIMA/Holt-Winters/旧自适应；无单一最优；surge 95% 覆盖 0.748。负结果保留。
+2. 规划：新增可配置时间扩展求解器、最大流、容量盲最短路径、受限 MILP、滚动 MPC、FIFO+BPR+出口服务衰减。容量受压场景：MPC 未疏散 0、完成时间 8.33，static_mcf 未疏散 613、完成时间 19；预测/队列反馈相对仅重规划无显著增量。
+3. 联合 VoI：新增相关性/冗余/顺序选择；公平实验显示总收益略低、最坏区域风险略低，效应量小。
+4. 审计修复：SPFA 零费用残量环死循环（Dijkstra+势函数）、残差区域身份丢失、预览参数无界、预测到达被当事实、CRLF 证据字节不一致。
+5. 证据：`evaluation/v70/v70-final-*`；后端 201/201、前端 16/16、构建与 demo 通过。全部合成数据，未实机验证 AgentArts/昇腾。

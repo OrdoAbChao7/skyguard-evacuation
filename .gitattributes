@@ -8,3 +8,6 @@ data/perception/** -text
 
 # 本仓库自己维护的来源清单保持文本 + LF，便于 review 与 diff。
 data/perception/**/PROVENANCE.json text eol=lf
+
+# 实验证据以 SHA-256 清单校验，必须保持检出字节稳定；禁止换行符转换。
+evaluation/** text eol=lf

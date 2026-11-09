@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v70-20261109T193131",
+  "note": "V7.1 规划实验独立清单。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "planning_README.md",
+      "bytes": 8524,
+      "sha256": "a8e0ab15db2522484b85ceda2848f41d9b8b06fc353297a51043e61b20aa0b55"
+    },
+    {
+      "path": "planning_metadata.json",
+      "bytes": 433,
+      "sha256": "eb2885eebf381d24b14243004c38c7c8683876c17adaea5501d2c5079c76e2d3"
+    },
+    {
+      "path": "planning_rows.json",
+      "bytes": 127011,
+      "sha256": "971d6173734aa408c07598feb59188d2c0b1a4dd17b6edc5acb72678da94463e"
+    },
+    {
+      "path": "planning_summary.json",
+      "bytes": 38724,
+      "sha256": "e2da213217bbd1faddccad318b44996d2d5f61ce4ab5f77afcf0f7dff3b1e80f"
+    }
+  ]
+}

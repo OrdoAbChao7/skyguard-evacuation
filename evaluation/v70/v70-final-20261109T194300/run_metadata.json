@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-11-09T11:44:18.659Z",
+  "run_id": "v70-final-20261109T194300",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "cpu": "AMD Ryzen 7 7745HX with Radeon Graphics        ",
+  "git_head": "uncommitted",
+  "selected": [
+    {
+      "key": "prediction",
+      "file": "v70-prediction-benchmark.ts"
+    },
+    {
+      "key": "planning",
+      "file": "v70-planning-benchmark.ts"
+    },
+    {
+      "key": "joint-voi",
+      "file": "v70-joint-voi-benchmark.ts"
+    }
+  ],
+  "data_nature": "全部为合成/模拟数据；不含真实人群、视频、无人机、昇腾或 AgentArts 实测。"
+}

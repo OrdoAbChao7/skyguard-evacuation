@@ -100,3 +100,27 @@
 - H02：统一物理动作覆盖、资源与时间约束，使用概率采样和独立隐藏真值；主比较预先指定为改进策略对风险优先规则、对现有多区域 VoI。证据去重/时效属于待检验增量，预算正确性属于硬约束，不能靠不安全对照制造收益。
 - H03：计划 8 名参与者、48 次交叉任务仅为探索性设计；48 次任务不能当作 48 个独立参与者。报告任务耗时、完成率及错误；小样本未出现错误不证明错误率不增加。
 - 任何正面或负面结果在实际实施后按协议登记，保留旧结果；不得根据这份设计将 C08/C09/C12 或任何现场验证等级升级。
+
+## V7.0 新增主张（2026-11-09）
+
+> 全部证据来自 `evaluation/v70/<run>/`（30 固定种子、合成数据）。负向与混合结果同样登记，不因不利而删除。
+
+| # | 主张 | 证据 | 状态 | 边界 |
+| --- | --- | --- | --- | --- |
+| C28 | `ensemble_v70` 集成 Kalman/ARIMA/Holt-Winters/在线 LSTM 与可解释基线，并输出 regime、conformal 区间与漂移标记 | `backend/src/services/mvp/forecast-advanced.ts`；`tests/mvp/forecast-advanced.test.ts`；`evaluation/v70/<run>/prediction_*` | PARTIALLY_SUPPORTED | 合成数据；集成不是任何单一机制的最佳方法；surge 95% 覆盖低于名义值 |
+| C29 | Regime 检测在短滚动窗口上不稳定：periodic/surge/noisy 的可接受标签准确率有限 | `prediction_summary.json` 的 `regime.accuracy` | VERIFIED（负向） | 只能作为候选筛选提示，不得用于自动切换安全策略 |
+| C30 | Page-Hinkley + 误差漂移检测能在 regime_shift 上检测到突增/下降，stable 误报率低 | `prediction_summary.json` 的 `drift` | PARTIALLY_SUPPORTED | 合成机制；检测用于放大区间，不改变四态 |
+| C31 | 滚动时域 MPC + 队列执行反馈在容量受压的合成场景中降低未疏散人数与完成时间 | `evaluation/v70/<run>/planning_*`；`planning-v70.test.ts` | VERIFIED（合成） | 合成需求/入流；BPR 与服务衰减参数未标定；不代表真实场馆 |
+| C32 | 预测与队列反馈相对“仅滚动重规划”没有显著增量收益 | `planning_summary.json` 的 `paired.reactive_mcf` | VERIFIED（负向） | 本模型假设即时响应；未建模调度延迟/预留提前期，不能外推为“预测无用” |
+| C33 | 联合 VoI 相对现有多区域 VoI：总风险降低略低、最坏区域风险略低，效应量很小 | `joint_voi_summary.json` 的 `paired` | PARTIALLY_SUPPORTED（混合） | 合成相关性；启发式近似，不是联合 POMDP 精确解；不得宣称联合 VoI 全面更优 |
+| C34 | 受限二进制出口分配 MILP 枚举在静态计划上降低完成时间与队列人·分钟 | `planning_summary.json` 的 `milp_restricted` | VERIFIED（合成） | 仅竞争最激烈的 ≤5 个区域参与二进制选择；不是全局 MILP 求解器 |
+| C35 | V7 预览 API（预测/联合 VoI/MPC/拥堵）只读，观测不可信时 fail closed | `tests/mvp/v70-api.test.ts` | VERIFIED | 预览不发布方案；带预测的 MPC 步骤不声明“已验证” |
+| C36 | 研究用 Dijkstra+势函数求解器避免零费用残量环导致的路径回溯死循环，且不改变安全主链路 SPFA 规划器 | `min-cost-flow.ts` 新增方法；既有安全测试 199/199 | VERIFIED | 新方法只用于 V7 研究求解器 |
+
+### V7 引用规则
+
+1. C28 必须同时报告各机制最佳方法与集成 MAE，不得只报集成优于 persistence；
+2. C31/C32 必须同时报告“合成场景、未标定 BPR/服务衰减、即时响应假设”；
+3. C33 必须同时报告 benefit 与 worst-region risk 两个方向，不得只引用有利指标；
+4. C34 必须披露受限候选出口集合；
+5. 任何 V7 数字不得表述为真实场馆疏散效果或预测精度。

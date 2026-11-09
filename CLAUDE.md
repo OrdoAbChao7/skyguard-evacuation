@@ -2,6 +2,17 @@
 
 本文件是 Claude Code 在本仓库工作的入口约定；完整规则见 `AGENTS.md` 与 `docs/MVP_LIMITATIONS.md`。
 
+## 项目理念（V7.0）
+
+```text
+人潮未至，先察其势；
+险境将生，先问其因。
+千路交汇，求其有序；
+万流奔涌，守其有度。
+```
+
+预测先于响应，感知先于决策，优化服务于安全，智能必须受到约束。
+
 ## 必读顺序
 
 1. `AGENTS.md`（长期研发目标、架构/安全/Git/证据规则）
@@ -30,6 +41,7 @@ npm run build
 npm run demo
 npm run demo:mvp
 npm run benchmark:competition
+npm run benchmark:v70
 ```
 
 ## 角色分工（建议）

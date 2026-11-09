@@ -11,7 +11,28 @@ SkyGuard 是一个**独立的安全决策研究原型**：把
 ## 项目状态
 
 > **当前状态唯一事实来源：** [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md)<br>
-> 阶段：Research Prototype Candidate（V6.2 证据已冻结，V6.4/V6.5 工程与实验加固进行中）；不是 Production Ready。
+> 阶段：Research Prototype Candidate（V6.2 证据已冻结；V7.0 预测/动态规划/联合 VoI 研究已实现并留有 30 种子对照实验）；不是 Production Ready。
+
+## V7.0 研究理念
+
+```text
+人潮未至，先察其势；
+险境将生，先问其因。
+千路交汇，求其有序；
+万流奔涌，守其有度。
+```
+
+- **预测先于响应**：`ensemble_v70` 集成 Kalman / ARIMA / Holt-Winters / 在线 LSTM 与可解释基线，输出 regime、漂移与 conformal 区间；
+- **感知先于决策**：联合 VoI 显式建模区域相关性与动作冗余，在预算内顺序选择调查；
+- **优化服务于安全**：滚动时域 MPC 与动态队列执行反馈只用于研究预览，安全发布仍由独立 Validator 校验；
+- **智能必须受到约束**：预测到达不得绕过校验；带预测的 MPC 步骤是条件投影，不声明“已验证”。
+
+V7.0 实验与原始证据见 `evaluation/v70/<run>/`，复现命令：
+
+```bash
+npm run benchmark:v70
+```
+
 
 - 本仓库从灵小禅（Lingshan AI Guide）仓库中的 SkyGuard 安全业务域拆分而来，
   与文旅导览业务**完全切割**：没有游客端、RAG、数字人、管理后台。

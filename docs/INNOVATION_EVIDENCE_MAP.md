@@ -25,3 +25,18 @@
 | AgentArts 失败语义 | 官方契约、重试/SSE/越权/续接 stub 测试 | 5xx/超时重试、4xx 不重试、截断 SSE 拒绝、越权无副作用 | **无真实租户/Trace** |
 | 预测不确定性传播 | `prediction.ts` reliability、`availability.ts`、`prediction.test.ts` | 30 种子 × 6 机制；surge 95% 覆盖 0.738；periodic/noisy 预测动作几乎全阻断 | 合成机制；区间非正式置信区间 |
 | 感知→决策门禁 | `perception/adapter.ts`、`adapter.test.ts`、质量 API、前端面积/密度 | 图像/显示帧→人数→面积→密度；未标定/面积不符/低置信度 fail closed | CityStreet 无真值；P2PNet 非现场 |
+
+## V7.0 增补（预测 / 动态规划 / 联合 VoI）
+
+最终证据：`evaluation/v70/v70-final-20261109T195122/`（根 `MANIFEST.json` + 三组独立清单）。
+复现：`npm run benchmark:v70`。
+
+| 创新点 | 可运行证据 | 实验证据 | 边界 |
+| --- | --- | --- | --- |
+| 状态感知预测集成与不确定性 | `forecast-advanced.ts`（Kalman/ARIMA/Holt-Winters/在线 LSTM/regime/conformal/漂移）、`forecast-advanced.test.ts`、`GET /api/v1/mvp/v70/forecast/:regionId` | 30 种子 × 7 机制 × 11 方法：集成显著优于 persistence/EMA/linear/Kalman/LSTM，但劣于 ARIMA/Holt-Winters/旧自适应；无单一最优；surge 95% 覆盖 0.748 | 合成数据；区间非正式置信区间；不得用于安全告警 |
+| 漂移与状态检测 | `detectRegime`、`detectDrift`（Page-Hinkley + 误差比） | regime_shift 突增/下降检测率 1.0，stable 误报 0.016；periodic/surge regime 准确率有限 | 短窗口不稳定；只作提示 |
+| 滚动时域 MPC + 队列执行反馈 | `mpc-planner.ts`、`congestion.ts`、`GET /api/v1/safety/v70/mpc-preview`、`planning-v70.test.ts` | 30 种子容量受压场景：未疏散 613→0，完成时间 19→8.33；相对仅重规划，预测/队列反馈无显著增量 | BPR/服务衰减未标定；即时响应假设；不代表真实场馆 |
+| 受限 MILP 与最大流/最短路径对照 | `strategies.ts`（受限二进制出口分配枚举、最大流、容量盲最短路径） | milp_restricted 完成时间 11.30、队列 18523，显著优于 static_mcf；shortest_path 容量盲、校验失败 | 仅 ≤5 个竞争区域枚举；非全局 MILP |
+| 联合 VoI（相关性 + 冗余） | `joint-voi.ts`、`joint-voi.test.ts`、`GET /api/v1/mvp/v70/joint-investigation` | 30×40 公平实验：总收益略低（−0.0026），最坏区域风险略低（−0.0007）；Oracle 覆盖 1.0 | 合成相关性；启发式近似；不得宣称全面更优 |
+| 可信预览边界 | `v70/research.ts`、`v70-api.test.ts` | 观测不可信 fail closed；只读不改变版本；带预测步骤不声明已验证 | 预览不发布方案 |
+| 求解器稳健性 | `minCostMaxFlowDijkstra`、既有安全测试 201/201 | 避免零费用残量环回溯死循环；安全主链路 SPFA 未改 | 新方法仅用于研究求解器 |

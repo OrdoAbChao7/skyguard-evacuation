@@ -174,3 +174,30 @@ periodic/noisy 下可靠性门槛（相对宽度 > 0.5）几乎阻断所有预�
 | 自适应预测全面最优 | **不支持**（机制分化） |
 | 预测区间达到名义 95% | **不支持**（surge 0.738） |
 | AgentArts/昇腾实机、真实场馆、用户研究 | UNVERIFIED / 外部阻塞 |
+
+## 10. V7.0 增补：预测、动态规划与联合 VoI（2026-11-09）
+
+**实现**
+
+- 预测：`forecast-advanced.ts`（Kalman、ARIMA、Holt-Winters、在线 LSTM、regime、conformal、漂移、状态感知集成）；
+- 规划：`strategies.ts`（可配置时间扩展求解器、最大流、容量盲最短路径、受限 MILP）、
+  `congestion.ts`（FIFO 队列 + BPR + 出口服务衰减）、`mpc-planner.ts`（滚动时域 MPC）；
+- 感知：`joint-voi.ts`（相关性、冗余、预算内顺序选择）；
+- 集成：四个只读研究 API（预测/联合 VoI/MPC/拥堵），观测不可信时 fail closed。
+
+**实验（30 固定种子，合成数据；`evaluation/v70/v70-final-20261109T195122/`）**
+
+- 预测：集成显著优于 persistence/EMA/linear/Kalman/LSTM，但劣于 ARIMA/Holt-Winters/旧自适应；
+  无单一方法全场景最优；surge 95% 覆盖 0.748；漂移检测在 regime_shift 上检测率 1.0、stable 误报 0.016。
+- 规划：容量受压场景下 static_mcf 未疏散 613、完成时间 19；MPC 未疏散 0、完成时间 8.33；
+  相对仅滚动重规划，预测与队列反馈无显著增量（Holm p=1 / 0.49）。
+- 联合 VoI：相对现有多区域 VoI，总收益略低（−0.0026），最坏区域风险略低（−0.0007），效应量很小。
+
+**结论等级**
+
+- 滚动重规划降低未疏散/完成时间：VERIFIED（合成、未标定参数）；
+- 预测/队列反馈增量收益：未发现（负向结果保留）；
+- 联合 VoI 全面更优：不支持；
+- 真实场馆效果、昇腾/AgentArts 实机：仍为外部阻塞。
+
+**验证**：后端 201/201、前端 17/17、构建、安全三场景、MVP 三场景通过；未运行 Docker/真实 CI。

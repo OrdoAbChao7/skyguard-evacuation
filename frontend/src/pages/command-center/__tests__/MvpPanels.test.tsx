@@ -18,9 +18,13 @@ const mocks = vi.hoisted(() => ({
   multiRegion: vi.fn(),
   reset: vi.fn(),
   runDemo: vi.fn(),
+  v70Forecast: vi.fn(),
+  v70Joint: vi.fn(),
+  v70Mpc: vi.fn(),
 }));
 
 vi.mock('../../../services/mvpApi', () => ({ default: mocks }));
+vi.mock('../../../services/safetyApi', () => ({ default: { v70Mpc: mocks.v70Mpc }, safetyApi: { v70Mpc: mocks.v70Mpc } }));
 
 const dashboard = {
   scenario: {
@@ -142,6 +146,36 @@ describe('MVP 指挥面板', () => {
       available: false, generated_at: null, experiments: {}, report_path: 'evaluation/COMPETITION_REPORT.md', note: '合成数据',
     });
     mocks.multiRegion.mockResolvedValue({ available: false, reason: '测试未配置' });
+    mocks.v70Forecast.mockResolvedValue({
+      available: true, region_id: 'R_EAST_STAND', horizon_minutes: 5,
+      result: {
+        predicted: 530, interval90: { lower: 500, upper: 560 }, interval95: { lower: 480, upper: 580 },
+        reliability: { status: 'ok', reasons: [] }, regime: { label: 'surge' }, effective_methods: ['kalman', 'persistence'],
+      },
+      provenance: { algorithm: 'ensemble_v70', data_source: 'observations', note: '合成' },
+    });
+    mocks.v70Joint.mockResolvedValue({
+      available: true, target_region_id: 'R_EAST_STAND',
+      decision: {
+        selected: [{ action_id: 'A_CAMERA', kind: 'camera_query', marginal_risk_reduction: 0.02 }],
+        total_expected_risk_reduction: 0.02, stop_reason: 'max_investigations_reached',
+        config: { correlation: 0.5, redundancy_penalty: 0.6, max_sequence: 3, source: 'scenario' },
+      },
+      provenance: { engine: 'joint-voi-v1', note: '合成' },
+    });
+    mocks.v70Mpc.mockResolvedValue({
+      available: true,
+      steps: [{
+        step: 0, start_minute: 0, control_end_minute: 2,
+        plan_summary: { routes: 2, executed_routes: 1, evacuated_persons: 100, unresolved_persons: 0 },
+        validation: { performed: true, valid: true, violation_codes: [], note: '第一步校验' },
+      }],
+      projection: {
+        total_input_persons: 300, completed_persons: 300, unserved_persons: 0, makespan_minute: 8,
+        total_queue_person_minutes: 120, max_queue_persons: 20, p95_wait_minutes: 1, switch_events: 0, switch_persons: 0,
+      },
+      provenance: { algorithm: 'mpc', safety_boundary: '只读', data_source: '观测' },
+    });
     localStorage.clear();
   });
 
@@ -187,5 +221,59 @@ describe('MVP 指挥面板', () => {
     render(<MvpPanels selectedRegion="R_EAST_STAND" onSelectRegion={() => {}} />);
     await waitFor(() => expect(screen.getByText('AGENTARTS CONNECTED')).toBeInTheDocument());
     expect(screen.getByText('可达性 可达 · 业务闭环 未验证')).toBeInTheDocument();
+  });
+});
+
+
+describe('V7 研究预览', () => {
+  beforeEach(() => {
+    Object.values(mocks).forEach(mock => (mock as ReturnType<typeof vi.fn>).mockReset());
+    mocks.dashboard.mockResolvedValue(dashboard);
+    mocks.multiRegion.mockResolvedValue({ available: false, reason: '测试未配置' });
+    mocks.experiments.mockResolvedValue({ available: false, generated_at: null, experiments: {}, report_path: 'x', note: '合成' });
+    mocks.v70Forecast.mockResolvedValue({
+      available: true, region_id: 'R_EAST_STAND', horizon_minutes: 5,
+      result: {
+        predicted: 530, interval90: { lower: 500, upper: 560 }, interval95: { lower: 480, upper: 580 },
+        reliability: { status: 'ok', reasons: [] }, regime: { label: 'surge' }, effective_methods: ['kalman', 'persistence'],
+      },
+      provenance: { algorithm: 'ensemble_v70', data_source: 'observations', note: '合成' },
+    });
+    mocks.v70Joint.mockResolvedValue({
+      available: true, target_region_id: 'R_EAST_STAND',
+      decision: {
+        selected: [{ action_id: 'A_CAMERA', kind: 'camera_query', marginal_risk_reduction: 0.02 }],
+        total_expected_risk_reduction: 0.02, stop_reason: 'max_investigations_reached',
+        config: { correlation: 0.5, redundancy_penalty: 0.6, max_sequence: 3, source: 'scenario' },
+      },
+      provenance: { engine: 'joint-voi-v1', note: '合成' },
+    });
+    mocks.v70Mpc.mockResolvedValue({
+      available: true,
+      steps: [{
+        step: 0, start_minute: 0, control_end_minute: 2,
+        plan_summary: { routes: 2, executed_routes: 1, evacuated_persons: 100, unresolved_persons: 0 },
+        validation: { performed: true, valid: true, violation_codes: [], note: '第一步校验' },
+      }],
+      projection: {
+        total_input_persons: 300, completed_persons: 300, unserved_persons: 0, makespan_minute: 8,
+        total_queue_person_minutes: 120, max_queue_persons: 20, p95_wait_minutes: 1, switch_events: 0, switch_persons: 0,
+      },
+      provenance: { algorithm: 'mpc', safety_boundary: '只读', data_source: '观测' },
+    });
+    localStorage.clear();
+  });
+
+  it('按钮触发后展示预测、联合 VoI 与 MPC 投影，并标注只读边界', async () => {
+    render(<MvpPanels selectedRegion="R_EAST_STAND" onSelectRegion={() => {}} />);
+    await waitFor(() => expect(mocks.dashboard).toHaveBeenCalled());
+    await userEvent.click(screen.getByRole('button', { name: '运行 V7 预览' }));
+    await waitFor(() => expect(screen.getByText('集成预测')).toBeInTheDocument());
+    expect(screen.getByText('联合 VoI')).toBeInTheDocument();
+    expect(screen.getByText('MPC 投影')).toBeInTheDocument();
+    expect(screen.getByText(/surge/)).toBeInTheDocument();
+    expect(screen.getByText(/A_CAMERA/)).toBeInTheDocument();
+    expect(screen.getByText(/300\/300/)).toBeInTheDocument();
+    expect(screen.getByText(/条件投影/)).toBeInTheDocument();
   });
 });

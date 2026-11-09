@@ -1,0 +1,7470 @@
+{
+  "config": {
+    "seeds": [
+      20261105,
+      20261106,
+      20261107,
+      20261108,
+      20261109,
+      20261110,
+      20261111,
+      20261112,
+      20261113,
+      20261114,
+      20261115,
+      20261116,
+      20261117,
+      20261118,
+      20261119,
+      20261120,
+      20261121,
+      20261122,
+      20261123,
+      20261124,
+      20261125,
+      20261126,
+      20261127,
+      20261128,
+      20261129,
+      20261130,
+      20261131,
+      20261132,
+      20261133,
+      20261134
+    ],
+    "trials_per_seed": 40,
+    "strategies": [
+      "random",
+      "fixed",
+      "greedy",
+      "multi",
+      "joint"
+    ],
+    "budget_actions": 2,
+    "trusted_observation_rate": 0.6,
+    "ground_truth_correlation": 0.5,
+    "joint_config": {
+      "correlation": 0.5,
+      "redundancy_penalty": 0.6,
+      "max_sequence": 3
+    },
+    "fairness": [
+      "所有策略对同一物理动作获得相同覆盖区域",
+      "观测结果按似然采样，随机数按 (seed,trial,round,region,kind) 共享",
+      "预算准入统一为 used + candidate <= max",
+      "目标区域按优先级轮换"
+    ],
+    "data_nature": "合成数据；不代表真实人群行为或场馆效果。"
+  },
+  "summary": {
+    "random": {
+      "n": 1200,
+      "benefit": {
+        "mean": 0.0863,
+        "lower": 0.0817,
+        "upper": 0.0909,
+        "sd": 0.0812,
+        "n": 1200
+      },
+      "worst_final_risk": {
+        "mean": 0.1087,
+        "lower": 0.108,
+        "upper": 0.1094,
+        "sd": 0.0125,
+        "n": 1200
+      },
+      "information_gain": {
+        "mean": 1.294,
+        "lower": 1.2302,
+        "upper": 1.3579,
+        "sd": 1.1289,
+        "n": 1200
+      },
+      "cost": {
+        "mean": 0.3943,
+        "lower": 0.3803,
+        "upper": 0.4084,
+        "sd": 0.2487,
+        "n": 1200
+      },
+      "efficiency": {
+        "mean": 0.3301,
+        "lower": 0.305,
+        "upper": 0.3551,
+        "sd": 0.4432,
+        "n": 1200
+      },
+      "detection_accuracy": {
+        "mean": 0.7225,
+        "lower": 0.7089,
+        "upper": 0.7361,
+        "sd": 0.241,
+        "n": 1200
+      },
+      "decision_accuracy": {
+        "mean": 0.8653,
+        "lower": 0.8572,
+        "upper": 0.8734,
+        "sd": 0.1427,
+        "n": 1200
+      },
+      "congested_coverage": {
+        "mean": 0.7168,
+        "lower": 0.7007,
+        "upper": 0.7329,
+        "sd": 0.2846,
+        "n": 1200
+      },
+      "unique_covered": {
+        "mean": 4.2375,
+        "lower": 4.1101,
+        "upper": 4.3649,
+        "sd": 2.251,
+        "n": 1200
+      },
+      "actions": {
+        "mean": 2,
+        "lower": 2,
+        "upper": 2,
+        "sd": 0,
+        "n": 1200
+      }
+    },
+    "fixed": {
+      "n": 1200,
+      "benefit": {
+        "mean": 0.0474,
+        "lower": 0.0457,
+        "upper": 0.0492,
+        "sd": 0.0309,
+        "n": 1200
+      },
+      "worst_final_risk": {
+        "mean": 0.1097,
+        "lower": 0.1092,
+        "upper": 0.1102,
+        "sd": 0.009,
+        "n": 1200
+      },
+      "information_gain": {
+        "mean": 0.662,
+        "lower": 0.6389,
+        "upper": 0.685,
+        "sd": 0.408,
+        "n": 1200
+      },
+      "cost": {
+        "mean": 0.4,
+        "lower": 0.4,
+        "upper": 0.4,
+        "sd": 0,
+        "n": 1200
+      },
+      "efficiency": {
+        "mean": 0.1186,
+        "lower": 0.1142,
+        "upper": 0.123,
+        "sd": 0.0773,
+        "n": 1200
+      },
+      "detection_accuracy": {
+        "mean": 0.7146,
+        "lower": 0.7005,
+        "upper": 0.7286,
+        "sd": 0.2481,
+        "n": 1200
+      },
+      "decision_accuracy": {
+        "mean": 0.8367,
+        "lower": 0.8281,
+        "upper": 0.8453,
+        "sd": 0.152,
+        "n": 1200
+      },
+      "congested_coverage": {
+        "mean": 0.5294,
+        "lower": 0.5127,
+        "upper": 0.5462,
+        "sd": 0.2958,
+        "n": 1200
+      },
+      "unique_covered": {
+        "mean": 2,
+        "lower": 2,
+        "upper": 2,
+        "sd": 0,
+        "n": 1200
+      },
+      "actions": {
+        "mean": 2,
+        "lower": 2,
+        "upper": 2,
+        "sd": 0,
+        "n": 1200
+      }
+    },
+    "greedy": {
+      "n": 1200,
+      "benefit": {
+        "mean": 0.0508,
+        "lower": 0.0487,
+        "upper": 0.0529,
+        "sd": 0.0372,
+        "n": 1200
+      },
+      "worst_final_risk": {
+        "mean": 0.1096,
+        "lower": 0.109,
+        "upper": 0.1101,
+        "sd": 0.0095,
+        "n": 1200
+      },
+      "information_gain": {
+        "mean": 0.6746,
+        "lower": 0.644,
+        "upper": 0.7052,
+        "sd": 0.5409,
+        "n": 1200
+      },
+      "cost": {
+        "mean": 0.263,
+        "lower": 0.2534,
+        "upper": 0.2725,
+        "sd": 0.1685,
+        "n": 1200
+      },
+      "efficiency": {
+        "mean": 0.2999,
+        "lower": 0.2803,
+        "upper": 0.3195,
+        "sd": 0.3464,
+        "n": 1200
+      },
+      "detection_accuracy": {
+        "mean": 0.7118,
+        "lower": 0.6978,
+        "upper": 0.7257,
+        "sd": 0.2462,
+        "n": 1200
+      },
+      "decision_accuracy": {
+        "mean": 0.8415,
+        "lower": 0.8331,
+        "upper": 0.8498,
+        "sd": 0.148,
+        "n": 1200
+      },
+      "congested_coverage": {
+        "mean": 0.433,
+        "lower": 0.4171,
+        "upper": 0.449,
+        "sd": 0.2821,
+        "n": 1200
+      },
+      "unique_covered": {
+        "mean": 1.8508,
+        "lower": 1.7879,
+        "upper": 1.9138,
+        "sd": 1.1126,
+        "n": 1200
+      },
+      "actions": {
+        "mean": 1.6542,
+        "lower": 1.6272,
+        "upper": 1.6811,
+        "sd": 0.4758,
+        "n": 1200
+      }
+    },
+    "multi": {
+      "n": 1200,
+      "benefit": {
+        "mean": 0.1655,
+        "lower": 0.1601,
+        "upper": 0.171,
+        "sd": 0.0965,
+        "n": 1200
+      },
+      "worst_final_risk": {
+        "mean": 0.1031,
+        "lower": 0.1022,
+        "upper": 0.104,
+        "sd": 0.016,
+        "n": 1200
+      },
+      "information_gain": {
+        "mean": 2.5577,
+        "lower": 2.4888,
+        "upper": 2.6266,
+        "sd": 1.2171,
+        "n": 1200
+      },
+      "cost": {
+        "mean": 0.5798,
+        "lower": 0.5745,
+        "upper": 0.5851,
+        "sd": 0.0932,
+        "n": 1200
+      },
+      "efficiency": {
+        "mean": 0.2963,
+        "lower": 0.286,
+        "upper": 0.3067,
+        "sd": 0.1827,
+        "n": 1200
+      },
+      "detection_accuracy": {
+        "mean": 0.7496,
+        "lower": 0.736,
+        "upper": 0.7631,
+        "sd": 0.2396,
+        "n": 1200
+      },
+      "decision_accuracy": {
+        "mean": 0.9213,
+        "lower": 0.9152,
+        "upper": 0.9273,
+        "sd": 0.1074,
+        "n": 1200
+      },
+      "congested_coverage": {
+        "mean": 0.9125,
+        "lower": 0.9044,
+        "upper": 0.9207,
+        "sd": 0.1439,
+        "n": 1200
+      },
+      "unique_covered": {
+        "mean": 6.6467,
+        "lower": 6.5652,
+        "upper": 6.7281,
+        "sd": 1.44,
+        "n": 1200
+      },
+      "actions": {
+        "mean": 1.9458,
+        "lower": 1.933,
+        "upper": 1.9586,
+        "sd": 0.2264,
+        "n": 1200
+      }
+    },
+    "joint": {
+      "n": 1200,
+      "benefit": {
+        "mean": 0.1629,
+        "lower": 0.1575,
+        "upper": 0.1684,
+        "sd": 0.0967,
+        "n": 1200
+      },
+      "worst_final_risk": {
+        "mean": 0.1024,
+        "lower": 0.1015,
+        "upper": 0.1034,
+        "sd": 0.0163,
+        "n": 1200
+      },
+      "information_gain": {
+        "mean": 2.4927,
+        "lower": 2.4241,
+        "upper": 2.5614,
+        "sd": 1.2133,
+        "n": 1200
+      },
+      "cost": {
+        "mean": 0.5801,
+        "lower": 0.5751,
+        "upper": 0.5851,
+        "sd": 0.088,
+        "n": 1200
+      },
+      "efficiency": {
+        "mean": 0.2836,
+        "lower": 0.2729,
+        "upper": 0.2943,
+        "sd": 0.1896,
+        "n": 1200
+      },
+      "detection_accuracy": {
+        "mean": 0.748,
+        "lower": 0.7345,
+        "upper": 0.7616,
+        "sd": 0.2395,
+        "n": 1200
+      },
+      "decision_accuracy": {
+        "mean": 0.919,
+        "lower": 0.9127,
+        "upper": 0.9252,
+        "sd": 0.1102,
+        "n": 1200
+      },
+      "congested_coverage": {
+        "mean": 0.9004,
+        "lower": 0.8921,
+        "upper": 0.9087,
+        "sd": 0.1468,
+        "n": 1200
+      },
+      "unique_covered": {
+        "mean": 6.5508,
+        "lower": 6.4731,
+        "upper": 6.6286,
+        "sd": 1.3738,
+        "n": 1200
+      },
+      "actions": {
+        "mean": 1.91,
+        "lower": 1.8938,
+        "upper": 1.9262,
+        "sd": 0.2863,
+        "n": 1200
+      }
+    }
+  },
+  "paired": {
+    "benefit": {
+      "random": {
+        "mean_diff": 0.0766,
+        "ci": {
+          "mean": 0.0766,
+          "lower": 0.071,
+          "upper": 0.0822,
+          "sd": 0.0986,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.071,
+          "upper": 0.0823
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.0692,
+          "upper": 0.0837
+        },
+        "cohen_dz": 0.7769,
+        "n_pairs": 1200
+      },
+      "fixed": {
+        "mean_diff": 0.1155,
+        "ci": {
+          "mean": 0.1155,
+          "lower": 0.1101,
+          "upper": 0.1209,
+          "sd": 0.0947,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.1103,
+          "upper": 0.1211
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.1077,
+          "upper": 0.1232
+        },
+        "cohen_dz": 1.219,
+        "n_pairs": 1200
+      },
+      "greedy": {
+        "mean_diff": 0.1121,
+        "ci": {
+          "mean": 0.1121,
+          "lower": 0.1068,
+          "upper": 0.1174,
+          "sd": 0.0935,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.107,
+          "upper": 0.1177
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.1045,
+          "upper": 0.1197
+        },
+        "cohen_dz": 1.1988,
+        "n_pairs": 1200
+      },
+      "multi": {
+        "mean_diff": -0.0026,
+        "ci": {
+          "mean": -0.0026,
+          "lower": -0.0044,
+          "upper": -0.0008,
+          "sd": 0.032,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.0043,
+          "upper": -0.0009
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0053,
+          "upper": 0
+        },
+        "cohen_dz": -0.0807,
+        "n_pairs": 1200
+      }
+    },
+    "worst_final_risk": {
+      "random": {
+        "mean_diff": -0.0063,
+        "ci": {
+          "mean": -0.0063,
+          "lower": -0.0072,
+          "upper": -0.0053,
+          "sd": 0.0169,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.0072,
+          "upper": -0.0053
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0075,
+          "upper": -0.0048
+        },
+        "cohen_dz": -0.3709,
+        "n_pairs": 1200
+      },
+      "fixed": {
+        "mean_diff": -0.0072,
+        "ci": {
+          "mean": -0.0072,
+          "lower": -0.0082,
+          "upper": -0.0063,
+          "sd": 0.017,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.0082,
+          "upper": -0.0063
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0088,
+          "upper": -0.0056
+        },
+        "cohen_dz": -0.4265,
+        "n_pairs": 1200
+      },
+      "greedy": {
+        "mean_diff": -0.0071,
+        "ci": {
+          "mean": -0.0071,
+          "lower": -0.0081,
+          "upper": -0.0062,
+          "sd": 0.0169,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.008,
+          "upper": -0.0062
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0086,
+          "upper": -0.0055
+        },
+        "cohen_dz": -0.4219,
+        "n_pairs": 1200
+      },
+      "multi": {
+        "mean_diff": -0.0007,
+        "ci": {
+          "mean": -0.0007,
+          "lower": -0.0012,
+          "upper": -0.0002,
+          "sd": 0.0083,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.0012,
+          "upper": -0.0002
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0013,
+          "upper": -0.0001
+        },
+        "cohen_dz": -0.0841,
+        "n_pairs": 1200
+      }
+    },
+    "cost": {
+      "random": {
+        "mean_diff": 0.1857,
+        "ci": {
+          "mean": 0.1857,
+          "lower": 0.171,
+          "upper": 0.2005,
+          "sd": 0.2604,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.1713,
+          "upper": 0.2003
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.165,
+          "upper": 0.206
+        },
+        "cohen_dz": 0.7133,
+        "n_pairs": 1200
+      },
+      "fixed": {
+        "mean_diff": 0.1801,
+        "ci": {
+          "mean": 0.1801,
+          "lower": 0.1751,
+          "upper": 0.1851,
+          "sd": 0.088,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.175,
+          "upper": 0.1849
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.1728,
+          "upper": 0.1861
+        },
+        "cohen_dz": 2.0454,
+        "n_pairs": 1200
+      },
+      "greedy": {
+        "mean_diff": 0.3171,
+        "ci": {
+          "mean": 0.3171,
+          "lower": 0.3076,
+          "upper": 0.3267,
+          "sd": 0.1691,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.3074,
+          "upper": 0.3272
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.3039,
+          "upper": 0.3299
+        },
+        "cohen_dz": 1.8751,
+        "n_pairs": 1200
+      },
+      "multi": {
+        "mean_diff": 0.0003,
+        "ci": {
+          "mean": 0.0003,
+          "lower": -0.0034,
+          "upper": 0.0039,
+          "sd": 0.0644,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.0035,
+          "upper": 0.0042
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0048,
+          "upper": 0.0051
+        },
+        "cohen_dz": 0.0045,
+        "n_pairs": 1200
+      }
+    },
+    "efficiency": {
+      "random": {
+        "mean_diff": -0.0465,
+        "ci": {
+          "mean": -0.0465,
+          "lower": -0.0716,
+          "upper": -0.0214,
+          "sd": 0.4435,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.0716,
+          "upper": -0.0211
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0802,
+          "upper": -0.0148
+        },
+        "cohen_dz": -0.1048,
+        "n_pairs": 1200
+      },
+      "fixed": {
+        "mean_diff": 0.165,
+        "ci": {
+          "mean": 0.165,
+          "lower": 0.154,
+          "upper": 0.176,
+          "sd": 0.1951,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.1547,
+          "upper": 0.1763
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.1488,
+          "upper": 0.1805
+        },
+        "cohen_dz": 0.8456,
+        "n_pairs": 1200
+      },
+      "greedy": {
+        "mean_diff": -0.0163,
+        "ci": {
+          "mean": -0.0163,
+          "lower": -0.0384,
+          "upper": 0.0057,
+          "sd": 0.3895,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.0398,
+          "upper": 0.0056
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0461,
+          "upper": 0.0138
+        },
+        "cohen_dz": -0.0419,
+        "n_pairs": 1200
+      },
+      "multi": {
+        "mean_diff": -0.0128,
+        "ci": {
+          "mean": -0.0128,
+          "lower": -0.0201,
+          "upper": -0.0054,
+          "sd": 0.1301,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.0203,
+          "upper": -0.0058
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0249,
+          "upper": -0.003
+        },
+        "cohen_dz": -0.0981,
+        "n_pairs": 1200
+      }
+    },
+    "detection_accuracy": {
+      "random": {
+        "mean_diff": 0.0255,
+        "ci": {
+          "mean": 0.0255,
+          "lower": 0.0198,
+          "upper": 0.0312,
+          "sd": 0.1004,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.0199,
+          "upper": 0.0314
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.0173,
+          "upper": 0.0342
+        },
+        "cohen_dz": 0.2543,
+        "n_pairs": 1200
+      },
+      "fixed": {
+        "mean_diff": 0.0334,
+        "ci": {
+          "mean": 0.0334,
+          "lower": 0.0268,
+          "upper": 0.0401,
+          "sd": 0.1174,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.0268,
+          "upper": 0.0399
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.0241,
+          "upper": 0.0426
+        },
+        "cohen_dz": 0.2849,
+        "n_pairs": 1200
+      },
+      "greedy": {
+        "mean_diff": 0.0362,
+        "ci": {
+          "mean": 0.0362,
+          "lower": 0.0296,
+          "upper": 0.0429,
+          "sd": 0.1169,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": 0.0297,
+          "upper": 0.0429
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": 0.0268,
+          "upper": 0.0457
+        },
+        "cohen_dz": 0.31,
+        "n_pairs": 1200
+      },
+      "multi": {
+        "mean_diff": -0.0016,
+        "ci": {
+          "mean": -0.0016,
+          "lower": -0.003,
+          "upper": -0.0002,
+          "sd": 0.0247,
+          "n": 1200
+        },
+        "bootstrap": {
+          "lower": -0.0029,
+          "upper": -0.0002
+        },
+        "cluster_bootstrap_by_seed": {
+          "lower": -0.0039,
+          "upper": 0.0004
+        },
+        "cohen_dz": -0.0633,
+        "n_pairs": 1200
+      }
+    }
+  },
+  "holm_families": {
+    "benefit": {
+      "random": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "fixed": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "greedy": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "multi": {
+        "raw": 0.005163,
+        "adjusted": 0.005163,
+        "rejected_0_05": true
+      }
+    },
+    "worst_final_risk": {
+      "random": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "fixed": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "greedy": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "multi": {
+        "raw": 0.003588,
+        "adjusted": 0.003588,
+        "rejected_0_05": true
+      }
+    },
+    "cost": {
+      "random": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "fixed": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "greedy": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "multi": {
+        "raw": 0.875267,
+        "adjusted": 0.875267,
+        "rejected_0_05": false
+      }
+    },
+    "efficiency": {
+      "fixed": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "random": {
+        "raw": 0.000283,
+        "adjusted": 0.00085,
+        "rejected_0_05": true
+      },
+      "multi": {
+        "raw": 0.00068,
+        "adjusted": 0.001361,
+        "rejected_0_05": true
+      },
+      "greedy": {
+        "raw": 0.146618,
+        "adjusted": 0.146618,
+        "rejected_0_05": false
+      }
+    },
+    "detection_accuracy": {
+      "random": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "fixed": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "greedy": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "multi": {
+        "raw": 0.02842,
+        "adjusted": 0.02842,
+        "rejected_0_05": true
+      }
+    }
+  },
+  "sensitivity": {
+    "correlation_0": {
+      "benefit": {
+        "mean": 0.18,
+        "lower": 0.1709,
+        "upper": 0.189,
+        "sd": 0.0919,
+        "n": 400
+      },
+      "worst_final_risk": {
+        "mean": 0.1011,
+        "lower": 0.0996,
+        "upper": 0.1027,
+        "sd": 0.0155,
+        "n": 400
+      },
+      "cost": {
+        "mean": 0.5796,
+        "lower": 0.5708,
+        "upper": 0.5885,
+        "sd": 0.0905,
+        "n": 400
+      },
+      "detection_accuracy": {
+        "mean": 0.7597,
+        "lower": 0.7374,
+        "upper": 0.782,
+        "sd": 0.2276,
+        "n": 400
+      }
+    },
+    "correlation_0.5": {
+      "benefit": {
+        "mean": 0.177,
+        "lower": 0.168,
+        "upper": 0.1861,
+        "sd": 0.0922,
+        "n": 400
+      },
+      "worst_final_risk": {
+        "mean": 0.1007,
+        "lower": 0.0991,
+        "upper": 0.1023,
+        "sd": 0.016,
+        "n": 400
+      },
+      "cost": {
+        "mean": 0.5836,
+        "lower": 0.5759,
+        "upper": 0.5913,
+        "sd": 0.0787,
+        "n": 400
+      },
+      "detection_accuracy": {
+        "mean": 0.7584,
+        "lower": 0.7362,
+        "upper": 0.7807,
+        "sd": 0.2271,
+        "n": 400
+      }
+    },
+    "correlation_0.8": {
+      "benefit": {
+        "mean": 0.1755,
+        "lower": 0.1664,
+        "upper": 0.1845,
+        "sd": 0.0924,
+        "n": 400
+      },
+      "worst_final_risk": {
+        "mean": 0.1012,
+        "lower": 0.0996,
+        "upper": 0.1028,
+        "sd": 0.0161,
+        "n": 400
+      },
+      "cost": {
+        "mean": 0.5844,
+        "lower": 0.5767,
+        "upper": 0.5921,
+        "sd": 0.0786,
+        "n": 400
+      },
+      "detection_accuracy": {
+        "mean": 0.7578,
+        "lower": 0.7356,
+        "upper": 0.7801,
+        "sd": 0.2271,
+        "n": 400
+      }
+    },
+    "budget_1": {
+      "benefit": {
+        "mean": 0.1417,
+        "lower": 0.1328,
+        "upper": 0.1507,
+        "sd": 0.0918,
+        "n": 400
+      },
+      "worst_final_risk": {
+        "mean": 0.1059,
+        "lower": 0.1044,
+        "upper": 0.1073,
+        "sd": 0.0145,
+        "n": 400
+      },
+      "cost": {
+        "mean": 0.5213,
+        "lower": 0.5098,
+        "upper": 0.5327,
+        "sd": 0.1165,
+        "n": 400
+      },
+      "actions": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 400
+      }
+    },
+    "budget_2": {
+      "benefit": {
+        "mean": 0.177,
+        "lower": 0.168,
+        "upper": 0.1861,
+        "sd": 0.0922,
+        "n": 400
+      },
+      "worst_final_risk": {
+        "mean": 0.1007,
+        "lower": 0.0991,
+        "upper": 0.1023,
+        "sd": 0.016,
+        "n": 400
+      },
+      "cost": {
+        "mean": 0.5836,
+        "lower": 0.5759,
+        "upper": 0.5913,
+        "sd": 0.0787,
+        "n": 400
+      },
+      "actions": {
+        "mean": 1.9225,
+        "lower": 1.8963,
+        "upper": 1.9487,
+        "sd": 0.2677,
+        "n": 400
+      }
+    },
+    "budget_3": {
+      "benefit": {
+        "mean": 0.1834,
+        "lower": 0.1745,
+        "upper": 0.1923,
+        "sd": 0.0912,
+        "n": 400
+      },
+      "worst_final_risk": {
+        "mean": 0.1008,
+        "lower": 0.0992,
+        "upper": 0.1025,
+        "sd": 0.0167,
+        "n": 400
+      },
+      "cost": {
+        "mean": 0.627,
+        "lower": 0.6192,
+        "upper": 0.6348,
+        "sd": 0.0795,
+        "n": 400
+      },
+      "actions": {
+        "mean": 2.4925,
+        "lower": 2.4301,
+        "upper": 2.5549,
+        "sd": 0.6371,
+        "n": 400
+      }
+    }
+  },
+  "oracle": {
+    "n": 400,
+    "congested_coverage": {
+      "mean": 1,
+      "lower": 1,
+      "upper": 1,
+      "sd": 0,
+      "n": 400
+    },
+    "cost": {
+      "mean": 0.0591,
+      "lower": 0.0573,
+      "upper": 0.0609,
+      "sd": 0.0182,
+      "n": 400
+    },
+    "note": "Oracle 知道真实状态；只作为检测覆盖上界，不参与配对显著性比较。"
+  },
+  "raw_oracle": [
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 3,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261105,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 4,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_EAST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261106,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261107,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 2,
+      "action_ids": [
+        "A_CAMERA",
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261108,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 2,
+      "action_ids": [
+        "A_CAMERA",
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 3,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261109,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 4,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_EAST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261110,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_EAST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261111,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 7,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 4,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261112,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 4,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 4,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261113,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 0,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 1,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 2,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 3,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 3,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 4,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 5,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 6,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 7,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 8,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 9,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 10,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 11,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 12,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 13,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 14,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 15,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_WEST_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 16,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 17,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 18,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 19,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 20,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_WEST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 21,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 0,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 22,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 23,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 24,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 5,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 25,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 26,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 27,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 7,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 28,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_EAST_PLAZA"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 29,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 30,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 31,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 6,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 32,
+      "congested_coverage": 1,
+      "cost": 0.03,
+      "true_congested": 1,
+      "action_ids": [
+        "A_HISTORY"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 33,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 34,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 5,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 35,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 36,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 37,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 6,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 38,
+      "congested_coverage": 1,
+      "cost": 0.05,
+      "true_congested": 2,
+      "action_ids": [
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    },
+    {
+      "strategy": "oracle",
+      "seed": 20261114,
+      "trial": 39,
+      "congested_coverage": 1,
+      "cost": 0.08,
+      "true_congested": 8,
+      "action_ids": [
+        "A_HISTORY",
+        "A_PREDICTION"
+      ],
+      "targets": [
+        "R_NORTH_STAND",
+        "R_SOUTH_CONCOURSE"
+      ],
+      "note": "Oracle 知道真实状态并可选择目标区域；只作为检测覆盖上界，不参与配对显著性比较。"
+    }
+  ]
+}

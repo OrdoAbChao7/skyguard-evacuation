@@ -372,3 +372,88 @@ SkyGuard 是面向**大型活动散场**场景的主动感知、风险评估与�
 - **审计 B 节 P1 仍未修复**（改派释放原人员、失败/取消不结算预算、预算字段绕过、幂等键跨用户、
   截断 SSE、续接新会话、多实例丢更新、生产错误回显、平台重试非幂等、预测统计与 surge 覆盖、
   感知判据差异、环境示例）。V6.5 仍为研究原型，不得作为可部署版本。
+
+### 2026-11-09：V7.0 预测、动态规划与联合 VoI（研究实现 + 30 种子实验）
+
+本轮在 V6.5 基础上实施 V7.1/V7.2/V7.3 的可执行部分；未改写 V6.1/V6.2/V6.4/V6.5 冻结证据。
+
+**最终证据运行：** `evaluation/v70/v70-final-20261109T195122/`
+（复现：`npm run benchmark:v70`；包含 prediction / planning / joint-voi 三组 JSON、README、独立清单与根 `MANIFEST.json`）。
+详细材料：[V7.0 实施报告](V7_0_IMPLEMENTATION_REPORT.md)、[V7.0 算法对照实验报告](V7_0_EXPERIMENT_REPORT.md)、
+[V7.0 独立审计](../V7.0_INDEPENDENT_AUDIT.md)。
+
+**1. V7.1 预测引擎（已实现）**
+
+- 新增 `backend/src/services/mvp/forecast-advanced.ts`：Kalman（局部线性趋势）、ARIMA(1,1,0)、
+  Holt-Winters（加性趋势 + 可选季节项）、轻量在线 LSTM（隐藏单元 4、截断 BPTT）、
+  regime 检测、Page-Hinkley 输入漂移 + 误差漂移、split-conformal 区间、状态感知自适应集成。
+- 旧 `prediction.ts`（`adaptive-forecast-v3`）保持不变；V7 引擎通过研究 API 暴露，未替换安全主链路的默认预测。
+- 30 种子 × 7 机制（stable/surge/decline/periodic/missing/noisy/regime_shift）× 11 方法，严格滚动起点。
+- 结果（`prediction_summary.json`）：
+  - 集成平均 MAE 显著低于 persistence/EMA/damped/blend/linear/Kalman/在线 LSTM（Holm 校正 p<0.001）；
+  - 但显著高于 ARIMA、Holt-Winters 与旧 adaptive（差 +4.16 / +8.16 / +2.01 MAE）；
+  - **不是任何单一机制的最佳方法**：stable/missing/noisy 最佳为在线 LSTM，surge/periodic 为 Holt-Winters，
+    decline 为 linear，regime_shift 为 ARIMA；
+  - 95% 覆盖率：stable 0.933、surge **0.748**、decline 0.983、periodic 0.982、missing 0.932、noisy 0.933、regime_shift 0.809；
+    **surge 低于名义值，不得用于安全告警阈值**；
+  - 漂移检测（Page-Hinkley + 误差比）：regime_shift 突增/下降段检测率均 1.0，stable 误报率 0.016；
+  - Regime 可接受标签准确率：stable 0.891、surge 0.487、decline 0.953、periodic 0.182、missing 0.833、noisy 0.424、regime_shift 0.885；
+    短窗口下周期性/突增分类不稳定，只能作为候选筛选提示。
+
+**2. V7.1 动态规划（已实现）**
+
+- 新增 `planning/strategies.ts`（可配置时间扩展求解器、最大流、容量盲最短路径、受限 MILP 枚举）、
+  `planning/congestion.ts`（1 分钟 FIFO 队列 + BPR 行程时间放大 + 出口拥挤服务衰减）、
+  `planning/mpc-planner.ts`（滚动时域 MPC）。
+- 研究求解器使用 Dijkstra + 势函数；安全主链路的 SPFA 规划器保持不变（既有 199 测试全部通过）。
+- 实验：30 种子、容量受压合成场景（初始需求 650–1000/区域 + 2–3 次合成入流），所有策略面对相同入流与执行模型。
+- 结果（`planning_summary.json`，均值）：
+  - static_mcf：未疏散 613.3、完成时间 19.0、队列人·分钟 51395、校验通过率 1.0；
+  - shortest_path：未疏散 1441.6、完成时间 24.0、校验通过率 0；
+  - max_flow：未疏散 613.3、完成时间 17.13；
+  - milp_restricted：未疏散 613.3、完成时间 11.30、队列 18523（相对 static_mcf 显著更低）；
+  - reactive_mcf：未疏散 0、完成时间 8.40、队列 13681；
+  - mpc_forecast：未疏散 0、完成时间 8.30、队列 13843；
+  - mpc_queue：未疏散 0、完成时间 8.33、队列 13866。
+- **负向结果（保留）**：预测与队列反馈相对“仅滚动重规划”没有显著增量收益
+  （mpc_queue − reactive：未疏散 0.00，Holm p=1；队列差 +185.7 [−127.0, +498.4]，Holm p=0.49）。
+  本模型假设即时响应、未建模调度延迟/预留提前期，因此不能外推为“预测无用”。
+
+**3. V7.2 联合 VoI（已实现）**
+
+- 新增 `backend/src/services/mvp/joint-voi.ts`：区域相关性（间接信息权重）、覆盖重叠冗余折扣、
+  预算内顺序选择、跨轮次已选动作记忆；参数来自场景 `investigation.joint`（correlation 0.5、redundancy_penalty 0.6）。
+- 公平实验：30 种子 × 40 trial；所有策略共享动作覆盖、观测采样随机数与预算；Oracle 知道真实状态。
+- 结果（`joint_voi_summary.json`）：
+  - multi：风险降低 0.1655、最坏区域终风险 0.1031、检测准确率 0.7496、成本 0.5798；
+  - joint：风险降低 0.1629、最坏区域终风险 0.1024、检测准确率 0.7480、成本 0.5801；
+  - 配对：joint − multi benefit −0.0026 [−0.0044, −0.0008]（Holm 显著但效应量 d_z=−0.08）；
+    worst-region risk −0.0007 [−0.0012, −0.0002]（同样很小）。
+  - **结论：联合 VoI 未在总收益上优于现有多区域 VoI，仅最坏区域风险略低；不得宣称全面更优。**
+  - Oracle 检测覆盖 1.0、成本 0.059，说明真实状态可知时仍有很大改进空间（上界，不可实现）。
+
+**4. V7.3 集成与可信边界（已实现部分）**
+
+- 新增只读研究 API：
+  - `GET /api/v1/mvp/v70/forecast/:regionId`
+  - `GET /api/v1/mvp/v70/joint-investigation?region_id=...`
+  - `GET /api/v1/safety/v70/mpc-preview`
+  - `GET /api/v1/safety/v70/congestion-preview`
+- 观测不可信/缺失时 MPC 与预测预览 fail closed；带预测到达的 MPC 步骤标记为条件投影，
+  只有对应当前观测的第一步执行独立校验。
+- 新增测试：`forecast-advanced.test.ts`、`planning-v70.test.ts`、`joint-voi.test.ts`、`v70-api.test.ts`。
+- 修复 Windows 检出换行符导致的证据字节不一致：`.gitattributes` 增加 `evaluation/** -text`，
+  证据文件按仓库字节恢复；V6.5 证据校验测试恢复通过。
+- 验证（本机，2026-11-09）：后端 **201/201**、前端 **17/17**；`npm run build`、
+  `npm run demo`（安全三场景）、`npm run demo:mvp`（MVP 三场景）全部通过；
+  `verify:evidence` **134/134**、冻结根清单 **46/46**（校验不再改写冻结文件）。
+
+**仍为外部阻塞**
+
+- 真实场馆时序、标定人群速度/出口服务率、真实入流与调度延迟；
+- AgentArts 真实租户/凭证/平台 Trace；
+- 昇腾 NPU/CANN 实机；
+- Docker daemon 与真实 CI 运行环境；
+- 专业安全评审与真实演练。
+
+**V7 当前定位：研究原型 + 可复现合成实验；不是 Production Ready，也不是真实场馆效果验证。**

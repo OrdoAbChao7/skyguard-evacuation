@@ -89,3 +89,37 @@ v3 不再预设赢家：用滚动验证在多个方法中选择，并单独校�
 - 因此：不能笼统宣称自适优于持久化；区间不得用于安全告警阈值。
 
 完整数据：`evaluation/v61/experiment_c_strict_prediction.json`。
+
+## 7. V7.0 研究级扩展（`ensemble_v70`）
+
+> 实现：`backend/src/services/mvp/forecast-advanced.ts`  
+> API：`GET /api/v1/mvp/v70/forecast/:regionId?horizon_minutes=5`  
+> 实验：`evaluation/v70/<run>/prediction_*`（30 种子 × 7 机制 × 11 方法）
+
+新增方法：
+
+| 方法 | 说明 |
+| --- | --- |
+| `kalman` | 局部线性趋势状态空间模型，按实际时间间隔推进，输出预测方差 |
+| `arima` | ARIMA(1,1,0)：一阶差分上拟合 AR(1)，累加还原 |
+| `holt_winters` | 加性趋势 + 可选季节项；季节长度由去趋势自相关选择 |
+| `lstm_online` | 单层 LSTM（隐藏 4、截断 BPTT(1)、确定性种子），轻量神经网络基线 |
+| `ensemble_v70` | 状态感知候选筛选 + 验证误差指数权重 + split-conformal 区间 + Page-Hinkley 漂移放大 |
+
+关键设计：
+
+1. 候选模型按 regime（stable/surge/decline/periodic/noisy/mixed）筛选，但**不是**硬切换；
+2. 权重来自训练窗口内滚动验证 MAE；
+3. 区间使用历史残差的 split-conformal 分位，并按近期误差比与漂移检测放大；
+4. 漂移检测 = Page-Hinkley 输入水平漂移 + 验证误差比；
+5. 所有选择/校准只使用过去数据；目标点不参与。
+
+实验结果（必须与负向结果一起引用）：
+
+- 集成显著优于 persistence/EMA/linear/Kalman/在线 LSTM；
+- 但显著劣于 ARIMA/Holt-Winters/旧 `adaptive-forecast-v3`；
+- **没有单一方法全场景最优**：stable/missing/noisy 最佳为在线 LSTM，surge/periodic 为 Holt-Winters，
+  decline 为 linear，regime_shift 为 ARIMA；
+- surge 95% 覆盖率仅 0.748，**不得用于安全告警阈值**；
+- regime 检测在 periodic/surge 上准确率有限，只能作为候选筛选提示；
+- 旧 `adaptive-forecast-v3` 仍是安全主链路默认预测；V7 引擎通过研究 API 提供，不替换默认链路。
