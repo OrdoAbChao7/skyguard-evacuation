@@ -3,11 +3,14 @@
 > **唯一事实来源（Single Source of Truth）**：本文件描述项目当前真实状态。  
 > 研发规则与长期目标见 [`AGENTS.md`](../AGENTS.md)；安全边界见 [`LIMITATIONS.md`](LIMITATIONS.md)、[`MVP_LIMITATIONS.md`](MVP_LIMITATIONS.md)；
 > 技术主张等级见 [`research/CLAIMS.md`](../research/CLAIMS.md)。  
-> 最后核对：2026-11-10（数据来自仓库文件与脚本，不复制旧报告）。
+> 最后核对：2026-11-13（数据来自仓库文件与脚本，不复制旧报告）。
 
 ## 1. 项目定位
 
-SkyGuard 是面向**大型活动散场**场景的主动感知、风险评估与可信疏散辅助决策**研究原型**。
+SkyGuard 是面向**大型活动散场与城市滨水空间人群疏散**场景的主动感知、风险评估与可信疏散辅助决策**研究原型**。
+
+当前默认场景为 `data/scenarios/hankou-mvp.json`（武汉汉口江滩，44 区域 / 78 通道 / 11 出口；面积与容量为合成/估算数据，未现场标定）。
+该文件派生自 V7.5.2 冻结研究场景 `data/scenarios/hankou-marshland-v752-base.json`，几何与容量参数一致，仅补充 MVP 岗位技能、调查联合配置与演示序列；冻结场景及其证据哈希不得修改。
 
 长期目标是构建融合 AI Agent、主动感知、多区域风险协同决策、华为昇腾边缘推理与人工安全审批的完整系统，
 争取达到华为 ICT 创新赛全国一等奖竞争力。

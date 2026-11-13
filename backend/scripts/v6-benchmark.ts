@@ -30,24 +30,15 @@ import { resolveEffectiveNetwork } from '../src/services/safety/network';
 import { buildObservation } from '../src/services/safety/observations';
 import type { DensityObservation } from '../src/services/safety/types';
 
+import { mulberry32 } from './lib/benchmark';
 const SEEDS = [20261105, 20261106, 20261107, 20261108, 20261109];
 const OUT = path.resolve(__dirname, '../../evaluation/v6');
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const scenario: SafetyScenario = loadSafetyScenario(SCENARIO_PATH);
-const policy = scenario.investigation;
+const policy = scenario.investigation as NonNullable<typeof scenario.investigation>;
 if (!policy) throw new Error('缺少 investigation 策略');
 fs.mkdirSync(OUT, { recursive: true });
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 const mean = (values: number[]) => values.length === 0 ? 0 : values.reduce((a, b) => a + b, 0) / values.length;
 const std = (values: number[]) => values.length < 2 ? 0 : Math.sqrt(values.reduce((s, v) => s + (v - mean(values)) ** 2, 0) / (values.length - 1));
 const ci = (values: number[]) => {
@@ -164,7 +155,7 @@ function experimentB() {
     // 无重试
     const noRetrySuccess = rng() >= failureProbability;
     // 有重试：最多 1 次重试，冷却 + 退避
-    const session = createInvestigationSession('R_EAST_STAND');
+    const session = createInvestigationSession('R_S04_L1_CREST');
     let now = new Date('2026-11-05T10:00:00.000Z');
     let attempts = 0;
     let failures = 0;
@@ -225,7 +216,12 @@ function experimentB() {
 // ---------------------------------------------------------------------------
 function experimentC() {
   const horizons = [2, 5, 10];
-  const results: Array<Record<string, unknown>> = [];
+  const results: Array<{
+    horizon_minutes: number;
+    own_mae: { mean: number; lower: number; upper: number };
+    spatial_mae: { mean: number; lower: number; upper: number };
+    relative_improvement: number;
+  }> = [];
   for (const horizon of horizons) {
     const ownErrors: number[] = [];
     const spatialErrors: number[] = [];
@@ -281,9 +277,9 @@ function incident(id: string, affected: Incident['affected']): Incident {
 
 function experimentD() {
   const network = resolveEffectiveNetwork(scenario, [
-    incident('V6-E', { region_ids: [], corridor_ids: [], exit_ids: ['E_EAST'] }),
-    incident('V6-C', { region_ids: [], corridor_ids: ['C_MID'], exit_ids: [] }),
-    incident('V6-S', { region_ids: ['R_EAST_STAND'], corridor_ids: [], exit_ids: [] }),
+    incident('V6-E', { region_ids: [], corridor_ids: [], exit_ids: ['GATE_03_G03'] }),
+    incident('V6-C', { region_ids: [], corridor_ids: ['C_DYKE_01_02'], exit_ids: [] }),
+    incident('V6-S', { region_ids: ['R_S04_L1_CREST'], corridor_ids: [], exit_ids: [] }),
   ]);
   const demand = new Map(scenario.regions.map(region => [region.id, Math.round(region.holding_capacity_persons * 0.9)]));
   const output = planEvacuation({

@@ -1,6 +1,6 @@
 # SkyGuard 竞赛技术报告（V6）
 
-> 场景：大型体育场散场（合成）。全部实验在合成数据上完成；真实场地/平台/硬件未验证。
+> 场景：V6 历史实验基于早期 8 区域合成场馆（`stadium-evacuation.json`，已移除）；当前默认场景已切换为 44 区域汉口江滩，本报告实验未重跑。全部实验在合成数据上完成；真实场地/平台/硬件未验证。
 > 详细数据见 `evaluation/COMPETITION_REPORT.md`、`evaluation/V6_REPORT.md`。
 
 ## 1. 系统定位
@@ -19,7 +19,7 @@ SkyGuard 是面向大型活动的**主动感知、风险调查与可信现场协
 - 安全内核：时间扩展最小费用流规划器 + 15 类独立校验 + 四态状态机；
 - MVP 编排：预测、VoI、人员/工单、工具注册表、Agent、AgentArts 适配；
 - 前端：态势地图、预测、Agent 控制台、多区域协同、审批/工单、移动端 `/staff`；
-- 数据：`data/scenarios/stadium-evacuation.json`（8 区域/12 通道/4 出口）；
+- 数据：早期 `data/scenarios/stadium-evacuation.json`（8 区域/12 通道/4 出口，已移除）；当前默认场景见 `hankou-mvp.json`；
 - 平台：MCP stdio 15 工具；AgentArts 可配置 HTTP 适配器（未实机）。
 
 ## 3. 方法

@@ -560,8 +560,8 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
             ) : (
               <>
                 <span className="mvp-muted">接单/执行/反馈需要工作人员登录（演示工号与登录码来自场景名册）。</span>
-                <input aria-label="工作人员工号" placeholder="工号，如 STF-02" value={staffIdInput} onChange={event => setStaffIdInput(event.target.value)} />
-                <input aria-label="工作人员登录码" placeholder="登录码，如 1002" value={staffCodeInput} onChange={event => setStaffCodeInput(event.target.value)} />
+                <input aria-label="工作人员工号" placeholder="工号，如 STAFF_GATE_02" value={staffIdInput} onChange={event => setStaffIdInput(event.target.value)} />
+                <input aria-label="工作人员登录码" placeholder="登录码，如 CODE_G02" value={staffCodeInput} onChange={event => setStaffCodeInput(event.target.value)} />
                 <button type="button" disabled={busy !== null || !staffIdInput || !staffCodeInput} onClick={() => void act('staff-login', loginStaff, '工作人员登录成功')}>工作人员登录</button>
               </>
             )}

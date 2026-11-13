@@ -6,7 +6,7 @@ import { makeMvpFixture } from './fixtures';
 function seed(fixture: ReturnType<typeof makeMvpFixture>, now: Date, counts: number[]) {
   counts.forEach((count, index) => {
     fixture.safety.ingestObservation({
-      regionId: 'R_EAST_STAND',
+      regionId: 'R_S04_L1_CREST',
       count,
       confidence: 0.92,
       source: 'simulation',
@@ -23,7 +23,7 @@ test('线性上升序列预测为上升趋势且区间包住预测值', () => {
     const now = new Date('2026-11-05T12:00:00.000Z');
     seed(fixture, now, [300, 330, 360, 390, 420, 450]);
     const service = new PredictionService(fixture.scenario, fixture.safety.getObservationStore());
-    const result = service.predict('R_EAST_STAND', { now, horizonMinutes: 5 });
+    const result = service.predict('R_S04_L1_CREST', { now, horizonMinutes: 5 });
     assert.equal(result.sufficient, true);
     assert.equal(result.algorithm, 'adaptive-forecast-v3');
     assert.equal(result.trend.direction, 'rising');
@@ -50,7 +50,7 @@ test('数据不足时明确标记 insufficient 并回退最近有效观测', () 
     const now = new Date('2026-11-05T12:00:00.000Z');
     seed(fixture, now, [520]);
     const service = new PredictionService(fixture.scenario, fixture.safety.getObservationStore());
-    const result = service.predict('R_EAST_STAND', { now, horizonMinutes: 5 });
+    const result = service.predict('R_S04_L1_CREST', { now, horizonMinutes: 5 });
     assert.equal(result.sufficient, false);
     assert.equal(result.trend.direction, 'unknown');
     assert.equal(result.predicted_count, 520);
@@ -66,7 +66,7 @@ test('低置信度观测被排除在预测输入之外', () => {
     const now = new Date('2026-11-05T12:00:00.000Z');
     for (let index = 0; index < 5; index += 1) {
       fixture.safety.ingestObservation({
-        regionId: 'R_EAST_STAND',
+        regionId: 'R_S04_L1_CREST',
         count: 300 + index * 20,
         confidence: 0.3,
         source: 'simulation',
@@ -76,7 +76,7 @@ test('低置信度观测被排除在预测输入之外', () => {
       }, { username: 'test', role: 'admin' });
     }
     const service = new PredictionService(fixture.scenario, fixture.safety.getObservationStore());
-    const result = service.predict('R_EAST_STAND', { now });
+    const result = service.predict('R_S04_L1_CREST', { now });
     assert.equal(result.sufficient, false);
     assert.equal(result.input.points, 0);
     assert.ok(result.input.excluded_low_confidence >= 5);
@@ -149,7 +149,7 @@ test('预测结果携带可靠性字段，并在区间过宽时标记 failed', (
     const now = new Date('2026-11-05T12:00:00.000Z');
     seed(fixture, now, [100, 900, 120, 880, 140, 860, 160, 840]);
     const service = new PredictionService(fixture.scenario, fixture.safety.getObservationStore());
-    const result = service.predict('R_EAST_STAND', { now, horizonMinutes: 5 });
+    const result = service.predict('R_S04_L1_CREST', { now, horizonMinutes: 5 });
     assert.ok(result.reliability);
     assert.ok(['ok', 'warning', 'failed'].includes(result.reliability.status));
     assert.ok(result.reliability.reasons.length >= 0);

@@ -56,7 +56,7 @@ test('事件触发策略不会增加重规划次数，且完成疏散', () => {
 test('出口故障时规划避开关闭出口并通过独立校验', () => {
   const fixture = makeMvpFixture();
   try {
-    const network = resolveEffectiveNetwork(fixture.scenario, [incident({ exitIds: ['E_NORTH'] })]);
+    const network = resolveEffectiveNetwork(fixture.scenario, [incident({ exitIds: ['GATE_01_G01'] })]);
     const demand = new Map<string, number>();
     const observations = new Map();
     const now = new Date();
@@ -74,7 +74,7 @@ test('出口故障时规划避开关闭出口并通过独立校验', () => {
       scenario: fixture.scenario, network, demandByRegion: demand,
       scenarioVersion: fixture.scenario.version, constraintVersion: 1, observationVersion: 0, now,
     }).plan;
-    assert.ok(!plan.routes.some(route => route.exit_id === 'E_NORTH'));
+    assert.ok(!plan.routes.some(route => route.exit_id === 'GATE_01_G01'));
     const validation = validateSafetyPlan({
       plan, scenario: fixture.scenario, network,
       latestObservations: observations as Map<string, any>,
@@ -89,7 +89,7 @@ test('出口故障时规划避开关闭出口并通过独立校验', () => {
 test('通道局部封控时规划不经过关闭通道并通过独立校验', () => {
   const fixture = makeMvpFixture();
   try {
-    const network = resolveEffectiveNetwork(fixture.scenario, [incident({ corridorIds: ['C_NE'] })]);
+    const network = resolveEffectiveNetwork(fixture.scenario, [incident({ corridorIds: ['C_S01_L1_GATE'] })]);
     const demand = new Map<string, number>();
     const observations = new Map();
     const now = new Date();
@@ -107,7 +107,7 @@ test('通道局部封控时规划不经过关闭通道并通过独立校验', ()
       scenario: fixture.scenario, network, demandByRegion: demand,
       scenarioVersion: fixture.scenario.version, constraintVersion: 1, observationVersion: 0, now,
     }).plan;
-    assert.ok(!plan.routes.some(route => route.steps.some(step => step.corridor_id === 'C_NE')));
+    assert.ok(!plan.routes.some(route => route.steps.some(step => step.corridor_id === 'C_S01_L1_GATE')));
     const validation = validateSafetyPlan({
       plan, scenario: fixture.scenario, network,
       latestObservations: observations as Map<string, any>,

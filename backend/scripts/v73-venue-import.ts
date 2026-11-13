@@ -27,8 +27,8 @@ import { validateVenueProfile, type VenueProfile } from '../src/services/safety/
 
 const RUN_ID = process.env.V73_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v73', RUN_ID);
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
-const PROFILE_PATH = path.resolve(__dirname, '../../data/venues/stadium-synthetic-profile.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
+const PROFILE_PATH = path.resolve(__dirname, '../../data/venues/hankou-synthetic-profile.json');
 const CSV_PATH = path.resolve(__dirname, '../../data/venues/fixtures/observations-sample.csv');
 const PUBLIC_CSV_PATH = path.resolve(__dirname, '../../data/venues/fixtures/public-sample.csv');
 

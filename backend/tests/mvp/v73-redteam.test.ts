@@ -18,10 +18,10 @@ import {
 import { buildObservation } from '../../src/services/safety/observations';
 import type { DensityObservation } from '../../src/services/safety/types';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 test('CSV 异常 received_at 不再抛错，而是返回明确错误', () => {
-  const csv = 'region_id,observed_at,received_at,count,confidence\nR_NORTH_STAND,2026-11-10T01:00:00Z,not-a-date,300,0.9\n';
+  const csv = 'region_id,observed_at,received_at,count,confidence\nR_S01_L1_CREST,2026-11-10T01:00:00Z,not-a-date,300,0.9\n';
   const parsed = parseObservationCsv(csv);
   assert.equal(parsed.rows.length, 0);
   assert.ok(parsed.errors.some(item => item.code === 'csv_invalid_timestamp'));
@@ -30,7 +30,7 @@ test('CSV 异常 received_at 不再抛错，而是返回明确错误', () => {
 test('异常大人数被拒绝：CSV/视频适配器均有上限', () => {
   const scenario = loadSafetyScenario(scenarioPath);
   const region = scenario.regions.find(item => item.enabled)!;
-  const parsed = parseObservationCsv('region_id,observed_at,count,confidence\nR_NORTH_STAND,2026-11-10T01:00:00Z,1000000000,0.9\n');
+  const parsed = parseObservationCsv('region_id,observed_at,count,confidence\nR_S01_L1_CREST,2026-11-10T01:00:00Z,1000000000,0.9\n');
   assert.equal(parsed.errors.length, 0);
   const converted = toDensityObservations(scenario, parsed.rows, { mode: 'replay', now: new Date('2026-11-10T01:00:10Z') });
   assert.equal(converted.observations.length, 0);
@@ -46,7 +46,7 @@ test('异常大人数被拒绝：CSV/视频适配器均有上限', () => {
 
 test('公开/授权适配器遇到非法时间戳返回错误而非崩溃', () => {
   const scenario = loadSafetyScenario(scenarioPath);
-  const rows = [{ region: 'R_NORTH_STAND', count: '300', timestamp: 'not-a-date' }];
+  const rows = [{ region: 'R_S01_L1_CREST', count: '300', timestamp: 'not-a-date' }];
   const mapping = { regionColumn: 'region', countColumn: 'count', timestampColumn: 'timestamp' };
   const publicResult = adaptPublicDatasetRows(rows, {
     name: 'fixture', license: 'TEST', license_verified: true, citation: 'fixture', data_nature: 'public_dataset',
@@ -64,7 +64,7 @@ test('双向动态容量：求解结果不超逐分钟物理容量', () => {
   for (const corridor of scenario.corridors) if (corridor.capacity_per_min !== null) corridor.direction = 'both';
   const network = resolveEffectiveNetwork(scenario, []);
   const versions = { scenarioVersion: scenario.version, constraintVersion: 0, observationVersion: 0 };
-  const corridorFactor = (id: string, minute: number) => (minute >= 3 && (id === 'C_NE' || id === 'C_NW') ? 0.5 : 1);
+  const corridorFactor = (id: string, minute: number) => (minute >= 3 && (id === 'C_S01_L1_GATE' || id === 'C_S02_L1_GATE') ? 0.5 : 1);
   for (let round = 0; round < 4; round += 1) {
     const demand = new Map(scenario.regions.map(region => [region.id, region.enabled ? 200 + round * 40 : 0]));
     const solved = solveTimeExpandedPlan({

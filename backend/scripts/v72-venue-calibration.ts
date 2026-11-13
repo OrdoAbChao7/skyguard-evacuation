@@ -3,7 +3,7 @@
  *
  *   npm run benchmark:v72 --prefix backend -- --only=calibration
  *
- * 输入：data/venues/stadium-synthetic-profile.json（合成、未标定档案）
+ * 输入：data/venues/hankou-synthetic-profile.json（合成、未标定档案）
  * 输出：evaluation/v72/<run>/calibration_*.json|md
  *
  * 本脚本不修改场景文件、不写入安全状态；所有估计值来自合成样本，
@@ -14,6 +14,7 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { loadSafetyScenario } from '../src/services/safety/scenario';
+import { mulberry32 } from './lib/benchmark';
 import {
   adaptCameraCount,
   applyVenueProfile,
@@ -25,19 +26,9 @@ import {
 
 const RUN_ID = process.env.V72_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v72', RUN_ID);
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
-const PROFILE_PATH = path.resolve(__dirname, '../../data/venues/stadium-synthetic-profile.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
+const PROFILE_PATH = path.resolve(__dirname, '../../data/venues/hankou-synthetic-profile.json');
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 const scenario = loadSafetyScenario(SCENARIO_PATH);
 const profile = JSON.parse(fs.readFileSync(PROFILE_PATH, 'utf8')) as VenueProfile;

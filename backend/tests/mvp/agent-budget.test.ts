@@ -16,7 +16,7 @@ test('本地 Agent 遵守调查动作预算：max_actions=1 只执行一轮', as
     };
     // 制造信息缺口（不可信观测），使 Agent 进入调查流程。
     fixture.safety.ingestObservation({
-      regionId: 'R_EAST_STAND',
+      regionId: 'R_S04_L1_CREST',
       count: 800,
       confidence: 0.2,
       source: 'simulation',
@@ -28,7 +28,7 @@ test('本地 Agent 遵守调查动作预算：max_actions=1 只执行一轮', as
     }, ADMIN);
 
     const mvp = new MvpService({ scenario: tightScenario, safety: fixture.safety, audit: fixture.audit });
-    const run = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'budget_test', runtime: 'local' });
+    const run = await mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: 'budget_test', runtime: 'local' });
     const selected = run.investigation.rounds.filter(round => round.selected_action_id);
     assert.equal(selected.length, 1);
     // 第二轮应因预算无法准入而停止。

@@ -56,14 +56,14 @@ test('即使区域映射为 assumed_demo 也不得进入安全域', () => {
   const loaded = loadDisplayPackage(PACKAGE);
   const frame = loaded.frames[0];
   const mapping: RegionMapping = {
-    region_id: 'R_EAST_STAND',
+    region_id: 'R_S04_L1_CREST',
     zone_id: 'N',
     area_m2: 750,
     calibration: 'assumed_demo',
     source: 'demo-mapping',
   };
   const draft = adaptDisplayFrame(loaded, frame, { mappings: [mapping] })
-    .find(item => item.region_id === 'R_EAST_STAND')!;
+    .find(item => item.region_id === 'R_S04_L1_CREST')!;
   assert.equal(draft.quality.demo_mapping, true);
   assert.equal(draft.valid_for_safety, false);
 });
@@ -71,7 +71,7 @@ test('即使区域映射为 assumed_demo 也不得进入安全域', () => {
 test('surveyed 映射且面积一致、置信度足够时才写入可信观测', () => {
   const fixture = makeMvpFixture();
   try {
-    const region = fixture.scenario.regions.find(item => item.id === 'R_EAST_STAND')!;
+    const region = fixture.scenario.regions.find(item => item.id === 'R_S04_L1_CREST')!;
     const mapping: RegionMapping = {
       region_id: region.id,
       zone_id: 'demo',
@@ -102,7 +102,7 @@ test('surveyed 映射且面积一致、置信度足够时才写入可信观测',
 test('面积与场景区域不一致或置信度不足时降级为不可信观测', () => {
   const fixture = makeMvpFixture();
   try {
-    const region = fixture.scenario.regions.find(item => item.id === 'R_EAST_STAND')!;
+    const region = fixture.scenario.regions.find(item => item.id === 'R_S04_L1_CREST')!;
     const wrongArea = adaptImageCount({
       image_id: 'demo.jpg',
       predicted_count: 600,
@@ -155,7 +155,7 @@ test('感知→观测→预测→VoI→风险链路可运行，且不可信输�
       .filter(item => item.provenance.zone_id === 'N')
       .map(item => ({
         ...item,
-        region_id: 'R_EAST_STAND',
+        region_id: 'R_S04_L1_CREST',
       }));
     const prediction = new PredictionService(fixture.scenario, fixture.safety.getObservationStore());
     const result = runPerceptionDecisionLoop({
@@ -163,7 +163,7 @@ test('感知→观测→预测→VoI→风险链路可运行，且不可信输�
       safety: fixture.safety,
       prediction,
       drafts,
-      target_region_id: 'R_EAST_STAND',
+      target_region_id: 'R_S04_L1_CREST',
       actor: ADMIN,
     });
     assert.equal(result.ingest.length, 1);

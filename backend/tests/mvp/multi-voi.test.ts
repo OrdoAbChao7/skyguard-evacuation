@@ -24,15 +24,15 @@ test('相邻覆盖动作同时评估目标区域与邻居区域', () => {
     const policy = fixture.scenario.investigation!;
     const graph = buildRegionGraph(fixture.scenario);
     const risks = fixture.scenario.regions.map(region =>
-      risk(region.id, region.id === 'R_EAST_STAND' ? 'critical' : 'watch', region.id !== 'R_EAST_STAND'));
+      risk(region.id, region.id === 'R_S04_L1_CREST' ? 'critical' : 'watch', region.id !== 'R_S04_L1_CREST'));
     const beliefs = priorBeliefsForRegions(policy, risks);
-    const decision = decideMultiRegionInvestigation(policy, 'R_EAST_STAND', beliefs, graph);
+    const decision = decideMultiRegionInvestigation(policy, 'R_S04_L1_CREST', beliefs, graph);
 
     const uav = decision.evaluations.find(item => item.action_id === 'A_UAV')!;
     assert.equal(uav.kind, 'uav_request');
     assert.ok(uav.covered_regions.length > 1);
-    assert.ok(uav.covered_regions.some(item => item.region_id === 'R_EAST_STAND'));
-    assert.ok(uav.covered_regions.some(item => ['R_NORTH_CONCOURSE', 'R_SOUTH_CONCOURSE'].includes(item.region_id)));
+    assert.ok(uav.covered_regions.some(item => item.region_id === 'R_S04_L1_CREST'));
+    assert.ok(uav.covered_regions.some(item => ['R_S05_L1_CREST', 'R_S06_L1_CREST'].includes(item.region_id)));
     assert.ok(uav.weighted_risk_reduction > 0);
     assert.ok(uav.weighted_information_gain_bits > 0);
 
@@ -48,14 +48,14 @@ test('可信观测会更新区域信念，不可信观测保持先验', () => {
   try {
     const policy = fixture.scenario.investigation!;
     const risks = [
-      risk('R_EAST_STAND', 'critical', false),
-      risk('R_NORTH_STAND', 'normal', true),
+      risk('R_S04_L1_CREST', 'critical', false),
+      risk('R_S01_L1_CREST', 'normal', true),
     ];
     const beliefs = priorBeliefsForRegions(policy, risks);
     const prior = priorBelief(policy);
-    assert.deepEqual(beliefs.get('R_EAST_STAND'), prior);
-    assert.notDeepEqual(beliefs.get('R_NORTH_STAND'), prior);
-    assert.ok(entropy(beliefs.get('R_NORTH_STAND')!) < entropy(prior));
+    assert.deepEqual(beliefs.get('R_S04_L1_CREST'), prior);
+    assert.notDeepEqual(beliefs.get('R_S01_L1_CREST'), prior);
+    assert.ok(entropy(beliefs.get('R_S01_L1_CREST')!) < entropy(prior));
   } finally {
     fixture.cleanup();
   }
@@ -68,7 +68,7 @@ test('预算耗尽时停止调查', () => {
     const graph = buildRegionGraph(fixture.scenario);
     const risks = fixture.scenario.regions.map(region => risk(region.id, 'watch'));
     const beliefs = priorBeliefsForRegions(policy, risks);
-    const decision = decideMultiRegionInvestigation(policy, 'R_EAST_STAND', beliefs, graph, {}, {
+    const decision = decideMultiRegionInvestigation(policy, 'R_S04_L1_CREST', beliefs, graph, {}, {
       usedActions: policy.budget?.max_actions ?? 3,
     });
     assert.equal(decision.should_investigate, false);
@@ -87,7 +87,7 @@ test('单个候选动作超预算只拒绝该候选，便宜动作仍可被推�
     const risks = fixture.scenario.regions.map(region => risk(region.id, 'watch'));
     const beliefs = priorBeliefsForRegions(policy, risks);
     const tight = { ...policy, budget: { max_actions: 3, max_total_cost: 0.1, max_total_time_minutes: 8 } };
-    const decision = decideMultiRegionInvestigation(tight, 'R_EAST_STAND', beliefs, graph, {}, {
+    const decision = decideMultiRegionInvestigation(tight, 'R_S04_L1_CREST', beliefs, graph, {}, {
       usedCost: 0.06,
     });
 
@@ -109,10 +109,10 @@ test('覆盖权重来自场景并标注来源', () => {
     const graph = buildRegionGraph(fixture.scenario);
     const risks = fixture.scenario.regions.map(region => risk(region.id, 'watch'));
     const beliefs = priorBeliefsForRegions(policy, risks);
-    const decision = decideMultiRegionInvestigation(policy, 'R_EAST_STAND', beliefs, graph);
+    const decision = decideMultiRegionInvestigation(policy, 'R_S04_L1_CREST', beliefs, graph);
     assert.equal(decision.coverage_weight_source, 'scenario');
     const uav = decision.evaluations.find(item => item.action_id === 'A_UAV')!;
-    const neighbor = uav.covered_regions.find(item => item.region_id !== 'R_EAST_STAND')!;
+    const neighbor = uav.covered_regions.find(item => item.region_id !== 'R_S04_L1_CREST')!;
     assert.equal(neighbor.weight, policy.coverage_weights!.neighbor);
   } finally {
     fixture.cleanup();

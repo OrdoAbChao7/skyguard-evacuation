@@ -25,7 +25,7 @@ npm start            # 由后端托管 frontend/dist，默认 8010
 | --- | --- | --- |
 | `PORT` | `8010` | 由网关/容器注入 |
 | `DATA_ROOT` | 仓库 `data/` | 挂载持久卷 |
-| `SAFETY_SCENARIO_FILE` | `stadium-evacuation.json` | 现场场景文件名 |
+| `SAFETY_SCENARIO_FILE` | `hankou-mvp.json` | 现场场景文件名 |
 | `SECRET_KEY` / `JWT_SECRET` | 开发默认值（警告） | **必须**显式设置 |
 | `SKYGUARD_ADMIN_USERNAME/PASSWORD` | `admin / skyguard2026` | 首次启动前修改 |
 | `OPS_PERSIST_FILE` | 未设置（纯内存） | `data/ops-state.json` 并挂载持久卷 |

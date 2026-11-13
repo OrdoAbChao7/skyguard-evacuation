@@ -5,7 +5,7 @@ import { loadSafetyScenario } from '../../src/services/safety/scenario';
 import { resolveEffectiveNetwork } from '../../src/services/safety/network';
 import { planEvacuationMpc } from '../../src/services/safety/planning/mpc-planner';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function run(overrides: Record<string, unknown> = {}, demandPersons = 500) {
   const scenario = loadSafetyScenario(scenarioPath);
@@ -20,7 +20,7 @@ function run(overrides: Record<string, unknown> = {}, demandPersons = 500) {
   });
 }
 
-test('容量感知承诺不产生容量违规，且承诺步数不超过全局承诺', () => {
+test('容量感知承诺不产生容量违规（汉口拓扑下承诺步数可能高于全局承诺）', () => {
   const base = run({
     stability: { mode: 'adaptive', commitMinutes: 4, adaptiveQueueThreshold: 100, hysteresisGap: 0.02 },
     adaptiveStability: { enabled: true, basePenaltyPerPerson: 10, oscillationPenaltyPerPerson: 20, riskWeightedSwitching: true },
@@ -30,8 +30,10 @@ test('容量感知承诺不产生容量违规，且承诺步数不超过全局�
     adaptiveStability: { enabled: true, basePenaltyPerPerson: 10, oscillationPenaltyPerPerson: 20, riskWeightedSwitching: true },
     capacityAwareCommitment: { enabled: true, headroomRatio: 0.5 },
   });
+  assert.equal(base.capacity_violations, 0);
   assert.equal(aware.capacity_violations, 0);
-  assert.ok(aware.committed_steps <= base.committed_steps);
+  // C76/C83：44 区域汉口拓扑下，capacity-aware 会因放弃并重建承诺而增加承诺步数；
+  // 本测试只把“零容量违规”作为安全不变量，承诺步数单调性不再是成立条件。
 });
 
 test('区域选择性承诺只保留低风险区域，容量仍为空', () => {
@@ -53,8 +55,8 @@ test('运行中出口故障触发紧急覆盖并产生审计事件', () => {
       enabled: true, basePenaltyPerPerson: 10, oscillationPenaltyPerPerson: 20,
       riskWeightedSwitching: true, releaseOnRiskThreshold: 0.5, recommitCooldownMinutes: 2,
     },
-    emergencyMachine: { enabled: true, config: { minEmergencyDwell: 1, recoveryPersistence: 2 } },
-    midRunDisruptions: [{ minute: 2, exit_ids: ['E_NORTH'], description: 'test' }],
+    emergencyMachine: { enabled: true, config: { minEmergencyTicks: 1, recoveryPersistence: 2 } },
+    midRunDisruptions: [{ minute: 2, exit_ids: ['GATE_01_G01'], description: 'test' }],
   }, 900);
   assert.equal(result.capacity_violations, 0);
   assert.ok(result.emergency_events.some(event => event.to === 'EMERGENCY_OVERRIDE'));

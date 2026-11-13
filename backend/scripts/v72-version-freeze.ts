@@ -13,9 +13,9 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import crypto from 'node:crypto';
 import { execSync } from 'node:child_process';
 
+import { sha256 } from './lib/benchmark';
 const ROOT = path.resolve(__dirname, '../..');
 const VERSION_FILE = path.join(ROOT, 'VERSION');
 const FREEZE_PATH = path.join(ROOT, 'evaluation/v72/freeze_v72.json');
@@ -59,9 +59,6 @@ function walk(relative: string, out: string[]): void {
   out.push(relative);
 }
 
-function sha256(bytes: Buffer): string {
-  return crypto.createHash('sha256').update(bytes).digest('hex');
-}
 
 function normalizedHashes(bytes: Buffer): string[] {
   const LF = String.fromCharCode(10);

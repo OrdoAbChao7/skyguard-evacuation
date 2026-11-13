@@ -26,10 +26,11 @@ import { simulatePlanExecution } from '../src/services/safety/planning/congestio
 import { planEvacuationMpc } from '../src/services/safety/planning/mpc-planner';
 import type { Incident, SafetyScenario } from '../src/services/safety/types';
 
+import { bootstrap, cloneScenario, holm, mulberry32, normalCdf, pairedPValue } from './lib/benchmark';
 const SEEDS = Array.from({ length: 30 }, (_, index) => 20261109 + index);
 const RUN_ID = process.env.V71_RUN_ID ?? process.env.V70_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v71', RUN_ID);
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const CONTROL_INTERVAL = 2;
 const PLANNING_HORIZON = 10;
 const MAX_EXECUTION = 24;
@@ -48,53 +49,6 @@ const ci = (values: number[]) => {
 };
 const dz = (diffs: number[]): number => (std(diffs) === 0 ? 0 : Number((mean(diffs) / std(diffs)).toFixed(4)));
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function bootstrap(values: number[], iterations = 2000, seed = 47): { lower: number; upper: number } {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    for (let j = 0; j < values.length; j += 1) sum += values[Math.floor(rng() * values.length)];
-    stats.push(sum / values.length);
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
-function normalCdf(value: number): number {
-  const t = 1 / (1 + 0.2316419 * Math.abs(value));
-  const poly = t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
-  const cdf = 1 - (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * value * value) * poly;
-  return value >= 0 ? cdf : 1 - cdf;
-}
-function pairedPValue(diffs: number[]): number {
-  if (diffs.length < 2) return 1;
-  const sd = std(diffs);
-  if (sd === 0) return mean(diffs) === 0 ? 1 : 0;
-  const z = Math.abs(mean(diffs)) / (sd / Math.sqrt(diffs.length));
-  return Math.max(0, Math.min(1, 2 * (1 - normalCdf(z))));
-}
-function holm(pValues: Record<string, number>): Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> {
-  const entries = Object.entries(pValues).sort((a, b) => a[1] - b[1]);
-  const m = entries.length;
-  const result: Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> = {};
-  let previous = 0;
-  for (let index = 0; index < entries.length; index += 1) {
-    const [key, value] = entries[index];
-    const next = Math.min(1, Math.max(previous, (m - index) * value));
-    previous = next;
-    result[key] = { raw: Number(value.toFixed(6)), adjusted: Number(next.toFixed(6)), rejected_0_05: next < 0.05 };
-  }
-  return result;
-}
 
 interface InflowEvent { regionId: string; minute: number; persons: number }
 interface ScenarioSetup {
@@ -105,9 +59,6 @@ interface ScenarioSetup {
   forecast: Map<string, Array<{ offsetMinute: number; persons: number }>>;
 }
 
-function cloneScenario(scenario: SafetyScenario): SafetyScenario {
-  return JSON.parse(JSON.stringify(scenario)) as SafetyScenario;
-}
 
 function incidentFor(exitIds: string[], corridorIds: string[]): Incident {
   const now = new Date().toISOString();
@@ -262,9 +213,9 @@ for (const variant of VARIANTS) {
   for (const seed of SEEDS) {
     const setup = buildSetup(baseScenario, variant, seed);
     const incidents = variant === 'exit_failure'
-      ? [incidentFor(['E_NORTH'], [])]
+      ? [incidentFor(['GATE_01_G01'], [])]
       : variant === 'corridor_closure'
-        ? [incidentFor([], ['C_NE'])]
+        ? [incidentFor([], ['C_S01_L1_GATE'])]
         : [];
     const network = resolveEffectiveNetwork(setup.scenario, incidents);
     const versions = {
@@ -320,7 +271,7 @@ for (const reference of ['static_mcf', 'periodic_reactive'] as Strategy[]) {
           diffs.push(Number(current[metric]) - Number(baseline[metric]));
         }
       }
-      metricPaired[strategy] = { mean_diff: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs), cohen_dz: dz(diffs), n: diffs.length };
+      metricPaired[strategy] = { mean_diff: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs, 2000, 47), cohen_dz: dz(diffs), n: diffs.length };
       pValues[strategy] = pairedPValue(diffs);
     }
     referencePaired[metric] = metricPaired;

@@ -22,8 +22,8 @@ function completeOrder(fixture: ReturnType<typeof makeMvpFixture>, order: WorkOr
 test('信息缺口下 Agent 通过 VoI 创建现场核查与无人机请求', async () => {
   const fixture = makeMvpFixture();
   try {
-    ingestObservation(fixture, 'R_EAST_STAND', 900, 0.35);
-    const run = await fixture.mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'crowd_surge_alert' });
+    ingestObservation(fixture, 'R_S04_L1_CREST', 900, 0.35);
+    const run = await fixture.mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: 'crowd_surge_alert' });
 
     assert.equal(run.mode, 'LOCAL_DEMO');
     assert.equal(run.status, 'awaiting_evidence');
@@ -47,23 +47,29 @@ test('信息缺口下 Agent 通过 VoI 创建现场核查与无人机请求', as
 
 test('人工反馈写回观测后 Agent 不再重复调查，并生成疏导工单', async () => {
   const fixture = makeMvpFixture();
+  const target = 'R_GATE_04_PLAZA';
   try {
-    for (const [regionId, item] of Object.entries(fixture.scenario.simulation_baseline ?? {})) {
-      if (regionId === 'R_EAST_STAND') continue;
-      ingestObservation(fixture, regionId, item.count, item.confidence);
+    const region = fixture.scenario.regions.find(item => item.id === target)!;
+    // 反馈人数略高于 watch 密度，且与初始观测接近，避免被误判为冲突观测。
+    const feedbackCount = Math.ceil(region.area_m2 * 1.05);
+    const baseline = fixture.scenario.simulation_baseline ?? {};
+    for (const item of fixture.scenario.regions.filter(entry => entry.enabled !== false)) {
+      if (item.id === target) continue;
+      const seeded = baseline[item.id];
+      ingestObservation(fixture, item.id, seeded?.count ?? 60, seeded?.confidence ?? 0.9);
     }
-    ingestObservation(fixture, 'R_EAST_STAND', 900, 0.35);
-    const run = await fixture.mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'initial' });
+    ingestObservation(fixture, target, Math.round(feedbackCount * 0.99), 0.35);
+    const run = await fixture.mvp.runAgent({ regionId: target, trigger: 'initial' });
     const pending = fixture.mvp.ops.listWorkOrders().filter(order => order.status === 'PENDING_APPROVAL');
     assert.ok(pending.length >= 2);
 
-    completeOrder(fixture, pending.find(order => order.type === 'scene_verification')!, 920);
-    completeOrder(fixture, pending.find(order => order.type === 'uav_observation')!, 940);
+    completeOrder(fixture, pending.find(order => order.type === 'scene_verification')!, feedbackCount);
+    completeOrder(fixture, pending.find(order => order.type === 'uav_observation')!, feedbackCount);
 
-    const observation = fixture.safety.getObservationStore().latest('R_EAST_STAND');
+    const observation = fixture.safety.getObservationStore().latest(target);
     assert.ok(['field_report', 'uav_observation'].includes(observation?.source ?? ''));
 
-    const run2 = await fixture.mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'staff_feedback' });
+    const run2 = await fixture.mvp.runAgent({ regionId: target, trigger: 'staff_feedback' });
     assert.equal(run2.investigation.required, false);
     assert.ok(run2.work_orders.some(order => order.type === 'crowd_control'));
     assert.equal(run2.status, 'awaiting_approval');
@@ -88,7 +94,7 @@ test('正常数据下 Agent 不发起调查也不创建工单', async () => {
         observedAt: new Date(Date.now() - 60_000),
       }, ADMIN);
     }
-    const run = await fixture.mvp.runAgent({ regionId: 'R_NORTH_STAND', trigger: 'normal' });
+    const run = await fixture.mvp.runAgent({ regionId: 'R_S01_L1_CREST', trigger: 'normal' });
     assert.equal(run.investigation.required, false);
     assert.equal(run.work_orders.length, 0);
     assert.ok(run.trace.every(item => !item.tool.startsWith('request_')));
@@ -126,12 +132,14 @@ test('工具注册表强制角色权限与参数校验', async () => {
 test('摄像头降级但未离线时，Agent 仍会先尝试摄像头查询', async () => {
   const fixture = makeMvpFixture();
   try {
-    for (const [regionId, item] of Object.entries(fixture.scenario.simulation_baseline ?? {})) {
-      if (regionId === 'R_EAST_STAND') continue;
-      ingestObservation(fixture, regionId, item.count, item.confidence);
+    const baseline = fixture.scenario.simulation_baseline ?? {};
+    for (const region of fixture.scenario.regions.filter(item => item.enabled !== false)) {
+      if (region.id === 'R_S04_L1_CREST') continue;
+      const item = baseline[region.id];
+      ingestObservation(fixture, region.id, item?.count ?? 60, item?.confidence ?? 0.9);
     }
-    ingestObservation(fixture, 'R_EAST_STAND', 900, 0.35);
-    const run = await fixture.mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'camera_retry' });
+    ingestObservation(fixture, 'R_S04_L1_CREST', 900, 0.35);
+    const run = await fixture.mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: 'camera_retry' });
     assert.ok(run.investigation.rounds.length >= 1);
     assert.equal(run.investigation.rounds[0].selected_action_id, 'A_CAMERA');
     assert.equal(run.investigation.rounds[0].pending, false);

@@ -1,7 +1,7 @@
 # VoI 主动调查模型
 
 > 实现：`backend/src/services/mvp/voi.ts`  
-> 参数：`data/scenarios/stadium-evacuation.json` → `investigation`
+> 参数：`data/scenarios/hankou-mvp.json` → `investigation`
 
 ## 1. 要解决的问题
 
@@ -40,7 +40,7 @@ VoI 引擎只负责**排序和停止判断**；概率、损失与成本全部来
 
 | 项 | 值 | 来源 |
 | --- | --- | --- |
-| 假设 | 平稳 / 快速积聚 / 高危拥堵，先验 0.45 / 0.35 / 0.20 | `stadium-evacuation.json` |
+| 假设 | 平稳 / 快速积聚 / 高危拥堵，先验 0.50 / 0.35 / 0.15 | `hankou-mvp.json` |
 | 结果 | `signal_normal` / `signal_congested` / `inconclusive` / `unavailable` | 同上 |
 | 损失 | 平稳：monitor 0 / dispatch 0.15；积聚：0.45 / 0.10；高危：1.0 / 0.05 | 同上 |
 | 权重 | 风险 1.0 / 信息 0.5 / 时间 0.25 / 资源 0.2 / 失败 0.3 | 同上 |

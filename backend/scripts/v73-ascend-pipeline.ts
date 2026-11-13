@@ -13,30 +13,12 @@ import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { buildOmTemplate, validateOmMetadata } from '../src/services/safety/deployment/om-metadata';
 
+import { pythonProbe, sha256File, which } from './lib/benchmark';
 const RUN_ID = process.env.V73_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v73', RUN_ID, 'ascend');
 const ASCEND_DIR = path.resolve(__dirname, '../python/ascend');
 fs.mkdirSync(OUT, { recursive: true });
 
-function which(command: string): { available: boolean; path: string | null } {
-  try {
-    const output = execFileSync(process.platform === 'win32' ? 'where' : 'which', [command], { encoding: 'utf8' }).trim();
-    return { available: true, path: output.split(/\r?\n/)[0] ?? null };
-  } catch {
-    return { available: false, path: null };
-  }
-}
-function pythonProbe(moduleName: string): { available: boolean; version: string | null; error: string | null } {
-  try {
-    const output = execFileSync('python', ['-c', `import ${moduleName}; print(getattr(${moduleName}, '__version__', 'unknown'))`], { encoding: 'utf8' }).trim();
-    return { available: true, version: output || 'unknown', error: null };
-  } catch (error) {
-    return { available: false, version: null, error: (error as Error).message.slice(0, 300) };
-  }
-}
-function sha256(filePath: string): string {
-  return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
-}
 
 const tools = {
   atc: which('atc'),
@@ -104,7 +86,7 @@ const evidence = {
   python,
   onnx_pipeline: {
     ...exportResult,
-    onnx_sha256: modelMetadata?.sha256 ?? (fs.existsSync(modelPath) ? sha256(modelPath) : null),
+    onnx_sha256: modelMetadata?.sha256 ?? (fs.existsSync(modelPath) ? sha256File(modelPath) : null),
     onnx_checker: (benchmark as any)?.onnx_check ?? null,
     cpu_benchmark: benchmark,
   },

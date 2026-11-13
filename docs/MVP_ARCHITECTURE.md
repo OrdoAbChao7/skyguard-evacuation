@@ -1,7 +1,7 @@
 # SkyGuard MVP 架构
 
 > 项目：SkyGuard——面向大型活动的主动感知与现场协同管理智能体  
-> 首个场景：大型体育场散场（合成数据）  
+> 首个场景：武汉汉口江滩人群疏散（合成数据）  
 > 本文件描述实际实现，不描述未实现的平台能力。
 
 ## 1. 总览
@@ -69,7 +69,7 @@ frontend/src/services/
   mvpApi.ts                  MVP API 客户端
 data/scenarios/
   venue-default.json         合成演示场馆（旧）
-  stadium-evacuation.json    体育场散场场景（MVP）
+  hankou-mvp.json    江滩人群疏散场景（MVP）
 ```
 
 ## 3. 数据流
@@ -178,7 +178,7 @@ DRAFT → PENDING_APPROVAL → APPROVED → ASSIGNED → ACCEPTED → IN_PROGRES
 - 调查先验/似然/损失/权重/动作成本（VoI）；
 - 演示脚本、模拟基线、地图层。
 
-体育场逻辑没有写死在 Agent 或前端：Agent 读取 `policy.actions` 与工具清单，
+江滩逻辑没有写死在 Agent 或前端：Agent 读取 `policy.actions` 与工具清单，
 前端读取 `/mvp/dashboard` 的区域、人员、工单与预测。换场景只需新增 JSON，
 再按 `docs/SCENARIO.md` 校验。
 

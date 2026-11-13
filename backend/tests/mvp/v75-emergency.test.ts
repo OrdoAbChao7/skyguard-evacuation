@@ -11,7 +11,7 @@ const tick = (index: number, risk: number, extra: Record<string, unknown> = {}) 
 });
 
 test('风险持续升高进入警告，硬触发进入紧急覆盖并失效承诺', () => {
-  const machine = new EmergencyStateMachine({ warningPersistence: 2, minEmergencyDwell: 1 });
+  const machine = new EmergencyStateMachine({ warningPersistence: 2, minEmergencyTicks: 1 });
   assert.equal(machine.evaluate(tick(0, 1.05)).state, 'NORMAL');
   assert.equal(machine.evaluate(tick(1, 1.06)).state, 'RISK_WARNING');
   const emergency = machine.evaluate(tick(2, 0.8, { unusableExit: true }));
@@ -22,7 +22,7 @@ test('风险持续升高进入警告，硬触发进入紧急覆盖并失效承�
 });
 
 test('紧急覆盖必须持续到恢复条件满足，并经过 RECOVERY', () => {
-  const machine = new EmergencyStateMachine({ recoveryPersistence: 2, minEmergencyDwell: 1, recoveryRisk: 0.9 });
+  const machine = new EmergencyStateMachine({ recoveryPersistence: 2, minEmergencyTicks: 1, recoveryRisk: 0.9 });
   machine.evaluate(tick(0, 0.5));
   machine.evaluate(tick(1, 1.4));
   assert.equal(machine.current, 'EMERGENCY_OVERRIDE');
@@ -35,7 +35,7 @@ test('紧急覆盖必须持续到恢复条件满足，并经过 RECOVERY', () =>
 });
 
 test('恢复阶段独立校验失败时不得回到 NORMAL', () => {
-  const machine = new EmergencyStateMachine({ recoveryPersistence: 1, minEmergencyDwell: 1 });
+  const machine = new EmergencyStateMachine({ recoveryPersistence: 1, minEmergencyTicks: 1 });
   machine.evaluate(tick(0, 1.5));
   machine.evaluate(tick(1, 0.7));
   assert.equal(machine.current, 'RECOVERY');
@@ -55,7 +55,7 @@ test('过期/冲突观测不可发布，即使风险较低', () => {
 });
 
 test('重复紧急事件重新进入覆盖，活动工单被记录', () => {
-  const machine = new EmergencyStateMachine({ recoveryPersistence: 1, minEmergencyDwell: 1 });
+  const machine = new EmergencyStateMachine({ recoveryPersistence: 1, minEmergencyTicks: 1 });
   machine.evaluate(tick(0, 0.4));
   machine.evaluate(tick(1, 1.5, { activeWorkOrders: 2 }));
   machine.evaluate(tick(2, 0.7));

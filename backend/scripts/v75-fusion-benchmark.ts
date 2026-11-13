@@ -14,6 +14,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { gaussian, mean, mulberry32 } from './lib/benchmark';
 import {
   DEFAULT_FUSION_CONFIG,
   fuseSensorReadings,
@@ -49,30 +50,12 @@ const SENSORS: SensorSpec[] = [
 const METHODS = ['best_single', 'mean', 'median', 'reliability_weighted', 'pipeline'] as const;
 type MethodId = (typeof METHODS)[number];
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
-function gaussian(rng: () => number): number {
-  const u = Math.max(1e-9, rng());
-  const v = Math.max(1e-9, rng());
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
 
 function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));
 }
 
-function mean(values: number[]): number {
-  return values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
-}
 
 function median(values: number[]): number {
   if (!values.length) return 0;

@@ -12,8 +12,8 @@ import {
   type VenueProfile,
 } from '../../src/services/safety/calibration/venue-calibration';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
-const profilePath = path.resolve(__dirname, '../../../data/venues/stadium-synthetic-profile.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
+const profilePath = path.resolve(__dirname, '../../../data/venues/hankou-synthetic-profile.json');
 
 function loadProfile(): VenueProfile {
   return JSON.parse(fs.readFileSync(profilePath, 'utf8')) as VenueProfile;

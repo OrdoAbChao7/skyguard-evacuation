@@ -248,6 +248,7 @@
 | C80 | 融合管线在冲突/时钟偏移下 fail-closed，且不静默输出 | 严格条件 unsafe fuse 0；冲突/偏移 fail-closed 1.0；过期拒绝 1200、重复拒绝 3600 | VERIFIED（合成） | 可用率 0.7497；必须接入降级链路 |
 | C81 | 融合的点估计误差不优于可靠性加权，且无法消除持续偏置 | 管线 MAE 5.538 vs reliability_weighted 11.989（仅可用步）、median 4.677；偏置条件管线 13.33 vs median 5.17 | **NOT_SUPPORTED（点估计优势/偏置）** | 融合价值在决策正确性 0.9719 vs 0.7744 与审计 |
 | C82 | V7.5 生产检查与浏览器 E2E 可脚本化复现；Docker/AgentArts/NPU 仍阻塞 | `browser_e2e.json` passed；CI YAML ok；API 3/3；Docker BLOCKED；AgentArts not_configured；无 npu-smi/atc | PARTIAL | E2E 仅冒烟；单机；无真实平台/NPU |
+| C83 | 汉口江滩 44 区域拓扑下，容量感知承诺可增加承诺步数（但保持零容量违规） | `backend/tests/mvp/v75-commitment-redteam.test.ts`：500 人/区域 base 3 vs aware 4；900 人/区域 base 4 vs aware 6；两种配置 `capacity_violations` 均为 0 | **HEURISTIC（单拓扑）** | 单一合成拓扑、确定性配置；不是多样本统计实验；支持 C76 的负结果边界，不得表述为改进 |
 
 ### V7.5 引用规则
 

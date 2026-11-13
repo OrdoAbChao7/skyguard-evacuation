@@ -17,17 +17,12 @@ import { planEvacuation } from '../src/services/safety/planning/evacuation-plann
 import { validateSafetyPlan } from '../src/services/safety/validator';
 import { SafetyScenarioSchema, type SafetyScenario } from '../src/services/safety/types';
 
+import { percentile } from './lib/benchmark';
 interface Sample {
   name: string;
   durations_ms: number[];
 }
 
-function percentile(values: number[], p: number): number {
-  if (values.length === 0) return 0;
-  const sorted = [...values].sort((a, b) => a - b);
-  const index = Math.min(sorted.length - 1, Math.ceil((p / 100) * sorted.length) - 1);
-  return Number(sorted[index].toFixed(3));
-}
 
 function summarise(samples: Sample[]) {
   return samples.map(sample => ({

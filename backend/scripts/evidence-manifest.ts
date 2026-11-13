@@ -8,10 +8,10 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import crypto from 'node:crypto';
 import zlib from 'node:zlib';
 import { execSync } from 'node:child_process';
 
+import { sha256 } from './lib/benchmark';
 const ROOT = path.resolve(__dirname, '../..');
 const EVAL = path.join(ROOT, 'evaluation');
 const MANIFEST = path.join(EVAL, 'MANIFEST.json');
@@ -41,9 +41,6 @@ function generator(relative: string): string {
   return 'benchmark 脚本或人工报告（见文件头）';
 }
 
-function sha256(buffer: Buffer): string {
-  return crypto.createHash('sha256').update(buffer).digest('hex');
-}
 
 /**
  * 文本证据按 LF 归一化后再计算大小与哈希，避免 Git autocrlf 导致

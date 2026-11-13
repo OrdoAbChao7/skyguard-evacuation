@@ -1,0 +1,3996 @@
+{
+  "profile_id": "hankou-marshland-synthetic-calibration",
+  "venue_id": "hankou-marshland-v1",
+  "name": "武汉汉口江滩 · 合成标定档案",
+  "version": "1.0.0",
+  "data_nature": "synthetic",
+  "created_at": "2026-11-10T00:00:00.000Z",
+  "updated_at": "2026-11-10T00:00:00.000Z",
+  "regions": [
+    {
+      "region_id": "R_GATE_01_PLAZA",
+      "area_m2": {
+        "value": 4500,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 6750,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-01"
+      ]
+    },
+    {
+      "region_id": "R_S01_L1_CREST",
+      "area_m2": {
+        "value": 45000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 36000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S01-L1"
+      ]
+    },
+    {
+      "region_id": "R_S01_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S01-L2"
+      ]
+    },
+    {
+      "region_id": "R_S01_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S01-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_02_PLAZA",
+      "area_m2": {
+        "value": 3200,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-02"
+      ]
+    },
+    {
+      "region_id": "R_S02_L1_CREST",
+      "area_m2": {
+        "value": 36000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 28800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S02-L1"
+      ]
+    },
+    {
+      "region_id": "R_S02_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S02-L2"
+      ]
+    },
+    {
+      "region_id": "R_S02_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S02-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_03_PLAZA",
+      "area_m2": {
+        "value": 3200,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-03"
+      ]
+    },
+    {
+      "region_id": "R_S03_L1_CREST",
+      "area_m2": {
+        "value": 36000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 28800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S03-L1"
+      ]
+    },
+    {
+      "region_id": "R_S03_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S03-L2"
+      ]
+    },
+    {
+      "region_id": "R_S03_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S03-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_04_PLAZA",
+      "area_m2": {
+        "value": 3200,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-04"
+      ]
+    },
+    {
+      "region_id": "R_S04_L1_CREST",
+      "area_m2": {
+        "value": 36000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 28800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S04-L1"
+      ]
+    },
+    {
+      "region_id": "R_S04_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S04-L2"
+      ]
+    },
+    {
+      "region_id": "R_S04_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S04-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_05_PLAZA",
+      "area_m2": {
+        "value": 3200,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-05"
+      ]
+    },
+    {
+      "region_id": "R_S05_L1_CREST",
+      "area_m2": {
+        "value": 48000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 38400,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S05-L1"
+      ]
+    },
+    {
+      "region_id": "R_S05_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S05-L2"
+      ]
+    },
+    {
+      "region_id": "R_S05_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S05-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_06_PLAZA",
+      "area_m2": {
+        "value": 3200,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-06"
+      ]
+    },
+    {
+      "region_id": "R_S06_L1_CREST",
+      "area_m2": {
+        "value": 36000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 28800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S06-L1"
+      ]
+    },
+    {
+      "region_id": "R_S06_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S06-L2"
+      ]
+    },
+    {
+      "region_id": "R_S06_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S06-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_07_PLAZA",
+      "area_m2": {
+        "value": 6500,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 9750,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-07"
+      ]
+    },
+    {
+      "region_id": "R_S07_L1_CREST",
+      "area_m2": {
+        "value": 65000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 52000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S07-L1"
+      ]
+    },
+    {
+      "region_id": "R_S07_L2_ECO",
+      "area_m2": {
+        "value": 18000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 10800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S07-L2"
+      ]
+    },
+    {
+      "region_id": "R_S07_L3_RIVER",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 6000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S07-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_08_PLAZA",
+      "area_m2": {
+        "value": 3200,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-08"
+      ]
+    },
+    {
+      "region_id": "R_S08_L1_CREST",
+      "area_m2": {
+        "value": 36000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 28800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S08-L1"
+      ]
+    },
+    {
+      "region_id": "R_S08_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S08-L2"
+      ]
+    },
+    {
+      "region_id": "R_S08_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S08-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_09_PLAZA",
+      "area_m2": {
+        "value": 3200,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-09"
+      ]
+    },
+    {
+      "region_id": "R_S09_L1_CREST",
+      "area_m2": {
+        "value": 36000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 28800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S09-L1"
+      ]
+    },
+    {
+      "region_id": "R_S09_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S09-L2"
+      ]
+    },
+    {
+      "region_id": "R_S09_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S09-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_10_PLAZA",
+      "area_m2": {
+        "value": 5000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7500,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-10"
+      ]
+    },
+    {
+      "region_id": "R_S10_L1_CREST",
+      "area_m2": {
+        "value": 52000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 41600,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S10-L1"
+      ]
+    },
+    {
+      "region_id": "R_S10_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S10-L2"
+      ]
+    },
+    {
+      "region_id": "R_S10_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S10-L3"
+      ]
+    },
+    {
+      "region_id": "R_GATE_11_PLAZA",
+      "area_m2": {
+        "value": 3200,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-GATE-11"
+      ]
+    },
+    {
+      "region_id": "R_S11_L1_CREST",
+      "area_m2": {
+        "value": 36000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 28800,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S11-L1"
+      ]
+    },
+    {
+      "region_id": "R_S11_L2_ECO",
+      "area_m2": {
+        "value": 12000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 7200,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S11-L2"
+      ]
+    },
+    {
+      "region_id": "R_S11_L3_RIVER",
+      "area_m2": {
+        "value": 8000,
+        "unit": "m2",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "由测地锚点网格估算面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 4000,
+        "unit": "persons",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按面积与默认密度估算承载量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S11-L3"
+      ]
+    }
+  ],
+  "corridors": [
+    {
+      "corridor_id": "C_S01_L3_L2",
+      "from_region_id": "R_S01_L3_RIVER",
+      "to_region_id": "R_S01_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S01_L2_L1",
+      "from_region_id": "R_S01_L2_ECO",
+      "to_region_id": "R_S01_L1_CREST",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S01_L1_GATE",
+      "from_region_id": "R_S01_L1_CREST",
+      "to_region_id": "R_GATE_01_PLAZA",
+      "capacity_per_min": {
+        "value": 336,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S02_L3_L2",
+      "from_region_id": "R_S02_L3_RIVER",
+      "to_region_id": "R_S02_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S02_L2_L1",
+      "from_region_id": "R_S02_L2_ECO",
+      "to_region_id": "R_S02_L1_CREST",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S02_L1_GATE",
+      "from_region_id": "R_S02_L1_CREST",
+      "to_region_id": "R_GATE_02_PLAZA",
+      "capacity_per_min": {
+        "value": 336,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S03_L3_L2",
+      "from_region_id": "R_S03_L3_RIVER",
+      "to_region_id": "R_S03_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S03_L2_L1",
+      "from_region_id": "R_S03_L2_ECO",
+      "to_region_id": "R_S03_L1_CREST",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S03_L1_GATE",
+      "from_region_id": "R_S03_L1_CREST",
+      "to_region_id": "R_GATE_03_PLAZA",
+      "capacity_per_min": {
+        "value": 336,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S04_L3_L2",
+      "from_region_id": "R_S04_L3_RIVER",
+      "to_region_id": "R_S04_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S04_L2_L1",
+      "from_region_id": "R_S04_L2_ECO",
+      "to_region_id": "R_S04_L1_CREST",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S04_L1_GATE",
+      "from_region_id": "R_S04_L1_CREST",
+      "to_region_id": "R_GATE_04_PLAZA",
+      "capacity_per_min": {
+        "value": 336,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S05_L3_L2",
+      "from_region_id": "R_S05_L3_RIVER",
+      "to_region_id": "R_S05_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S05_L2_L1",
+      "from_region_id": "R_S05_L2_ECO",
+      "to_region_id": "R_S05_L1_CREST",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S05_L1_GATE",
+      "from_region_id": "R_S05_L1_CREST",
+      "to_region_id": "R_GATE_05_PLAZA",
+      "capacity_per_min": {
+        "value": 768,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S06_L3_L2",
+      "from_region_id": "R_S06_L3_RIVER",
+      "to_region_id": "R_S06_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S06_L2_L1",
+      "from_region_id": "R_S06_L2_ECO",
+      "to_region_id": "R_S06_L1_CREST",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S06_L1_GATE",
+      "from_region_id": "R_S06_L1_CREST",
+      "to_region_id": "R_GATE_06_PLAZA",
+      "capacity_per_min": {
+        "value": 336,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S07_L3_L2",
+      "from_region_id": "R_S07_L3_RIVER",
+      "to_region_id": "R_S07_L2_ECO",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S07_L2_L1",
+      "from_region_id": "R_S07_L2_ECO",
+      "to_region_id": "R_S07_L1_CREST",
+      "capacity_per_min": {
+        "value": 672,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S07_L1_GATE",
+      "from_region_id": "R_S07_L1_CREST",
+      "to_region_id": "R_GATE_07_PLAZA",
+      "capacity_per_min": {
+        "value": 1024,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S08_L3_L2",
+      "from_region_id": "R_S08_L3_RIVER",
+      "to_region_id": "R_S08_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S08_L2_L1",
+      "from_region_id": "R_S08_L2_ECO",
+      "to_region_id": "R_S08_L1_CREST",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S08_L1_GATE",
+      "from_region_id": "R_S08_L1_CREST",
+      "to_region_id": "R_GATE_08_PLAZA",
+      "capacity_per_min": {
+        "value": 336,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S09_L3_L2",
+      "from_region_id": "R_S09_L3_RIVER",
+      "to_region_id": "R_S09_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S09_L2_L1",
+      "from_region_id": "R_S09_L2_ECO",
+      "to_region_id": "R_S09_L1_CREST",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S09_L1_GATE",
+      "from_region_id": "R_S09_L1_CREST",
+      "to_region_id": "R_GATE_09_PLAZA",
+      "capacity_per_min": {
+        "value": 336,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S10_L3_L2",
+      "from_region_id": "R_S10_L3_RIVER",
+      "to_region_id": "R_S10_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S10_L2_L1",
+      "from_region_id": "R_S10_L2_ECO",
+      "to_region_id": "R_S10_L1_CREST",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S10_L1_GATE",
+      "from_region_id": "R_S10_L1_CREST",
+      "to_region_id": "R_GATE_10_PLAZA",
+      "capacity_per_min": {
+        "value": 768,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S11_L3_L2",
+      "from_region_id": "R_S11_L3_RIVER",
+      "to_region_id": "R_S11_L2_ECO",
+      "capacity_per_min": {
+        "value": 288,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 50,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S11_L2_L1",
+      "from_region_id": "R_S11_L2_ECO",
+      "to_region_id": "R_S11_L1_CREST",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 35,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_S11_L1_GATE",
+      "from_region_id": "R_S11_L1_CREST",
+      "to_region_id": "R_GATE_11_PLAZA",
+      "capacity_per_min": {
+        "value": 336,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 30,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_01_02",
+      "from_region_id": "R_GATE_01_PLAZA",
+      "to_region_id": "R_GATE_02_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_01_02",
+      "from_region_id": "R_S01_L1_CREST",
+      "to_region_id": "R_S02_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_01_02",
+      "from_region_id": "R_S01_L2_ECO",
+      "to_region_id": "R_S02_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_01_02",
+      "from_region_id": "R_S01_L3_RIVER",
+      "to_region_id": "R_S02_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_02_03",
+      "from_region_id": "R_GATE_02_PLAZA",
+      "to_region_id": "R_GATE_03_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_02_03",
+      "from_region_id": "R_S02_L1_CREST",
+      "to_region_id": "R_S03_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_02_03",
+      "from_region_id": "R_S02_L2_ECO",
+      "to_region_id": "R_S03_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_02_03",
+      "from_region_id": "R_S02_L3_RIVER",
+      "to_region_id": "R_S03_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_03_04",
+      "from_region_id": "R_GATE_03_PLAZA",
+      "to_region_id": "R_GATE_04_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_03_04",
+      "from_region_id": "R_S03_L1_CREST",
+      "to_region_id": "R_S04_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_03_04",
+      "from_region_id": "R_S03_L2_ECO",
+      "to_region_id": "R_S04_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_03_04",
+      "from_region_id": "R_S03_L3_RIVER",
+      "to_region_id": "R_S04_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_04_05",
+      "from_region_id": "R_GATE_04_PLAZA",
+      "to_region_id": "R_GATE_05_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_04_05",
+      "from_region_id": "R_S04_L1_CREST",
+      "to_region_id": "R_S05_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_04_05",
+      "from_region_id": "R_S04_L2_ECO",
+      "to_region_id": "R_S05_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_04_05",
+      "from_region_id": "R_S04_L3_RIVER",
+      "to_region_id": "R_S05_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_05_06",
+      "from_region_id": "R_GATE_05_PLAZA",
+      "to_region_id": "R_GATE_06_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_05_06",
+      "from_region_id": "R_S05_L1_CREST",
+      "to_region_id": "R_S06_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_05_06",
+      "from_region_id": "R_S05_L2_ECO",
+      "to_region_id": "R_S06_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_05_06",
+      "from_region_id": "R_S05_L3_RIVER",
+      "to_region_id": "R_S06_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_06_07",
+      "from_region_id": "R_GATE_06_PLAZA",
+      "to_region_id": "R_GATE_07_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_06_07",
+      "from_region_id": "R_S06_L1_CREST",
+      "to_region_id": "R_S07_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_06_07",
+      "from_region_id": "R_S06_L2_ECO",
+      "to_region_id": "R_S07_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_06_07",
+      "from_region_id": "R_S06_L3_RIVER",
+      "to_region_id": "R_S07_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_07_08",
+      "from_region_id": "R_GATE_07_PLAZA",
+      "to_region_id": "R_GATE_08_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_07_08",
+      "from_region_id": "R_S07_L1_CREST",
+      "to_region_id": "R_S08_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_07_08",
+      "from_region_id": "R_S07_L2_ECO",
+      "to_region_id": "R_S08_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_07_08",
+      "from_region_id": "R_S07_L3_RIVER",
+      "to_region_id": "R_S08_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_08_09",
+      "from_region_id": "R_GATE_08_PLAZA",
+      "to_region_id": "R_GATE_09_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_08_09",
+      "from_region_id": "R_S08_L1_CREST",
+      "to_region_id": "R_S09_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_08_09",
+      "from_region_id": "R_S08_L2_ECO",
+      "to_region_id": "R_S09_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_08_09",
+      "from_region_id": "R_S08_L3_RIVER",
+      "to_region_id": "R_S09_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_09_10",
+      "from_region_id": "R_GATE_09_PLAZA",
+      "to_region_id": "R_GATE_10_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_09_10",
+      "from_region_id": "R_S09_L1_CREST",
+      "to_region_id": "R_S10_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_09_10",
+      "from_region_id": "R_S09_L2_ECO",
+      "to_region_id": "R_S10_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_09_10",
+      "from_region_id": "R_S09_L3_RIVER",
+      "to_region_id": "R_S10_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_DYKE_10_11",
+      "from_region_id": "R_GATE_10_PLAZA",
+      "to_region_id": "R_GATE_11_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L1_10_11",
+      "from_region_id": "R_S10_L1_CREST",
+      "to_region_id": "R_S11_L1_CREST",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 120,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L2_10_11",
+      "from_region_id": "R_S10_L2_ECO",
+      "to_region_id": "R_S11_L2_ECO",
+      "capacity_per_min": {
+        "value": 560,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 150,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_L3_10_11",
+      "from_region_id": "R_S10_L3_RIVER",
+      "to_region_id": "R_S11_L3_RIVER",
+      "capacity_per_min": {
+        "value": 480,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 180,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_HUB_S06_S07_L1",
+      "from_region_id": "R_S06_L1_CREST",
+      "to_region_id": "R_S07_L1_CREST",
+      "capacity_per_min": {
+        "value": 880,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 90,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_HUB_S07_S08_L1",
+      "from_region_id": "R_S07_L1_CREST",
+      "to_region_id": "R_S08_L1_CREST",
+      "capacity_per_min": {
+        "value": 880,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 90,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_RAMP_S05_DIRECT",
+      "from_region_id": "R_S05_L1_CREST",
+      "to_region_id": "R_GATE_05_PLAZA",
+      "capacity_per_min": {
+        "value": 960,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 45,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    },
+    {
+      "corridor_id": "C_RAMP_S10_DIRECT",
+      "from_region_id": "R_S10_L1_CREST",
+      "to_region_id": "R_GATE_10_PLAZA",
+      "capacity_per_min": {
+        "value": 960,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按标准公式与竖向折减推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 40,
+        "unit": "s",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      },
+      "direction": "both"
+    }
+  ],
+  "exits": [
+    {
+      "exit_id": "GATE_01_G01",
+      "region_id": "R_GATE_01_PLAZA",
+      "capacity_per_min": {
+        "value": 840,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_02_G02",
+      "region_id": "R_GATE_02_PLAZA",
+      "capacity_per_min": {
+        "value": 384,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_03_G03",
+      "region_id": "R_GATE_03_PLAZA",
+      "capacity_per_min": {
+        "value": 496,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_04_G04",
+      "region_id": "R_GATE_04_PLAZA",
+      "capacity_per_min": {
+        "value": 640,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_05_G05",
+      "region_id": "R_GATE_05_PLAZA",
+      "capacity_per_min": {
+        "value": 960,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_06_G06",
+      "region_id": "R_GATE_06_PLAZA",
+      "capacity_per_min": {
+        "value": 520,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_07_G07",
+      "region_id": "R_GATE_07_PLAZA",
+      "capacity_per_min": {
+        "value": 1440,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_08_G08",
+      "region_id": "R_GATE_08_PLAZA",
+      "capacity_per_min": {
+        "value": 440,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_09_G09",
+      "region_id": "R_GATE_09_PLAZA",
+      "capacity_per_min": {
+        "value": 400,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_10_G10",
+      "region_id": "R_GATE_10_PLAZA",
+      "capacity_per_min": {
+        "value": 1120,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    },
+    {
+      "exit_id": "GATE_11_G11",
+      "region_id": "R_GATE_11_PLAZA",
+      "capacity_per_min": {
+        "value": 800,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+        "method": "按闸口宽度标准公式推导；未现场观测",
+        "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+      }
+    }
+  ],
+  "cameras": [
+    {
+      "camera_id": "CAM-GATE-01",
+      "region_id": "R_GATE_01_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S01-L1",
+      "region_id": "R_S01_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S01-L2",
+      "region_id": "R_S01_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S01-L3",
+      "region_id": "R_S01_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-02",
+      "region_id": "R_GATE_02_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S02-L1",
+      "region_id": "R_S02_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S02-L2",
+      "region_id": "R_S02_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S02-L3",
+      "region_id": "R_S02_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-03",
+      "region_id": "R_GATE_03_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S03-L1",
+      "region_id": "R_S03_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S03-L2",
+      "region_id": "R_S03_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S03-L3",
+      "region_id": "R_S03_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-04",
+      "region_id": "R_GATE_04_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S04-L1",
+      "region_id": "R_S04_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S04-L2",
+      "region_id": "R_S04_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S04-L3",
+      "region_id": "R_S04_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-05",
+      "region_id": "R_GATE_05_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S05-L1",
+      "region_id": "R_S05_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S05-L2",
+      "region_id": "R_S05_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S05-L3",
+      "region_id": "R_S05_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-06",
+      "region_id": "R_GATE_06_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S06-L1",
+      "region_id": "R_S06_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S06-L2",
+      "region_id": "R_S06_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S06-L3",
+      "region_id": "R_S06_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-07",
+      "region_id": "R_GATE_07_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S07-L1",
+      "region_id": "R_S07_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S07-L2",
+      "region_id": "R_S07_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S07-L3",
+      "region_id": "R_S07_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-08",
+      "region_id": "R_GATE_08_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S08-L1",
+      "region_id": "R_S08_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S08-L2",
+      "region_id": "R_S08_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S08-L3",
+      "region_id": "R_S08_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-09",
+      "region_id": "R_GATE_09_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S09-L1",
+      "region_id": "R_S09_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S09-L2",
+      "region_id": "R_S09_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S09-L3",
+      "region_id": "R_S09_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-10",
+      "region_id": "R_GATE_10_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S10-L1",
+      "region_id": "R_S10_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S10-L2",
+      "region_id": "R_S10_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S10-L3",
+      "region_id": "R_S10_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-GATE-11",
+      "region_id": "R_GATE_11_PLAZA",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S11-L1",
+      "region_id": "R_S11_L1_CREST",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S11-L2",
+      "region_id": "R_S11_L2_ECO",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S11-L3",
+      "region_id": "R_S11_L3_RIVER",
+      "roi": {
+        "x": 0.1,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.8
+      },
+      "calibration_status": "estimated",
+      "calibration_version": "hk-cam-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 6,
+        "tilt_deg": -15,
+        "resolution": "1920x1080"
+      }
+    }
+  ],
+  "flow": {
+    "walking_speed_mps": {
+      "value": 1.25,
+      "unit": "m/s",
+      "provenance": "estimated",
+      "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+      "method": "通用步行速度经验值；未用江滩样本估计",
+      "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+    },
+    "bpr_a": {
+      "value": 0.15,
+      "unit": "dimensionless",
+      "provenance": "estimated",
+      "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+      "method": "通用 BPR 系数；未标定",
+      "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+    },
+    "bpr_b": {
+      "value": 2,
+      "unit": "dimensionless",
+      "provenance": "estimated",
+      "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+      "method": "通用 BPR 指数；未标定",
+      "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+    },
+    "exit_service_queue_scale": {
+      "value": 5,
+      "unit": "dimensionless",
+      "provenance": "estimated",
+      "source": "hankou-marshland-v1 scenario (geodesic_anchor_mesh_v1, estimated)",
+      "method": "出口排队服务衰减经验尺度；未标定",
+      "notes": "合成/未标定值；不得作为真实江滩参数引用。"
+    }
+  },
+  "observation_adapters": [
+    {
+      "adapter_id": "camera-count-r-gate-01-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-01": "R_GATE_01_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s01-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S01-L1": "R_S01_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s01-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S01-L2": "R_S01_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s01-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S01-L3": "R_S01_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-02-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-02": "R_GATE_02_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s02-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S02-L1": "R_S02_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s02-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S02-L2": "R_S02_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s02-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S02-L3": "R_S02_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-03-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-03": "R_GATE_03_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s03-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S03-L1": "R_S03_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s03-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S03-L2": "R_S03_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s03-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S03-L3": "R_S03_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-04-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-04": "R_GATE_04_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s04-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S04-L1": "R_S04_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s04-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S04-L2": "R_S04_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s04-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S04-L3": "R_S04_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-05-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-05": "R_GATE_05_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s05-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S05-L1": "R_S05_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s05-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S05-L2": "R_S05_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s05-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S05-L3": "R_S05_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-06-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-06": "R_GATE_06_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s06-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S06-L1": "R_S06_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s06-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S06-L2": "R_S06_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s06-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S06-L3": "R_S06_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-07-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-07": "R_GATE_07_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s07-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S07-L1": "R_S07_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s07-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S07-L2": "R_S07_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s07-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S07-L3": "R_S07_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-08-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-08": "R_GATE_08_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s08-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S08-L1": "R_S08_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s08-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S08-L2": "R_S08_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s08-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S08-L3": "R_S08_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-09-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-09": "R_GATE_09_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s09-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S09-L1": "R_S09_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s09-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S09-L2": "R_S09_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s09-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S09-L3": "R_S09_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-10-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-10": "R_GATE_10_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s10-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S10-L1": "R_S10_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s10-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S10-L2": "R_S10_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s10-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S10-L3": "R_S10_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-gate-11-plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-GATE-11": "R_GATE_11_PLAZA"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s11-l1-crest",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S11-L1": "R_S11_L1_CREST"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s11-l2-eco",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S11-L2": "R_S11_L2_ECO"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r-s11-l3-river",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S11-L3": "R_S11_L3_RIVER"
+      },
+      "calibration_version": "hk-cam-unc-0"
+    }
+  ],
+  "notes": [
+    "全部参数为合成/未标定数据，来源为江滩场景的测地锚点网格与标准公式推导。",
+    "不得表述为现场实测或已标定参数；用于研究级仿真与流水线演练。",
+    "C_FLOOD_ESCAPE_UNKNOWN 容量为 unknown，按“未知不可用”原则不写入标定档案，保持场景硬排除。"
+  ]
+}

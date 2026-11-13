@@ -39,15 +39,17 @@ npm run benchmark:v71
   与文旅导览业务**完全切割**：没有游客端、RAG、数字人、管理后台。
 - **疏散引擎原样保留**：时间扩展最小费用流规划器、15 类硬约束独立校验器、
   四态状态机、审计日志与感知 provider 均未改动行为。
-- **新场景尚未确定**。因此场景层被显式做成可替换输入：
-  区域 / 通道 / 出口 / 演示脚本 / 大屏底图与地标 / 模拟基线全部在
-  `data/scenarios/*.json` 中声明，换场景不需要改疏散代码。
+- **场景是显式可替换输入**：区域 / 通道 / 出口 / 演示脚本 / 大屏底图与地标 / 模拟基线
+  全部在 `data/scenarios/*.json` 中声明，换场景不需要改疏散代码。
   详见 [`docs/SCENARIO.md`](docs/SCENARIO.md)。
-- 默认场景为 `stadium-evacuation.json`（合成体育场散场）；`venue-default.json` 保留为旧版合成场馆。场景仅用于验证闭环，不代表任何真实建筑。
+- 默认场景为 `hankou-mvp.json`（武汉汉口江滩人群疏散，合成场景）；
+  它派生自 V7.5.2 冻结研究场景 `hankou-marshland-v752-base.json`，几何与容量一致，
+  仅补充 MVP 岗位技能、调查联合配置与演示序列。`venue-default.json` 保留为通用合成场馆样例。
+  场景仅用于验证闭环，不代表任何真实场馆，未经现场测绘与标定，不得用于实际应急指挥。
 
 ## MVP 端到端闭环（华为 ICT 方向）
 
-在安全内核之上新增了完整业务闭环，首个场景为**大型体育场散场**（合成数据）：
+在安全内核之上新增了完整业务闭环，当前场景为**武汉汉口江滩人群疏散**（合成/估算数据）：
 
 ```text
 回放/模拟人流 → 异常发现 → Agent 主动调查（VoI）→ 预测与风险评估
@@ -196,7 +198,7 @@ npm start              # 由后端托管 frontend/dist
 | `SKYGUARD_ADMIN_USERNAME` | `admin` | 首次初始化后以配置文件为准 |
 | `SKYGUARD_ADMIN_PASSWORD` | `skyguard2026` | **部署前必须修改** |
 | `SECRET_KEY` / `JWT_SECRET` | 开发默认值 | 未设置时打印警告；生产必须显式配置 |
-| `SAFETY_SCENARIO_FILE` | `stadium-evacuation.json` | 场景文件名或绝对路径 |
+| `SAFETY_SCENARIO_FILE` | `hankou-mvp.json` | 场景文件名或绝对路径 |
 | `PORT` | `8010` | 服务端口 |
 | `DATA_ROOT` | 仓库 `data/` | 数据根目录 |
 
@@ -204,7 +206,7 @@ npm start              # 由后端托管 frontend/dist
 
 ## 换场景
 
-1. 复制 `data/scenarios/stadium-evacuation.json` 为新文件，替换区域 / 通道 / 出口 / 演示脚本；
+1. 复制 `data/scenarios/hankou-mvp.json` 为新文件，替换区域 / 通道 / 出口 / 演示脚本；
 2. 在 `map` 中设置底图与地标（可选），在 `simulation_baseline` 中设置模拟观测基线；
 3. 启动时设置 `SAFETY_SCENARIO_FILE=<新文件名>`，或登录后调用
    `POST /api/v1/safety/admin/reload-scenario {"file":"<新文件名>"}` 热切换；

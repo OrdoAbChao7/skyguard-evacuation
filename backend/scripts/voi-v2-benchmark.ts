@@ -29,8 +29,9 @@ import {
 } from '../src/services/mvp/voi';
 import { actionAvailability, createInvestigationSession, recordAttempt } from '../src/services/mvp/investigation-session';
 
+import { bootstrap, clusterBootstrap, dz, mulberry32, sampleIndex } from './lib/benchmark';
 const SEEDS = Array.from({ length: 30 }, (_, index) => 20261105 + index);
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const RUN_ID = new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/voi-v2', RUN_ID);
 const scenario: SafetyScenario = loadSafetyScenario(SCENARIO_PATH);
@@ -48,48 +49,6 @@ const ci = (values: number[]) => {
   return { mean: Number(m.toFixed(4)), lower: Number((m - half).toFixed(4)), upper: Number((m + half).toFixed(4)), sd: Number(std(values).toFixed(4)), n: values.length };
 };
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function sampleIndex(probabilities: number[], rng: () => number): number {
-  const total = probabilities.reduce((a, b) => a + b, 0);
-  let threshold = rng() * total;
-  for (let i = 0; i < probabilities.length; i += 1) { threshold -= probabilities[i]; if (threshold <= 0) return i; }
-  return probabilities.length - 1;
-}
-function bootstrap(values: number[], iterations = 1000, seed = 23) {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    for (let j = 0; j < values.length; j += 1) sum += values[Math.floor(rng() * values.length)];
-    stats.push(sum / values.length);
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
-function clusterBootstrap(groups: number[][], iterations = 1000, seed = 29) {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0; let count = 0;
-    for (let g = 0; g < groups.length; g += 1) {
-      const group = groups[Math.floor(rng() * groups.length)];
-      for (let j = 0; j < group.length; j += 1) { sum += group[Math.floor(rng() * group.length)]; count += 1; }
-    }
-    stats.push(sum / count);
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
-function dz(diffs: number[]) { return std(diffs) === 0 ? 0 : Number((mean(diffs) / std(diffs)).toFixed(4)); }
 function write(name: string, data: unknown) { fs.writeFileSync(path.join(OUT, name), `${JSON.stringify(data, null, 2)}\n`); }
 
 function makeRisk(regionId: string, trueH: string, trusted: boolean): RegionRisk {
@@ -105,7 +64,7 @@ function makeRisk(regionId: string, trueH: string, trusted: boolean): RegionRisk
 
 /** 按 P(outcome | true hypothesis, action) 采样，而不是取最大似然标签。 */
 function sampleOutcome(kind: string, trueH: string, rng: () => number): InvestigationOutcome {
-  const row = policy!.likelihoods[kind as keyof typeof policy!.likelihoods]?.[trueH] ?? {};
+  const row = policy!.likelihoods[kind as keyof NonNullable<typeof policy>['likelihoods']]?.[trueH] ?? {};
   const probabilities = policy!.outcomes.map(outcome => row[outcome] ?? 0);
   return policy!.outcomes[sampleIndex(probabilities, rng)];
 }
@@ -209,8 +168,8 @@ const summarize = (strategy: Strategy) => {
     benefit: ci(subset.map(row => row.benefit)),
     cost: ci(subset.map(row => row.cost)),
     efficiency: ci(subset.map(row => row.benefit / Math.max(1e-6, row.cost))),
-    unique_covered: ci(subset.map(row => row.unique_covered)),
-    worst_final_risk: ci(subset.map(row => row.worst_final_risk)),
+    unique_covered: ci(subset.map(row => Number(row.unique_covered))),
+    worst_final_risk: ci(subset.map(row => Number(row.worst_final_risk))),
   };
 };
 
@@ -243,9 +202,9 @@ const result = {
   },
   summary: Object.fromEntries(strategies.map(strategy => [strategy, summarize(strategy)])),
   paired: {
-    trial_level: { mean: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs), cohen_dz: dz(diffs), n: diffs.length },
+    trial_level: { mean: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs, 1000, 23), cohen_dz: dz(diffs), n: diffs.length },
     seed_level: { mean: Number(mean(seedMeans).toFixed(4)), ci: ci(seedMeans), n: seedMeans.length, values: seedMeans.map(value => Number(value.toFixed(4))) },
-    cluster_bootstrap_by_seed: clusterBootstrap(groups),
+    cluster_bootstrap_by_seed: clusterBootstrap(groups, 1000, 29),
     efficiency_diff: ci(efficiencyDiffs),
     cost_diff: ci(paired.map(item => item.cost_diff)),
   },

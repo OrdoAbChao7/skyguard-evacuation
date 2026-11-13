@@ -8,7 +8,7 @@ import { resetSafetyServiceForTests } from '../../src/services/safety';
 import { resetMvpServiceForTests } from '../../src/services/mvp';
 import { SECRET } from '../../src/api/v1/auth';
 
-const REPO_SCENARIO = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const REPO_SCENARIO = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 async function startServer(): Promise<TestServer> {
   resetSafetyServiceForTests();
@@ -16,7 +16,7 @@ async function startServer(): Promise<TestServer> {
   const server = await startTestServer();
   const scenarioDir = path.join(server.dataRoot, 'scenarios');
   fs.mkdirSync(scenarioDir, { recursive: true });
-  fs.copyFileSync(REPO_SCENARIO, path.join(scenarioDir, 'stadium-evacuation.json'));
+  fs.copyFileSync(REPO_SCENARIO, path.join(scenarioDir, 'hankou-mvp.json'));
   delete process.env.SAFETY_SCENARIO_FILE;
   return server;
 }
@@ -38,7 +38,7 @@ async function seedObservations(server: TestServer, headers: Record<string, stri
   const now = Date.now();
   for (const region of scenario.regions) {
     if (!region.enabled) continue;
-    const points = region.id === 'R_NORTH_STAND' ? 6 : 1;
+    const points = region.id === 'R_S01_L1_CREST' ? 6 : 1;
     for (let index = 0; index < points; index += 1) {
       const observedAt = new Date(now - (points - 1 - index) * 60_000).toISOString();
       const response = await server.request('/api/v1/safety/observations', {
@@ -65,13 +65,13 @@ test('V7 预测/联合 VoI/MPC/拥堵预览只读可用', async () => {
     const headers = await adminHeaders(server);
     await seedObservations(server, headers);
 
-    const forecast = await server.request('/api/v1/mvp/v70/forecast/R_NORTH_STAND?horizon_minutes=5');
+    const forecast = await server.request('/api/v1/mvp/v70/forecast/R_S01_L1_CREST?horizon_minutes=5');
     assert.equal(forecast.status, 200);
     assert.equal(forecast.body.available, true, JSON.stringify(forecast.body));
     assert.ok(forecast.body.result.interval95.lower <= forecast.body.result.interval95.upper);
     assert.ok(['ok', 'warning', 'failed'].includes(forecast.body.result.reliability.status));
 
-    const joint = await server.request('/api/v1/mvp/v70/joint-investigation?region_id=R_NORTH_STAND');
+    const joint = await server.request('/api/v1/mvp/v70/joint-investigation?region_id=R_S01_L1_CREST');
     assert.equal(joint.status, 200);
     assert.equal(joint.body.available, true, JSON.stringify(joint.body));
     assert.ok(joint.body.decision.selected.length <= joint.body.decision.config.max_sequence);
@@ -92,7 +92,7 @@ test('V7 预测/联合 VoI/MPC/拥堵预览只读可用', async () => {
 
     // 只读：预览不改变安全状态版本或审计记录数量。
     const before = await server.request('/api/v1/safety/status');
-    await server.request('/api/v1/mvp/v70/joint-investigation?region_id=R_NORTH_STAND');
+    await server.request('/api/v1/mvp/v70/joint-investigation?region_id=R_S01_L1_CREST');
     await server.request('/api/v1/safety/v70/mpc-preview?use_forecast=0');
     const after = await server.request('/api/v1/safety/status');
     assert.deepEqual(after.body.versions, before.body.versions);
@@ -110,7 +110,7 @@ test('观测不可信时 MPC 预览 fail closed，预测不回退伪造', async 
     const headers = await adminHeaders(server);
     await seedObservations(server, headers);
     const scenario = (await server.request('/api/v1/safety/scenario')).body;
-    const target = scenario.regions.find((region: any) => region.enabled && region.id !== 'R_NORTH_STAND');
+    const target = scenario.regions.find((region: any) => region.enabled && region.id !== 'R_S01_L1_CREST');
     const invalid = await server.request('/api/v1/safety/observations', {
       ...jsonBody({
         region_id: target.id,

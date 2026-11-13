@@ -46,12 +46,12 @@ function config(baseUrl: string, retries = 1): AgentArtsConfig {
 }
 
 function decisionBody(): string {
-  const decision = JSON.stringify({ tool: 'camera_query', arguments: { region_id: 'R_NORTH_STAND' }, reasoning: 'stub' });
+  const decision = JSON.stringify({ tool: 'camera_query', arguments: { region_id: 'R_S01_L1_CREST' }, reasoning: 'stub' });
   return `data: ${JSON.stringify({ event: 'message', data: { text: decision } })}\n\n`;
 }
 
 const selectInput = (traceId: string) => ({
-  regionId: 'R_NORTH_STAND',
+  regionId: 'R_S01_L1_CREST',
   trigger: 'v73:test',
   traceId,
   sessionId: 'session-v73',

@@ -8,7 +8,7 @@ import { runShadowComparison } from '../../src/services/safety/planning/v7-adapt
 import { buildObservation } from '../../src/services/safety/observations';
 import type { DensityObservation } from '../../src/services/safety/types';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function setup(count = 260) {
   const scenario = loadSafetyScenario(scenarioPath);

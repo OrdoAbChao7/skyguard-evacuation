@@ -24,7 +24,7 @@ const dataRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'skyguard-mvp-demo-'));
 process.env.DATA_ROOT = dataRoot;
 process.env.SECRET_KEY = process.env.SECRET_KEY ?? 'skyguard-demo-only-secret';
 
-const scenarioFile = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const scenarioFile = path.resolve(__dirname, '../../data/scenarios/hankou-mvp.json');
 const scenario = loadSafetyScenario(scenarioFile);
 const audit = new AuditLog(path.join(dataRoot, 'audit'));
 const safety = new SafetyDecisionService({ scenario, auditLog: audit });
@@ -66,6 +66,22 @@ function rows(series: Record<string, number[]>, steps: number, startOffsetMinute
   return out;
 }
 
+function scenarioSeries(steps: number, overrides: Record<string, number[]>): Record<string, number[]> {
+  const baseline = scenario.simulation_baseline ?? {};
+  const series: Record<string, number[]> = {};
+  for (const region of scenario.regions) {
+    if (region.enabled === false) continue;
+    const override = overrides[region.id];
+    if (override) {
+      series[region.id] = override;
+      continue;
+    }
+    const base = baseline[region.id]?.count ?? 60;
+    series[region.id] = Array.from({ length: steps }, (_, step) => Math.max(1, Math.round(base * (1 - 0.02 * step))));
+  }
+  return series;
+}
+
 function staffActor(staffId: string): OpsActor {
   const member = mvp.ops.getStaff(staffId);
   if (!member) throw new Error(`staff not found: ${staffId}`);
@@ -91,17 +107,10 @@ async function scenarioA(): Promise<void> {
   section('场景 A · 正常散场（回放 + 预测 + 风险评估）');
   mvp.resetAll(admin);
 
-  const replay = rows({
-    R_NORTH_STAND: [360, 345, 330, 315, 300, 290],
-    R_SOUTH_STAND: [310, 300, 290, 280, 270, 260],
-    R_WEST_STAND: [290, 280, 270, 260, 250, 240],
-    R_EAST_STAND: [300, 320, 345, 370, 395, 420],
-    R_NORTH_CONCOURSE: [120, 125, 130, 135, 140, 145],
-    R_SOUTH_CONCOURSE: [110, 112, 114, 116, 118, 120],
-    R_EAST_PLAZA: [60, 62, 64, 66, 68, 70],
-    R_WEST_PLAZA: [55, 56, 57, 58, 59, 60],
-  }, 6);
-  mvp.replay.loadRows(replay, { name: 'stadium-evacuation-demo', provenance: '合成回放数据（固定序列）' });
+  const replay = rows(scenarioSeries(6, {
+    R_S04_L1_CREST: [300, 320, 345, 370, 395, 420],
+  }), 6);
+  mvp.replay.loadRows(replay, { name: 'hankou-marshland-demo', provenance: '合成回放数据（固定序列）' });
   const stepped = mvp.stepReplay({ count: replay.length, actor: admin });
   log(`  回放写入：${stepped.ingested} 条观测`);
 
@@ -109,12 +118,12 @@ async function scenarioA(): Promise<void> {
   log(`  安全状态：${status.state.state} · ${status.state.headline}`);
   check(status.state.state === 'NORMAL', '正常散场应进入 NORMAL', status.state.state);
 
-  const prediction = mvp.predict('R_EAST_STAND');
-  console.log(`  东看台预测：当前 ${prediction.current_count} → 5 分钟后 ${prediction.predicted_count}（${prediction.trend.direction}，${prediction.trend.rate_per_minute} 人/分）`);
+  const prediction = mvp.predict('R_S04_L1_CREST');
+  console.log(`  洞庭门滩顶预测：当前 ${prediction.current_count} → 5 分钟后 ${prediction.predicted_count}（${prediction.trend.direction}，${prediction.trend.rate_per_minute} 人/分）`);
   check(prediction.sufficient, '预测数据充分');
   check(prediction.trend.direction === 'rising', '预测识别出上升趋势', prediction.trend);
 
-  const run = await mvp.runAgent({ regionId: 'R_NORTH_STAND', trigger: 'normal_evacuation' });
+  const run = await mvp.runAgent({ regionId: 'R_S01_L1_CREST', trigger: 'normal_evacuation' });
   console.log(`  Agent：${run.status} · ${run.summary}`);
   console.log(`  工具调用：${run.trace.map(item => item.tool).join(' → ')}`);
   check(!run.investigation.required, '数据可信时不发起主动调查');
@@ -126,22 +135,17 @@ async function scenarioB(): Promise<void> {
   section('场景 B · 局部积聚 + 信息不确定（VoI → 审批 → 执行 → 反馈）');
   mvp.resetAll(admin);
 
-  const baseline = rows({
-    R_NORTH_STAND: [300, 305, 310],
-    R_SOUTH_STAND: [280, 285, 290],
-    R_WEST_STAND: [260, 265, 270],
-    R_NORTH_CONCOURSE: [110, 115, 120],
-    R_SOUTH_CONCOURSE: [105, 108, 112],
-    R_EAST_PLAZA: [55, 60, 65],
-    R_WEST_PLAZA: [50, 52, 55],
-  }, 3);
-  mvp.replay.loadRows(baseline, { name: 'stadium-evacuation-baseline', provenance: '合成回放数据（固定序列）' });
+  const target = 'R_GATE_04_PLAZA';
+  const baseline = rows(scenarioSeries(3, {
+    [target]: [3000, 3100, 3200],
+  }), 3);
+  mvp.replay.loadRows(baseline, { name: 'hankou-marshland-baseline', provenance: '合成回放数据（固定序列）' });
   mvp.stepReplay({ count: baseline.length, actor: admin });
 
-  // 东看台：低置信度观测 → 信息缺口
+  // 洞庭门门区：低置信度观测 → 信息缺口
   safety.ingestObservation({
-    regionId: 'R_EAST_STAND',
-    count: 900,
+    regionId: target,
+    count: 3300,
     confidence: 0.35,
     source: 'simulation',
     provider: 'camera-degraded',
@@ -155,7 +159,7 @@ async function scenarioB(): Promise<void> {
   log(`  写入低置信观测后状态：${degraded.state.state} · ${degraded.state.headline}`);
   check(degraded.state.state === 'DEGRADED', '低置信观测触发 DEGRADED', degraded.state.state);
 
-  const run = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'crowd_surge_alert' });
+  const run = await mvp.runAgent({ regionId: target, trigger: 'crowd_surge_alert' });
   console.log(`  Agent 状态：${run.status}`);
   console.log(`  调查轮次：${run.investigation.rounds.length}；停止原因：${run.investigation.stopped_reason}`);
   for (const round of run.investigation.rounds) {
@@ -177,16 +181,16 @@ async function scenarioB(): Promise<void> {
 
   const staffOrder = pending.find(order => order.type === 'scene_verification')!;
   const uavOrder = pending.find(order => order.type === 'uav_observation')!;
-  const completedStaff = await runOrderLoop(staffOrder, { count: 920, confidence: 0.95 }, '现场核查：东看台入口人流密集，通道仍可通行。');
+  const completedStaff = await runOrderLoop(staffOrder, { count: 3500, confidence: 0.95 }, '现场核查：洞庭门门区人流密集，通道仍可通行。');
   log(`  现场核查工单完成：${completedStaff.status} · 指派 ${completedStaff.assigned_staff_id}`);
-  const completedUav = await runOrderLoop(uavOrder, { count: 940, confidence: 0.92 }, '无人机航拍：东看台外侧人流密集，建议分流至南侧。');
+  const completedUav = await runOrderLoop(uavOrder, { count: 3600, confidence: 0.92 }, '无人机航拍：洞庭门门区外侧人流密集，建议沿堤顶分流。');
   log(`  无人机工单完成：${completedUav.status} · 指派 ${completedUav.assigned_staff_id}`);
 
   const afterEvidence = safety.getStatus();
-  log(`  反馈写入后状态：${afterEvidence.state.state} · 观测来源 ${afterEvidence.observations.find(item => item.region_id === 'R_EAST_STAND')?.source}`);
+  log(`  反馈写入后状态：${afterEvidence.state.state} · 观测来源 ${afterEvidence.observations.find(item => item.region_id === target)?.source}`);
   check(afterEvidence.state.state !== 'DEGRADED', '人工证据到达后脱离 DEGRADED', afterEvidence.state.state);
 
-  const run2 = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'staff_feedback' });
+  const run2 = await mvp.runAgent({ regionId: target, trigger: 'staff_feedback' });
   console.log(`  第二次 Agent（反馈后）：${run2.status} · ${run2.summary}`);
   log(`    信念：${run2.belief_before.map(item => `${item.hypothesis_id}=${item.probability}`).join(' / ')} → ${run2.belief_after.map(item => `${item.hypothesis_id}=${item.probability}`).join(' / ')}`);
   log(`    熵：${run2.entropy_before_bits} → ${run2.entropy_after_bits} bit；风险：${run2.risk_before} → ${run2.risk_after}`);
@@ -196,8 +200,8 @@ async function scenarioB(): Promise<void> {
   if (controlOrder) {
     const completedControl = await runOrderLoop(
       controlOrder as unknown as WorkOrder,
-      { count: 700, confidence: 0.95 },
-      '疏导完成：东看台向南北环廊分流，密度下降。',
+      { count: 3400, confidence: 0.95 },
+      '疏导完成：洞庭门门区沿堤顶与滩顶分级分流，密度下降。',
     );
     log(`  疏导工单完成：${completedControl.status}`);
   }
@@ -235,16 +239,10 @@ async function scenarioC(): Promise<void> {
   check(degraded.state.publishable === false, 'DEGRADED 下禁止发布路线');
   check(degraded.state.validated_route_display_allowed === false, 'DEGRADED 下禁止显示已验证路线');
 
-  const highCounts: Record<string, number> = {
-    R_NORTH_STAND: 1300,
-    R_SOUTH_STAND: 1300,
-    R_WEST_STAND: 1200,
-    R_EAST_STAND: 1300,
-    R_NORTH_CONCOURSE: 700,
-    R_SOUTH_CONCOURSE: 700,
-    R_EAST_PLAZA: 400,
-    R_WEST_PLAZA: 400,
-  };
+  const highCounts: Record<string, number> = {};
+  for (const region of scenario.regions) {
+    if (region.enabled !== false) highCounts[region.id] = Math.round(region.area_m2 * 4);
+  }
   for (const [regionId, count] of Object.entries(highCounts)) {
     safety.ingestObservation({
       regionId,
@@ -260,7 +258,7 @@ async function scenarioC(): Promise<void> {
     type: 'corridor_closure',
     description: '东西主出口因设备故障临时关闭（演示）',
     severity: 'critical',
-    affected: { region_ids: [], corridor_ids: [], exit_ids: ['E_EAST', 'E_WEST'] },
+    affected: { region_ids: [], corridor_ids: [], exit_ids: ['GATE_03_G03', 'GATE_04_G04'] },
     source: 'operator',
     actor: admin.username,
   });
@@ -275,7 +273,7 @@ async function scenarioC(): Promise<void> {
   check(rejected.plan === null, 'REJECT 下不存在已发布方案');
   check(Boolean(rejected.candidate_plan && rejected.candidate_plan.unresolved_persons > 0), '候选方案显式给出未解决人数', rejected.candidate_plan?.unresolved_persons);
 
-  const run = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'exit_closure_capacity_shortage' });
+  const run = await mvp.runAgent({ regionId: 'R_GATE_04_PLAZA', trigger: 'exit_closure_capacity_shortage' });
   console.log(`  Agent：${run.status} · ${run.summary}`);
   check(run.status === 'needs_human', 'Agent 在 REJECT 下转人工', run.status);
   check(run.summary.includes('人工'), 'Agent 输出人工介入说明');

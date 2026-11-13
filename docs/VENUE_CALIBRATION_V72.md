@@ -1,12 +1,12 @@
 # V7.2 场馆标定流水线使用说明
 
 > 代码：`backend/src/services/safety/calibration/venue-calibration.ts`
-> 示例档案：`data/venues/stadium-synthetic-profile.json`（**合成、未标定**）
+> 示例档案：`data/venues/hankou-synthetic-profile.json`（**合成、未标定**）
 > 证据脚本：`backend/scripts/v72-venue-calibration.ts`（`npm run benchmark:v72 -- --only=calibration`）
 
 ## 1. 档案结构
 
-`VenueProfile` 包含：
+`VenueProfile` 包含（示例档案覆盖 44 个区域、77 条容量已知通道、11 个出口、44 路相机）：
 
 - `regions[]`：面积、在留容量、相机 ID；
 - `corridors[]`：端点、容量、通行秒数；
@@ -23,7 +23,7 @@
   "value": 1.25,
   "unit": "m/s",
   "provenance": "estimated",
-  "source": "synthetic stadium scenario",
+  "source": "hankou-marshland-v1 scenario (estimated)",
   "method": "通用经验值；未用本场馆样本估计",
   "measured_at": null,
   "samples": 0,

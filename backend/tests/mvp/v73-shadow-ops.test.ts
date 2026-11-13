@@ -9,7 +9,7 @@ import { buildObservation, ObservationStore } from '../../src/services/safety/ob
 import { makeMvpFixture, ADMIN } from './fixtures';
 import type { DensityObservation } from '../../src/services/safety/types';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function setup(count = 240) {
   const scenario = loadSafetyScenario(scenarioPath);

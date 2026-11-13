@@ -22,7 +22,7 @@ test('联合 VoI 使用场景参数并返回逐轮候选评估', () => {
     const graph = buildRegionGraph(fixture.scenario);
     const risks = fixture.scenario.regions.map(region => risk(region.id, 'watch'));
     const beliefs = priorBeliefsForRegions(policy, risks);
-    const decision = decideJointInvestigation(policy, 'R_EAST_STAND', beliefs, graph);
+    const decision = decideJointInvestigation(policy, 'R_S04_L1_CREST', beliefs, graph);
     assert.equal(decision.config.source, 'scenario');
     assert.equal(decision.config.correlation, 0.5);
     assert.ok(decision.evaluations_by_round.length >= 1);
@@ -41,7 +41,7 @@ test('选择动作后，同覆盖动作出现冗余折扣', () => {
     const graph = buildRegionGraph(fixture.scenario);
     const risks = fixture.scenario.regions.map(region => risk(region.id, 'critical'));
     const beliefs = priorBeliefsForRegions(policy, risks);
-    const decision = decideJointInvestigation(policy, 'R_EAST_STAND', beliefs, graph, {}, { maxSequence: 2 });
+    const decision = decideJointInvestigation(policy, 'R_S04_L1_CREST', beliefs, graph, {}, { maxSequence: 2 });
     const secondRound = decision.evaluations_by_round[1];
     if (secondRound) {
       const selectedId = decision.selected[0]?.action_id;
@@ -62,7 +62,7 @@ test('相关性让未直接覆盖的邻居获得间接信息价值', () => {
     const graph = buildRegionGraph(fixture.scenario);
     const risks = fixture.scenario.regions.map(region => risk(region.id, 'critical'));
     const beliefs = priorBeliefsForRegions(policy, risks);
-    const decision = decideJointInvestigation(policy, 'R_NORTH_STAND', beliefs, graph, {}, { maxSequence: 1 });
+    const decision = decideJointInvestigation(policy, 'R_S01_L1_CREST', beliefs, graph, {}, { maxSequence: 1 });
     const camera = decision.evaluations_by_round[0].find(item => item.action_id === 'A_CAMERA')!;
     const indirect = camera.contributions.filter(item => item.indirect_weight > 0);
     assert.ok(indirect.length > 0, '目标区域动作应对相关邻居产生间接权重');
@@ -78,7 +78,7 @@ test('预算耗尽后停止联合选择', () => {
     const graph = buildRegionGraph(fixture.scenario);
     const risks = fixture.scenario.regions.map(region => risk(region.id, 'critical'));
     const beliefs = priorBeliefsForRegions(policy, risks);
-    const decision = decideJointInvestigation(policy, 'R_EAST_STAND', beliefs, graph, {}, {
+    const decision = decideJointInvestigation(policy, 'R_S04_L1_CREST', beliefs, graph, {}, {
       usedActions: policy.budget?.max_actions ?? 3,
       usedCost: policy.budget?.max_total_cost ?? 1.2,
       usedTimeMinutes: policy.budget?.max_total_time_minutes ?? 8,

@@ -22,25 +22,16 @@ import { runShadowComparison, type ShadowComparison, type ShadowSolver } from '.
 import { buildObservation } from '../src/services/safety/observations';
 import type { DensityObservation, Incident, SafetyScenario } from '../src/services/safety/types';
 
+import { mulberry32 } from './lib/benchmark';
 const RUN_ID = process.env.V72_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v72', RUN_ID);
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const SEEDS = Array.from({ length: 10 }, (_, index) => 20261110 + index);
 const VARIANTS = ['baseline', 'exit_failure', 'corridor_closure', 'high_demand'] as const;
 type Variant = (typeof VARIANTS)[number];
 const MODES = ['normal', 'solver_error', 'validation_failure', 'budget_zero', 'stale_observation', 'snapshot_tamper'] as const;
 type Mode = (typeof MODES)[number];
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 const mean = (values: number[]): number => (values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0);
 const ci = (values: number[]) => {
   if (values.length === 0) return { mean: 0, lower: 0, upper: 0, n: 0 };
@@ -83,9 +74,9 @@ interface CaseSetup {
 function buildCase(base: SafetyScenario, variant: Variant, seed: number): CaseSetup {
   const rng = mulberry32(seed * 1009 + VARIANTS.indexOf(variant) * 104_729);
   const incidents = variant === 'exit_failure'
-    ? [incidentFor(['E_NORTH'], [])]
+    ? [incidentFor(['GATE_01_G01'], [])]
     : variant === 'corridor_closure'
-      ? [incidentFor([], ['C_NE'])]
+      ? [incidentFor([], ['C_S01_L1_GATE'])]
       : [];
   const network = resolveEffectiveNetwork(base, incidents);
   const demand = new Map<string, number>();

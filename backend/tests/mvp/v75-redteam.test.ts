@@ -7,7 +7,7 @@ import { resolveEffectiveNetwork } from '../../src/services/safety/network';
 import { planEvacuationMpc } from '../../src/services/safety/planning/mpc-planner';
 import type { SafetyScenario } from '../../src/services/safety/types';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function run(overrides: Record<string, unknown> = {}, demandPersons = 600) {
   const scenario = loadSafetyScenario(scenarioPath);
@@ -87,14 +87,14 @@ test('同一输入重复规划结果确定，且不修改输入场景/需求', (
 test('承诺出口运行中失效时记录紧急覆盖且新计划不再使用该出口', () => {
   const result = run({
     stability: { mode: 'commitment', commitMinutes: 8, hysteresisGap: 0.02 },
-    midRunDisruptions: [{ minute: 2, exit_ids: ['E_NORTH'], description: 'test exit failure' }],
+    midRunDisruptions: [{ minute: 2, exit_ids: ['GATE_01_G01'], description: 'test exit failure' }],
   }, 900);
   assert.equal(result.capacity_violations, 0);
   assert.ok(result.emergency_overrides >= 1, '承诺出口不可用必须记录紧急覆盖');
   for (const step of result.steps) {
     if (step.plan_base_minute < 2) continue;
     assert.ok(
-      step.plan.routes.every(route => route.exit_id !== 'E_NORTH'),
+      step.plan.routes.every(route => route.exit_id !== 'GATE_01_G01'),
       `第 ${step.step} 步计划仍使用已失效出口`,
     );
   }

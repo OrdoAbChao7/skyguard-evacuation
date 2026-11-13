@@ -24,6 +24,7 @@ import type { InvestigationKind, InvestigationOutcome, InvestigationPolicy, Safe
 import { buildRegionGraph, neighborsOf, propagateRisk, rankInvestigationPriorities } from '../src/services/mvp/risk-graph';
 import { decideMultiRegionInvestigation, priorBeliefsForRegions } from '../src/services/mvp/multi-voi';
 import { decideJointInvestigation } from '../src/services/mvp/joint-voi';
+import { bootstrap, clusterBootstrap, holm, mulberry32, normalCdf, pairedPValue, sampleIndex } from './lib/benchmark';
 import {
   applyEvidence,
   decideInvestigation,
@@ -40,11 +41,11 @@ const TRIALS = 40;
 const BUDGET = 2;
 const QUALITY = 0.6;
 const GROUND_TRUTH_CORRELATION = 0.5;
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const RUN_ID = process.env.V70_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v70', RUN_ID);
 const scenario: SafetyScenario = loadSafetyScenario(SCENARIO_PATH);
-const policy = scenario.investigation;
+const policy = scenario.investigation as NonNullable<typeof scenario.investigation>;
 if (!policy) throw new Error('缺少 investigation 策略');
 
 type Strategy = 'random' | 'fixed' | 'greedy' | 'multi' | 'joint';
@@ -59,84 +60,10 @@ const ci = (values: number[]) => {
 };
 const dz = (diffs: number[]): number => (std(diffs) === 0 ? 0 : Number((mean(diffs) / std(diffs)).toFixed(4)));
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function sampleIndex(probabilities: number[], rng: () => number): number {
-  const total = probabilities.reduce((a, b) => a + b, 0);
-  let threshold = rng() * total;
-  for (let index = 0; index < probabilities.length; index += 1) {
-    threshold -= probabilities[index];
-    if (threshold <= 0) return index;
-  }
-  return probabilities.length - 1;
-}
 function hashString(value: string): number {
   let hash = 0;
   for (let index = 0; index < value.length; index += 1) hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
   return hash;
-}
-function bootstrap(values: number[], iterations = 2000, seed = 37): { lower: number; upper: number } {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    for (let j = 0; j < values.length; j += 1) sum += values[Math.floor(rng() * values.length)];
-    stats.push(sum / values.length);
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
-function clusterBootstrap(groups: number[][], iterations = 2000, seed = 41): { lower: number; upper: number } {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    let count = 0;
-    for (let g = 0; g < groups.length; g += 1) {
-      const group = groups[Math.floor(rng() * groups.length)];
-      for (let j = 0; j < group.length; j += 1) {
-        sum += group[Math.floor(rng() * group.length)];
-        count += 1;
-      }
-    }
-    stats.push(sum / Math.max(1, count));
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
-function normalCdf(value: number): number {
-  const t = 1 / (1 + 0.2316419 * Math.abs(value));
-  const poly = t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
-  const cdf = 1 - (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * value * value) * poly;
-  return value >= 0 ? cdf : 1 - cdf;
-}
-function pairedPValue(diffs: number[]): number {
-  if (diffs.length < 2) return 1;
-  const sd = std(diffs);
-  if (sd === 0) return mean(diffs) === 0 ? 1 : 0;
-  const z = Math.abs(mean(diffs)) / (sd / Math.sqrt(diffs.length));
-  return Math.max(0, Math.min(1, 2 * (1 - normalCdf(z))));
-}
-function holm(pValues: Record<string, number>): Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> {
-  const entries = Object.entries(pValues).sort((a, b) => a[1] - b[1]);
-  const m = entries.length;
-  const result: Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> = {};
-  let previous = 0;
-  for (let index = 0; index < entries.length; index += 1) {
-    const [key, value] = entries[index];
-    const next = Math.min(1, Math.max(previous, (m - index) * value));
-    previous = next;
-    result[key] = { raw: Number(value.toFixed(6)), adjusted: Number(next.toFixed(6)), rejected_0_05: next < 0.05 };
-  }
-  return result;
 }
 
 function makeRisk(regionId: string, trueHypothesis: string, trusted: boolean): RegionRisk {
@@ -166,7 +93,7 @@ function setupTrial(seed: number, trial: number) {
 }
 
 function sampleOutcome(kind: string, trueHypothesis: string, rng: () => number): InvestigationOutcome {
-  const row = policy!.likelihoods[kind as keyof typeof policy!.likelihoods]?.[trueHypothesis] ?? {};
+  const row = policy!.likelihoods[kind as keyof NonNullable<typeof policy>['likelihoods']]?.[trueHypothesis] ?? {};
   const probabilities = policy!.outcomes.map(outcome => row[outcome] ?? 0);
   return policy!.outcomes[sampleIndex(probabilities, rng)];
 }
@@ -448,8 +375,8 @@ for (const metric of metrics) {
     metricPaired[other] = {
       mean_diff: Number(mean(diffs).toFixed(4)),
       ci: ci(diffs),
-      bootstrap: bootstrap(diffs),
-      cluster_bootstrap_by_seed: clusterBootstrap(perSeed),
+      bootstrap: bootstrap(diffs, 2000, 37),
+      cluster_bootstrap_by_seed: clusterBootstrap(perSeed, 2000, 41),
       cohen_dz: dz(diffs),
       n_pairs: diffs.length,
     };

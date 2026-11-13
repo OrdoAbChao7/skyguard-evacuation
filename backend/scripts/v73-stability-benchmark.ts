@@ -21,10 +21,11 @@ import { planEvacuationMpc } from '../src/services/safety/planning/mpc-planner';
 import { checkPlanCapacity, regionDensity, regionRiskRatio } from '../src/services/safety/planning/route-stability';
 import type { Incident, SafetyScenario } from '../src/services/safety/types';
 
+import { bootstrap, cloneScenario, holm, initialDensity, mulberry32, normalCdf, pairedPValue } from './lib/benchmark';
 const SEEDS = Array.from({ length: 30 }, (_, index) => 20261111 + index);
 const RUN_ID = process.env.V73_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v73', RUN_ID);
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const CONTROL_INTERVAL = 2;
 const PLANNING_HORIZON = 10;
 const MAX_EXECUTION = 24;
@@ -54,53 +55,6 @@ const ci = (values: number[]) => {
 };
 const dz = (diffs: number[]): number => (std(diffs) === 0 ? 0 : Number((mean(diffs) / std(diffs)).toFixed(4)));
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function bootstrap(values: number[], iterations = 2000, seed = 47): { lower: number; upper: number } {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    for (let j = 0; j < values.length; j += 1) sum += values[Math.floor(rng() * values.length)];
-    stats.push(sum / values.length);
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
-function normalCdf(value: number): number {
-  const t = 1 / (1 + 0.2316419 * Math.abs(value));
-  const poly = t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
-  const cdf = 1 - (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * value * value) * poly;
-  return value >= 0 ? cdf : 1 - cdf;
-}
-function pairedPValue(diffs: number[]): number {
-  if (diffs.length < 2) return 1;
-  const sd = std(diffs);
-  if (sd === 0) return mean(diffs) === 0 ? 1 : 0;
-  const z = Math.abs(mean(diffs)) / (sd / Math.sqrt(diffs.length));
-  return Math.max(0, Math.min(1, 2 * (1 - normalCdf(z))));
-}
-function holm(pValues: Record<string, number>): Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> {
-  const entries = Object.entries(pValues).sort((a, b) => a[1] - b[1]);
-  const m = entries.length;
-  const result: Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> = {};
-  let previous = 0;
-  for (let index = 0; index < entries.length; index += 1) {
-    const [key, value] = entries[index];
-    const next = Math.min(1, Math.max(previous, (m - index) * value));
-    previous = next;
-    result[key] = { raw: Number(value.toFixed(6)), adjusted: Number(next.toFixed(6)), rejected_0_05: next < 0.05 };
-  }
-  return result;
-}
 
 interface InflowEvent { regionId: string; minute: number; persons: number }
 interface ScenarioSetup {
@@ -115,9 +69,6 @@ interface ScenarioSetup {
   exitFactor?: (exitId: string, absoluteMinute: number) => number;
 }
 
-function cloneScenario(scenario: SafetyScenario): SafetyScenario {
-  return JSON.parse(JSON.stringify(scenario)) as SafetyScenario;
-}
 
 function incidentFor(exitIds: string[], corridorIds: string[], suffix: string): Incident {
   const now = new Date().toISOString();
@@ -173,21 +124,21 @@ function buildSetup(baseScenario: SafetyScenario, variant: ScenarioVariant, seed
   }
   const incidents: Incident[] = [];
   const midRunDisruptions: ScenarioSetup['midRunDisruptions'] = [];
-  if (variant === 'exit_failure') incidents.push(incidentFor(['E_NORTH'], [], 'EXIT'));
-  if (variant === 'corridor_closure') incidents.push(incidentFor([], ['C_NE'], 'CORR'));
+  if (variant === 'exit_failure') incidents.push(incidentFor(['GATE_01_G01'], [], 'EXIT'));
+  if (variant === 'corridor_closure') incidents.push(incidentFor([], ['C_S01_L1_GATE'], 'CORR'));
   if (variant === 'midrun_exit_failure') {
     midRunDisruptions.push({
       minute: 4,
-      exit_ids: ['E_NORTH'],
+      exit_ids: ['GATE_01_G01'],
       corridor_ids: [],
       description: '实验场景：第 4 分钟北出口故障（运行中注入）',
     });
   }
   const corridorFactor = variant === 'dynamic_capacity'
-    ? (corridorId: string, absoluteMinute: number) => (absoluteMinute >= 4 && (corridorId === 'C_NE' || corridorId === 'C_NW') ? 0.5 : 1)
+    ? (corridorId: string, absoluteMinute: number) => (absoluteMinute >= 4 && (corridorId === 'C_S01_L1_GATE' || corridorId === 'C_S02_L1_GATE') ? 0.5 : 1)
     : undefined;
   const exitFactor = variant === 'dynamic_capacity'
-    ? (exitId: string, absoluteMinute: number) => (absoluteMinute >= 5 && exitId === 'E_NORTH' ? 0.7 : 1)
+    ? (exitId: string, absoluteMinute: number) => (absoluteMinute >= 5 && exitId === 'GATE_01_G01' ? 0.7 : 1)
     : undefined;
   return { scenario, variant, demand, inflows, forecast, incidents, midRunDisruptions, corridorFactor, exitFactor };
 }
@@ -221,15 +172,6 @@ interface RunResult {
   steps: number;
 }
 
-function initialDensity(scenario: SafetyScenario, demand: Map<string, number>): { density: number; risk: number } {
-  let density = 0;
-  let risk = 0;
-  for (const [regionId, persons] of demand) {
-    density = Math.max(density, regionDensity(scenario, regionId, persons));
-    risk = Math.max(risk, regionRiskRatio(scenario, regionId, persons));
-  }
-  return { density, risk };
-}
 
 function runStrategy(
   strategy: Strategy,
@@ -413,7 +355,7 @@ for (const reference of ['legacy_static', 'mpc_standard'] as Strategy[]) {
           diffs.push(Number(current[metric]) - Number(baseline[metric]));
         }
       }
-      metricPaired[strategy] = { mean_diff: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs), cohen_dz: dz(diffs), n: diffs.length };
+      metricPaired[strategy] = { mean_diff: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs, 2000, 47), cohen_dz: dz(diffs), n: diffs.length };
       pValues[strategy] = pairedPValue(diffs);
     }
     referencePaired[metric] = metricPaired;
@@ -484,8 +426,8 @@ write('stability_summary.json', {
       },
     },
     dynamic_capacity: {
-      corridors: 'C_NE/C_NW ×0.5 after minute 4',
-      exits: 'E_NORTH ×0.7 after minute 5',
+      corridors: 'C_S01_L1_GATE/C_S02_L1_GATE ×0.5 after minute 4',
+      exits: 'GATE_01_G01 ×0.7 after minute 5',
     },
     bidirectional_model: 'time-expanded solver iteratively shares per-minute capacity between directions.',
     execution_model: '1 分钟 FIFO + BPR + 出口服务衰减 + 动态容量因子（未标定）。',

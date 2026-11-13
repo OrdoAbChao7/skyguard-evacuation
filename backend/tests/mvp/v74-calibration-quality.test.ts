@@ -13,7 +13,7 @@ import {
   validateCapacitySchedule,
 } from '../../src/services/safety/calibration/quality';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function observation(regionId: string, count: number, observedAt: string, provider = 'p1', confidence = 0.95) {
   const scenario = loadSafetyScenario(scenarioPath);
@@ -26,8 +26,8 @@ function observation(regionId: string, count: number, observedAt: string, provid
 
 test('时钟同步按 provider 校正并拒绝超限偏移', () => {
   const observations = [
-    observation('R_NORTH_STAND', 300, '2026-11-10T01:00:00Z', 'fast'),
-    observation('R_SOUTH_STAND', 280, '2026-11-10T01:00:00Z', 'slow'),
+    observation('R_S01_L1_CREST', 300, '2026-11-10T01:00:00Z', 'fast'),
+    observation('R_S02_L1_CREST', 280, '2026-11-10T01:00:00Z', 'slow'),
   ];
   const result = synchronizeTimestamps(observations, [
     { provider: 'fast', offset_seconds: -5, samples: 10 },
@@ -41,13 +41,13 @@ test('时钟同步按 provider 校正并拒绝超限偏移', () => {
 
 test('缺失区间检测按期望间隔与容差', () => {
   const observations = [
-    observation('R_NORTH_STAND', 300, '2026-11-10T01:00:00Z'),
-    observation('R_NORTH_STAND', 310, '2026-11-10T01:00:60Z'.replace(':60', ':59')),
-    observation('R_NORTH_STAND', 320, '2026-11-10T01:03:00Z'),
+    observation('R_S01_L1_CREST', 300, '2026-11-10T01:00:00Z'),
+    observation('R_S01_L1_CREST', 310, '2026-11-10T01:00:60Z'.replace(':60', ':59')),
+    observation('R_S01_L1_CREST', 320, '2026-11-10T01:03:00Z'),
   ];
   const gaps = detectMissingIntervals(observations, 60, 10);
   assert.equal(gaps.length, 1);
-  assert.equal(gaps[0].region_id, 'R_NORTH_STAND');
+  assert.equal(gaps[0].region_id, 'R_S01_L1_CREST');
   assert.ok(gaps[0].gap_seconds > 60);
   assert.ok(gaps[0].expected_samples >= 1);
 });
@@ -55,9 +55,9 @@ test('缺失区间检测按期望间隔与容差', () => {
 test('传感器可靠性是 estimated 代理分数，不是准确率', () => {
   const now = new Date('2026-11-10T01:05:00Z');
   const observations = [
-    observation('R_NORTH_STAND', 300, '2026-11-10T01:04:00Z', 'good', 0.95),
-    observation('R_SOUTH_STAND', 300, '2026-11-10T01:04:00Z', 'good', 0.94),
-    observation('R_NORTH_STAND', 300, '2026-11-10T01:04:30Z', 'bad', 0.7),
+    observation('R_S01_L1_CREST', 300, '2026-11-10T01:04:00Z', 'good', 0.95),
+    observation('R_S02_L1_CREST', 300, '2026-11-10T01:04:00Z', 'good', 0.94),
+    observation('R_S01_L1_CREST', 300, '2026-11-10T01:04:30Z', 'bad', 0.7),
   ];
   const reliability = estimateSensorReliability(observations, 300, now);
   assert.equal(reliability.length, 2);
@@ -78,7 +78,7 @@ test('动态容量计划校验重叠/越界并生成因子函数', () => {
   assert.equal(capacityFactorAt(schedule, 5, 'corridor'), 0.5);
   assert.equal(capacityFactorAt(schedule, 5, 'exit'), 1);
   assert.equal(capacityFactorAt(schedule, 12, 'exit'), 0.7);
-  assert.equal(scheduleToFactor(schedule, 'corridor')('C_NE', 5), 0.5);
+  assert.equal(scheduleToFactor(schedule, 'corridor')('C_S01_L1_GATE', 5), 0.5);
   const invalid = { entries: [
     { from_minute: 4, to_minute: 10, corridor_factor: 1.5, reason: '' },
     { from_minute: 8, to_minute: 12, exit_factor: 0.5, reason: '' },
@@ -92,9 +92,9 @@ test('观测质量报告覆盖缺失/过期/低置信度/重复时间戳', () =>
   const scenario = loadSafetyScenario(scenarioPath);
   const now = new Date('2026-11-10T01:05:00Z');
   const observations = [
-    observation('R_NORTH_STAND', 300, '2026-11-10T01:04:50Z', 'p1', 0.95),
-    observation('R_NORTH_STAND', 300, '2026-11-10T01:04:50Z', 'p2', 0.95),
-    observation('R_SOUTH_STAND', 300, '2026-11-10T00:50:00Z', 'p1', 0.2),
+    observation('R_S01_L1_CREST', 300, '2026-11-10T01:04:50Z', 'p1', 0.95),
+    observation('R_S01_L1_CREST', 300, '2026-11-10T01:04:50Z', 'p2', 0.95),
+    observation('R_S02_L1_CREST', 300, '2026-11-10T00:50:00Z', 'p1', 0.2),
   ];
   const report = observationQualityReport(scenario, observations, now);
   assert.ok(report.missing_regions.length > 0);

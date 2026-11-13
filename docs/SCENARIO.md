@@ -8,11 +8,17 @@
 | 项 | 说明 |
 | --- | --- |
 | 目录 | `data/scenarios/` |
-| 默认文件 | `stadium-evacuation.json`（体育场散场，MVP 主场景）；`venue-default.json` 保留为旧版合成场馆 |
+| 默认文件 | `hankou-mvp.json`（江滩人群疏散，MVP 主场景）；`venue-default.json` 保留为旧版合成场馆 |
 | 选择方式 | 环境变量 `SAFETY_SCENARIO_FILE=<文件名或绝对路径>` |
 | 热切换 | 登录后 `POST /api/v1/safety/admin/reload-scenario`，body `{ "file": "xxx.json" }` |
 | 候选列表 | `GET /api/v1/safety/scenarios` 返回每个文件的结构校验结果 |
 | 审计目录 | `data/audit/`（JSONL 追加写，不覆盖） |
+
+> **冻结场景与运行场景**：`hankou-marshland-v752-base.json` 是 V7.5.2 研究证据的冻结输入，
+> 由 `evaluation/realworld_hankou/v752/SHA256SUMS.txt` 固定，**不得修改**。
+> 当前运行默认的 `hankou-mvp.json` 是它的派生副本：几何、容量、通道与出口完全一致，
+> 仅补充 MVP 所需岗位技能、调查联合配置与 UI 演示序列。
+> 修改场景参数时请改 `hankou-mvp.json`；若需重跑 V7.5.2 实验，继续使用冻结文件。
 
 加载时会做两层检查：Zod 结构校验 + 引用完整性校验。任何悬空引用
 （通道指向不存在的区域、出口不属于任何区域、演示脚本引用未知 ID）都会直接报错，
@@ -114,8 +120,8 @@
 
 ```json
 "venue": {
-  "name": "滨江体育中心（合成）",
-  "kind": "stadium",
+  "name": "武汉汉口江滩（合成）",
+  "kind": "urban_riverfront_park",
   "description": "……",
   "rules": [
     { "id": "R-EXIT-01", "title": "不得封闭唯一疏散出口", "text": "……",
@@ -140,10 +146,10 @@ safety_operator 才能审批与派发）。
 
 ```json
 "staff": [
-  { "id": "STF-02", "name": "李巡（演示）", "role": "security",
-    "region_id": "R_EAST_STAND", "status": "available",
-    "skills": ["crowd_check", "corridor_check"],
-    "access_code": "1002", "source": "simulation", "verified": false }
+  { "id": "STAFF_GATE_02", "name": "李巡（演示）", "role": "security",
+    "region_id": "R_GATE_02_PLAZA", "status": "available",
+    "skills": ["gate_control", "crowd_divert", "crowd_check", "corridor_check"],
+    "access_code": "CODE_G02", "source": "simulation", "verified": false }
 ]
 ```
 

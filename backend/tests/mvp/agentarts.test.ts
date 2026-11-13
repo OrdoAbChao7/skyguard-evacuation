@@ -99,22 +99,22 @@ test('工具决策契约：接受 decision 包裹与扁平结构', async () => {
     calls += 1;
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(calls === 1
-      ? { decision: { tool: 'get_crowd_status', arguments: { region_id: 'R_EAST_STAND' }, reasoning: '需要态势' } }
-      : { tool: 'predict_crowd_trend', arguments: { region_id: 'R_EAST_STAND' } }));
+      ? { decision: { tool: 'get_crowd_status', arguments: { region_id: 'R_S04_L1_CREST' }, reasoning: '需要态势' } }
+      : { tool: 'predict_crowd_trend', arguments: { region_id: 'R_S04_L1_CREST' } }));
   });
   try {
     const client = new AgentArtsClient(config(stub.baseUrl));
     const first = await client.select({
-      regionId: 'R_EAST_STAND',
+      regionId: 'R_S04_L1_CREST',
       trigger: 'test',
       context: {},
       tools: [{ name: 'get_crowd_status', description: '', roles: ['agent'] }],
     });
     assert.equal(first.tool, 'get_crowd_status');
-    assert.deepEqual(first.arguments, { region_id: 'R_EAST_STAND' });
+    assert.deepEqual(first.arguments, { region_id: 'R_S04_L1_CREST' });
     assert.equal(first.reasoning, '需要态势');
 
-    const second = await client.select({ regionId: 'R_EAST_STAND', trigger: 'test', context: {}, tools: [] });
+    const second = await client.select({ regionId: 'R_S04_L1_CREST', trigger: 'test', context: {}, tools: [] });
     assert.equal(second.tool, 'predict_crowd_trend');
   } finally {
     stub.server.close();
@@ -226,15 +226,15 @@ test('官方运行时契约：路径、会话头、query/inputs 与 data.text �
     assert.ok(req.headers['x-hw-agentarts-session-id']);
     const body = JSON.parse(req.body);
     assert.ok(typeof body.query === 'string' && body.query.length > 0);
-    assert.equal(body.inputs.region_id, 'R_EAST_STAND');
-    assert.equal(body.inputs.scenario_id, 'stadium-evacuation-v1');
+    assert.equal(body.inputs.region_id, 'R_S04_L1_CREST');
+    assert.equal(body.inputs.scenario_id, 'hankou-mvp-v1');
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
       event: 'message',
       data: {
         text: JSON.stringify({
           tool: 'get_crowd_status',
-          arguments: { region_id: 'R_EAST_STAND' },
+          arguments: { region_id: 'R_S04_L1_CREST' },
           reasoning: '官方契约测试',
         }),
         node_id: 'node_end',
@@ -250,15 +250,15 @@ test('官方运行时契约：路径、会话头、query/inputs 与 data.text �
       invokePath: '/runtimes/{runtime_name}/invocations',
     }));
     const decision = await client.select({
-      scenarioId: 'stadium-evacuation-v1',
-      regionId: 'R_EAST_STAND',
+      scenarioId: 'hankou-mvp-v1',
+      regionId: 'R_S04_L1_CREST',
       trigger: 'contract_test',
       traceId: 'RUN-CONTRACT-1',
       context: {},
       tools: [],
     });
     assert.equal(decision.tool, 'get_crowd_status');
-    assert.deepEqual(decision.arguments, { region_id: 'R_EAST_STAND' });
+    assert.deepEqual(decision.arguments, { region_id: 'R_S04_L1_CREST' });
   } finally {
     stub.server.close();
   }

@@ -1,7 +1,7 @@
 /**
  * 安全场景加载与静态一致性校验。
  *
- * 场景是**可替换输入**：`data/scenarios/*.json`。默认文件为 `stadium-evacuation.json`（体育场散场场景），
+ * 场景是**可替换输入**：`data/scenarios/*.json`。默认文件为 `hankou-mvp.json`（汉口江滩人群疏散场景），
  * 可通过环境变量 `SAFETY_SCENARIO_FILE` 指定其它文件名（相对 scenarios 目录）
  * 或绝对路径。加载时做结构校验和引用完整性检查，任何悬空引用都会直接抛错，
  * 避免把坏数据带入规划器。
@@ -12,7 +12,7 @@ import { resolveDataPath } from '../../config/paths';
 import { SafetyScenarioSchema, type SafetyScenario } from './types';
 
 export const SCENARIO_DIR = 'scenarios';
-export const DEFAULT_SCENARIO_FILE = 'stadium-evacuation.json';
+export const DEFAULT_SCENARIO_FILE = 'hankou-mvp.json';
 
 /** 当前生效的场景文件名（环境变量优先）。 */
 export function getScenarioFileName(): string {
