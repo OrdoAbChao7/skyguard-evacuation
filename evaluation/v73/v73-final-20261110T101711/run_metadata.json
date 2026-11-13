@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-11-10T02:17:34.114Z",
+  "run_id": "v73-final-20261110T101711",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "cpu": "AMD Ryzen 7 7745HX with Radeon Graphics        ",
+  "git_head": "uncommitted",
+  "selected": [
+    {
+      "key": "stability",
+      "file": "v73-stability-benchmark.ts"
+    },
+    {
+      "key": "calibration",
+      "file": "v73-venue-import.ts"
+    },
+    {
+      "key": "shadow",
+      "file": "v73-shadow-ops.ts"
+    },
+    {
+      "key": "ascend",
+      "file": "v73-ascend-pipeline.ts"
+    },
+    {
+      "key": "agentarts",
+      "file": "v73-agentarts-status.ts"
+    }
+  ],
+  "data_nature": "全部为合成/夹具数据；不含真实人群、视频、授权数据、AgentArts 实机或昇腾 NPU 实测。"
+}

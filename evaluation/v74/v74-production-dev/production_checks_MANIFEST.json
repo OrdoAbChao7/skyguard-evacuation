@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "run_id": "v74-production-dev",
+  "note": "V7.4 生产工程检查。",
+  "file_count": 2,
+  "files": [
+    {
+      "path": "production_checks.json",
+      "bytes": 1381,
+      "sha256": "6b6b6d97eea0e2df90a5c3cbfa12a049defb33b236ce7b6915e78bd2ee6cf7d9"
+    },
+    {
+      "path": "production_checks_README.md",
+      "bytes": 847,
+      "sha256": "b6a7791e19fa94266c8814fb821d6ad98fc261d037e33bb0fdf44b3b21b48dd4"
+    }
+  ]
+}

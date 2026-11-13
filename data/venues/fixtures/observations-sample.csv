@@ -1,0 +1,5 @@
+region_id,observed_at,received_at,count,confidence,source,provider,model_version,calibration_version
+R_NORTH_STAND,2026-11-10T01:00:00Z,2026-11-10T01:00:05Z,320,0.95,live_video,fixture-adapter,fixture/1.0.0,cam-n-stand-fixture
+R_SOUTH_STAND,2026-11-10T01:00:00Z,2026-11-10T01:00:05Z,280,0.93,live_video,fixture-adapter,fixture/1.0.0,cam-s-stand-fixture
+R_EAST_STAND,2026-11-10T01:00:00Z,2026-11-10T01:00:05Z,410,0.9,live_video,fixture-adapter,fixture/1.0.0,cam-e-stand-fixture
+R_WEST_STAND,2026-11-10T01:00:00Z,2026-11-10T01:00:05Z,390,0.91,live_video,fixture-adapter,fixture/1.0.0,cam-w-stand-fixture

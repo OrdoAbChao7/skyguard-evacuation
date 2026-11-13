@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "run_id": "v72-final-20261110T014910",
+  "note": "V7.2 场馆标定流水线独立清单（合成数据）。",
+  "file_count": 8,
+  "files": [
+    {
+      "path": "calibration_MANIFEST.json",
+      "bytes": 1453,
+      "sha256": "a3a73f36cd253b132c1a9556e81e0fce31fc41331cec9bbf7ae273acf49888b4"
+    },
+    {
+      "path": "calibration_README.md",
+      "bytes": 1610,
+      "sha256": "0eec773ae312d4cee4a6b9e26d147d9462578258869150080b1fe8db0a61aa69"
+    },
+    {
+      "path": "calibration_application.json",
+      "bytes": 133,
+      "sha256": "082e58046661e5974d0c4e4319979e54242838a2b062fccf903a74296b689e47"
+    },
+    {
+      "path": "calibration_estimates.json",
+      "bytes": 10243,
+      "sha256": "ac168b47416914ddf285b5105f34867e48ff463823b7266fe0e41ee625b55947"
+    },
+    {
+      "path": "calibration_evidence.json",
+      "bytes": 11533,
+      "sha256": "bf83a02adae85cd349c97bfd8d8b8b7c003217709b47ac34713149c970acb973"
+    },
+    {
+      "path": "calibration_metadata.json",
+      "bytes": 224,
+      "sha256": "eff7a93cb7b82cb3dc59d15999fbbfc7a7d77c3481442ac66fed2457cddb0798"
+    },
+    {
+      "path": "calibration_observations.json",
+      "bytes": 563,
+      "sha256": "f4eb9af1e238766f2230fb43b7e06550435d471509634d2c35e153c3fea9c157"
+    },
+    {
+      "path": "calibration_validation.json",
+      "bytes": 224,
+      "sha256": "3824a99fbfebeb0cfc20d2807ee3c9ccaad77d281c76ce99109d913ffe416293"
+    }
+  ]
+}

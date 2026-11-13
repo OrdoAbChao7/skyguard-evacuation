@@ -34,6 +34,12 @@ export interface CongestionOptions {
   inflow?: Array<{ regionId: string; minute: number; persons: number }>;
   /** 是否启用出口拥挤服务衰减（默认开启）；关闭后出口服务率为名义值。 */
   exitServiceDegradation?: boolean;
+  /** 执行片段起点（绝对分钟），用于动态容量因子。 */
+  baseMinute?: number;
+  /** 走廊容量因子（按绝对分钟）；缺省 1。 */
+  corridorCapacityFactor?: (corridorId: string, absoluteMinute: number) => number;
+  /** 出口容量因子（按绝对分钟）；缺省 1。 */
+  exitCapacityFactor?: (exitId: string, absoluteMinute: number) => number;
 }
 
 export interface CongestionMetrics {
@@ -187,7 +193,11 @@ export function simulateRoutesExecution(
       corridorCandidates.set(step.corridorId, list);
     }
     for (const [corridorId, candidates] of corridorCandidates) {
-      const capacity = corridorCapacity.get(corridorId) ?? 0;
+      const nominalCapacity = corridorCapacity.get(corridorId) ?? 0;
+      const capacityFactor = options.corridorCapacityFactor
+        ? Math.max(0, options.corridorCapacityFactor(corridorId, (options.baseMinute ?? 0) + minute))
+        : 1;
+      const capacity = Math.floor(nominalCapacity * capacityFactor);
       if (capacity <= 0) continue;
       candidates.sort((a, b) => a.readyMinute - b.readyMinute || a.id - b.id);
       let remainingCapacity = capacity;
@@ -242,13 +252,17 @@ export function simulateRoutesExecution(
     for (const [exitId, queue] of exitQueues) {
       const nominal = exitCapacity.get(exitId) ?? 0;
       if (nominal <= 0) continue;
+      const exitFactor = options.exitCapacityFactor
+        ? Math.max(0, options.exitCapacityFactor(exitId, (options.baseMinute ?? 0) + minute))
+        : 1;
+      if (exitFactor <= 0) continue;
       const queued = queue.reduce((sum, entry) => sum + entry.persons, 0);
       // 拥挤服务衰减：factor = 1 / (1 + queue / (nominal × 5))，下限 0.5。
       // 这是未标定的启发式（队伍越长、出口通过越慢），不是实测服务率模型。
       const serviceFactor = options.exitServiceDegradation !== false && queued > 0
         ? Math.max(0.5, 1 / (1 + queued / Math.max(1, nominal * 5)))
         : 1;
-      const capacity = Math.max(1, Math.floor(nominal * serviceFactor));
+      const capacity = Math.max(1, Math.floor(nominal * exitFactor * serviceFactor));
       let remainingCapacity = capacity;
       while (queue.length > 0 && remainingCapacity > 0) {
         const entry = queue[0];

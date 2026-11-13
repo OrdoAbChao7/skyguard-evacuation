@@ -1,0 +1,141 @@
+{
+  "generated_at": "2026-11-09T17:32:59.172Z",
+  "run_id": "v72-huawei-dev",
+  "agentarts": {
+    "platform": {
+      "status": "not_configured",
+      "runtime_requested": "local",
+      "contract": "official",
+      "missing": [
+        "AGENTARTS_BASE_URL",
+        "AGENTARTS_API_KEY",
+        "AGENTARTS_RUNTIME_NAME（或 AGENTARTS_AGENT_ID）"
+      ],
+      "note": "没有真实 AgentArts 租户/凭证；未发起任何平台请求，不得声称已接入。"
+    },
+    "local_stub": {
+      "label": "local_stub（不是 AgentArts 实机）",
+      "health": {
+        "mode": "AGENTARTS_CONNECTED",
+        "connectivity": "reachable",
+        "http_status": 200
+      },
+      "decisions": [
+        {
+          "tool": "camera_query",
+          "reasoning": "local stub decision",
+          "arguments": {
+            "region_id": "R_NORTH_STAND"
+          }
+        },
+        {
+          "tool": "camera_query",
+          "reasoning": "local stub decision",
+          "arguments": {
+            "region_id": "R_NORTH_STAND"
+          }
+        }
+      ],
+      "captures": [
+        {
+          "sessionHeader": "session-stub-1",
+          "bodyTraceId": "trace-stub-1",
+          "path": "/runtimes/agent-stub/invocations"
+        },
+        {
+          "sessionHeader": "session-stub-1",
+          "bodyTraceId": "trace-stub-2",
+          "path": "/runtimes/agent-stub/invocations"
+        }
+      ],
+      "session_header_consistent": true,
+      "trace_ids_distinct": true
+    },
+    "boundary": "local_stub 只验证适配器契约；platform 未配置时不得声称已接入 AgentArts。"
+  },
+  "ascend": {
+    "device_evidence": "no_npu_smi",
+    "atc": {
+      "available": false,
+      "path": null
+    },
+    "npu_smi": {
+      "available": false,
+      "path": null
+    },
+    "python": {
+      "onnx": {
+        "available": true,
+        "version": "1.23.2",
+        "error": null
+      },
+      "onnxruntime": {
+        "available": true,
+        "version": "1.29.0",
+        "error": null
+      },
+      "numpy": {
+        "available": true,
+        "version": "2.4.3",
+        "error": null
+      }
+    },
+    "onnx_pipeline": {
+      "status": "executed_cpu_only",
+      "export_log": "{\"model\": \"E:\\\\Projects\\\\skyguard-evacuation\\\\.claude\\\\worktrees\\\\ecstatic-feistel-74fd5b\\\\evaluation\\\\v72\\\\v72-huawei-dev\\\\ascend\\\\forecast_linear.onnx\", \"sha256\": \"3837d2523cc688c2b5a931dfa2b89830186527b11cee340047243a32cdd14baa\", \"history_len\": 12, \"horizon\": 5}",
+      "benchmark_log": "{\"p50_ms\": 0.0148, \"p95_ms\": 0.028, \"max_abs_diff\": 0.0, \"providers\": [\"CPUExecutionProvider\"]}",
+      "benchmark": {
+        "generated_at": "2026-11-09T17:32:59Z",
+        "model": "forecast_linear.onnx",
+        "model_sha256": "3837d2523cc688c2b5a931dfa2b89830186527b11cee340047243a32cdd14baa",
+        "runtime": {
+          "name": "onnxruntime",
+          "version": "1.29.0",
+          "providers": [
+            "CPUExecutionProvider"
+          ],
+          "device": "cpu",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "python": "3.13.7"
+        },
+        "workload": {
+          "input_shape": [
+            1,
+            12
+          ],
+          "output_shape": [
+            1,
+            5
+          ],
+          "iterations": 300
+        },
+        "latency_ms": {
+          "p50": 0.0148,
+          "p95": 0.028,
+          "mean": 0.0168,
+          "max": 0.0695
+        },
+        "numerical_consistency": {
+          "max_abs_diff": 0,
+          "tolerance": 0.001,
+          "passed": true
+        },
+        "boundary": "CPUExecutionProvider；不是昇腾 NPU/CANN 实机结果；参考模型不是生产预测器。"
+      },
+      "note": "ONNX Runtime CPU 基准；不是昇腾 NPU 实机结果。"
+    },
+    "om_conversion": {
+      "status": "not_executed_missing_atc",
+      "command_template": "atc --model=forecast_linear.onnx --framework=5 --output=forecast_linear --soc_version=<SOC> --input_shape=\"history:1,12\" --log=error",
+      "required_evidence": [
+        "设备型号",
+        "CANN/atc 版本",
+        "ATC 日志",
+        ".om SHA-256",
+        "NPU 延迟/吞吐/内存",
+        "数值一致性"
+      ]
+    },
+    "boundary": "未检测到昇腾 NPU/CANN/atc；一切 NPU/OM 结果均为未验证。"
+  }
+}

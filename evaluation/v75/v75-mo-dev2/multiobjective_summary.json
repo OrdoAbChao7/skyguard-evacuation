@@ -1,0 +1,290 @@
+{
+  "config": {
+    "seeds": [
+      20261111,
+      20261112,
+      20261113,
+      20261114,
+      20261115,
+      20261116,
+      20261117,
+      20261118,
+      20261119,
+      20261120,
+      20261121,
+      20261122,
+      20261123,
+      20261124,
+      20261125,
+      20261126,
+      20261127,
+      20261128,
+      20261129,
+      20261130,
+      20261131,
+      20261132,
+      20261133,
+      20261134,
+      20261135,
+      20261136,
+      20261137,
+      20261138,
+      20261139,
+      20261140
+    ],
+    "scenarios": [
+      "baseline_surge",
+      "exit_failure",
+      "corridor_closure",
+      "bidirectional_stress",
+      "multi_zone_surge",
+      "midrun_exit_failure",
+      "dynamic_capacity",
+      "oscillation_stress"
+    ],
+    "profiles": {
+      "balanced": {
+        "arrival": 1,
+        "makespan": 0.5,
+        "queueProxy": 0.25,
+        "exposure": 0.05,
+        "switching": 0.02
+      },
+      "efficiency": {
+        "arrival": 1,
+        "makespan": 1.5,
+        "queueProxy": 0.5,
+        "exposure": 0.02,
+        "switching": 0.005
+      },
+      "stability": {
+        "arrival": 0.5,
+        "makespan": 0.25,
+        "queueProxy": 0.1,
+        "exposure": 0.05,
+        "switching": 0.5
+      },
+      "safety": {
+        "arrival": 0.5,
+        "makespan": 0.25,
+        "queueProxy": 0.2,
+        "exposure": 0.5,
+        "switching": 0.02
+      },
+      "queue": {
+        "arrival": 1,
+        "makespan": 0.4,
+        "queueProxy": 1,
+        "exposure": 0.02,
+        "switching": 0.01
+      },
+      "emergency": {
+        "arrival": 0.8,
+        "makespan": 0.2,
+        "queueProxy": 0.05,
+        "exposure": 0.8,
+        "switching": 0.01
+      }
+    },
+    "priorities": [
+      "efficiency",
+      "stability",
+      "safety",
+      "balanced"
+    ],
+    "data_nature": "synthetic；膝点为离线选择上界，不是在线部署算法。"
+  },
+  "profile_summary": {
+    "balanced": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 10.8792,
+      "queue_person_minutes": 23998.61,
+      "switch_persons": 1369.01,
+      "max_density": 2.4409,
+      "capacity_violations": 0,
+      "solve_ms": 35.55
+    },
+    "efficiency": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 10.5667,
+      "queue_person_minutes": 23532,
+      "switch_persons": 1662.51,
+      "max_density": 2.4409,
+      "capacity_violations": 0,
+      "solve_ms": 53.46
+    },
+    "stability": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 10.9667,
+      "queue_person_minutes": 24112.16,
+      "switch_persons": 1319.14,
+      "max_density": 2.4409,
+      "capacity_violations": 0,
+      "solve_ms": 27.59
+    },
+    "safety": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 10.95,
+      "queue_person_minutes": 24089.15,
+      "switch_persons": 1326.11,
+      "max_density": 2.4409,
+      "capacity_violations": 0,
+      "solve_ms": 32.53
+    },
+    "queue": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 10.8542,
+      "queue_person_minutes": 23904.83,
+      "switch_persons": 1405.13,
+      "max_density": 2.4409,
+      "capacity_violations": 0,
+      "solve_ms": 38.98
+    },
+    "emergency": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 10.9375,
+      "queue_person_minutes": 24086.06,
+      "switch_persons": 1329.99,
+      "max_density": 2.4409,
+      "capacity_violations": 0,
+      "solve_ms": 35.6
+    },
+    "no_commitment": {
+      "n": 240,
+      "unserved": 16.4708,
+      "makespan": 9.9167,
+      "queue_person_minutes": 20030.36,
+      "switch_persons": 3820.75,
+      "max_density": 2.1453,
+      "capacity_violations": 0,
+      "solve_ms": 23.14
+    },
+    "global_commitment": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 10.8792,
+      "queue_person_minutes": 23998.61,
+      "switch_persons": 1369.01,
+      "max_density": 2.4409,
+      "capacity_violations": 0,
+      "solve_ms": 26.75
+    },
+    "region_selective": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 10.975,
+      "queue_person_minutes": 23904.61,
+      "switch_persons": 1623.7,
+      "max_density": 2.4677,
+      "capacity_violations": 0,
+      "solve_ms": 27.13
+    },
+    "emergency_release": {
+      "n": 240,
+      "unserved": 2.8667,
+      "makespan": 10.325,
+      "queue_person_minutes": 20454.31,
+      "switch_persons": 3497.93,
+      "max_density": 2.1462,
+      "capacity_violations": 0,
+      "solve_ms": 28.3
+    }
+  },
+  "selection_summary": {
+    "pareto_efficiency": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 9.9625,
+      "queue_person_minutes": 20135.17,
+      "switch_persons": 3704.65,
+      "max_density": 2.161,
+      "profile_counts": {
+        "no_commitment": 184,
+        "balanced": 17,
+        "region_selective": 3,
+        "emergency_release": 25,
+        "efficiency": 11
+      }
+    },
+    "pareto_stability": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 10.9292,
+      "queue_person_minutes": 24182.76,
+      "switch_persons": 1206.58,
+      "max_density": 2.4395,
+      "profile_counts": {
+        "balanced": 169,
+        "region_selective": 35,
+        "stability": 8,
+        "efficiency": 24,
+        "emergency_release": 3,
+        "no_commitment": 1
+      }
+    },
+    "pareto_safety": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 9.9625,
+      "queue_person_minutes": 20175.39,
+      "switch_persons": 3633.02,
+      "max_density": 2.1666,
+      "profile_counts": {
+        "no_commitment": 171,
+        "emergency_release": 35,
+        "balanced": 17,
+        "efficiency": 13,
+        "region_selective": 4
+      }
+    },
+    "pareto_balanced": {
+      "n": 240,
+      "unserved": 0,
+      "makespan": 9.9625,
+      "queue_person_minutes": 20151.73,
+      "switch_persons": 3655.46,
+      "max_density": 2.1651,
+      "profile_counts": {
+        "no_commitment": 177,
+        "balanced": 17,
+        "efficiency": 12,
+        "region_selective": 4,
+        "emergency_release": 30
+      }
+    }
+  },
+  "constrained": {
+    "n": 240,
+    "unserved": 0,
+    "makespan": 9.9958,
+    "queue_person_minutes": 20544.88,
+    "switch_persons": 3432.15,
+    "max_density": 2.2047,
+    "profile_counts": {
+      "emergency_release": 49,
+      "no_commitment": 139,
+      "balanced": 36,
+      "efficiency": 14,
+      "region_selective": 2
+    }
+  },
+  "legacy": {
+    "unserved": 953.0417,
+    "makespan": 19.625,
+    "queue_person_minutes": 61141.82,
+    "max_density": 1.9515,
+    "capacity_violations": 0
+  },
+  "pareto": {
+    "instances": 240,
+    "mean_front_size": 8.454,
+    "max_front_size": 10,
+    "instances_with_tradeoff": 238
+  }
+}

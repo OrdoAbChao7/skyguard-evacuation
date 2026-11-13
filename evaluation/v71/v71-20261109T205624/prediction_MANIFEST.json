@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v71-20261109T205624",
+  "note": "V7.1 预测区间实验独立清单。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "prediction_README.md",
+      "bytes": 3952,
+      "sha256": "55c0de3436be494920922bb79394ee8f12d96b2f94a05f1dc4d396bc5cf1fe6c"
+    },
+    {
+      "path": "prediction_metadata.json",
+      "bytes": 218,
+      "sha256": "a9263fef2f6760574c0b30e4ec787e4349728658573267290743d5cda9fb6082"
+    },
+    {
+      "path": "prediction_rows.json",
+      "bytes": 6676897,
+      "sha256": "e658439d0c16ad77f6c7c19a9c3831dfb64f64d5314bf4dad57e54d165953d80"
+    },
+    {
+      "path": "prediction_summary.json",
+      "bytes": 37301,
+      "sha256": "cb3a7a8cd4dcbbe6202406b04b6d15f3cff42f4df590f1838b728055b92f9910"
+    }
+  ]
+}

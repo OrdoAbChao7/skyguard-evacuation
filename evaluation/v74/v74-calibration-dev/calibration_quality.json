@@ -1,0 +1,119 @@
+{
+  "generated_at": "2026-11-10T02:52:38.825Z",
+  "run_id": "v74-calibration-dev",
+  "data_nature": "synthetic/fixture；无真实场馆数据。",
+  "timestamp_sync": {
+    "accepted": 3,
+    "rejected": [
+      {
+        "id": "OBS-879ab23d-fd10-4e24-abe1-fe48cb2f68f1",
+        "provider": "provider-slow",
+        "reason": "clock_skew_exceeds_limit",
+        "skew_seconds": 90
+      }
+    ],
+    "applied_offsets": [
+      {
+        "provider": "provider-a",
+        "offset_seconds": 0,
+        "samples": 20
+      },
+      {
+        "provider": "provider-b",
+        "offset_seconds": 3,
+        "samples": 8
+      }
+    ]
+  },
+  "missing_intervals": [
+    {
+      "region_id": "R_NORTH_STAND",
+      "from": "2026-11-10T01:03:00.000Z",
+      "to": "2026-11-10T01:04:50.000Z",
+      "gap_seconds": 110,
+      "expected_samples": 1
+    }
+  ],
+  "sensor_reliability": [
+    {
+      "provider": "provider-a",
+      "observations": 2,
+      "regions": 1,
+      "availability_ratio": 0.4,
+      "mean_confidence": 0.935,
+      "confidence_sd": 0.0212,
+      "reliability_score": 0.3447,
+      "provenance": "estimated",
+      "note": "代理分数（可用性×置信度×稳定性），不是准确率；无 ground truth。"
+    },
+    {
+      "provider": "provider-b",
+      "observations": 1,
+      "regions": 1,
+      "availability_ratio": 0.2,
+      "mean_confidence": 0.7,
+      "confidence_sd": 0,
+      "reliability_score": 0.14,
+      "provenance": "estimated",
+      "note": "代理分数（可用性×置信度×稳定性），不是准确率；无 ground truth。"
+    }
+  ],
+  "observation_quality": {
+    "missing_regions": [
+      "R_SOUTH_STAND",
+      "R_WEST_STAND",
+      "R_EAST_STAND",
+      "R_NORTH_CONCOURSE",
+      "R_SOUTH_CONCOURSE",
+      "R_EAST_PLAZA",
+      "R_WEST_PLAZA"
+    ],
+    "stale": 1,
+    "low_confidence": 0,
+    "invalid": 0,
+    "duplicate_timestamps": 0,
+    "coverage_ratio": 0.125
+  },
+  "dynamic_capacity_schedule": {
+    "entries": [
+      {
+        "from_minute": 4,
+        "to_minute": 10,
+        "corridor_factor": 0.5,
+        "reason": "合成演练：走廊维护"
+      },
+      {
+        "from_minute": 10,
+        "to_minute": 15,
+        "exit_factor": 0.7,
+        "reason": "合成演练：出口受限"
+      }
+    ],
+    "validation": {
+      "errors": [],
+      "warnings": []
+    },
+    "samples": [
+      {
+        "minute": 5,
+        "corridor_factor": 0.5,
+        "exit_factor": 1
+      },
+      {
+        "minute": 12,
+        "corridor_factor": 1,
+        "exit_factor": 0.7
+      },
+      {
+        "minute": 20,
+        "corridor_factor": 1,
+        "exit_factor": 1
+      }
+    ]
+  },
+  "boundaries": [
+    "可靠性是可用性×置信度×稳定性的代理，不是准确率；无 ground truth。",
+    "动态容量计划是合成演练值，未用真实容量数据标定。",
+    "时钟偏移是人为设定，用于验证同步/拒绝逻辑。"
+  ]
+}

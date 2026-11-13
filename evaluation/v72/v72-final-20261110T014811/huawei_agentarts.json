@@ -1,0 +1,52 @@
+{
+  "platform": {
+    "status": "not_configured",
+    "runtime_requested": "local",
+    "contract": "official",
+    "missing": [
+      "AGENTARTS_BASE_URL",
+      "AGENTARTS_API_KEY",
+      "AGENTARTS_RUNTIME_NAME（或 AGENTARTS_AGENT_ID）"
+    ],
+    "note": "没有真实 AgentArts 租户/凭证；未发起任何平台请求，不得声称已接入。"
+  },
+  "local_stub": {
+    "label": "local_stub（不是 AgentArts 实机）",
+    "health": {
+      "mode": "AGENTARTS_CONNECTED",
+      "connectivity": "reachable",
+      "http_status": 200
+    },
+    "decisions": [
+      {
+        "tool": "camera_query",
+        "reasoning": "local stub decision",
+        "arguments": {
+          "region_id": "R_NORTH_STAND"
+        }
+      },
+      {
+        "tool": "camera_query",
+        "reasoning": "local stub decision",
+        "arguments": {
+          "region_id": "R_NORTH_STAND"
+        }
+      }
+    ],
+    "captures": [
+      {
+        "sessionHeader": "session-stub-1",
+        "bodyTraceId": "trace-stub-1",
+        "path": "/runtimes/agent-stub/invocations"
+      },
+      {
+        "sessionHeader": "session-stub-1",
+        "bodyTraceId": "trace-stub-2",
+        "path": "/runtimes/agent-stub/invocations"
+      }
+    ],
+    "session_header_consistent": true,
+    "trace_ids_distinct": true
+  },
+  "boundary": "local_stub 只验证适配器契约；platform 未配置时不得声称已接入 AgentArts。"
+}

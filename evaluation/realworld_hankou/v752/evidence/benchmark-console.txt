@@ -1,0 +1,17 @@
+SkyGuard V7.5.2 benchmark console summary
+Command: npx tsx scripts/simulation/v752/run-benchmark.ts
+Runs: 600 (4 strategies x 5 scenarios x 30 seeds)
+Branch: feat/v752-simulation-integrity
+HEAD: 345f4d1660573c44de12ad26fa19136a6a5e9122
+Started: 2026-11-10T20:42:22.043Z
+Finished: 2026-11-10T20:44:25.076Z
+
+ST-01: {"all_mass_balance":true,"all_no_unvalidated_execution":true,"all_no_unknown_corridor_entry":true,"all_no_dangerous_route_publication":true,"any_backpressure_activated":false,"max_density":0.0455,"any_closure_window":false,"any_blocked_route_attempt":false,"any_blocked_exit_attempt":false,"any_reroute":false,"any_degraded_observation":false,"any_degraded_decision":false,"all_oracle_reads_zero":true,"runs":120}
+ST-02: {"all_mass_balance":true,"all_no_unvalidated_execution":true,"all_no_unknown_corridor_entry":true,"all_no_dangerous_route_publication":true,"any_backpressure_activated":true,"max_density":2.938438,"any_closure_window":true,"any_blocked_route_attempt":false,"any_blocked_exit_attempt":true,"any_reroute":true,"any_degraded_observation":false,"any_degraded_decision":true,"all_oracle_reads_zero":true,"runs":120}
+ST-03: {"all_mass_balance":true,"all_no_unvalidated_execution":true,"all_no_unknown_corridor_entry":true,"all_no_dangerous_route_publication":true,"any_backpressure_activated":false,"max_density":0.353889,"any_closure_window":false,"any_blocked_route_attempt":false,"any_blocked_exit_attempt":false,"any_reroute":false,"any_degraded_observation":false,"any_degraded_decision":false,"all_oracle_reads_zero":true,"runs":120}
+ST-04: {"all_mass_balance":true,"all_no_unvalidated_execution":true,"all_no_unknown_corridor_entry":true,"all_no_dangerous_route_publication":true,"any_backpressure_activated":false,"max_density":0.327417,"any_closure_window":true,"any_blocked_route_attempt":true,"any_blocked_exit_attempt":true,"any_reroute":true,"any_degraded_observation":false,"any_degraded_decision":true,"all_oracle_reads_zero":true,"runs":120}
+ST-05: {"all_mass_balance":true,"all_no_unvalidated_execution":true,"all_no_unknown_corridor_entry":true,"all_no_dangerous_route_publication":true,"any_backpressure_activated":false,"max_density":0.1205,"any_closure_window":false,"any_blocked_route_attempt":false,"any_blocked_exit_attempt":false,"any_reroute":false,"any_degraded_observation":true,"any_degraded_decision":true,"all_oracle_reads_zero":true,"runs":120}
+
+Note: ST-02 "any_degraded_decision" is true because the global REJECT state converts some
+validated routes to degraded_continue for one tick after the exit closure; it is not
+sensor degradation. ST-05 is the sensor-degradation scenario.

@@ -171,3 +171,31 @@ test('V7 预览接口拒绝未知区域且不需要写权限', async () => {
     resetMvpServiceForTests();
   }
 });
+
+
+test('Shadow Mode API 只读返回比较记录，且不发布 V7 方案', async () => {
+  const server = await startServer();
+  const previous = process.env.V7_SHADOW_MODE;
+  try {
+    process.env.V7_SHADOW_MODE = '1';
+    process.env.V7_SHADOW_MAX_SOLVE_MS = '500';
+    const headers = await adminHeaders(server);
+    await seedObservations(server, headers);
+    const shadow = await server.request('/api/v1/safety/v70/shadow');
+    assert.equal(shadow.status, 200);
+    assert.equal(shadow.body.enabled, true);
+    assert.equal(shadow.body.comparisons.length, 1);
+    assert.equal(shadow.body.comparisons[0].snapshot.hash.length, 64);
+    const plan = await server.request('/api/v1/safety/plan');
+    assert.equal(plan.status, 200);
+    assert.equal(plan.body.plan.plan_id, shadow.body.comparisons[0].legacy.plan_id);
+    assert.notEqual(plan.body.plan.plan_id, shadow.body.comparisons[0].v7?.plan_id ?? 'none');
+  } finally {
+    if (previous === undefined) delete process.env.V7_SHADOW_MODE;
+    else process.env.V7_SHADOW_MODE = previous;
+    delete process.env.V7_SHADOW_MAX_SOLVE_MS;
+    await server.close();
+    resetSafetyServiceForTests();
+    resetMvpServiceForTests();
+  }
+});

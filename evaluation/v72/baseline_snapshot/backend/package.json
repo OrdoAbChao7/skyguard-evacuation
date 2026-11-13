@@ -1,0 +1,53 @@
+{
+  "name": "skyguard-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SkyGuard — 应急疏散辅助决策原型（后端）",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/**/*.test.ts",
+    "test:safety": "tsx --test tests/safety/*.test.ts",
+    "demo:safety": "tsx scripts/skyguard-demo.ts",
+    "bench:safety": "tsx scripts/skyguard-benchmark.ts --iterations 30 --out ../evaluation/performance.json",
+    "e2e:server": "tsx scripts/skyguard-e2e-server.ts",
+    "demo:mvp": "tsx scripts/mvp-demo.ts",
+    "experiments:mvp": "tsx scripts/mvp-experiments.ts",
+    "mcp": "tsx src/mcp/server.ts",
+    "benchmark:competition": "tsx scripts/competition-benchmark.ts",
+    "benchmark:v6": "tsx scripts/v6-benchmark.ts",
+    "benchmark:v61": "tsx scripts/v61-benchmark.ts",
+    "verify:evidence": "tsx scripts/verify-evidence.ts",
+    "manifest:evidence": "tsx scripts/evidence-manifest.ts",
+    "benchmark:v62": "tsx scripts/v62-benchmark.ts",
+    "benchmark:voi-v2": "tsx scripts/voi-v2-benchmark.ts",
+    "benchmark:v65": "tsx scripts/v65-prediction-benchmark.ts",
+    "benchmark:v70": "tsx scripts/v70-experiments.ts",
+    "benchmark:v71": "tsx scripts/v71-experiments.ts",
+    "benchmark:v72": "tsx scripts/v72-experiments.ts",
+    "freeze:v72": "tsx scripts/v72-version-freeze.ts --write",
+    "freeze:verify": "tsx scripts/v72-version-freeze.ts --verify"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

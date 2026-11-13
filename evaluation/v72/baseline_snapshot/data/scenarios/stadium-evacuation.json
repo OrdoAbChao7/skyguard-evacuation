@@ -1,0 +1,1062 @@
+{
+  "scenario_id": "stadium-evacuation-v1",
+  "name": "滨江体育中心 · 活动散场（合成场景）",
+  "version": "1.0.1",
+  "description": "大型体育场活动散场场景：看台、环廊、广场与四个出口。所有面积、坐标、容量与人员位置均为合成演示数据。",
+  "notice": "合成演示场景：面积、通行能力、人员位置与概率参数均未经现场测绘或标定，不得用于真实疏散指挥。",
+  "config": {
+    "horizon_minutes": 10,
+    "max_observation_age_seconds": 90,
+    "min_confidence": 0.6,
+    "trend_window_seconds": 300,
+    "density_consistency_tolerance": 0.25,
+    "default_thresholds": {
+      "watch_density": 1.0,
+      "high_density": 2.0,
+      "critical_density": 3.0,
+      "rise_rate_watch": 0.5,
+      "source": "通用人群密度分级经验值（未现场标定）"
+    }
+  },
+  "regions": [
+    {
+      "id": "R_NORTH_STAND",
+      "name": "北看台",
+      "area_m2": 900,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 220,
+        "y": 20,
+        "width": 360,
+        "height": 110
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 1300,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-N-STAND",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-n-stand-unc-0"
+      },
+      "source": "synthetic stadium scenario",
+      "verified": false
+    },
+    {
+      "id": "R_SOUTH_STAND",
+      "name": "南看台",
+      "area_m2": 900,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 220,
+        "y": 430,
+        "width": 360,
+        "height": 110
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 1300,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S-STAND",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-s-stand-unc-0"
+      },
+      "source": "synthetic stadium scenario",
+      "verified": false
+    },
+    {
+      "id": "R_WEST_STAND",
+      "name": "西看台",
+      "area_m2": 750,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 40,
+        "y": 150,
+        "width": 150,
+        "height": 270
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 1000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-W-STAND",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-w-stand-unc-0"
+      },
+      "source": "synthetic stadium scenario",
+      "verified": false
+    },
+    {
+      "id": "R_EAST_STAND",
+      "name": "东看台",
+      "area_m2": 750,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 610,
+        "y": 150,
+        "width": 150,
+        "height": 270
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 1000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-E-STAND",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-e-stand-unc-0",
+        "status": "degraded"
+      },
+      "source": "synthetic stadium scenario",
+      "verified": false,
+      "thresholds": {
+        "watch_density": 0.6,
+        "high_density": 0.9,
+        "critical_density": 1.2,
+        "rise_rate_watch": 0.2,
+        "source": "演示用分区阈值（未现场标定）"
+      }
+    },
+    {
+      "id": "R_NORTH_CONCOURSE",
+      "name": "北环廊",
+      "area_m2": 600,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 220,
+        "y": 150,
+        "width": 360,
+        "height": 70
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 900,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-N-CONCOURSE",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-n-concourse-unc-0"
+      },
+      "source": "synthetic stadium scenario",
+      "verified": false
+    },
+    {
+      "id": "R_SOUTH_CONCOURSE",
+      "name": "南环廊",
+      "area_m2": 600,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 220,
+        "y": 340,
+        "width": 360,
+        "height": 70
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 900,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S-CONCOURSE",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-s-concourse-unc-0"
+      },
+      "source": "synthetic stadium scenario",
+      "verified": false
+    },
+    {
+      "id": "R_EAST_PLAZA",
+      "name": "东广场",
+      "area_m2": 500,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 640,
+        "y": 430,
+        "width": 180,
+        "height": 110
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 700,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-E-PLAZA",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-e-plaza-unc-0"
+      },
+      "source": "synthetic stadium scenario",
+      "verified": false
+    },
+    {
+      "id": "R_WEST_PLAZA",
+      "name": "西广场",
+      "area_m2": 500,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 20,
+        "y": 430,
+        "width": 180,
+        "height": 110
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 700,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-W-PLAZA",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-w-plaza-unc-0"
+      },
+      "source": "synthetic stadium scenario",
+      "verified": false
+    }
+  ],
+  "corridors": [
+    {
+      "id": "C_N_STAND",
+      "name": "北看台—北环廊",
+      "from_region_id": "R_NORTH_STAND",
+      "to_region_id": "R_NORTH_CONCOURSE",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 420,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 45,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_S_STAND",
+      "name": "南看台—南环廊",
+      "from_region_id": "R_SOUTH_STAND",
+      "to_region_id": "R_SOUTH_CONCOURSE",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 420,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 45,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_W_N",
+      "name": "西看台—北环廊",
+      "from_region_id": "R_WEST_STAND",
+      "to_region_id": "R_NORTH_CONCOURSE",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 260,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 70,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_W_S",
+      "name": "西看台—南环廊",
+      "from_region_id": "R_WEST_STAND",
+      "to_region_id": "R_SOUTH_CONCOURSE",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 260,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 70,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_E_N",
+      "name": "东看台—北环廊",
+      "from_region_id": "R_EAST_STAND",
+      "to_region_id": "R_NORTH_CONCOURSE",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 260,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 70,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_E_S",
+      "name": "东看台—南环廊",
+      "from_region_id": "R_EAST_STAND",
+      "to_region_id": "R_SOUTH_CONCOURSE",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 260,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 70,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_MID",
+      "name": "南北环廊连接",
+      "from_region_id": "R_NORTH_CONCOURSE",
+      "to_region_id": "R_SOUTH_CONCOURSE",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 180,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 90,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_NE",
+      "name": "北环廊—东广场",
+      "from_region_id": "R_NORTH_CONCOURSE",
+      "to_region_id": "R_EAST_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 300,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 60,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_NW",
+      "name": "北环廊—西广场",
+      "from_region_id": "R_NORTH_CONCOURSE",
+      "to_region_id": "R_WEST_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 300,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 60,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_SE",
+      "name": "南环廊—东广场",
+      "from_region_id": "R_SOUTH_CONCOURSE",
+      "to_region_id": "R_EAST_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 300,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 60,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_SW",
+      "name": "南环廊—西广场",
+      "from_region_id": "R_SOUTH_CONCOURSE",
+      "to_region_id": "R_WEST_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 300,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 60,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "C_SERVICE",
+      "name": "设备通道（状态未知）",
+      "from_region_id": "R_EAST_PLAZA",
+      "to_region_id": "R_WEST_PLAZA",
+      "status": "unknown",
+      "direction": "both",
+      "capacity_per_min": null,
+      "capacity_provenance": "unknown",
+      "traversal_seconds": 120,
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z",
+      "closure_reason": "设备通道状态未知，按不可用处理"
+    }
+  ],
+  "exits": [
+    {
+      "id": "E_NORTH",
+      "name": "北疏散门",
+      "region_id": "R_NORTH_CONCOURSE",
+      "status": "open",
+      "capacity_per_min": 200,
+      "capacity_provenance": "estimated",
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "E_SOUTH",
+      "name": "南疏散门",
+      "region_id": "R_SOUTH_CONCOURSE",
+      "status": "open",
+      "capacity_per_min": 200,
+      "capacity_provenance": "estimated",
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "E_EAST",
+      "name": "东主出口",
+      "region_id": "R_EAST_PLAZA",
+      "status": "open",
+      "capacity_per_min": 260,
+      "capacity_provenance": "estimated",
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    },
+    {
+      "id": "E_WEST",
+      "name": "西主出口",
+      "region_id": "R_WEST_PLAZA",
+      "status": "open",
+      "capacity_per_min": 260,
+      "capacity_provenance": "estimated",
+      "status_source": "synthetic stadium scenario",
+      "verified": false,
+      "updated_at": "2026-11-05T00:00:00.000Z"
+    }
+  ],
+  "demo_scenarios": [],
+  "ui_demos": {
+    "normal": {
+      "region_id": "R_NORTH_STAND",
+      "confidence": 0.9,
+      "series": {
+        "R_NORTH_STAND": [360, 345, 330, 315, 300, 290],
+        "R_SOUTH_STAND": [310, 300, 290, 280, 270, 260],
+        "R_WEST_STAND": [290, 280, 270, 260, 250, 240],
+        "R_EAST_STAND": [300, 320, 345, 370, 395, 420],
+        "R_NORTH_CONCOURSE": [120, 125, 130, 135, 140, 145],
+        "R_SOUTH_CONCOURSE": [110, 112, 114, 116, 118, 120],
+        "R_EAST_PLAZA": [60, 62, 64, 66, 68, 70],
+        "R_WEST_PLAZA": [55, 56, 57, 58, 59, 60]
+      }
+    },
+    "surge": {
+      "region_id": "R_EAST_STAND",
+      "confidence": 0.9,
+      "series": {
+        "R_NORTH_STAND": [300, 305, 310],
+        "R_SOUTH_STAND": [280, 285, 290],
+        "R_WEST_STAND": [260, 265, 270],
+        "R_NORTH_CONCOURSE": [110, 115, 120],
+        "R_SOUTH_CONCOURSE": [105, 108, 112],
+        "R_EAST_PLAZA": [55, 60, 65],
+        "R_WEST_PLAZA": [50, 52, 55]
+      },
+      "degraded": {
+        "region_id": "R_EAST_STAND",
+        "count": 900,
+        "confidence": 0.35
+      }
+    },
+    "reject": {
+      "region_id": "R_EAST_STAND",
+      "offline": {
+        "count": 800,
+        "confidence": 0.9,
+        "reason": "摄像头离线（演示构造）"
+      },
+      "capacity_by_region": {
+        "R_NORTH_STAND": 1300,
+        "R_SOUTH_STAND": 1300,
+        "R_WEST_STAND": 1300,
+        "R_EAST_STAND": 1300,
+        "R_NORTH_CONCOURSE": 700,
+        "R_SOUTH_CONCOURSE": 700,
+        "R_EAST_PLAZA": 400,
+        "R_WEST_PLAZA": 400
+      },
+      "capacity_confidence": 0.95,
+      "incident": {
+        "type": "corridor_closure",
+        "description": "东西主出口临时关闭（控制台演示）",
+        "severity": "critical",
+        "exit_ids": ["E_EAST", "E_WEST"],
+        "region_ids": [],
+        "corridor_ids": []
+      }
+    }
+  },
+  "map": {
+    "caption": "示意拓扑 · 合成体育场 · 非地理坐标、未空间标定",
+    "landmarks": []
+  },
+  "simulation_baseline": {
+    "R_NORTH_STAND": {
+      "count": 350,
+      "confidence": 0.92
+    },
+    "R_SOUTH_STAND": {
+      "count": 300,
+      "confidence": 0.91
+    },
+    "R_WEST_STAND": {
+      "count": 280,
+      "confidence": 0.9
+    },
+    "R_EAST_STAND": {
+      "count": 300,
+      "confidence": 0.62
+    },
+    "R_NORTH_CONCOURSE": {
+      "count": 120,
+      "confidence": 0.9
+    },
+    "R_SOUTH_CONCOURSE": {
+      "count": 110,
+      "confidence": 0.9
+    },
+    "R_EAST_PLAZA": {
+      "count": 60,
+      "confidence": 0.88
+    },
+    "R_WEST_PLAZA": {
+      "count": 55,
+      "confidence": 0.88
+    }
+  },
+  "venue": {
+    "name": "滨江体育中心（合成）",
+    "kind": "stadium",
+    "description": "可容纳约 2 万人的室外体育场，本场景只建模散场涉及的 8 个区域。",
+    "rules": [
+      {
+        "id": "R-EXIT-01",
+        "title": "不得封闭唯一疏散出口",
+        "text": "任何情况下不得同时关闭同一分区的全部可用出口；如需关闭出口，必须经现场负责人书面确认。",
+        "category": "safety",
+        "mandatory": true,
+        "source": "合成场馆管理规则（演示）"
+      },
+      {
+        "id": "R-CROWD-01",
+        "title": "高密度限流",
+        "text": "区域密度持续超过 3 人/平方米时，应启动限流并上报指挥中心。",
+        "category": "safety",
+        "mandatory": true,
+        "source": "合成场馆管理规则（演示）"
+      },
+      {
+        "id": "R-DATA-01",
+        "title": "不可信数据不得作为发布依据",
+        "text": "置信度低于 0.6 或超过 90 秒的观测不得用于发布疏散路线。",
+        "category": "data",
+        "mandatory": true,
+        "source": "SkyGuard 安全策略"
+      },
+      {
+        "id": "R-APPR-01",
+        "title": "安全措施人工审批",
+        "text": "涉及通道封闭、无人机起飞、人员调度的措施必须由管理人员审批后才能派发。",
+        "category": "approval",
+        "mandatory": true,
+        "source": "合成场馆管理规则（演示）"
+      },
+      {
+        "id": "R-UAV-01",
+        "title": "无人机起降双人确认",
+        "text": "无人机起降需持证操作员与现场负责人双重确认；夜间飞行需额外审批。",
+        "category": "uav",
+        "mandatory": true,
+        "source": "合成场馆管理规则（演示）"
+      },
+      {
+        "id": "R-STAFF-01",
+        "title": "现场核查至少一人",
+        "text": "现场核查任务至少指派一名具备 crowd_check 技能的工作人员；资源不足时上报。",
+        "category": "staffing",
+        "mandatory": false,
+        "source": "合成场馆管理规则（演示）"
+      },
+      {
+        "id": "R-OPS-01",
+        "title": "工单状态不可跳跃",
+        "text": "工单必须按 DRAFT→PENDING_APPROVAL→APPROVED→ASSIGNED→ACCEPTED→IN_PROGRESS→COMPLETED 顺序流转。",
+        "category": "operations",
+        "mandatory": true,
+        "source": "SkyGuard 工单状态机"
+      }
+    ],
+    "uav_units": [
+      {
+        "id": "UAV-01",
+        "name": "无人机 1 号（演示）",
+        "status": "available",
+        "source": "simulation",
+        "verified": false
+      },
+      {
+        "id": "UAV-02",
+        "name": "无人机 2 号（演示）",
+        "status": "offline",
+        "source": "simulation",
+        "verified": false
+      }
+    ],
+    "enabled_tools": [
+      "get_crowd_status",
+      "get_region_trend",
+      "get_camera_status",
+      "request_supplemental_observation",
+      "request_uav_observation",
+      "get_venue_information",
+      "get_venue_rules",
+      "predict_crowd_trend",
+      "evaluate_region_risk",
+      "recommend_staff",
+      "calculate_candidate_plan",
+      "validate_candidate_plan",
+      "create_candidate_work_order",
+      "get_work_order_status",
+      "submit_worker_feedback"
+    ]
+  },
+  "staff": [
+    {
+      "id": "STF-01",
+      "name": "王队（演示）",
+      "role": "crowd_control",
+      "region_id": "R_NORTH_STAND",
+      "status": "available",
+      "skills": [
+        "crowd_check",
+        "crowd_control"
+      ],
+      "access_code": "1001",
+      "source": "simulation",
+      "verified": false
+    },
+    {
+      "id": "STF-02",
+      "name": "李巡（演示）",
+      "role": "security",
+      "region_id": "R_EAST_STAND",
+      "status": "available",
+      "skills": [
+        "crowd_check",
+        "corridor_check"
+      ],
+      "access_code": "1002",
+      "source": "simulation",
+      "verified": false
+    },
+    {
+      "id": "STF-03",
+      "name": "赵医（演示）",
+      "role": "medical",
+      "region_id": "R_SOUTH_STAND",
+      "status": "available",
+      "skills": [
+        "first_aid",
+        "crowd_check"
+      ],
+      "access_code": "1003",
+      "source": "simulation",
+      "verified": false
+    },
+    {
+      "id": "STF-04",
+      "name": "陈飞（演示）",
+      "role": "uav_operator",
+      "region_id": "R_EAST_PLAZA",
+      "status": "available",
+      "skills": [
+        "uav_operation",
+        "crowd_check"
+      ],
+      "access_code": "1004",
+      "source": "simulation",
+      "verified": false
+    },
+    {
+      "id": "STF-05",
+      "name": "孙调（演示）",
+      "role": "supervisor",
+      "region_id": "R_NORTH_CONCOURSE",
+      "status": "available",
+      "skills": [
+        "approval",
+        "crowd_control"
+      ],
+      "access_code": "1005",
+      "source": "simulation",
+      "verified": false
+    },
+    {
+      "id": "STF-06",
+      "name": "周巡（演示）",
+      "role": "crowd_control",
+      "region_id": "R_WEST_PLAZA",
+      "status": "off_duty",
+      "skills": [
+        "crowd_check"
+      ],
+      "access_code": "1006",
+      "source": "simulation",
+      "verified": false
+    },
+    {
+      "id": "STF-07",
+      "name": "吴安（演示）",
+      "role": "security",
+      "region_id": "R_SOUTH_CONCOURSE",
+      "status": "busy",
+      "skills": [
+        "corridor_check"
+      ],
+      "access_code": "1007",
+      "source": "simulation",
+      "verified": false
+    },
+    {
+      "id": "STF-08",
+      "name": "郑飞（演示）",
+      "role": "uav_operator",
+      "region_id": "R_WEST_PLAZA",
+      "status": "available",
+      "skills": [
+        "uav_operation"
+      ],
+      "access_code": "1008",
+      "source": "simulation",
+      "verified": false
+    }
+  ],
+  "investigation": {
+    "model_version": "voi-evidence-v1",
+    "provenance": "合成参数：先验/似然/损失/成本由本仓库场景文件显式给出，未经真实场馆标定；不得表述为实测模型。",
+    "hypotheses": [
+      {
+        "id": "H_STABLE",
+        "label": "平稳",
+        "description": "区域人流在阈值以下且趋势平稳",
+        "prior": 0.45
+      },
+      {
+        "id": "H_SURGE",
+        "label": "快速积聚",
+        "description": "人数快速上升，接近高风险阈值",
+        "prior": 0.35
+      },
+      {
+        "id": "H_CRITICAL",
+        "label": "高危拥堵",
+        "description": "已达到或超过极高风险阈值",
+        "prior": 0.2
+      }
+    ],
+    "outcomes": [
+      "signal_normal",
+      "signal_congested",
+      "inconclusive",
+      "unavailable"
+    ],
+    "likelihoods": {
+      "camera_query": {
+        "H_STABLE": {
+          "signal_normal": 0.85,
+          "signal_congested": 0.05,
+          "inconclusive": 0.07,
+          "unavailable": 0.03
+        },
+        "H_SURGE": {
+          "signal_normal": 0.15,
+          "signal_congested": 0.7,
+          "inconclusive": 0.12,
+          "unavailable": 0.03
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.03,
+          "signal_congested": 0.85,
+          "inconclusive": 0.09,
+          "unavailable": 0.03
+        }
+      },
+      "staff_check": {
+        "H_STABLE": {
+          "signal_normal": 0.9,
+          "signal_congested": 0.04,
+          "inconclusive": 0.05,
+          "unavailable": 0.01
+        },
+        "H_SURGE": {
+          "signal_normal": 0.08,
+          "signal_congested": 0.85,
+          "inconclusive": 0.06,
+          "unavailable": 0.01
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.01,
+          "signal_congested": 0.93,
+          "inconclusive": 0.05,
+          "unavailable": 0.01
+        }
+      },
+      "uav_request": {
+        "H_STABLE": {
+          "signal_normal": 0.88,
+          "signal_congested": 0.05,
+          "inconclusive": 0.05,
+          "unavailable": 0.02
+        },
+        "H_SURGE": {
+          "signal_normal": 0.05,
+          "signal_congested": 0.9,
+          "inconclusive": 0.03,
+          "unavailable": 0.02
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.01,
+          "signal_congested": 0.95,
+          "inconclusive": 0.02,
+          "unavailable": 0.02
+        }
+      },
+      "history_query": {
+        "H_STABLE": {
+          "signal_normal": 0.65,
+          "signal_congested": 0.1,
+          "inconclusive": 0.2,
+          "unavailable": 0.05
+        },
+        "H_SURGE": {
+          "signal_normal": 0.15,
+          "signal_congested": 0.55,
+          "inconclusive": 0.25,
+          "unavailable": 0.05
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.05,
+          "signal_congested": 0.6,
+          "inconclusive": 0.3,
+          "unavailable": 0.05
+        }
+      },
+      "prediction": {
+        "H_STABLE": {
+          "signal_normal": 0.7,
+          "signal_congested": 0.1,
+          "inconclusive": 0.15,
+          "unavailable": 0.05
+        },
+        "H_SURGE": {
+          "signal_normal": 0.1,
+          "signal_congested": 0.65,
+          "inconclusive": 0.2,
+          "unavailable": 0.05
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.03,
+          "signal_congested": 0.72,
+          "inconclusive": 0.2,
+          "unavailable": 0.05
+        }
+      }
+    },
+    "loss_matrix": {
+      "H_STABLE": {
+        "monitor": 0.0,
+        "dispatch": 0.15
+      },
+      "H_SURGE": {
+        "monitor": 0.45,
+        "dispatch": 0.1
+      },
+      "H_CRITICAL": {
+        "monitor": 1.0,
+        "dispatch": 0.05
+      }
+    },
+    "decisions": [
+      "monitor",
+      "dispatch"
+    ],
+    "weights": {
+      "risk_reduction": 1.0,
+      "information_gain": 0.5,
+      "time_cost": 0.25,
+      "resource_cost": 0.2,
+      "failure": 0.3
+    },
+    "normalization": {
+      "max_time_minutes": 10,
+      "max_resource_cost": 1.0
+    },
+    "actions": [
+      {
+        "id": "A_CAMERA",
+        "kind": "camera_query",
+        "label": "查询其他固定摄像头",
+        "priority": 1,
+        "time_cost_minutes": 0.5,
+        "resource_cost": 0.05,
+        "failure_probability": 0.03,
+        "base_availability": "available",
+        "detects": [
+          "camera_observation"
+        ],
+        "source": "合成场馆设备清单（演示）",
+        "coverage": "target",
+        "retry": {
+          "max_retries": 1,
+          "cooldown_minutes": 0.5,
+          "backoff_factor": 2
+        }
+      },
+      {
+        "id": "A_STAFF",
+        "kind": "staff_check",
+        "label": "请求现场工作人员核查",
+        "priority": 2,
+        "time_cost_minutes": 3.0,
+        "resource_cost": 0.35,
+        "failure_probability": 0.08,
+        "base_availability": "available",
+        "detects": [
+          "field_report"
+        ],
+        "source": "合成人员名册（演示）",
+        "coverage": "target",
+        "retry": {
+          "max_retries": 1,
+          "cooldown_minutes": 2,
+          "backoff_factor": 1.5
+        }
+      },
+      {
+        "id": "A_UAV",
+        "kind": "uav_request",
+        "label": "申请无人机补充观察",
+        "priority": 3,
+        "time_cost_minutes": 2.0,
+        "resource_cost": 0.55,
+        "failure_probability": 0.12,
+        "base_availability": "available",
+        "detects": [
+          "uav_observation"
+        ],
+        "source": "合成无人机资源（演示）",
+        "coverage": "neighbors",
+        "retry": {
+          "max_retries": 1,
+          "cooldown_minutes": 1,
+          "backoff_factor": 2
+        }
+      },
+      {
+        "id": "A_HISTORY",
+        "kind": "history_query",
+        "label": "查询区域历史人流",
+        "priority": 4,
+        "time_cost_minutes": 0.2,
+        "resource_cost": 0.03,
+        "failure_probability": 0.02,
+        "base_availability": "available",
+        "detects": [
+          "history"
+        ],
+        "source": "本机观测历史",
+        "coverage": "target",
+        "retry": {
+          "max_retries": 0,
+          "cooldown_minutes": 0,
+          "backoff_factor": 1
+        }
+      },
+      {
+        "id": "A_PREDICTION",
+        "kind": "prediction",
+        "label": "调用短时人流预测",
+        "priority": 5,
+        "time_cost_minutes": 0.3,
+        "resource_cost": 0.05,
+        "failure_probability": 0.04,
+        "base_availability": "available",
+        "detects": [
+          "prediction"
+        ],
+        "source": "预测服务 ema-linear-v1",
+        "coverage": "neighbors",
+        "retry": {
+          "max_retries": 0,
+          "cooldown_minutes": 0,
+          "backoff_factor": 1
+        }
+      }
+    ],
+    "stop_threshold": 0.02,
+    "max_investigations": 2,
+    "coverage_weights": {
+      "neighbor": 0.5,
+      "global": 0.3
+    },
+    "conflict": {
+      "window_minutes": 10,
+      "blend_prior": 0.5
+    },
+    "joint": {
+      "correlation": 0.5,
+      "redundancy_penalty": 0.6,
+      "max_sequence": 3
+    },
+    "budget": {
+      "max_actions": 3,
+      "max_total_cost": 1.2,
+      "max_total_time_minutes": 8
+    }
+  }
+}

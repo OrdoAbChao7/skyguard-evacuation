@@ -10,6 +10,7 @@
     "build": "npm run build --prefix backend && npm run build --prefix frontend",
     "start": "npm start --prefix backend",
     "test": "npm run test --prefix backend && npm test --prefix frontend",
+    "test:e2e": "npm run test:e2e --prefix frontend",
     "demo": "npm run demo:safety --prefix backend",
     "bench": "npm run bench:safety --prefix backend",
     "dev": "node scripts/dev.mjs",
@@ -24,6 +25,14 @@
     "benchmark:v62": "npm run benchmark:v62 --prefix backend",
     "benchmark:voi-v2": "npm run benchmark:voi-v2 --prefix backend",
     "benchmark:v65": "npm run benchmark:v65 --prefix backend",
-    "benchmark:v70": "npm run benchmark:v70 --prefix backend"
+    "benchmark:v70": "npm run benchmark:v70 --prefix backend",
+    "benchmark:v71": "npm run benchmark:v71 --prefix backend",
+    "benchmark:v72": "npm run benchmark:v72 --prefix backend",
+    "benchmark:v73": "npm run benchmark:v73 --prefix backend",
+    "benchmark:v74": "npm run benchmark:v74 --prefix backend",
+    "benchmark:v75": "npm run benchmark:v75 --prefix backend",
+    "freeze:v72": "npm run freeze:v72 --prefix backend",
+    "freeze:verify": "npm run freeze:verify --prefix backend",
+    "freeze:verify:baseline": "npm run freeze:verify:baseline --prefix backend"
   }
 }

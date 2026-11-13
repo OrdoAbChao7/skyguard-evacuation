@@ -1,0 +1,486 @@
+{
+  "exit_estimates": [
+    {
+      "exit_id": "E_NORTH",
+      "nominal_capacity_per_min": 200,
+      "estimate": {
+        "value": 198.25,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "synthetic throughput windows (deterministic seed)",
+        "method": "吞吐率样本均值（1.96·SE 区间；n≥10 且 CV≤0.3 才升为 calibrated）",
+        "measured_at": "2026-11-09T18:05:29.977Z",
+        "samples": 16,
+        "confidence_interval": {
+          "lower": 194.0941,
+          "upper": 202.4059
+        },
+        "notes": "数据性质为 synthetic，不得标记 calibrated；仅保留统计估计。"
+      },
+      "samples": [
+        {
+          "served": 199,
+          "minutes": 1,
+          "queue": 52
+        },
+        {
+          "served": 209,
+          "minutes": 1,
+          "queue": 35
+        },
+        {
+          "served": 195,
+          "minutes": 1,
+          "queue": 10
+        },
+        {
+          "served": 189,
+          "minutes": 1,
+          "queue": 6
+        },
+        {
+          "served": 213,
+          "minutes": 1,
+          "queue": 51
+        },
+        {
+          "served": 188,
+          "minutes": 1,
+          "queue": 71
+        },
+        {
+          "served": 197,
+          "minutes": 1,
+          "queue": 81
+        },
+        {
+          "served": 209,
+          "minutes": 1,
+          "queue": 52
+        },
+        {
+          "served": 191,
+          "minutes": 1,
+          "queue": 24
+        },
+        {
+          "served": 200,
+          "minutes": 1,
+          "queue": 68
+        },
+        {
+          "served": 208,
+          "minutes": 1,
+          "queue": 3
+        },
+        {
+          "served": 199,
+          "minutes": 1,
+          "queue": 19
+        },
+        {
+          "served": 185,
+          "minutes": 1,
+          "queue": 11
+        },
+        {
+          "served": 199,
+          "minutes": 1,
+          "queue": 32
+        },
+        {
+          "served": 189,
+          "minutes": 1,
+          "queue": 86
+        },
+        {
+          "served": 202,
+          "minutes": 1,
+          "queue": 108
+        }
+      ]
+    },
+    {
+      "exit_id": "E_SOUTH",
+      "nominal_capacity_per_min": 200,
+      "estimate": {
+        "value": 203.5625,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "synthetic throughput windows (deterministic seed)",
+        "method": "吞吐率样本均值（1.96·SE 区间；n≥10 且 CV≤0.3 才升为 calibrated）",
+        "measured_at": "2026-11-09T18:05:29.978Z",
+        "samples": 16,
+        "confidence_interval": {
+          "lower": 198.89,
+          "upper": 208.235
+        },
+        "notes": "数据性质为 synthetic，不得标记 calibrated；仅保留统计估计。"
+      },
+      "samples": [
+        {
+          "served": 203,
+          "minutes": 1,
+          "queue": 88
+        },
+        {
+          "served": 213,
+          "minutes": 1,
+          "queue": 72
+        },
+        {
+          "served": 192,
+          "minutes": 1,
+          "queue": 27
+        },
+        {
+          "served": 193,
+          "minutes": 1,
+          "queue": 52
+        },
+        {
+          "served": 192,
+          "minutes": 1,
+          "queue": 7
+        },
+        {
+          "served": 205,
+          "minutes": 1,
+          "queue": 3
+        },
+        {
+          "served": 211,
+          "minutes": 1,
+          "queue": 79
+        },
+        {
+          "served": 215,
+          "minutes": 1,
+          "queue": 106
+        },
+        {
+          "served": 205,
+          "minutes": 1,
+          "queue": 32
+        },
+        {
+          "served": 214,
+          "minutes": 1,
+          "queue": 58
+        },
+        {
+          "served": 191,
+          "minutes": 1,
+          "queue": 53
+        },
+        {
+          "served": 214,
+          "minutes": 1,
+          "queue": 77
+        },
+        {
+          "served": 210,
+          "minutes": 1,
+          "queue": 55
+        },
+        {
+          "served": 205,
+          "minutes": 1,
+          "queue": 49
+        },
+        {
+          "served": 187,
+          "minutes": 1,
+          "queue": 12
+        },
+        {
+          "served": 207,
+          "minutes": 1,
+          "queue": 91
+        }
+      ]
+    },
+    {
+      "exit_id": "E_EAST",
+      "nominal_capacity_per_min": 260,
+      "estimate": {
+        "value": 258.5,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "synthetic throughput windows (deterministic seed)",
+        "method": "吞吐率样本均值（1.96·SE 区间；n≥10 且 CV≤0.3 才升为 calibrated）",
+        "measured_at": "2026-11-09T18:05:29.978Z",
+        "samples": 16,
+        "confidence_interval": {
+          "lower": 253.4551,
+          "upper": 263.5449
+        },
+        "notes": "数据性质为 synthetic，不得标记 calibrated；仅保留统计估计。"
+      },
+      "samples": [
+        {
+          "served": 263,
+          "minutes": 1,
+          "queue": 110
+        },
+        {
+          "served": 280,
+          "minutes": 1,
+          "queue": 53
+        },
+        {
+          "served": 258,
+          "minutes": 1,
+          "queue": 43
+        },
+        {
+          "served": 266,
+          "minutes": 1,
+          "queue": 49
+        },
+        {
+          "served": 253,
+          "minutes": 1,
+          "queue": 72
+        },
+        {
+          "served": 260,
+          "minutes": 1,
+          "queue": 36
+        },
+        {
+          "served": 241,
+          "minutes": 1,
+          "queue": 112
+        },
+        {
+          "served": 249,
+          "minutes": 1,
+          "queue": 30
+        },
+        {
+          "served": 277,
+          "minutes": 1,
+          "queue": 59
+        },
+        {
+          "served": 261,
+          "minutes": 1,
+          "queue": 89
+        },
+        {
+          "served": 252,
+          "minutes": 1,
+          "queue": 71
+        },
+        {
+          "served": 251,
+          "minutes": 1,
+          "queue": 106
+        },
+        {
+          "served": 259,
+          "minutes": 1,
+          "queue": 114
+        },
+        {
+          "served": 252,
+          "minutes": 1,
+          "queue": 9
+        },
+        {
+          "served": 249,
+          "minutes": 1,
+          "queue": 53
+        },
+        {
+          "served": 265,
+          "minutes": 1,
+          "queue": 26
+        }
+      ]
+    },
+    {
+      "exit_id": "E_WEST",
+      "nominal_capacity_per_min": 260,
+      "estimate": {
+        "value": 257.9375,
+        "unit": "persons/min",
+        "provenance": "estimated",
+        "source": "synthetic throughput windows (deterministic seed)",
+        "method": "吞吐率样本均值（1.96·SE 区间；n≥10 且 CV≤0.3 才升为 calibrated）",
+        "measured_at": "2026-11-09T18:05:29.978Z",
+        "samples": 16,
+        "confidence_interval": {
+          "lower": 252.3236,
+          "upper": 263.5514
+        },
+        "notes": "数据性质为 synthetic，不得标记 calibrated；仅保留统计估计。"
+      },
+      "samples": [
+        {
+          "served": 262,
+          "minutes": 1,
+          "queue": 79
+        },
+        {
+          "served": 246,
+          "minutes": 1,
+          "queue": 0
+        },
+        {
+          "served": 268,
+          "minutes": 1,
+          "queue": 52
+        },
+        {
+          "served": 247,
+          "minutes": 1,
+          "queue": 67
+        },
+        {
+          "served": 270,
+          "minutes": 1,
+          "queue": 111
+        },
+        {
+          "served": 260,
+          "minutes": 1,
+          "queue": 6
+        },
+        {
+          "served": 258,
+          "minutes": 1,
+          "queue": 106
+        },
+        {
+          "served": 268,
+          "minutes": 1,
+          "queue": 99
+        },
+        {
+          "served": 241,
+          "minutes": 1,
+          "queue": 52
+        },
+        {
+          "served": 261,
+          "minutes": 1,
+          "queue": 79
+        },
+        {
+          "served": 281,
+          "minutes": 1,
+          "queue": 107
+        },
+        {
+          "served": 246,
+          "minutes": 1,
+          "queue": 5
+        },
+        {
+          "served": 245,
+          "minutes": 1,
+          "queue": 54
+        },
+        {
+          "served": 268,
+          "minutes": 1,
+          "queue": 74
+        },
+        {
+          "served": 258,
+          "minutes": 1,
+          "queue": 12
+        },
+        {
+          "served": 248,
+          "minutes": 1,
+          "queue": 79
+        }
+      ]
+    }
+  ],
+  "walking_speed": {
+    "estimate": {
+      "value": 1.172,
+      "unit": "m/s",
+      "provenance": "estimated",
+      "source": "synthetic walking samples (deterministic seed)",
+      "method": "距离/时间样本均值（1.96·SE 区间；n≥10 且 CV≤0.3 才升为 calibrated）",
+      "measured_at": "2026-11-09T18:05:29.978Z",
+      "samples": 16,
+      "confidence_interval": {
+        "lower": 1.1525,
+        "upper": 1.1916
+      },
+      "notes": "数据性质为 synthetic，不得标记 calibrated；仅保留统计估计。"
+    },
+    "samples": [
+      {
+        "distance_m": 60,
+        "seconds": 49
+      },
+      {
+        "distance_m": 60,
+        "seconds": 52
+      },
+      {
+        "distance_m": 60,
+        "seconds": 50
+      },
+      {
+        "distance_m": 60,
+        "seconds": 55
+      },
+      {
+        "distance_m": 60,
+        "seconds": 54
+      },
+      {
+        "distance_m": 60,
+        "seconds": 52
+      },
+      {
+        "distance_m": 60,
+        "seconds": 52
+      },
+      {
+        "distance_m": 60,
+        "seconds": 49
+      },
+      {
+        "distance_m": 60,
+        "seconds": 50
+      },
+      {
+        "distance_m": 60,
+        "seconds": 50
+      },
+      {
+        "distance_m": 60,
+        "seconds": 51
+      },
+      {
+        "distance_m": 60,
+        "seconds": 53
+      },
+      {
+        "distance_m": 60,
+        "seconds": 49
+      },
+      {
+        "distance_m": 60,
+        "seconds": 52
+      },
+      {
+        "distance_m": 60,
+        "seconds": 51
+      },
+      {
+        "distance_m": 60,
+        "seconds": 51
+      }
+    ]
+  }
+}

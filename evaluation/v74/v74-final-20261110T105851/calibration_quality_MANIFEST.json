@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "run_id": "v74-final-20261110T105851",
+  "note": "V7.4 标定质量证据（合成）。",
+  "file_count": 3,
+  "files": [
+    {
+      "path": "calibration_quality.json",
+      "bytes": 2947,
+      "sha256": "4ecdb19a05553c66c8d72918dc72b84ee1d320b995e3ea02760a5decfa86cf8f"
+    },
+    {
+      "path": "calibration_quality_README.md",
+      "bytes": 1162,
+      "sha256": "a040c3e9f6dab3d6ef7f6e72b74cdc3e5b098299b1e094d0c39d2471b0d2a9e7"
+    },
+    {
+      "path": "calibration_quality_metadata.json",
+      "bytes": 224,
+      "sha256": "7df711818c977cd7c75cf0eeef39aa8e92bfee1ea40c6f0e3f68b0f09c7e4b2c"
+    }
+  ]
+}

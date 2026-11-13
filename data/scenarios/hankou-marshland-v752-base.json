@@ -1,0 +1,3047 @@
+{
+  "scenario_id": "hankou-marshland-v1",
+  "name": "武汉汉口江滩 · 真实地理拓扑研究场景",
+  "version": "1.0.0",
+  "description": "武汉汉口江滩 (一期与二期，江汉门至长江二桥段，总长 3.6 km) 真实地理环境研究级疏散仿真场景。包含 11 座防洪闸口、四层竖向防洪立体空间 (16.0m 亲水平台、25.0m 耐水生态带、28.8m 滩顶主平台及 31.0m 防洪大堤堤顶)，严格建模楼梯与爬升通道 40% 通行能力折减。",
+  "notice": "真实地理拓扑研究场景：采用 geodesic_anchor_mesh_v1 测地锚点网格与 standard_formula_inferred 容量推导构建，verified: false。所有面积与通过耗时保留物理度量，示意坐标映射至 [0, 2400]x[0, 600] 画布。未经现场全站仪复测不得用于实际疏散应急指挥。",
+  "config": {
+    "horizon_minutes": 10,
+    "max_observation_age_seconds": 90,
+    "min_confidence": 0.6,
+    "trend_window_seconds": 300,
+    "density_consistency_tolerance": 0.25,
+    "work_order_reservation_ttl_minutes": 15,
+    "prediction_max_relative_interval_width": 0.5,
+    "default_thresholds": {
+      "watch_density": 1,
+      "high_density": 2,
+      "critical_density": 3,
+      "rise_rate_watch": 0.5,
+      "source": "中国建筑设计防火规范 GB 50016-2014 与 Fruin 行人服务水平 E 级安全标准"
+    }
+  },
+  "regions": [
+    {
+      "id": "R_GATE_01_PLAZA",
+      "name": "江汉门 (武汉关门)集散门区 (31.0m)",
+      "area_m2": 4500,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 20,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 6750,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-01",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S01_L1_CREST",
+      "name": "江汉门滩顶主平台 (28.8m)",
+      "area_m2": 45000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 0,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 36000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S01-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S01_L2_ECO",
+      "name": "江汉门耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 5,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S01-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S01_L3_RIVER",
+      "name": "江汉门亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 10,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S01-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_02_PLAZA",
+      "name": "华清门集散门区 (31.0m)",
+      "area_m2": 3200,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 219,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-02",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S02_L1_CREST",
+      "name": "华清门滩顶主平台 (28.8m)",
+      "area_m2": 36000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 199,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 28800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S02-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S02_L2_ECO",
+      "name": "华清门耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 204,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S02-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S02_L3_RIVER",
+      "name": "华清门亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 209,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S02-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_03_PLAZA",
+      "name": "兰陵门集散门区 (31.0m)",
+      "area_m2": 3200,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 399,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-03",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S03_L1_CREST",
+      "name": "兰陵门滩顶主平台 (28.8m)",
+      "area_m2": 36000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 379,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 28800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S03-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S03_L2_ECO",
+      "name": "兰陵门耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 384,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S03-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S03_L3_RIVER",
+      "name": "兰陵门亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 389,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S03-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_04_PLAZA",
+      "name": "洞庭门 (黎黄陂门)集散门区 (31.0m)",
+      "area_m2": 3200,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 584,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-04",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S04_L1_CREST",
+      "name": "洞庭门滩顶主平台 (28.8m)",
+      "area_m2": 36000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 564,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 28800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S04-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S04_L2_ECO",
+      "name": "洞庭门耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 569,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S04-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S04_L3_RIVER",
+      "name": "洞庭门亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 574,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S04-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_05_PLAZA",
+      "name": "粤汉码头闸口集散门区 (31.0m)",
+      "area_m2": 3200,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 776,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-05",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S05_L1_CREST",
+      "name": "粤汉码头闸口滩顶主平台 (28.8m)",
+      "area_m2": 48000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 756,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 38400,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S05-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S05_L2_ECO",
+      "name": "粤汉码头闸口耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 761,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S05-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S05_L3_RIVER",
+      "name": "粤汉码头闸口亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 766,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S05-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_06_PLAZA",
+      "name": "一元门集散门区 (31.0m)",
+      "area_m2": 3200,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1022,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-06",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S06_L1_CREST",
+      "name": "一元门滩顶主平台 (28.8m)",
+      "area_m2": 36000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1002,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 28800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S06-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S06_L2_ECO",
+      "name": "一元门耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1007,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S06-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S06_L3_RIVER",
+      "name": "一元门亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1012,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S06-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_07_PLAZA",
+      "name": "三阳门集散门区 (31.0m)",
+      "area_m2": 6500,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1306,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 9750,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-07",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S07_L1_CREST",
+      "name": "三阳门滩顶主平台 (28.8m)",
+      "area_m2": 65000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1286,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 52000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S07-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S07_L2_ECO",
+      "name": "三阳门耐水生态带 (25.0m)",
+      "area_m2": 18000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1291,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 10800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S07-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S07_L3_RIVER",
+      "name": "三阳门亲水步道 (16.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1296,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 6000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S07-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_08_PLAZA",
+      "name": "五福门集散门区 (31.0m)",
+      "area_m2": 3200,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1549,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-08",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S08_L1_CREST",
+      "name": "五福门滩顶主平台 (28.8m)",
+      "area_m2": 36000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1529,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 28800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S08-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S08_L2_ECO",
+      "name": "五福门耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1534,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S08-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S08_L3_RIVER",
+      "name": "五福门亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1539,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S08-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_09_PLAZA",
+      "name": "四唯门集散门区 (31.0m)",
+      "area_m2": 3200,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1768,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-09",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S09_L1_CREST",
+      "name": "四唯门滩顶主平台 (28.8m)",
+      "area_m2": 36000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1748,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 28800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S09-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S09_L2_ECO",
+      "name": "四唯门耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1753,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S09-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S09_L3_RIVER",
+      "name": "四唯门亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1758,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S09-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_10_PLAZA",
+      "name": "永清门集散门区 (31.0m)",
+      "area_m2": 5000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 2003,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7500,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-10",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S10_L1_CREST",
+      "name": "永清门滩顶主平台 (28.8m)",
+      "area_m2": 52000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1983,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 41600,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S10-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S10_L2_ECO",
+      "name": "永清门耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1988,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S10-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S10_L3_RIVER",
+      "name": "永清门亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 1993,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S10-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_GATE_11_PLAZA",
+      "name": "黄浦门集散门区 (31.0m)",
+      "area_m2": 3200,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 2200,
+        "y": 55,
+        "width": 120,
+        "height": 60
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-GATE-11",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S11_L1_CREST",
+      "name": "黄浦门滩顶主平台 (28.8m)",
+      "area_m2": 36000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 2180,
+        "y": 185,
+        "width": 160,
+        "height": 90
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 28800,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S11-L1",
+        "calibration_status": "calibrated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S11_L2_ECO",
+      "name": "黄浦门耐水生态带 (25.0m)",
+      "area_m2": 12000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 2185,
+        "y": 335,
+        "width": 150,
+        "height": 75
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 7200,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S11-L2",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    },
+    {
+      "id": "R_S11_L3_RIVER",
+      "name": "黄浦门亲水步道 (16.0m)",
+      "area_m2": 8000,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 2190,
+        "y": 470,
+        "width": 140,
+        "height": 65
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 4000,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-S11-L3",
+        "calibration_status": "estimated",
+        "calibration_version": "hk-cam-v1.0",
+        "status": "online"
+      },
+      "source": "geodesic_anchor_mesh_v1",
+      "verified": false
+    }
+  ],
+  "corridors": [
+    {
+      "id": "C_S01_L3_L2",
+      "name": "S01亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S01_L3_RIVER",
+      "to_region_id": "R_S01_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S01_L2_L1",
+      "name": "S01生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S01_L2_ECO",
+      "to_region_id": "R_S01_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S01_L1_GATE",
+      "name": "S01滩顶平台至江汉门 (武汉关门)集散坡梯",
+      "from_region_id": "R_S01_L1_CREST",
+      "to_region_id": "R_GATE_01_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 336,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S02_L3_L2",
+      "name": "S02亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S02_L3_RIVER",
+      "to_region_id": "R_S02_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S02_L2_L1",
+      "name": "S02生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S02_L2_ECO",
+      "to_region_id": "R_S02_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S02_L1_GATE",
+      "name": "S02滩顶平台至华清门集散坡梯",
+      "from_region_id": "R_S02_L1_CREST",
+      "to_region_id": "R_GATE_02_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 336,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S03_L3_L2",
+      "name": "S03亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S03_L3_RIVER",
+      "to_region_id": "R_S03_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S03_L2_L1",
+      "name": "S03生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S03_L2_ECO",
+      "to_region_id": "R_S03_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S03_L1_GATE",
+      "name": "S03滩顶平台至兰陵门集散坡梯",
+      "from_region_id": "R_S03_L1_CREST",
+      "to_region_id": "R_GATE_03_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 336,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S04_L3_L2",
+      "name": "S04亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S04_L3_RIVER",
+      "to_region_id": "R_S04_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S04_L2_L1",
+      "name": "S04生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S04_L2_ECO",
+      "to_region_id": "R_S04_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S04_L1_GATE",
+      "name": "S04滩顶平台至洞庭门 (黎黄陂门)集散坡梯",
+      "from_region_id": "R_S04_L1_CREST",
+      "to_region_id": "R_GATE_04_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 336,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S05_L3_L2",
+      "name": "S05亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S05_L3_RIVER",
+      "to_region_id": "R_S05_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S05_L2_L1",
+      "name": "S05生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S05_L2_ECO",
+      "to_region_id": "R_S05_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S05_L1_GATE",
+      "name": "S05滩顶平台至粤汉码头闸口集散坡梯",
+      "from_region_id": "R_S05_L1_CREST",
+      "to_region_id": "R_GATE_05_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 768,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S06_L3_L2",
+      "name": "S06亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S06_L3_RIVER",
+      "to_region_id": "R_S06_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S06_L2_L1",
+      "name": "S06生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S06_L2_ECO",
+      "to_region_id": "R_S06_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S06_L1_GATE",
+      "name": "S06滩顶平台至一元门集散坡梯",
+      "from_region_id": "R_S06_L1_CREST",
+      "to_region_id": "R_GATE_06_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 336,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S07_L3_L2",
+      "name": "S07亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S07_L3_RIVER",
+      "to_region_id": "R_S07_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S07_L2_L1",
+      "name": "S07生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S07_L2_ECO",
+      "to_region_id": "R_S07_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 672,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S07_L1_GATE",
+      "name": "S07滩顶平台至三阳门集散坡梯",
+      "from_region_id": "R_S07_L1_CREST",
+      "to_region_id": "R_GATE_07_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1024,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S08_L3_L2",
+      "name": "S08亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S08_L3_RIVER",
+      "to_region_id": "R_S08_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S08_L2_L1",
+      "name": "S08生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S08_L2_ECO",
+      "to_region_id": "R_S08_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S08_L1_GATE",
+      "name": "S08滩顶平台至五福门集散坡梯",
+      "from_region_id": "R_S08_L1_CREST",
+      "to_region_id": "R_GATE_08_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 336,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S09_L3_L2",
+      "name": "S09亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S09_L3_RIVER",
+      "to_region_id": "R_S09_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S09_L2_L1",
+      "name": "S09生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S09_L2_ECO",
+      "to_region_id": "R_S09_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S09_L1_GATE",
+      "name": "S09滩顶平台至四唯门集散坡梯",
+      "from_region_id": "R_S09_L1_CREST",
+      "to_region_id": "R_GATE_09_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 336,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S10_L3_L2",
+      "name": "S10亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S10_L3_RIVER",
+      "to_region_id": "R_S10_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S10_L2_L1",
+      "name": "S10生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S10_L2_ECO",
+      "to_region_id": "R_S10_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S10_L1_GATE",
+      "name": "S10滩顶平台至永清门集散坡梯",
+      "from_region_id": "R_S10_L1_CREST",
+      "to_region_id": "R_GATE_10_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 768,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S11_L3_L2",
+      "name": "S11亲水平台至生态带踏步 (高差9m, 折减40%)",
+      "from_region_id": "R_S11_L3_RIVER",
+      "to_region_id": "R_S11_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 288,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S11_L2_L1",
+      "name": "S11生态带至滩顶平台阶梯 (高差3.8m, 折减40%)",
+      "from_region_id": "R_S11_L2_ECO",
+      "to_region_id": "R_S11_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 35,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_S11_L1_GATE",
+      "name": "S11滩顶平台至黄浦门集散坡梯",
+      "from_region_id": "R_S11_L1_CREST",
+      "to_region_id": "R_GATE_11_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 336,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 30,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_01_02",
+      "name": "堤顶步道 01—02",
+      "from_region_id": "R_GATE_01_PLAZA",
+      "to_region_id": "R_GATE_02_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_01_02",
+      "name": "滩顶主大道 01—02",
+      "from_region_id": "R_S01_L1_CREST",
+      "to_region_id": "R_S02_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_01_02",
+      "name": "生态林道 01—02",
+      "from_region_id": "R_S01_L2_ECO",
+      "to_region_id": "R_S02_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_01_02",
+      "name": "亲水步道 01—02",
+      "from_region_id": "R_S01_L3_RIVER",
+      "to_region_id": "R_S02_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_02_03",
+      "name": "堤顶步道 02—03",
+      "from_region_id": "R_GATE_02_PLAZA",
+      "to_region_id": "R_GATE_03_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_02_03",
+      "name": "滩顶主大道 02—03",
+      "from_region_id": "R_S02_L1_CREST",
+      "to_region_id": "R_S03_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_02_03",
+      "name": "生态林道 02—03",
+      "from_region_id": "R_S02_L2_ECO",
+      "to_region_id": "R_S03_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_02_03",
+      "name": "亲水步道 02—03",
+      "from_region_id": "R_S02_L3_RIVER",
+      "to_region_id": "R_S03_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_03_04",
+      "name": "堤顶步道 03—04",
+      "from_region_id": "R_GATE_03_PLAZA",
+      "to_region_id": "R_GATE_04_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_03_04",
+      "name": "滩顶主大道 03—04",
+      "from_region_id": "R_S03_L1_CREST",
+      "to_region_id": "R_S04_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_03_04",
+      "name": "生态林道 03—04",
+      "from_region_id": "R_S03_L2_ECO",
+      "to_region_id": "R_S04_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_03_04",
+      "name": "亲水步道 03—04",
+      "from_region_id": "R_S03_L3_RIVER",
+      "to_region_id": "R_S04_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_04_05",
+      "name": "堤顶步道 04—05",
+      "from_region_id": "R_GATE_04_PLAZA",
+      "to_region_id": "R_GATE_05_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_04_05",
+      "name": "滩顶主大道 04—05",
+      "from_region_id": "R_S04_L1_CREST",
+      "to_region_id": "R_S05_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_04_05",
+      "name": "生态林道 04—05",
+      "from_region_id": "R_S04_L2_ECO",
+      "to_region_id": "R_S05_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_04_05",
+      "name": "亲水步道 04—05",
+      "from_region_id": "R_S04_L3_RIVER",
+      "to_region_id": "R_S05_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_05_06",
+      "name": "堤顶步道 05—06",
+      "from_region_id": "R_GATE_05_PLAZA",
+      "to_region_id": "R_GATE_06_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_05_06",
+      "name": "滩顶主大道 05—06",
+      "from_region_id": "R_S05_L1_CREST",
+      "to_region_id": "R_S06_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_05_06",
+      "name": "生态林道 05—06",
+      "from_region_id": "R_S05_L2_ECO",
+      "to_region_id": "R_S06_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_05_06",
+      "name": "亲水步道 05—06",
+      "from_region_id": "R_S05_L3_RIVER",
+      "to_region_id": "R_S06_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_06_07",
+      "name": "堤顶步道 06—07",
+      "from_region_id": "R_GATE_06_PLAZA",
+      "to_region_id": "R_GATE_07_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_06_07",
+      "name": "滩顶主大道 06—07",
+      "from_region_id": "R_S06_L1_CREST",
+      "to_region_id": "R_S07_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_06_07",
+      "name": "生态林道 06—07",
+      "from_region_id": "R_S06_L2_ECO",
+      "to_region_id": "R_S07_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_06_07",
+      "name": "亲水步道 06—07",
+      "from_region_id": "R_S06_L3_RIVER",
+      "to_region_id": "R_S07_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_07_08",
+      "name": "堤顶步道 07—08",
+      "from_region_id": "R_GATE_07_PLAZA",
+      "to_region_id": "R_GATE_08_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_07_08",
+      "name": "滩顶主大道 07—08",
+      "from_region_id": "R_S07_L1_CREST",
+      "to_region_id": "R_S08_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_07_08",
+      "name": "生态林道 07—08",
+      "from_region_id": "R_S07_L2_ECO",
+      "to_region_id": "R_S08_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_07_08",
+      "name": "亲水步道 07—08",
+      "from_region_id": "R_S07_L3_RIVER",
+      "to_region_id": "R_S08_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_08_09",
+      "name": "堤顶步道 08—09",
+      "from_region_id": "R_GATE_08_PLAZA",
+      "to_region_id": "R_GATE_09_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_08_09",
+      "name": "滩顶主大道 08—09",
+      "from_region_id": "R_S08_L1_CREST",
+      "to_region_id": "R_S09_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_08_09",
+      "name": "生态林道 08—09",
+      "from_region_id": "R_S08_L2_ECO",
+      "to_region_id": "R_S09_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_08_09",
+      "name": "亲水步道 08—09",
+      "from_region_id": "R_S08_L3_RIVER",
+      "to_region_id": "R_S09_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_09_10",
+      "name": "堤顶步道 09—10",
+      "from_region_id": "R_GATE_09_PLAZA",
+      "to_region_id": "R_GATE_10_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_09_10",
+      "name": "滩顶主大道 09—10",
+      "from_region_id": "R_S09_L1_CREST",
+      "to_region_id": "R_S10_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_09_10",
+      "name": "生态林道 09—10",
+      "from_region_id": "R_S09_L2_ECO",
+      "to_region_id": "R_S10_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_09_10",
+      "name": "亲水步道 09—10",
+      "from_region_id": "R_S09_L3_RIVER",
+      "to_region_id": "R_S10_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_DYKE_10_11",
+      "name": "堤顶步道 10—11",
+      "from_region_id": "R_GATE_10_PLAZA",
+      "to_region_id": "R_GATE_11_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L1_10_11",
+      "name": "滩顶主大道 10—11",
+      "from_region_id": "R_S10_L1_CREST",
+      "to_region_id": "R_S11_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 120,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L2_10_11",
+      "name": "生态林道 10—11",
+      "from_region_id": "R_S10_L2_ECO",
+      "to_region_id": "R_S11_L2_ECO",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 560,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 150,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_L3_10_11",
+      "name": "亲水步道 10—11",
+      "from_region_id": "R_S10_L3_RIVER",
+      "to_region_id": "R_S11_L3_RIVER",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 480,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 180,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_HUB_S06_S07_L1",
+      "name": "一元门至三阳广场跨区林荫主轴",
+      "from_region_id": "R_S06_L1_CREST",
+      "to_region_id": "R_S07_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 880,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 90,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_HUB_S07_S08_L1",
+      "name": "三阳广场至五福门跨区主轴",
+      "from_region_id": "R_S07_L1_CREST",
+      "to_region_id": "R_S08_L1_CREST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 880,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 90,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_RAMP_S05_DIRECT",
+      "name": "粤汉码头主观光车辆/应急无障碍直连坡道",
+      "from_region_id": "R_S05_L1_CREST",
+      "to_region_id": "R_GATE_05_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 960,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 45,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_RAMP_S10_DIRECT",
+      "name": "武汉天地景观天桥与无障碍下地通道",
+      "from_region_id": "R_S10_L1_CREST",
+      "to_region_id": "R_GATE_10_PLAZA",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 960,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 40,
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "C_FLOOD_ESCAPE_UNKNOWN",
+      "name": "江汉关亲水平台低洼维修通道 (状态未知)",
+      "from_region_id": "R_S01_L3_RIVER",
+      "to_region_id": "R_S01_L2_ECO",
+      "status": "unknown",
+      "direction": "both",
+      "capacity_per_min": null,
+      "capacity_provenance": "unknown",
+      "traversal_seconds": 120,
+      "status_source": "hankou_marshland_safety_baseline",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z",
+      "closure_reason": "汛期临江低洼通道未标定，状态与容量未知，按安全铁律硬排除于规划之外"
+    }
+  ],
+  "exits": [
+    {
+      "id": "GATE_01_G01",
+      "name": "江汉门 (武汉关门)疏散闸口",
+      "region_id": "R_GATE_01_PLAZA",
+      "status": "open",
+      "capacity_per_min": 840,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_02_G02",
+      "name": "华清门疏散闸口",
+      "region_id": "R_GATE_02_PLAZA",
+      "status": "open",
+      "capacity_per_min": 384,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_03_G03",
+      "name": "兰陵门疏散闸口",
+      "region_id": "R_GATE_03_PLAZA",
+      "status": "open",
+      "capacity_per_min": 496,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_04_G04",
+      "name": "洞庭门 (黎黄陂门)疏散闸口",
+      "region_id": "R_GATE_04_PLAZA",
+      "status": "open",
+      "capacity_per_min": 640,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_05_G05",
+      "name": "粤汉码头闸口疏散闸口",
+      "region_id": "R_GATE_05_PLAZA",
+      "status": "open",
+      "capacity_per_min": 960,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_06_G06",
+      "name": "一元门疏散闸口",
+      "region_id": "R_GATE_06_PLAZA",
+      "status": "open",
+      "capacity_per_min": 520,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_07_G07",
+      "name": "三阳门疏散闸口",
+      "region_id": "R_GATE_07_PLAZA",
+      "status": "open",
+      "capacity_per_min": 1440,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_08_G08",
+      "name": "五福门疏散闸口",
+      "region_id": "R_GATE_08_PLAZA",
+      "status": "open",
+      "capacity_per_min": 440,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_09_G09",
+      "name": "四唯门疏散闸口",
+      "region_id": "R_GATE_09_PLAZA",
+      "status": "open",
+      "capacity_per_min": 400,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_10_G10",
+      "name": "永清门疏散闸口",
+      "region_id": "R_GATE_10_PLAZA",
+      "status": "open",
+      "capacity_per_min": 1120,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    },
+    {
+      "id": "GATE_11_G11",
+      "name": "黄浦门疏散闸口",
+      "region_id": "R_GATE_11_PLAZA",
+      "status": "open",
+      "capacity_per_min": 800,
+      "capacity_provenance": "estimated",
+      "status_source": "standard_formula_inferred",
+      "verified": false,
+      "updated_at": "2026-11-10T00:00:00.000Z"
+    }
+  ],
+  "demo_scenarios": [
+    {
+      "id": "demo_normal",
+      "label": "场景 A：汉口江滩常态纳凉客流安全疏散 (NORMAL)",
+      "description": "傍晚日常纳凉客流，主要聚集在江汉关、粤汉码头、三阳广场与武汉天地段，全网通道完好，各区域客流平稳通过就近闸口疏散。",
+      "expected_state": "NORMAL",
+      "steps": [
+        {
+          "action": "observe",
+          "observations": {
+            "R_S01_L1_CREST": {
+              "count": 800,
+              "confidence": 0.92
+            },
+            "R_S01_L3_RIVER": {
+              "count": 400,
+              "confidence": 0.88
+            },
+            "R_S05_L1_CREST": {
+              "count": 600,
+              "confidence": 0.9
+            },
+            "R_S07_L1_CREST": {
+              "count": 1200,
+              "confidence": 0.95
+            },
+            "R_S07_L2_ECO": {
+              "count": 500,
+              "confidence": 0.9
+            },
+            "R_S10_L1_CREST": {
+              "count": 700,
+              "confidence": 0.92
+            }
+          }
+        },
+        {
+          "action": "recompute"
+        }
+      ]
+    },
+    {
+      "id": "demo_flood_closure",
+      "label": "场景 B：三阳门主闸防洪封闸与动态重规划 (REROUTE)",
+      "description": "突发汛期江水上涨或闸门结构维修，三阳门疏散闸口紧急封锁，规划引擎动态分流三阳广场客流至相邻的一元门与五福门。",
+      "expected_state": "REROUTE",
+      "steps": [
+        {
+          "action": "observe",
+          "observations": {
+            "R_S07_L1_CREST": {
+              "count": 1500,
+              "confidence": 0.95
+            },
+            "R_S07_L2_ECO": {
+              "count": 600,
+              "confidence": 0.92
+            },
+            "R_S06_L1_CREST": {
+              "count": 400,
+              "confidence": 0.9
+            },
+            "R_S08_L1_CREST": {
+              "count": 400,
+              "confidence": 0.9
+            }
+          }
+        },
+        {
+          "action": "incident.create",
+          "type": "corridor_closure",
+          "severity": "high",
+          "description": "三阳门防洪拼装闸门实施应急封堵，出入口关闭",
+          "affected": {
+            "region_ids": [
+              "R_GATE_07_PLAZA"
+            ],
+            "corridor_ids": [
+              "C_S07_L1_GATE"
+            ],
+            "exit_ids": [
+              "GATE_07_G07"
+            ]
+          },
+          "ref": "inc_sanyang_closure"
+        },
+        {
+          "action": "incident.confirm",
+          "ref": "inc_sanyang_closure"
+        },
+        {
+          "action": "recompute"
+        }
+      ]
+    },
+    {
+      "id": "demo_capacity_shortage",
+      "label": "场景 C：跨年夜极限客流冲击与容量拒绝 (REJECT)",
+      "description": "跨年倒计时瞬间，江汉关与三阳广场区域聚集极限客流，且江汉门与三阳门同时发生严重瓶颈拥堵，独立校验器硬拦截并触发 REJECT。",
+      "expected_state": "REJECT",
+      "steps": [
+        {
+          "action": "observe",
+          "observations": {
+            "R_S01_L1_CREST": {
+              "count": 12000,
+              "confidence": 0.95
+            },
+            "R_S01_L3_RIVER": {
+              "count": 6000,
+              "confidence": 0.9
+            },
+            "R_S07_L1_CREST": {
+              "count": 20000,
+              "confidence": 0.96
+            },
+            "R_S07_L2_ECO": {
+              "count": 8000,
+              "confidence": 0.92
+            }
+          }
+        },
+        {
+          "action": "incident.create",
+          "type": "crowd_surge",
+          "severity": "critical",
+          "description": "江汉关与三阳广场同时突破瞬时疏散承载极限",
+          "affected": {
+            "region_ids": [
+              "R_S01_L1_CREST",
+              "R_S07_L1_CREST"
+            ],
+            "corridor_ids": [
+              "C_S01_L1_GATE",
+              "C_S07_L1_GATE"
+            ],
+            "exit_ids": [
+              "GATE_01_G01",
+              "GATE_07_G07"
+            ]
+          },
+          "ref": "inc_extreme_surge"
+        },
+        {
+          "action": "incident.confirm",
+          "ref": "inc_extreme_surge"
+        },
+        {
+          "action": "recompute"
+        }
+      ]
+    }
+  ],
+  "map": {
+    "caption": "武汉汉口江滩真实地理大屏示意底图 · 测地网格投影 [0, 2400]x[0, 600]",
+    "backdrop": "/scenarios/hankou-marshland.png",
+    "backdrop_opacity": 0.35,
+    "landmarks": [
+      {
+        "name": "江汉关钟楼 / 武汉关码头 (S01)",
+        "x": 0.05,
+        "y": 0.2
+      },
+      {
+        "name": "粤汉码头 / 知音号 (S05)",
+        "x": 0.4,
+        "y": 0.2
+      },
+      {
+        "name": "三阳广场中心集散枢纽 (S07)",
+        "x": 0.58,
+        "y": 0.2
+      },
+      {
+        "name": "武汉天地商圈天桥 (S10)",
+        "x": 0.85,
+        "y": 0.2
+      },
+      {
+        "name": "武汉长江二桥桥下 (S11)",
+        "x": 0.95,
+        "y": 0.2
+      }
+    ]
+  },
+  "simulation_baseline": {
+    "R_S01_L1_CREST": {
+      "count": 1800,
+      "confidence": 0.92
+    },
+    "R_S01_L2_ECO": {
+      "count": 600,
+      "confidence": 0.88
+    },
+    "R_S01_L3_RIVER": {
+      "count": 400,
+      "confidence": 0.85
+    },
+    "R_S02_L1_CREST": {
+      "count": 600,
+      "confidence": 0.92
+    },
+    "R_S02_L2_ECO": {
+      "count": 300,
+      "confidence": 0.88
+    },
+    "R_S02_L3_RIVER": {
+      "count": 200,
+      "confidence": 0.85
+    },
+    "R_S03_L1_CREST": {
+      "count": 600,
+      "confidence": 0.92
+    },
+    "R_S03_L2_ECO": {
+      "count": 300,
+      "confidence": 0.88
+    },
+    "R_S03_L3_RIVER": {
+      "count": 200,
+      "confidence": 0.85
+    },
+    "R_S04_L1_CREST": {
+      "count": 600,
+      "confidence": 0.92
+    },
+    "R_S04_L2_ECO": {
+      "count": 300,
+      "confidence": 0.88
+    },
+    "R_S04_L3_RIVER": {
+      "count": 200,
+      "confidence": 0.85
+    },
+    "R_S05_L1_CREST": {
+      "count": 1200,
+      "confidence": 0.92
+    },
+    "R_S05_L2_ECO": {
+      "count": 300,
+      "confidence": 0.88
+    },
+    "R_S05_L3_RIVER": {
+      "count": 200,
+      "confidence": 0.85
+    },
+    "R_S06_L1_CREST": {
+      "count": 600,
+      "confidence": 0.92
+    },
+    "R_S06_L2_ECO": {
+      "count": 300,
+      "confidence": 0.88
+    },
+    "R_S06_L3_RIVER": {
+      "count": 200,
+      "confidence": 0.85
+    },
+    "R_S07_L1_CREST": {
+      "count": 2500,
+      "confidence": 0.92
+    },
+    "R_S07_L2_ECO": {
+      "count": 800,
+      "confidence": 0.88
+    },
+    "R_S07_L3_RIVER": {
+      "count": 500,
+      "confidence": 0.85
+    },
+    "R_S08_L1_CREST": {
+      "count": 600,
+      "confidence": 0.92
+    },
+    "R_S08_L2_ECO": {
+      "count": 300,
+      "confidence": 0.88
+    },
+    "R_S08_L3_RIVER": {
+      "count": 200,
+      "confidence": 0.85
+    },
+    "R_S09_L1_CREST": {
+      "count": 600,
+      "confidence": 0.92
+    },
+    "R_S09_L2_ECO": {
+      "count": 300,
+      "confidence": 0.88
+    },
+    "R_S09_L3_RIVER": {
+      "count": 200,
+      "confidence": 0.85
+    },
+    "R_S10_L1_CREST": {
+      "count": 1500,
+      "confidence": 0.92
+    },
+    "R_S10_L2_ECO": {
+      "count": 300,
+      "confidence": 0.88
+    },
+    "R_S10_L3_RIVER": {
+      "count": 200,
+      "confidence": 0.85
+    },
+    "R_S11_L1_CREST": {
+      "count": 600,
+      "confidence": 0.92
+    },
+    "R_S11_L2_ECO": {
+      "count": 300,
+      "confidence": 0.88
+    },
+    "R_S11_L3_RIVER": {
+      "count": 200,
+      "confidence": 0.85
+    }
+  },
+  "venue": {
+    "name": "武汉汉口江滩公园 (一期与二期)",
+    "kind": "urban_riverfront_park",
+    "description": "国家 4A 级旅游景区与水利风景区，集防洪屏障、市民休闲与文化展示于一体。",
+    "rules": [
+      {
+        "id": "RULE_FLOOD_PREVENTION",
+        "title": "防汛应急封闭硬隔离红线",
+        "text": "长江水位超设防水位 (25.0m) 时自动封闭三级亲水平台通道；超警戒水位时拼装铝合金防洪板封闸。",
+        "category": "safety",
+        "mandatory": true,
+        "source": "武汉市防汛抗旱条例"
+      },
+      {
+        "id": "RULE_STAIR_CROWD_CONTROL",
+        "title": "梯级爬升段防踩踏单向流线规则",
+        "text": "竖向梯道通行能力存在 40% 折减，瞬时密度超过 2.0 人/m² 时必须实行单向爬升疏导，严禁对冲。",
+        "category": "operations",
+        "mandatory": true,
+        "source": "大型群众性活动安全管理条例"
+      }
+    ],
+    "uav_units": [
+      {
+        "id": "UAV_HANKOU_01",
+        "name": "江汉关—粤汉码头段空中巡逻无人机",
+        "status": "available",
+        "source": "synthetic_uav_fleet",
+        "verified": false
+      },
+      {
+        "id": "UAV_HANKOU_02",
+        "name": "三阳广场—黄浦二桥段空中巡逻无人机",
+        "status": "available",
+        "source": "synthetic_uav_fleet",
+        "verified": false
+      }
+    ]
+  },
+  "staff": [
+    {
+      "id": "STAFF_GATE_01",
+      "name": "江汉门 (武汉关门)巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_01_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G01",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_02",
+      "name": "华清门巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_02_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G02",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_03",
+      "name": "兰陵门巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_03_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G03",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_04",
+      "name": "洞庭门 (黎黄陂门)巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_04_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G04",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_05",
+      "name": "粤汉码头闸口巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_05_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G05",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_06",
+      "name": "一元门巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_06_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G06",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_07",
+      "name": "三阳门巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_07_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G07",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_08",
+      "name": "五福门巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_08_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G08",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_09",
+      "name": "四唯门巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_09_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G09",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_10",
+      "name": "永清门巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_10_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G10",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    },
+    {
+      "id": "STAFF_GATE_11",
+      "name": "黄浦门巡检员",
+      "role": "crowd_control",
+      "region_id": "R_GATE_11_PLAZA",
+      "status": "available",
+      "skills": [
+        "gate_control",
+        "crowd_divert"
+      ],
+      "access_code": "CODE_G11",
+      "source": "hankou_marshland_staff_roster",
+      "verified": false
+    }
+  ],
+  "investigation": {
+    "model_version": "voi-evidence-v1",
+    "provenance": "合成参数：先验/似然/损失/成本由场景文件显式给出，未经真实江滩标定；不得表述为实测模型。",
+    "hypotheses": [
+      {
+        "id": "H_STABLE",
+        "label": "平稳",
+        "description": "江滩区域人流在阈值以下且趋势平稳",
+        "prior": 0.5
+      },
+      {
+        "id": "H_SURGE",
+        "label": "快速积聚",
+        "description": "晚间游客快速涌入，接近关注与高风险阈值",
+        "prior": 0.35
+      },
+      {
+        "id": "H_CRITICAL",
+        "label": "高危拥堵",
+        "description": "闸口或梯级达到极高风险临界密度，存在冲挤踩踏风险",
+        "prior": 0.15
+      }
+    ],
+    "outcomes": [
+      "signal_normal",
+      "signal_congested",
+      "inconclusive",
+      "unavailable"
+    ],
+    "likelihoods": {
+      "camera_query": {
+        "H_STABLE": {
+          "signal_normal": 0.85,
+          "signal_congested": 0.05,
+          "inconclusive": 0.07,
+          "unavailable": 0.03
+        },
+        "H_SURGE": {
+          "signal_normal": 0.15,
+          "signal_congested": 0.7,
+          "inconclusive": 0.12,
+          "unavailable": 0.03
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.03,
+          "signal_congested": 0.85,
+          "inconclusive": 0.09,
+          "unavailable": 0.03
+        }
+      },
+      "staff_check": {
+        "H_STABLE": {
+          "signal_normal": 0.9,
+          "signal_congested": 0.04,
+          "inconclusive": 0.05,
+          "unavailable": 0.01
+        },
+        "H_SURGE": {
+          "signal_normal": 0.08,
+          "signal_congested": 0.85,
+          "inconclusive": 0.06,
+          "unavailable": 0.01
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.01,
+          "signal_congested": 0.93,
+          "inconclusive": 0.05,
+          "unavailable": 0.01
+        }
+      },
+      "uav_request": {
+        "H_STABLE": {
+          "signal_normal": 0.88,
+          "signal_congested": 0.05,
+          "inconclusive": 0.05,
+          "unavailable": 0.02
+        },
+        "H_SURGE": {
+          "signal_normal": 0.05,
+          "signal_congested": 0.9,
+          "inconclusive": 0.03,
+          "unavailable": 0.02
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.01,
+          "signal_congested": 0.95,
+          "inconclusive": 0.02,
+          "unavailable": 0.02
+        }
+      },
+      "history_query": {
+        "H_STABLE": {
+          "signal_normal": 0.65,
+          "signal_congested": 0.1,
+          "inconclusive": 0.2,
+          "unavailable": 0.05
+        },
+        "H_SURGE": {
+          "signal_normal": 0.15,
+          "signal_congested": 0.55,
+          "inconclusive": 0.25,
+          "unavailable": 0.05
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.05,
+          "signal_congested": 0.6,
+          "inconclusive": 0.3,
+          "unavailable": 0.05
+        }
+      },
+      "prediction": {
+        "H_STABLE": {
+          "signal_normal": 0.7,
+          "signal_congested": 0.1,
+          "inconclusive": 0.15,
+          "unavailable": 0.05
+        },
+        "H_SURGE": {
+          "signal_normal": 0.1,
+          "signal_congested": 0.65,
+          "inconclusive": 0.2,
+          "unavailable": 0.05
+        },
+        "H_CRITICAL": {
+          "signal_normal": 0.03,
+          "signal_congested": 0.72,
+          "inconclusive": 0.2,
+          "unavailable": 0.05
+        }
+      }
+    },
+    "loss_matrix": {
+      "H_STABLE": {
+        "monitor": 0,
+        "dispatch": 0.15
+      },
+      "H_SURGE": {
+        "monitor": 0.45,
+        "dispatch": 0.1
+      },
+      "H_CRITICAL": {
+        "monitor": 1,
+        "dispatch": 0.05
+      }
+    },
+    "decisions": [
+      "monitor",
+      "dispatch"
+    ],
+    "weights": {
+      "risk_reduction": 1,
+      "information_gain": 0.5,
+      "time_cost": 0.25,
+      "resource_cost": 0.2,
+      "failure": 0.3
+    },
+    "normalization": {
+      "max_time_minutes": 10,
+      "max_resource_cost": 1
+    },
+    "actions": [
+      {
+        "id": "A_CAMERA",
+        "kind": "camera_query",
+        "label": "查询闸口与主干道高清摄像头",
+        "coverage": "target",
+        "retry": {
+          "max_retries": 1,
+          "cooldown_minutes": 0.5,
+          "backoff_factor": 2
+        },
+        "priority": 1,
+        "time_cost_minutes": 0.5,
+        "resource_cost": 0.05,
+        "failure_probability": 0.03,
+        "base_availability": "available",
+        "detects": [
+          "camera_observation"
+        ],
+        "source": "汉口江滩视频监控系统"
+      },
+      {
+        "id": "A_STAFF",
+        "kind": "staff_check",
+        "label": "调度现场巡防员核实人流与闸口通行状况",
+        "coverage": "target",
+        "retry": {
+          "max_retries": 1,
+          "cooldown_minutes": 2,
+          "backoff_factor": 1.5
+        },
+        "priority": 2,
+        "time_cost_minutes": 3,
+        "resource_cost": 0.35,
+        "failure_probability": 0.08,
+        "base_availability": "available",
+        "detects": [
+          "field_report"
+        ],
+        "source": "江滩安保执勤名册"
+      },
+      {
+        "id": "A_UAV",
+        "kind": "uav_request",
+        "label": "申请江滩巡防无人机抵近观察",
+        "coverage": "neighbors",
+        "retry": {
+          "max_retries": 1,
+          "cooldown_minutes": 1,
+          "backoff_factor": 2
+        },
+        "priority": 3,
+        "time_cost_minutes": 2,
+        "resource_cost": 0.55,
+        "failure_probability": 0.12,
+        "base_availability": "available",
+        "detects": [
+          "uav_observation"
+        ],
+        "source": "汉口江滩巡逻无人机组"
+      },
+      {
+        "id": "A_HISTORY",
+        "kind": "history_query",
+        "label": "查询区域历史客流趋势",
+        "coverage": "target",
+        "retry": {
+          "max_retries": 0,
+          "cooldown_minutes": 0,
+          "backoff_factor": 1
+        },
+        "priority": 4,
+        "time_cost_minutes": 0.2,
+        "resource_cost": 0.03,
+        "failure_probability": 0.02,
+        "base_availability": "available",
+        "detects": [
+          "history"
+        ],
+        "source": "历史客流数据库"
+      },
+      {
+        "id": "A_PREDICTION",
+        "kind": "prediction",
+        "label": "调用短时客流预测模型",
+        "coverage": "neighbors",
+        "retry": {
+          "max_retries": 0,
+          "cooldown_minutes": 0,
+          "backoff_factor": 1
+        },
+        "priority": 5,
+        "time_cost_minutes": 0.3,
+        "resource_cost": 0.05,
+        "failure_probability": 0.04,
+        "base_availability": "available",
+        "detects": [
+          "prediction"
+        ],
+        "source": "预测服务 ema-linear-v1"
+      }
+    ],
+    "coverage_weights": {
+      "neighbor": 0.5,
+      "global": 0.3
+    },
+    "conflict": {
+      "window_minutes": 10,
+      "blend_prior": 0.5
+    },
+    "stop_threshold": 0.02,
+    "max_investigations": 3,
+    "budget": {
+      "max_actions": 5,
+      "max_total_cost": 1.5,
+      "max_total_time_minutes": 10
+    }
+  }
+}

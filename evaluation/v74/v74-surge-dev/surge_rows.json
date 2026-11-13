@@ -1,0 +1,2402 @@
+[
+  {
+    "mechanism": "stable",
+    "seed": 20261111,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261111,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261112,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261112,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261113,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261113,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261114,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261114,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261115,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261115,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261116,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261116,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261117,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261117,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261118,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261118,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261119,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261119,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261120,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261120,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261121,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261121,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261122,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261122,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261123,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261123,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261124,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261124,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261125,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261125,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261126,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261126,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261127,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261127,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261128,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261128,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261129,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261129,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261130,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261130,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261131,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261131,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261132,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261132,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261133,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 2,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261133,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261134,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261134,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261135,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261135,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261136,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261136,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261137,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261137,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261138,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261138,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261139,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261139,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261140,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "stable",
+    "seed": 20261140,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261111,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261111,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 1,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261112,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261112,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261113,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261113,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261114,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261114,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261115,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261115,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 1,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261116,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261116,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261117,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261117,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261118,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261118,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261119,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261119,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261120,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261120,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261121,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261121,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261122,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261122,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261123,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261123,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261124,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261124,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261125,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261125,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261126,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261126,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261127,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261127,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261128,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261128,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261129,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261129,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261130,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261130,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261131,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261131,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261132,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261132,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261133,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261133,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261134,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261134,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261135,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261135,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261136,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261136,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261137,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261137,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261138,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261138,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 1,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261139,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261139,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261140,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "surge",
+    "seed": 20261140,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261111,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 1,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261111,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261112,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261112,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261113,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 1,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261113,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 1,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261114,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261114,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261115,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261115,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261116,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261116,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261117,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261117,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261118,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 1,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261118,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 1,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261119,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261119,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261120,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261120,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261121,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261121,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261122,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261122,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261123,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261123,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 1,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261124,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261124,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261125,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261125,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261126,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261126,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261127,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261127,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261128,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261128,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261129,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261129,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261130,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261130,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261131,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261131,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261132,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261132,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261133,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261133,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261134,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261134,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261135,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261135,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261136,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261136,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261137,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261137,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261138,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261138,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261139,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261139,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261140,
+    "detector": "changepoint",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "regime_shift",
+    "seed": 20261140,
+    "detector": "naive3sigma",
+    "detected": true,
+    "latency": 0,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261111,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261111,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261112,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261112,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261113,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261113,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261114,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261114,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261115,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261115,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261116,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 2,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261116,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261117,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 2,
+    "false_alarms_per_100": 3.3333,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261117,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261118,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261118,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261119,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261119,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261120,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261120,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261121,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261121,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261122,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261122,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261123,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261123,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261124,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261124,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261125,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261125,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261126,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261126,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261127,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261127,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261128,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261128,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261129,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261129,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261130,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261130,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261131,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261131,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261132,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261132,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261133,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261133,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261134,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261134,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261135,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261135,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261136,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261136,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261137,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261137,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261138,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261138,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261139,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261139,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 1,
+    "false_alarms_per_100": 1.6667,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261140,
+    "detector": "changepoint",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  },
+  {
+    "mechanism": "noisy",
+    "seed": 20261140,
+    "detector": "naive3sigma",
+    "detected": false,
+    "latency": null,
+    "false_alarms": 0,
+    "false_alarms_per_100": 0,
+    "detections_on_stable": 0
+  }
+]

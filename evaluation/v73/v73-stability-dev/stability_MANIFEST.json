@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v73-stability-dev",
+  "note": "V7.3 自适应稳定性与动态容量实验清单（合成）。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "stability_README.md",
+      "bytes": 12125,
+      "sha256": "9c1856d160085c716d51c18ebcb2fac6b6f297a8bf350b6840dbc78590b7ec6d"
+    },
+    {
+      "path": "stability_metadata.json",
+      "bytes": 216,
+      "sha256": "813657965c1ca0a911646fd6e336ce1722c1d1ecf38d02cbf6dddc2df4c73aed"
+    },
+    {
+      "path": "stability_rows.json",
+      "bytes": 991438,
+      "sha256": "8dbc94772f284a1e7058cf9640ace929d8a9110e40da9c7ab4e5af46779dd012"
+    },
+    {
+      "path": "stability_summary.json",
+      "bytes": 250183,
+      "sha256": "24b5c41c6635a4d49c955a4aeb3adf23e233dfac123401b10398857504b67ac3"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-11-09T13:17:14.210Z",
+  "run_id": "v71-final-20261109T211702",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "cpu": "AMD Ryzen 7 7745HX with Radeon Graphics        ",
+  "git_head": "uncommitted",
+  "selected": [
+    {
+      "key": "prediction",
+      "file": "v71-prediction-benchmark.ts"
+    },
+    {
+      "key": "replanning",
+      "file": "v71-replanning-benchmark.ts"
+    }
+  ],
+  "data_nature": "全部为合成/模拟数据；不含真实人群、视频、无人机、昇腾或 AgentArts 实测。"
+}

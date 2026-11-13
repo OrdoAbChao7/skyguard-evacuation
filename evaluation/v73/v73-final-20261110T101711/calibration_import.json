@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-11-10T02:17:31.048Z",
+  "run_id": "v73-final-20261110T101711",
+  "data_nature": "synthetic",
+  "boundary": "全部为合成档案/CSV 测试夹具；public/authorized 适配器只验证契约，不代表真实数据或许可。",
+  "scenario_import": {
+    "schema_valid": true,
+    "errors": [],
+    "topology_errors": [],
+    "topology_warnings": []
+  },
+  "profile_validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": [],
+    "provenance_counts": {
+      "uncalibrated": 42,
+      "estimated": 4
+    }
+  },
+  "constraint_comparison": {
+    "errors": [],
+    "warnings": []
+  },
+  "observations_csv": {
+    "parsed_rows": 4,
+    "parse_errors": [],
+    "parse_warnings": [],
+    "replay_accepted": 4,
+    "replay_rejected": [],
+    "live_accepted": 4,
+    "live_rejected": []
+  },
+  "video_interface": {
+    "accepted": 1,
+    "rejected": [
+      {
+        "region_id": "R_NORTH_STAND",
+        "reason": "stale_observation"
+      }
+    ],
+    "note": "输入为视觉模型已产生的计数，不是原始视频；不做 CV。"
+  },
+  "public_dataset_adapter": {
+    "accepted": 2,
+    "rejected": [],
+    "errors": [],
+    "data_nature_evidence": "public_dataset"
+  },
+  "authorized_real_adapter": {
+    "accepted": 2,
+    "rejected": [],
+    "errors": [],
+    "source": "field_report"
+  },
+  "directional_capacity": {
+    "corridor_id": "C_N_STAND",
+    "forward_factor": 0.6,
+    "reverse_factor": 0.4
+  },
+  "conclusions": [
+    "JSON 场景导入与拓扑校验可用；缺失端点/重复 ID 被拒绝。",
+    "CSV replay 与 live 模式区分明确；live 拒绝过期/未来时间戳。",
+    "视频接口只接受已计数帧；公开/授权适配器要求许可/授权依据。",
+    "方向性容量与场馆约束可表达，弱化场景安全配置会被拒绝。"
+  ],
+  "limitations": [
+    "没有真实场馆数据、摄像机或授权；fixtures 只验证契约。",
+    "公开数据集适配器未连接真实数据集文件。",
+    "视频接口不包含视觉模型精度验证。"
+  ]
+}

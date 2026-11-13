@@ -11,7 +11,7 @@ SkyGuard 是一个**独立的安全决策研究原型**：把
 ## 项目状态
 
 > **当前状态唯一事实来源：** [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md)<br>
-> 阶段：Research Prototype Candidate（V6.2 证据已冻结；V7.0 预测/动态规划/联合 VoI 研究已实现并留有 30 种子对照实验）；不是 Production Ready。
+> 阶段：Research Prototype Candidate（V6.2 证据已冻结；V7.0 研究实现；V7.1 滚动重规划机理/预测区间/Shadow 工程准备；V7.2 基线冻结；V7.3 自适应稳定性/场馆导入/Shadow 运营/AgentArts 幂等/ONNX-OM 链路；V7.4 执行感知承诺门控/Pareto 份额/风险释放/检测对照/标定质量/生产检查；V7.5 低误报检测/紧急状态机/多目标 Pareto/融合 fail-closed，Shadow 默认关闭）；不是 Production Ready。
 
 ## V7.0 研究理念
 
@@ -31,6 +31,7 @@ V7.0 实验与原始证据见 `evaluation/v70/<run>/`，复现命令：
 
 ```bash
 npm run benchmark:v70
+npm run benchmark:v71
 ```
 
 

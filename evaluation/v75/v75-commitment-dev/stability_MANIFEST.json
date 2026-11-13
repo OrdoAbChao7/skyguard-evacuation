@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v75-commitment-dev",
+  "note": "V7.5 稳定性—效率 Pareto 实验清单（合成）。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "stability_README.md",
+      "bytes": 19691,
+      "sha256": "cb8157868e463a62ed7eb135328bb423baf243ff7fa8dcc072525f43629e910e"
+    },
+    {
+      "path": "stability_metadata.json",
+      "bytes": 217,
+      "sha256": "5ea8aba0a64ecd307ad80f378a9a012bc7a0071ddb911215c316a27333b72dc9"
+    },
+    {
+      "path": "stability_rows.json",
+      "bytes": 2094119,
+      "sha256": "ac6b404ebe500e72ce208cfb8bcde1881b7620aa39dae1ed7a9191c205640751"
+    },
+    {
+      "path": "stability_summary.json",
+      "bytes": 505043,
+      "sha256": "4192ad70aecb345685d55845c304920771ab7b2e4a6f3cffd3c505735174e382"
+    }
+  ]
+}

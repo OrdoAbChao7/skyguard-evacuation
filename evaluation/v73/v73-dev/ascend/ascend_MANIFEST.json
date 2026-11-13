@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "run_id": "v73-dev",
+  "note": "V7.3 ONNX/OM 部署链路证据清单；不代表 NPU 实机。",
+  "file_count": 7,
+  "files": [
+    {
+      "path": "ascend_pipeline.json",
+      "bytes": 3356,
+      "sha256": "64185fb44cf10aa12ee039db2b75a805c9128e843c29d091a13cd1280009ded3"
+    },
+    {
+      "path": "ascend_pipeline_README.md",
+      "bytes": 1421,
+      "sha256": "9abad7c1bf2154e6a96d7f6e178821f2c8ce8d9c9e72fe06a50e8207f60cbfd0"
+    },
+    {
+      "path": "forecast_linear.onnx",
+      "bytes": 511,
+      "sha256": "3837d2523cc688c2b5a931dfa2b89830186527b11cee340047243a32cdd14baa"
+    },
+    {
+      "path": "forecast_linear_metadata.json",
+      "bytes": 1123,
+      "sha256": "005133ac40f66b76a51a257ca670441c9962f3a458c5adda28b24544c0d15227"
+    },
+    {
+      "path": "om-metadata.template.json",
+      "bytes": 930,
+      "sha256": "859d6372db835ae4fc6281a52e609bd51f68ab48718e796d9b2f398d7ff9eb4d"
+    },
+    {
+      "path": "onnx_cpu_benchmark.json",
+      "bytes": 958,
+      "sha256": "5f8d186ec66f5e7fadd91faf43df34771c5bf25d4743edb742eb51c0f93b286e"
+    },
+    {
+      "path": "reference_history.npy",
+      "bytes": 176,
+      "sha256": "b2ca5f0cd00d9c2ce206b338f984a7a5448281995196ec8e6c0c33a37539984e"
+    }
+  ]
+}

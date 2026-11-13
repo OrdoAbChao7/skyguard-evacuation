@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v71-20261109T210246",
+  "note": "V7.1 滚动重规划机理实验独立清单。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "replanning_README.md",
+      "bytes": 12203,
+      "sha256": "9fe36839d23b62372a532337efceb7029ab8f5a0d57a4a26d72c79812d20986d"
+    },
+    {
+      "path": "replanning_metadata.json",
+      "bytes": 218,
+      "sha256": "2c8a938344cc01eb5d9ef4ded2c02f1fa55dab04b91bdb3d1ddc27466ddaa606"
+    },
+    {
+      "path": "replanning_rows.json",
+      "bytes": 413893,
+      "sha256": "b120145d92c911c9e40fca1de75bf1e38a62682206730f1c789f418085d36954"
+    },
+    {
+      "path": "replanning_summary.json",
+      "bytes": 112534,
+      "sha256": "070e63c4df89839ce63409f4be60761c83bcdb23a0de3f3f3728e33add15a94a"
+    }
+  ]
+}

@@ -1,0 +1,1093 @@
+{
+  "config": {
+    "seeds": [
+      20261111,
+      20261112,
+      20261113,
+      20261114,
+      20261115,
+      20261116,
+      20261117,
+      20261118,
+      20261119,
+      20261120,
+      20261121,
+      20261122,
+      20261123,
+      20261124,
+      20261125,
+      20261126,
+      20261127,
+      20261128,
+      20261129,
+      20261130,
+      20261131,
+      20261132,
+      20261133,
+      20261134,
+      20261135,
+      20261136,
+      20261137,
+      20261138,
+      20261139,
+      20261140
+    ],
+    "conditions": [
+      "clean",
+      "noisy",
+      "biased",
+      "dropout",
+      "delayed",
+      "conflict",
+      "clock_skew",
+      "duplicate",
+      "stale"
+    ],
+    "steps": 40,
+    "sensors": [
+      {
+        "id": "cam-1",
+        "reliability": 0.9,
+        "confidence": 0.9,
+        "sigma": 4,
+        "kind": "camera"
+      },
+      {
+        "id": "cam-2",
+        "reliability": 0.8,
+        "confidence": 0.85,
+        "sigma": 6,
+        "kind": "camera"
+      },
+      {
+        "id": "drone-1",
+        "reliability": 0.6,
+        "confidence": 0.7,
+        "sigma": 9,
+        "kind": "drone"
+      }
+    ],
+    "methods": [
+      "best_single",
+      "mean",
+      "median",
+      "reliability_weighted",
+      "pipeline"
+    ],
+    "fusion_config": {
+      "maxSkewMs": 5000,
+      "staleMs": 30000,
+      "conflictRelative": 0.25,
+      "conflictSigma": 3,
+      "minSensors": 2,
+      "reliabilityFloor": 0.2,
+      "futureToleranceMs": 1000
+    },
+    "strict_conditions": [
+      "conflict",
+      "clock_skew"
+    ],
+    "benign_conditions": [
+      "clean",
+      "noisy",
+      "biased",
+      "dropout",
+      "delayed",
+      "duplicate"
+    ],
+    "data_nature": "synthetic readings；不代表真实视频/无人机测量精度。"
+  },
+  "by_method_condition": {
+    "best_single": {
+      "clean": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.2769,
+        "bias": 0.0526,
+        "rmse": 4.036,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "noisy": {
+        "n": 30,
+        "availability": 1,
+        "mae": 12.8053,
+        "bias": 0.2957,
+        "rmse": 15.9825,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "biased": {
+        "n": 30,
+        "availability": 1,
+        "mae": 15.4382,
+        "bias": 13.3537,
+        "rmse": 16.0064,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "dropout": {
+        "n": 30,
+        "availability": 0.97,
+        "mae": 3.7925,
+        "bias": 0.0178,
+        "rmse": 4.8987,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 1.2,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "delayed": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.1921,
+        "bias": -0.007,
+        "rmse": 3.9584,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "conflict": {
+        "n": 30,
+        "availability": 1,
+        "mae": 68.8736,
+        "bias": 66.8422,
+        "rmse": 69.3856,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 40,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "clock_skew": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.2156,
+        "bias": 0.0955,
+        "rmse": 4.003,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 40,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "duplicate": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.1924,
+        "bias": 0.0149,
+        "rmse": 3.9167,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "stale": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.1005,
+        "bias": 0.1221,
+        "rmse": 3.9066,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      }
+    },
+    "mean": {
+      "clean": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.9998,
+        "bias": 0.2348,
+        "rmse": 3.7773,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "noisy": {
+        "n": 30,
+        "availability": 1,
+        "mae": 12.7688,
+        "bias": -0.8643,
+        "rmse": 16.0637,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "biased": {
+        "n": 30,
+        "availability": 1,
+        "mae": 13.3287,
+        "bias": 13.3287,
+        "rmse": 13.8268,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "dropout": {
+        "n": 30,
+        "availability": 0.97,
+        "mae": 3.6871,
+        "bias": -0.1532,
+        "rmse": 4.7752,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 1.2,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "delayed": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.9485,
+        "bias": -0.0636,
+        "rmse": 3.7261,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "conflict": {
+        "n": 30,
+        "availability": 1,
+        "mae": 66.6476,
+        "bias": 66.6476,
+        "rmse": 66.7551,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 40,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "clock_skew": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.0201,
+        "bias": 0.3008,
+        "rmse": 3.7718,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 40,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "duplicate": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.1564,
+        "bias": -0.0677,
+        "rmse": 3.9382,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "stale": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.0835,
+        "bias": 0.1003,
+        "rmse": 3.8087,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      }
+    },
+    "median": {
+      "clean": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.1755,
+        "bias": 0.1403,
+        "rmse": 3.9816,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "noisy": {
+        "n": 30,
+        "availability": 1,
+        "mae": 12.562,
+        "bias": -0.3244,
+        "rmse": 15.9029,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "biased": {
+        "n": 30,
+        "availability": 1,
+        "mae": 5.1655,
+        "bias": 3.8609,
+        "rmse": 6.6908,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "dropout": {
+        "n": 30,
+        "availability": 0.97,
+        "mae": 3.6762,
+        "bias": -0.2003,
+        "rmse": 4.7863,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 1.2,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "delayed": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.0579,
+        "bias": -0.1017,
+        "rmse": 3.833,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "conflict": {
+        "n": 30,
+        "availability": 1,
+        "mae": 5.0293,
+        "bias": 3.7171,
+        "rmse": 6.4513,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 40,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "clock_skew": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.0693,
+        "bias": 0.1225,
+        "rmse": 3.8885,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 40,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "duplicate": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.2005,
+        "bias": -0.0036,
+        "rmse": 4.0652,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "stale": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.1549,
+        "bias": -0.0329,
+        "rmse": 3.9721,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      }
+    },
+    "reliability_weighted": {
+      "clean": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.6286,
+        "bias": 0.2115,
+        "rmse": 3.309,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "noisy": {
+        "n": 30,
+        "availability": 1,
+        "mae": 11.151,
+        "bias": -0.6109,
+        "rmse": 14.021,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "biased": {
+        "n": 30,
+        "availability": 1,
+        "mae": 13.3361,
+        "bias": 13.3361,
+        "rmse": 13.7489,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "dropout": {
+        "n": 30,
+        "availability": 0.97,
+        "mae": 3.4204,
+        "bias": -0.1113,
+        "rmse": 4.4515,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 1.2,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "delayed": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.6163,
+        "bias": -0.0415,
+        "rmse": 3.2923,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "conflict": {
+        "n": 30,
+        "availability": 1,
+        "mae": 66.6526,
+        "bias": 66.6526,
+        "rmse": 66.744,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 40,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "clock_skew": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.6506,
+        "bias": 0.25,
+        "rmse": 3.3076,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 40,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "duplicate": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.767,
+        "bias": -0.0244,
+        "rmse": 3.4564,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "stale": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.675,
+        "bias": 0.0993,
+        "rmse": 3.33,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      }
+    },
+    "pipeline": {
+      "clean": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.6286,
+        "bias": 0.2115,
+        "rmse": 3.309,
+        "mean_uncertainty": 4.5174,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "noisy": {
+        "n": 30,
+        "availability": 0.9592,
+        "mae": 11.0161,
+        "bias": -0.2656,
+        "rmse": 13.8029,
+        "mean_uncertainty": 17.4727,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 1.633,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "biased": {
+        "n": 30,
+        "availability": 0.9992,
+        "mae": 13.3338,
+        "bias": 13.3338,
+        "rmse": 13.7468,
+        "mean_uncertainty": 18.6268,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0.033,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "dropout": {
+        "n": 30,
+        "availability": 0.7892,
+        "mae": 3.0305,
+        "bias": -0.0469,
+        "rmse": 3.8108,
+        "mean_uncertainty": 3.9163,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 8.433,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "delayed": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.6163,
+        "bias": -0.0415,
+        "rmse": 3.2923,
+        "mean_uncertainty": 4.4068,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "conflict": {
+        "n": 30,
+        "availability": 0,
+        "mae": null,
+        "bias": null,
+        "rmse": null,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "clock_skew": {
+        "n": 30,
+        "availability": 0,
+        "mae": null,
+        "bias": null,
+        "rmse": null,
+        "mean_uncertainty": null,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 3600,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "duplicate": {
+        "n": 30,
+        "availability": 1,
+        "mae": 2.7572,
+        "bias": 0.0093,
+        "rmse": 3.4325,
+        "mean_uncertainty": 4.5243,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 0,
+          "duplicate": 3600,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      },
+      "stale": {
+        "n": 30,
+        "availability": 1,
+        "mae": 3.3835,
+        "bias": 0.1043,
+        "rmse": 4.1866,
+        "mean_uncertainty": 3.5217,
+        "mean_unsafe_fusions": 0,
+        "mean_false_failcloses": 0,
+        "rejections": {
+          "stale": 1200,
+          "duplicate": 0,
+          "clock_skew_exceeds_limit": 0,
+          "low_reliability": 0,
+          "future_timestamp": 0,
+          "invalid_value": 0,
+          "invalid_timestamp": 0,
+          "region_mismatch": 0
+        }
+      }
+    }
+  },
+  "overall": {
+    "best_single": {
+      "availability": 0.9967,
+      "mae": 12.9875,
+      "bias": 8.9764,
+      "rmse": 14.0104,
+      "unsafe_fusions": 2400,
+      "unsafe_fuse_rate_on_strict": 1,
+      "false_failcloses": 36,
+      "false_failclose_rate_on_benign": 0.005,
+      "decision_accuracy": 0.7744
+    },
+    "mean": {
+      "availability": 0.9967,
+      "mae": 12.4045,
+      "bias": 8.8293,
+      "rmse": 13.3825,
+      "unsafe_fusions": 2400,
+      "unsafe_fuse_rate_on_strict": 1,
+      "false_failcloses": 36,
+      "false_failclose_rate_on_benign": 0.005,
+      "decision_accuracy": 0.7744
+    },
+    "median": {
+      "availability": 0.9967,
+      "mae": 4.6768,
+      "bias": 0.7975,
+      "rmse": 5.9524,
+      "unsafe_fusions": 2400,
+      "unsafe_fuse_rate_on_strict": 1,
+      "false_failcloses": 36,
+      "false_failclose_rate_on_benign": 0.005,
+      "decision_accuracy": 0.7744
+    },
+    "reliability_weighted": {
+      "availability": 0.9967,
+      "mae": 11.9886,
+      "bias": 8.8624,
+      "rmse": 12.8512,
+      "unsafe_fusions": 2400,
+      "unsafe_fuse_rate_on_strict": 1,
+      "false_failcloses": 36,
+      "false_failclose_rate_on_benign": 0.005,
+      "decision_accuracy": 0.7744
+    },
+    "pipeline": {
+      "availability": 0.7497,
+      "mae": 5.538,
+      "bias": 1.9007,
+      "rmse": 6.5116,
+      "unsafe_fusions": 0,
+      "unsafe_fuse_rate_on_strict": 0,
+      "false_failcloses": 303,
+      "false_failclose_rate_on_benign": 0.0421,
+      "decision_accuracy": 0.9719
+    }
+  },
+  "pipeline_diagnostics": {
+    "conflict_failclosed_rate": 1,
+    "clock_skew_failclosed_rate": 1,
+    "stale_rejections_total": 1200,
+    "duplicate_rejections_total": 3600,
+    "low_reliability_rejections_total": {
+      "stale": 1200,
+      "duplicate": 3600,
+      "clock_skew_exceeds_limit": 3600,
+      "low_reliability": 0,
+      "future_timestamp": 0,
+      "invalid_value": 0,
+      "invalid_timestamp": 0,
+      "region_mismatch": 0
+    },
+    "benign_failclose_rate": 0.0421,
+    "biased_condition_mae_by_method": {
+      "best_single": 15.4382,
+      "mean": 13.3287,
+      "median": 5.1655,
+      "reliability_weighted": 13.3361,
+      "pipeline": 13.3338
+    }
+  }
+}

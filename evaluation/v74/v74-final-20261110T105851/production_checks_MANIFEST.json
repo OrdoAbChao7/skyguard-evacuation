@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "run_id": "v74-final-20261110T105851",
+  "note": "V7.4 生产工程检查。",
+  "file_count": 2,
+  "files": [
+    {
+      "path": "production_checks.json",
+      "bytes": 1388,
+      "sha256": "120ee4c31d2b9ecf3ed1f06997e2abe6d4e4216dfc4bace9680f0f03dfc67f45"
+    },
+    {
+      "path": "production_checks_README.md",
+      "bytes": 854,
+      "sha256": "d70570fe3e61da7c2cd988a9e811a8978abe331c3e2b0c903a3159b83970f0c7"
+    }
+  ]
+}

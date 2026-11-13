@@ -42,6 +42,10 @@ npm run demo
 npm run demo:mvp
 npm run benchmark:competition
 npm run benchmark:v70
+npm run benchmark:v71
+npm run benchmark:v72
+npm run benchmark:v73
+npm run benchmark:v74
 ```
 
 ## 角色分工（建议）

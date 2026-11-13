@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "source_version": "v7.2.0-research.1",
+  "source_freeze_sha256": "3b0e9635adfe66f2ccb6966963fe3cad4188d768c19eb956bdc592e4b38a5176",
+  "created_at": "2026-11-10T01:46:09.230Z",
+  "source_git_head": "345f4d1660573c44de12ad26fa19136a6a5e9122",
+  "file_count": 299,
+  "total_bytes": 11818437,
+  "note": "V7.2 frozen baseline snapshot. Verify with backend/scripts/v72-version-freeze.ts --verify."
+}

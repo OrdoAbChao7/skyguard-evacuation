@@ -40,3 +40,71 @@
 | 联合 VoI（相关性 + 冗余） | `joint-voi.ts`、`joint-voi.test.ts`、`GET /api/v1/mvp/v70/joint-investigation` | 30×40 公平实验：总收益略低（−0.0026），最坏区域风险略低（−0.0007）；Oracle 覆盖 1.0 | 合成相关性；启发式近似；不得宣称全面更优 |
 | 可信预览边界 | `v70/research.ts`、`v70-api.test.ts` | 观测不可信 fail closed；只读不改变版本；带预测步骤不声明已验证 | 预览不发布方案 |
 | 求解器稳健性 | `minCostMaxFlowDijkstra`、既有安全测试 201/201 | 避免零费用残量环回溯死循环；安全主链路 SPFA 未改 | 新方法仅用于研究求解器 |
+
+## V7.1 增补（机理、预测区间、Shadow）
+
+证据：`evaluation/v71/v71-final-20261109T211702/`；复现：`npm run benchmark:v71`。
+
+| 创新点 | 可运行证据 | 实验证据 | 边界 |
+| --- | --- | --- | --- |
+| 滚动重规划机理归因 | `mpc-planner.ts`、`v71-replanning-benchmark.ts` | 30×5×9：B vs A 未疏散 −682.8、完成时间 −5.11；V7 完成时间 8.81 vs legacy 13.88；切换 4390 vs 754 | 合成；未标定参数；切换成本未优化 |
+| 预测/队列反馈消融 | E/F/G vs D | 完成时间差 ±0.03，CI 跨零；无显著增量 | 即时响应假设；不能外推为预测无用 |
+| 事件触发边界 | C vs B；I vs G | legacy 重规划 −2.57、求解 −0.28ms；V7 完成时间 10.29 vs 8.81 | 阈值未标定；不得默认开启 |
+| 自适应 conformal + 变点 | `conformal.ts`、`conformal.test.ts`、`v71-prediction-benchmark.ts` | surge 0.748→0.846；regime_shift 后段 0.809→0.907；periodic 0.982→0.833；整体覆盖差 0 | 合成；非正式置信区间；门控失败率上升 |
+| Shadow Mode 工程准备 | `v7-adapter.ts`、`decision-service`、`shadow-mode.test.ts`、`GET /safety/v70/shadow` | 默认关闭；双方案独立校验；超时/异常回退；V7 不发布 | 超时非抢占；内存记录；未启用 |
+| 出口/通道/双向压力 | `v71-hardening.test.ts`、A-G 场景 | 出口故障/通道封控/双向压力下规划与校验一致 | 合成容量 |
+| 公开数据许可核验 | `docs/DATASET_CANDIDATES_V71.md` | MOT20/SDD/NWPU 已核验；UCF/ShanghaiTech 部分；JHU/ETH/UCY/CityStreet 未核验 | 无公开疏散决策标签 |
+
+## V7.2 增补（稳定性、标定、可信集成）
+
+证据：`evaluation/v72/v72-final-20261110T014910/`；复现：`npm run benchmark:v72`。
+
+| 创新点 | 可运行证据 | 实验证据 | 边界 |
+| --- | --- | --- | --- |
+| 路线稳定性 A-F（迟滞/切换惩罚/承诺/自适应） | `route-stability.ts`、`v72-stability-benchmark.ts`、`v72-stability.test.ts` | 切换 5261.8→4268.3（迟滞）→3334.3（惩罚/承诺）；完成 +0.05/+0.45–0.51；队列 +1.3k–2.7k；密度 +0.07–0.08 | 合成；参数未标定；非免费 |
+| 承诺式逐区域求解 + 紧急覆盖 | `stable-solver.ts`、`mpc-planner.ts`、`v72-redteam.test.ts` | 高需求冲突显式报告；运行中出口故障后 0 条路线使用故障出口；legacy 1.13 条 | 贪心多商品近似；冲突时拒绝 |
+| 双向通道共享容量修正 | `strategies.ts` 迭代共享；`v72-redteam` 8 轮随机需求 | 逐分钟容量复核通过；消除 220>180 超限 | 迭代启发式，非全局最优 |
+| 场馆标定流水线 | `venue-calibration.ts`、`v72-calibration.test.ts`、`stadium-synthetic-profile.json` | 合成档案 0 错误；合成冒充实测被拒绝；观测适配器拒绝离线/过期/未来时间戳 | 仅合成档案；未真实标定 |
+| Shadow 回放压力 | `v72-shadow-stress.ts`、`ShadowSolver` 注入、`integrity` | 240 次：确定性 0 不一致；篡改 40/40 标记；异常/失败/预算回退 | 适配器层；未启用 |
+| ONNX 部署链路准备 | `backend/python/ascend/*`、`export_forecast_onnx.py`、`benchmark_onnx.py` | CPU p50≈0.015ms、max_abs_diff=0；ATC 模板 | CPUExecutionProvider；无 NPU |
+
+## V7.3 增补（自适应稳定性、导入、运营验证）
+
+证据：`evaluation/v73/v73-final-20261110T101711/`；复现：`npm run benchmark:v73`。
+
+| 创新点 | 可运行证据 | 实验证据 | 边界 |
+| --- | --- | --- | --- |
+| 自适应惩罚/振荡/风险加权/多目标 | `v73-stability.ts`、`v73-stability-benchmark.ts`、6 测试 | 切换 3820.8→1369.0；振荡 571.9→93.4；未疏散 16.47→0；代价 +0.96/+3968/+0.296 | 合成；参数未标定；密度上升 |
+| 动态容量（规划+执行+复核） | `mpc-planner.ts`、`congestion.ts`、`strategies.ts` | 动态容量下容量冲突 0；切换收益缩小 | 因子人为设定 |
+| 场馆/观测导入 | `importers.ts`、`v73-venue-import.ts`、8 测试 | JSON/CSV/视频/public/authorized；方向性容量/约束 | 无真实数据；fixtures |
+| Shadow 运营验证 | `v73-shadow-ops.ts`、`v73-shadow-ops.test.ts` | 80 次：确定性 0；stale 10/10；冲突 10/10 | 适配器层；未启用 |
+| AgentArts 幂等 | `agentarts.ts`、`v73-agentarts.test.ts` | 重试同键；不同 trace 不同键；故障恢复 | 本地 stub；无平台 |
+| ONNX/OM 证据 | `v73-ascend-pipeline.ts`、`om-metadata.ts`、Python 校验 | checker valid；CPU p50≈0.011ms；OM 未执行 | 无 NPU |
+
+## V7.4 增补（执行感知门控、检测对照、标定质量、生产检查）
+
+证据：`evaluation/v74/v74-final-20261110T105851/`；复现：`npm run benchmark:v74`。
+
+| 创新点 | 可运行证据 | 实验证据 | 边界 |
+| --- | --- | --- | --- |
+| 执行感知承诺门控 + Pareto 份额 | `mpc-planner.ts`（executionGate/paretoStability）、`v74-stability-benchmark.ts`、`v74-redteam.test.ts` | 切换 3820.8→1837.7（−52%）；完成 +0.575min；队列 +862；门控拒绝 3.90/场景 | 合成；只作用于承诺路径；1min/2000 未标定 |
+| 零代价稳定性证伪 | 0/0 门控回退逻辑、`v74-redteam` 门控不增加切换 | 拒绝全部候选；无配置同时降切换且不增完成 | 仅本执行模型，不外推 |
+| 风险触发承诺释放 | `v73-stability.ts`（releaseOnRiskThreshold）、`mpc-planner.ts` | 2.62 次释放/场景；切换 −322.8；未疏散 2.87 | 少量未疏散；阈值未标定 |
+| 风险敏感惩罚负结果 | `riskDiscount`、D 策略 | 与 V7.3 240/240 逐样本相同 | 机制未触发；NOT_SUPPORTED |
+| 区域选择性承诺（未评测） | `regionSelectiveRiskThreshold`、单测 | 代码+测试存在，A-F 矩阵无对应策略 | PARTIALLY VERIFIED |
+| Surge/regime 检测对照 | `v74-surge-detection.ts`、`surge_summary.json` | CUSUM 100%/100% vs 3σ 76.7%/73.3%；中位延迟 5/7；稳定段误报约 33% | 合成；noisy 均 0 |
+| 标定质量门控 | `calibration/quality.ts`、5 测试 | 90s 偏移拒绝；110s 缺失；可靠性 0.3447/0.14；动态计划校验 | 夹具；可靠性非准确率 |
+| 生产检查 + 浏览器 E2E | `v74-production-checks.ts`、`frontend/e2e/smoke.mjs` | API 3/3；p95 7.32ms；E2E 通过、0 error | Docker BLOCKED；单机负载；冒烟 |
+
+## V7.5 增补（风险自适应检测、状态机、多目标、融合）
+
+证据：`evaluation/v75/v75-final-20261110/`；复现：`npm run benchmark:v75`。
+
+| 创新点 | 可运行证据 | 实验证据 | 边界 |
+| --- | --- | --- | --- |
+| 低误报双阈值检测 | `detection/surge.ts`、`v75-detection.test.ts`、`v75-detection-benchmark.ts` | 30×7×7：recall 1.0 / precision 1.0 / FPR 0；延迟 1–2 步；消融定位持续性 vs 多传感器 | 合成序列；不是真实预警精度 |
+| 显式紧急状态机 | `emergency/emergency-state.ts`、`v75-emergency.test.ts`、`v75-redteam.test.ts` | 覆盖→恢复→NORMAL；承诺失效；未校验恢复被阻断；29/240 次 0 控制步响应 | 仿真控制步；不替代四态/审批 |
+| 区域选择性/风险释放/恢复 | `mpc-planner.ts`、`v73-stability.ts`、`v75-commitment-benchmark.ts` | 全局/自适应承诺切换 1561/1369 vs 标准 3821；区域选择性 1624（负结果）；恢复 2214、零未疏散 | 参数未标定；负结果保留 |
+| 多目标 Pareto 与约束选择 | `planning/multi-objective.ts`、`v75-multiobjective-benchmark.ts` | 238/240 权衡；约束选择退回无承诺 139/240；膝点 1206–3705 切换 | 离线分析上界 |
+| 多传感器融合 fail-closed | `fusion/fusion.ts`、`v75-fusion.test.ts`、`v75-fusion-benchmark.ts` | 冲突/偏移 unsafe fuse 0；决策准确率 0.972 vs 0.774；可用率 0.750；偏置不消除 | 合成读数；需降级链路 |
+| V7.5 证据与红队 | `v75-experiments.ts`、`verify-evidence.ts`、`v75-redteam.test.ts` | 根清单 33 文件哈希 0 不一致；verify 178/178；E2E 通过 | Docker/AgentArts/NPU 仍阻塞 |

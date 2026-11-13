@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "run_id": "v72-final-20261110T014910",
+  "note": "V7.2 Shadow 回放压力证据清单（合成）。",
+  "file_count": 6,
+  "files": [
+    {
+      "path": "shadow_stress_MANIFEST.json",
+      "bytes": 1130,
+      "sha256": "689959fb212ca50e132d7aac423109f5702a31166211dd67632aeb457e6f805d"
+    },
+    {
+      "path": "shadow_stress_README.md",
+      "bytes": 2177,
+      "sha256": "6213adaf7e6bae975fb167a4eee4be4c419677e9a661c0fbcca6bfb4cfafd4d8"
+    },
+    {
+      "path": "shadow_stress_comparisons.json",
+      "bytes": 712115,
+      "sha256": "4b4762e34799a7f02160d77fce74546c3bffa9f202d5a750ffd2de745314e08f"
+    },
+    {
+      "path": "shadow_stress_metadata.json",
+      "bytes": 224,
+      "sha256": "4cab83e97106d473bd74c3690866a57026149739eae4e454d4788d41174e5218"
+    },
+    {
+      "path": "shadow_stress_rows.json",
+      "bytes": 123234,
+      "sha256": "18b47ad58753ec0c189fcc680e4e5f638a8d34cac3d6b60da470f59bb7f8bacb"
+    },
+    {
+      "path": "shadow_stress_summary.json",
+      "bytes": 4789,
+      "sha256": "96063df22674cbd6f8372f4f28cc462a47dba2151fdfa6873b94f695e3075756"
+    }
+  ]
+}

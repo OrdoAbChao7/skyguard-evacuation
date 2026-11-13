@@ -1,0 +1,211 @@
+/* ==========================================================================
+   SkyGuard · CityStreet 感知回放
+   ========================================================================== */
+
+.cc-root .perception-panel {
+  margin-top: 0;
+  padding: 22px;
+  border-radius: 16px;
+  gap: 16px;
+}
+
+.cc-root .perception-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--line);
+}
+.cc-root .perception-head h4 {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--text);
+}
+.cc-root .perception-head h4::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 9px -1px var(--accent);
+  align-self: center;
+}
+.cc-root .perception-head h4 span { font-weight: 400; font-size: 10.5px; color: var(--faint); }
+
+.cc-root .perception-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.cc-root .perception-badge {
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--panel-2) 56%, transparent);
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .05em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.cc-root .perception-badge-demo { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 36%, transparent); background: var(--warn-soft); }
+.cc-root .perception-badge-warn { color: var(--degraded); border-color: color-mix(in srgb, var(--degraded) 38%, transparent); background: var(--degraded-soft); }
+.cc-root .perception-badge-ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 36%, transparent); background: var(--ok-soft); }
+
+.cc-root .perception-body {
+  display: grid;
+  grid-template-columns: minmax(280px, 600px) minmax(300px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.cc-root .perception-canvas {
+  position: relative;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: #08111c;
+  overflow: hidden;
+  box-shadow: inset 0 0 80px -46px rgba(52, 224, 200, .4);
+}
+.cc-root .perception-canvas::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(110% 80% at 50% 0%, transparent 55%, rgba(2, 6, 12, .35));
+}
+
+.cc-root .perception-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
+
+.cc-root .perception-nobase { fill: #08111c; }
+.cc-root .perception-nobase-grid { stroke: rgba(122, 162, 255, .1); stroke-width: 1; }
+.cc-root .perception-nobase-label { fill: #c3d2e4; font-size: 15px; }
+.cc-root .perception-nobase-hint { fill: #6f83a0; font-size: 11px; }
+
+.cc-root .perception-zone {
+  fill: transparent;
+  stroke: rgba(52, 224, 200, .42);
+  stroke-width: 1.4;
+  stroke-dasharray: 6 4;
+  cursor: pointer;
+  transition: stroke .16s ease, fill .16s ease;
+}
+.cc-root .perception-zone:hover { stroke: rgba(52, 224, 200, .9); }
+.cc-root .perception-zone.selected {
+  fill: rgba(52, 224, 200, .1);
+  stroke: var(--accent);
+  stroke-dasharray: none;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 8px rgba(52, 224, 200, .45));
+}
+.cc-root .perception-zone-label {
+  fill: #e3ecf7;
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(4, 10, 18, .9);
+  stroke-width: 3;
+}
+
+.cc-root .perception-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+.cc-root .perception-frameinfo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.cc-root .perception-frameinfo > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg) 38%, transparent);
+}
+.cc-root .perception-frameinfo span { font-size: 9px; letter-spacing: .1em; color: var(--faint); text-transform: uppercase; }
+.cc-root .perception-frameinfo strong {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 650;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.cc-root .perception-framectl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg) 38%, transparent);
+}
+.cc-root .perception-framectl button {
+  flex: none;
+  padding: 5px 14px;
+  font-size: 11px;
+  color: var(--accent-text);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.cc-root .perception-framectl button:hover { filter: brightness(1.08); }
+.cc-root .perception-framectl input[type='range'] { flex: 1; min-width: 0; accent-color: var(--accent); }
+
+.cc-root .perception-zonecard {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg) 38%, transparent);
+  padding: 12px 14px;
+}
+.cc-root .perception-zonecard h5 { margin: 0 0 7px; font-size: 11.5px; font-weight: 600; color: var(--text); }
+.cc-root .perception-zonecard h5 .cc-muted { font-weight: 400; color: var(--faint); }
+.cc-root .perception-zonecard ul { margin: 0; padding-left: 16px; font-size: 10.5px; line-height: 1.7; color: var(--muted); }
+
+.cc-root .perception-zonetable { display: block; max-height: 230px; overflow: auto; }
+.cc-root .perception-zonetable caption { padding-bottom: 5px; text-align: left; color: var(--faint); }
+.cc-root .perception-zonetable tbody tr { cursor: pointer; }
+.cc-root .perception-zonetable tbody tr.selected td { background: var(--accent-soft); color: var(--text); }
+.cc-root .perception-zonetable td:last-child,
+.cc-root .perception-zonetable th:last-child { font-variant-numeric: tabular-nums; }
+
+.cc-root .perception-foot {
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+  font-size: 10px;
+  color: var(--faint);
+  line-height: 1.65;
+}
+.cc-root .perception-foot p { margin: 0 0 5px; }
+.cc-root .perception-foot code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--panel-2) 70%, transparent);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+}
+.cc-root .perception-foot details summary { color: var(--muted); }
+.cc-root .perception-foot details summary:hover { color: var(--text); }
+.cc-root .perception-foot details ul { margin: 7px 0; padding-left: 16px; line-height: 1.7; }
+
+@media (max-width: 1100px) {
+  .cc-root .perception-body { grid-template-columns: 1fr; }
+  .cc-root .perception-canvas { max-width: 660px; }
+  .cc-root .perception-zonetable { max-height: none; }
+}
+@media (max-width: 720px) {
+  .cc-root .perception-panel { padding: 15px; }
+  .cc-root .perception-frameinfo strong { font-size: 17px; }
+}

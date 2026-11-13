@@ -1,0 +1,56 @@
+{
+  "generated_at": "2026-11-10T08:31:07.408Z",
+  "run_id": "v75-final-20261110",
+  "boundary": "local_stub 只验证适配器契约；真实平台未配置时不得声称已接入。",
+  "platform": {
+    "status": "not_configured",
+    "contract": "official",
+    "missing": [
+      "AGENTARTS_BASE_URL",
+      "AGENTARTS_API_KEY",
+      "AGENTARTS_RUNTIME_NAME（或 AGENTARTS_AGENT_ID）"
+    ],
+    "note": "无真实 AgentArts 租户/凭证；未发起平台请求。"
+  },
+  "local_stub": {
+    "label": "local_stub（不是 AgentArts 实机）",
+    "health": {
+      "mode": "AGENTARTS_CONNECTED",
+      "connectivity": "reachable",
+      "http_status": 200
+    },
+    "decision": {
+      "tool": "camera_query",
+      "reasoning": "stub decision"
+    },
+    "captures": [
+      {
+        "session": "session-v75",
+        "idempotency": "aac4f531a53c34839758390b168b9982be83d4497acacf64381ab02ed1205c0b",
+        "traceId": "trace-v75-1"
+      },
+      {
+        "session": "session-v75",
+        "idempotency": "aac4f531a53c34839758390b168b9982be83d4497acacf64381ab02ed1205c0b",
+        "traceId": "trace-v75-1"
+      }
+    ],
+    "retry_reused_idempotency_key": true,
+    "session_header_present": true,
+    "trace_id_distinct": true
+  },
+  "adapter_capabilities": {
+    "official_contract": true,
+    "sse_stream": true,
+    "session_header": true,
+    "idempotency_key": true,
+    "bounded_retry": true,
+    "tool_permission_gate": "MvpService 本地注册表（既有测试）",
+    "human_approval": "既有 AgentArts 运行时测试",
+    "feedback_resumption": "既有 AGENTARTS_AUTO_CONTINUE 测试"
+  },
+  "runtime_tools": {
+    "node": "v24.19.0",
+    "jwk_present": true
+  }
+}

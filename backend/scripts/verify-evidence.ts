@@ -180,6 +180,188 @@ const sourceAudit = read62<any>('source_verification.json');
 check('sources/total', 38, sourceAudit.total, sourceAudit.total === 38);
 check('sources/reachable', 28, sourceAudit.reachable, sourceAudit.reachable === 28);
 
+// ---------------- V7.2 证据根清单 ----------------
+const V72 = path.join(ROOT, 'evaluation/v72');
+const latest72Path = path.join(V72, 'LATEST.txt');
+if (fs.existsSync(latest72Path)) {
+  const runId = fs.readFileSync(latest72Path, 'utf8').trim();
+  const runDir = path.join(V72, runId);
+  const runExists = Boolean(runId) && fs.existsSync(runDir);
+  check('V72/latest/run_exists', true, runExists, runExists);
+  if (runExists) {
+    const manifestPath = path.join(runDir, 'MANIFEST.json');
+    const manifestExists = fs.existsSync(manifestPath);
+    check('V72/manifest/exists', true, manifestExists, manifestExists);
+    if (manifestExists) {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as {
+        file_count: number;
+        files: Array<{ path: string; bytes: number; sha256: string }>;
+      };
+      check('V72/manifest/file_count', manifest.file_count, manifest.files.length, manifest.file_count === manifest.files.length);
+      let hashFailures = 0;
+      for (const file of manifest.files) {
+        const full = path.join(runDir, file.path);
+        if (!fs.existsSync(full)) {
+          hashFailures += 1;
+          continue;
+        }
+        const bytes = fs.readFileSync(full);
+        const digest = crypto.createHash('sha256').update(bytes).digest('hex');
+        if (bytes.length !== file.bytes || digest !== file.sha256) hashFailures += 1;
+      }
+      check('V72/manifest/hashes', 0, hashFailures, hashFailures === 0);
+      for (const prefix of ['stability_', 'calibration_', 'shadow_stress_', 'huawei_']) {
+        const present = manifest.files.some(file => file.path.startsWith(prefix));
+        check(`V72/manifest/contains/${prefix}`, true, present, present);
+      }
+      const summaryExists = fs.existsSync(path.join(runDir, 'V72_SUMMARY.md'));
+      check('V72/summary_exists', true, summaryExists, summaryExists);
+    }
+  }
+}
+
+// ---------------- V7.2 版本冻结 ----------------
+const freeze72Path = path.join(V72, 'freeze_v72.json');
+if (fs.existsSync(freeze72Path)) {
+  const freeze72 = JSON.parse(fs.readFileSync(freeze72Path, 'utf8')) as {
+    project_version: string;
+    file_count: number;
+    files: Array<{ path: string; bytes: number; sha256: string }>;
+  };
+  // V7.3 起源码继续演进；V7.2 冻结基线固定由 baseline_snapshot 验证。
+  const freeze72Root = fs.existsSync(path.join(ROOT, 'evaluation/v72/baseline_snapshot/VERSION'))
+    ? path.join(ROOT, 'evaluation/v72/baseline_snapshot')
+    : ROOT;
+  const projectVersion = fs.readFileSync(path.join(freeze72Root, 'VERSION'), 'utf8').trim();
+  check('V72/freeze/version', freeze72.project_version, projectVersion, freeze72.project_version === projectVersion);
+  check('V72/freeze/file_count', freeze72.files.length, freeze72.file_count, freeze72.files.length === freeze72.file_count);
+  let freezeMismatches = 0;
+  for (const file of freeze72.files) {
+    const full = path.join(freeze72Root, file.path);
+    if (!fs.existsSync(full)) {
+      freezeMismatches += 1;
+      continue;
+    }
+    const bytes = fs.readFileSync(full);
+    if (bytes.length !== file.bytes || !normalizedHashes(bytes).includes(file.sha256)) freezeMismatches += 1;
+  }
+  check('V72/freeze/hashes', 0, freezeMismatches, freezeMismatches === 0);
+}
+
+// ---------------- V7.3 证据根清单 ----------------
+const V73 = path.join(ROOT, 'evaluation/v73');
+const latest73Path = path.join(V73, 'LATEST.txt');
+if (fs.existsSync(latest73Path)) {
+  const runId = fs.readFileSync(latest73Path, 'utf8').trim();
+  const runDir = path.join(V73, runId);
+  const runExists = Boolean(runId) && fs.existsSync(runDir);
+  check('V73/latest/run_exists', true, runExists, runExists);
+  if (runExists) {
+    const manifestPath = path.join(runDir, 'MANIFEST.json');
+    const manifestExists = fs.existsSync(manifestPath);
+    check('V73/manifest/exists', true, manifestExists, manifestExists);
+    if (manifestExists) {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as {
+        file_count: number;
+        files: Array<{ path: string; bytes: number; sha256: string }>;
+      };
+      check('V73/manifest/file_count', manifest.file_count, manifest.files.length, manifest.file_count === manifest.files.length);
+      let hashFailures = 0;
+      for (const file of manifest.files) {
+        const full = path.join(runDir, file.path);
+        if (!fs.existsSync(full)) {
+          hashFailures += 1;
+          continue;
+        }
+        const bytes = fs.readFileSync(full);
+        if (bytes.length !== file.bytes || normalizedHashes(bytes).includes(file.sha256) === false) hashFailures += 1;
+      }
+      check('V73/manifest/hashes', 0, hashFailures, hashFailures === 0);
+      for (const prefix of ['stability_', 'calibration_import', 'shadow_ops_', 'agentarts_status', 'ascend/']) {
+        const present = manifest.files.some(file => file.path.startsWith(prefix));
+        check(`V73/manifest/contains/${prefix}`, true, present, present);
+      }
+      check('V73/summary_exists', true, fs.existsSync(path.join(runDir, 'V73_SUMMARY.md')), fs.existsSync(path.join(runDir, 'V73_SUMMARY.md')));
+    }
+  }
+}
+
+// ---------------- V7.4 证据根清单 ----------------
+const V74 = path.join(ROOT, 'evaluation/v74');
+const latest74Path = path.join(V74, 'LATEST.txt');
+if (fs.existsSync(latest74Path)) {
+  const runId = fs.readFileSync(latest74Path, 'utf8').trim();
+  const runDir = path.join(V74, runId);
+  const runExists = Boolean(runId) && fs.existsSync(runDir);
+  check('V74/latest/run_exists', true, runExists, runExists);
+  if (runExists) {
+    const manifestPath = path.join(runDir, 'MANIFEST.json');
+    const manifestExists = fs.existsSync(manifestPath);
+    check('V74/manifest/exists', true, manifestExists, manifestExists);
+    if (manifestExists) {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as {
+        file_count: number;
+        files: Array<{ path: string; bytes: number; sha256: string }>;
+      };
+      check('V74/manifest/file_count', manifest.file_count, manifest.files.length, manifest.file_count === manifest.files.length);
+      let hashFailures = 0;
+      for (const file of manifest.files) {
+        const full = path.join(runDir, file.path);
+        if (!fs.existsSync(full)) {
+          hashFailures += 1;
+          continue;
+        }
+        const bytes = fs.readFileSync(full);
+        if (bytes.length !== file.bytes || normalizedHashes(bytes).includes(file.sha256) === false) hashFailures += 1;
+      }
+      check('V74/manifest/hashes', 0, hashFailures, hashFailures === 0);
+      for (const prefix of ['stability_', 'surge_', 'calibration_quality', 'agentarts_status', 'ascend/']) {
+        const present = manifest.files.some(file => file.path.startsWith(prefix));
+        check(`V74/manifest/contains/${prefix}`, true, present, present);
+      }
+      check('V74/summary_exists', true, fs.existsSync(path.join(runDir, 'V74_SUMMARY.md')), fs.existsSync(path.join(runDir, 'V74_SUMMARY.md')));
+    }
+  }
+}
+
+// ---------------- V7.5 证据根清单 ----------------
+const V75 = path.join(ROOT, 'evaluation/v75');
+const latest75Path = path.join(V75, 'LATEST.txt');
+if (fs.existsSync(latest75Path)) {
+  const runId = fs.readFileSync(latest75Path, 'utf8').trim();
+  const runDir = path.join(V75, runId);
+  const runExists = Boolean(runId) && fs.existsSync(runDir);
+  check('V75/latest/run_exists', true, runExists, runExists);
+  if (runExists) {
+    const manifestPath = path.join(runDir, 'MANIFEST.json');
+    const manifestExists = fs.existsSync(manifestPath);
+    check('V75/manifest/exists', true, manifestExists, manifestExists);
+    if (manifestExists) {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as {
+        file_count: number;
+        files: Array<{ path: string; bytes: number; sha256: string }>;
+      };
+      check('V75/manifest/file_count', manifest.file_count, manifest.files.length, manifest.file_count === manifest.files.length);
+      let hashFailures = 0;
+      for (const file of manifest.files) {
+        const full = path.join(runDir, file.path);
+        if (!fs.existsSync(full)) {
+          hashFailures += 1;
+          continue;
+        }
+        const bytes = fs.readFileSync(full);
+        if (bytes.length !== file.bytes || normalizedHashes(bytes).includes(file.sha256) === false) hashFailures += 1;
+      }
+      check('V75/manifest/hashes', 0, hashFailures, hashFailures === 0);
+      for (const prefix of ['detection_', 'stability_', 'multiobjective_', 'fusion_', 'agentarts_status', 'ascend/', 'browser_e2e']) {
+        const present = manifest.files.some(file => file.path.startsWith(prefix));
+        check(`V75/manifest/contains/${prefix}`, true, present, present);
+      }
+      check('V75/summary_exists', true, fs.existsSync(path.join(runDir, 'V75_SUMMARY.md')), fs.existsSync(path.join(runDir, 'V75_SUMMARY.md')));
+    }
+  }
+}
+
 const failed = checks.filter(item => !item.pass);
 const output = {
   generated_at: new Date().toISOString(),

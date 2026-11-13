@@ -48,6 +48,17 @@ export interface TimeExpandedSolveInput {
   allowedExitsByRegion?: Map<string, Set<string>>;
   /** 预测到达：区域 -> 相对本步起点的分钟偏移与人数。 */
   predictedArrivals?: Map<string, Array<{ offsetMinute: number; persons: number }>>;
+  /**
+   * 逐分钟容量覆盖（相对 baseMinute 的分钟索引）：用于承诺式逐区域求解时
+   * 预留已被前序区域占用的容量。存在时优先于名义容量 × 因子。
+   */
+  corridorCapacityByMinute?: Map<string, Map<number, number>>;
+  exitCapacityByMinute?: Map<string, Map<number, number>>;
+  /**
+   * 已被其它子问题占用的通道容量（方向键为 `${corridorId}|${from}->${to}`）。
+   * 核心求解按 `名义容量 × 因子 − 已用` 建弧；双向共享迭代会把已用量计入物理总量。
+   */
+  corridorUsedByMinute?: Map<string, Map<number, number>>;
   /** 算法标签。 */
   algorithm?: string;
   model?: string;
@@ -71,7 +82,7 @@ function routeSignature(path: DecomposedPath): string {
   ].join('|');
 }
 
-export function solveTimeExpandedPlan(input: TimeExpandedSolveInput): SolveOutput {
+function solveTimeExpandedPlanOnce(input: TimeExpandedSolveInput): SolveOutput {
   const started = Date.now();
   const { scenario, network, demandByRegion } = input;
   const horizon = Math.max(1, Math.floor(input.horizonMinutes));
@@ -135,17 +146,22 @@ export function solveTimeExpandedPlan(input: TimeExpandedSolveInput): SolveOutpu
     }
     const nominal = corridor.capacity_per_min ?? 0;
     const transit = traversalMinutes(corridor);
-    for (const direction of corridorDirections(corridor)) {
+    const directions = corridorDirections(corridor);
+    for (const direction of directions) {
       const from = regionById.get(direction.from);
       const to = regionById.get(direction.to);
       if (!from || !to) {
         exclusions.push({ kind: 'corridor', id: corridor.id, reason: '端点区域未启用或不存在' });
         continue;
       }
+      const directionKey = `${corridor.id}|${direction.from}->${direction.to}`;
       for (let t = 0; t + transit <= horizon; t += 1) {
         const absoluteMinute = baseMinute + t;
-        const factor = input.corridorCapacityFactor ? Math.max(0, input.corridorCapacityFactor(corridor.id, absoluteMinute)) : 1;
-        const capacity = Math.floor(nominal * factor);
+        const override = input.corridorCapacityByMinute?.get(directionKey);
+        const used = Math.max(0, input.corridorUsedByMinute?.get(directionKey)?.get(t) ?? 0);
+        const capacity = override
+          ? Math.max(0, Math.floor(override.get(t) ?? 0) - used)
+          : Math.max(0, Math.floor(nominal * (input.corridorCapacityFactor ? Math.max(0, input.corridorCapacityFactor(corridor.id, absoluteMinute)) : 1)) - used);
         if (capacity <= 0) continue;
         const meta: FlowEdgeMeta = {
           kind: 'corridor',
@@ -178,8 +194,10 @@ export function solveTimeExpandedPlan(input: TimeExpandedSolveInput): SolveOutpu
     const nominal = exit.capacity_per_min ?? 0;
     for (let t = 0; t < timeSteps; t += 1) {
       const absoluteMinute = baseMinute + t;
-      const factor = input.exitCapacityFactor ? Math.max(0, input.exitCapacityFactor(exit.id, absoluteMinute)) : 1;
-      const capacity = Math.floor(nominal * factor);
+      const override = input.exitCapacityByMinute?.get(exit.id);
+      const capacity = override
+        ? Math.max(0, Math.floor(override.get(t) ?? 0))
+        : Math.floor(nominal * (input.exitCapacityFactor ? Math.max(0, input.exitCapacityFactor(exit.id, absoluteMinute)) : 1));
       if (capacity <= 0) continue;
       const meta: FlowEdgeMeta = {
         kind: 'exit',
@@ -281,6 +299,124 @@ export function solveTimeExpandedPlan(input: TimeExpandedSolveInput): SolveOutpu
   };
   void solve;
   return { plan, exclusions, solveMs: Date.now() - started, uncoveredByRegion };
+}
+
+function cloneCapacityMap(source?: Map<string, Map<number, number>>): Map<string, Map<number, number>> {
+  const result = new Map<string, Map<number, number>>();
+  if (!source) return result;
+  for (const [key, byMinute] of source) result.set(key, new Map(byMinute));
+  return result;
+}
+
+function nominalDirectionCapacity(
+  input: TimeExpandedSolveInput,
+  corridorId: string,
+  directionKey: string,
+  minute: number,
+): number {
+  const override = input.corridorCapacityByMinute?.get(directionKey);
+  if (override) return Math.max(0, Math.floor(override.get(minute) ?? 0));
+  const corridor = input.scenario.corridors.find(item => item.id === corridorId);
+  const factor = input.corridorCapacityFactor
+    ? Math.max(0, input.corridorCapacityFactor(corridorId, (input.baseMinute ?? 0) + minute))
+    : 1;
+  return Math.floor((corridor?.capacity_per_min ?? 0) * factor);
+}
+
+function usedCapacityAt(
+  input: TimeExpandedSolveInput,
+  directionKey: string,
+  minute: number,
+): number {
+  return Math.max(0, input.corridorUsedByMinute?.get(directionKey)?.get(minute) ?? 0);
+}
+
+/**
+ * 时间扩展求解器入口：在双向通道上迭代分配共享容量。
+ *
+ * 单商品流无法直接表达「同一双向通道两个方向共享每分钟容量」。这里先按方向全额求解，
+ * 若某分钟双向合计（含已承诺流量）超过物理容量，则按需求比例分配该分钟容量并重解（最多 4 轮）。
+ * 单向主导时不受损失，双向竞争时与执行/校验口径一致。
+ */
+export function solveTimeExpandedPlan(input: TimeExpandedSolveInput): SolveOutput {
+  const bidirectional = input.scenario.corridors.filter(corridor => {
+    const effective = input.network.corridors.get(corridor.id);
+    return effective?.usable && corridor.direction === 'both' && (corridor.capacity_per_min ?? 0) > 0;
+  });
+  if (bidirectional.length === 0) return solveTimeExpandedPlanOnce(input);
+
+  const horizon = Math.max(1, Math.floor(input.horizonMinutes));
+  let overrides = cloneCapacityMap(input.corridorCapacityByMinute);
+  let result = solveTimeExpandedPlanOnce({
+    ...input,
+    corridorCapacityByMinute: overrides.size > 0 ? overrides : undefined,
+  });
+  for (let iteration = 0; iteration < 8; iteration += 1) {
+    const loads = new Map<string, Map<number, number>>();
+    for (const route of result.plan.routes) {
+      for (const step of route.steps) {
+        const key = `${step.corridor_id}|${step.from_region_id}->${step.to_region_id}`;
+        const byMinute = loads.get(key) ?? new Map<number, number>();
+        byMinute.set(step.depart_minute, (byMinute.get(step.depart_minute) ?? 0) + route.persons);
+        loads.set(key, byMinute);
+      }
+    }
+    let changed = false;
+    const next = cloneCapacityMap(overrides);
+    for (const corridor of bidirectional) {
+      const [forward, reverse] = corridorDirections(corridor);
+      if (!forward || !reverse) continue;
+      const forwardKey = `${corridor.id}|${forward.from}->${forward.to}`;
+      const reverseKey = `${corridor.id}|${reverse.from}->${reverse.to}`;
+      const forwardLoads = loads.get(forwardKey) ?? new Map<number, number>();
+      const reverseLoads = loads.get(reverseKey) ?? new Map<number, number>();
+      const forwardMap = new Map<number, number>();
+      const reverseMap = new Map<number, number>();
+      let corridorChanged = overrides.has(forwardKey) || overrides.has(reverseKey);
+      const nominalCapacity = corridor.capacity_per_min ?? 0;
+      for (let minute = 0; minute <= horizon; minute += 1) {
+        const physicalFactor = input.corridorCapacityFactor
+          ? Math.max(0, input.corridorCapacityFactor(corridor.id, (input.baseMinute ?? 0) + minute))
+          : 1;
+        const physicalCapacity = Math.floor(nominalCapacity * physicalFactor);
+        const forwardOverride = overrides.get(forwardKey);
+        const reverseOverride = overrides.get(reverseKey);
+        const forwardBase = forwardOverride?.has(minute)
+          ? Math.max(0, forwardOverride.get(minute) ?? 0)
+          : nominalDirectionCapacity(input, corridor.id, forwardKey, minute);
+        const reverseBase = reverseOverride?.has(minute)
+          ? Math.max(0, reverseOverride.get(minute) ?? 0)
+          : nominalDirectionCapacity(input, corridor.id, reverseKey, minute);
+        const forwardUsed = usedCapacityAt(input, forwardKey, minute);
+        const reverseUsed = usedCapacityAt(input, reverseKey, minute);
+        const forwardAvailable = Math.max(0, forwardBase - forwardUsed);
+        const reverseAvailable = Math.max(0, reverseBase - reverseUsed);
+        const physicalAvailable = Math.max(0, physicalCapacity - forwardUsed - reverseUsed);
+        const forwardCurrent = forwardLoads.get(minute) ?? 0;
+        const reverseCurrent = reverseLoads.get(minute) ?? 0;
+        const currentTotal = forwardCurrent + reverseCurrent;
+        let allowedForward = forwardAvailable;
+        let allowedReverse = reverseAvailable;
+        if (currentTotal > physicalAvailable && currentTotal > 0) {
+          const forwardShare = Math.floor((physicalAvailable * forwardCurrent) / currentTotal);
+          allowedForward = Math.min(forwardAvailable, Math.max(0, forwardShare));
+          allowedReverse = Math.min(reverseAvailable, Math.max(0, physicalAvailable - forwardShare));
+          corridorChanged = true;
+          changed = true;
+        }
+        forwardMap.set(minute, allowedForward);
+        reverseMap.set(minute, allowedReverse);
+      }
+      if (corridorChanged) {
+        next.set(forwardKey, forwardMap);
+        next.set(reverseKey, reverseMap);
+      }
+    }
+    if (!changed) return result;
+    overrides = next;
+    result = solveTimeExpandedPlanOnce({ ...input, corridorCapacityByMinute: overrides });
+  }
+  return result;
 }
 
 // ---------------------------------------------------------------------------
