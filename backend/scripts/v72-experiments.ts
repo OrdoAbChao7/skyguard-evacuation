@@ -133,7 +133,11 @@ fs.writeFileSync(path.join(OUT, 'MANIFEST.json'), `${JSON.stringify({
   file_count: files.length,
   files,
 }, null, 2)}\n`);
-fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v72/LATEST.txt'), `${RUN_ID}\n`);
+if (only === 'all') {
+  fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v72/LATEST.txt'), `${RUN_ID}\n`);
+} else {
+  console.log('[v72] partial run; LATEST.txt unchanged');
+}
 fs.writeFileSync(path.join(OUT, 'run_metadata.json'), `${JSON.stringify({
   generated_at: new Date().toISOString(),
   run_id: RUN_ID,

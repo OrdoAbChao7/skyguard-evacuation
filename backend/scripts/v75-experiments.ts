@@ -160,7 +160,11 @@ fs.writeFileSync(path.join(OUT, 'MANIFEST.json'), `${JSON.stringify({
   note: 'V7.5 实验根清单；检测、承诺/稳定性、多目标、融合、Ascend、AgentArts、生产检查。',
   file_count: files.length, files,
 }, null, 2)}\n`);
-fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v75/LATEST.txt'), `${RUN_ID}\n`);
+if (only === 'all') {
+  fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v75/LATEST.txt'), `${RUN_ID}\n`);
+} else {
+  console.log('[v75] partial run; LATEST.txt unchanged');
+}
 fs.writeFileSync(path.join(OUT, 'run_metadata.json'), `${JSON.stringify({
   generated_at: new Date().toISOString(), run_id: RUN_ID,
   node: process.version, platform: process.platform, cpu: os.cpus()[0]?.model ?? 'unknown',

@@ -120,7 +120,11 @@ fs.writeFileSync(path.join(OUT, 'MANIFEST.json'), `${JSON.stringify({
   note: 'V7.3 实验根清单；覆盖稳定性、场馆导入、Shadow、Ascend、AgentArts。',
   file_count: files.length, files,
 }, null, 2)}\n`);
-fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v73/LATEST.txt'), `${RUN_ID}\n`);
+if (only === 'all') {
+  fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v73/LATEST.txt'), `${RUN_ID}\n`);
+} else {
+  console.log('[v73] partial run; LATEST.txt unchanged');
+}
 fs.writeFileSync(path.join(OUT, 'run_metadata.json'), `${JSON.stringify({
   generated_at: new Date().toISOString(), run_id: RUN_ID,
   node: process.version, platform: process.platform, cpu: os.cpus()[0]?.model ?? 'unknown',

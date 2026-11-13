@@ -152,6 +152,16 @@ function normalizedHashes(buffer: Buffer): string[] {
   const crlf = crypto.createHash('sha256').update(crlfText).digest('hex');
   return [raw, lf, crlf];
 }
+
+/**
+ * 清单中的 `bytes` 是生成环境工作区的字节数；同一 blob 在不同平台可能以
+ * LF 或 CRLF 检出（或历史上以混合换行写入）。证据完整性以内容哈希为准，
+ * 因此比较时接受原始/LF/CRLF 三种等价形式，不比较未归一化的字节长度。
+ */
+function manifestEntryMatches(buffer: Buffer, file: { bytes: number; sha256: string }): boolean {
+  return normalizedHashes(buffer).includes(file.sha256);
+}
+
 for (const file of freeze.files) {
   const full = path.join(ROOT, file.path);
   if (!fs.existsSync(full)) {
@@ -206,8 +216,7 @@ if (fs.existsSync(latest72Path)) {
           continue;
         }
         const bytes = fs.readFileSync(full);
-        const digest = crypto.createHash('sha256').update(bytes).digest('hex');
-        if (bytes.length !== file.bytes || digest !== file.sha256) hashFailures += 1;
+        if (!manifestEntryMatches(bytes, file)) hashFailures += 1;
       }
       check('V72/manifest/hashes', 0, hashFailures, hashFailures === 0);
       for (const prefix of ['stability_', 'calibration_', 'shadow_stress_', 'huawei_']) {
@@ -243,7 +252,7 @@ if (fs.existsSync(freeze72Path)) {
       continue;
     }
     const bytes = fs.readFileSync(full);
-    if (bytes.length !== file.bytes || !normalizedHashes(bytes).includes(file.sha256)) freezeMismatches += 1;
+    if (!manifestEntryMatches(bytes, file)) freezeMismatches += 1;
   }
   check('V72/freeze/hashes', 0, freezeMismatches, freezeMismatches === 0);
 }
@@ -274,7 +283,7 @@ if (fs.existsSync(latest73Path)) {
           continue;
         }
         const bytes = fs.readFileSync(full);
-        if (bytes.length !== file.bytes || normalizedHashes(bytes).includes(file.sha256) === false) hashFailures += 1;
+        if (!manifestEntryMatches(bytes, file)) hashFailures += 1;
       }
       check('V73/manifest/hashes', 0, hashFailures, hashFailures === 0);
       for (const prefix of ['stability_', 'calibration_import', 'shadow_ops_', 'agentarts_status', 'ascend/']) {
@@ -312,7 +321,7 @@ if (fs.existsSync(latest74Path)) {
           continue;
         }
         const bytes = fs.readFileSync(full);
-        if (bytes.length !== file.bytes || normalizedHashes(bytes).includes(file.sha256) === false) hashFailures += 1;
+        if (!manifestEntryMatches(bytes, file)) hashFailures += 1;
       }
       check('V74/manifest/hashes', 0, hashFailures, hashFailures === 0);
       for (const prefix of ['stability_', 'surge_', 'calibration_quality', 'agentarts_status', 'ascend/']) {
@@ -350,7 +359,7 @@ if (fs.existsSync(latest75Path)) {
           continue;
         }
         const bytes = fs.readFileSync(full);
-        if (bytes.length !== file.bytes || normalizedHashes(bytes).includes(file.sha256) === false) hashFailures += 1;
+        if (!manifestEntryMatches(bytes, file)) hashFailures += 1;
       }
       check('V75/manifest/hashes', 0, hashFailures, hashFailures === 0);
       for (const prefix of ['detection_', 'stability_', 'multiobjective_', 'fusion_', 'agentarts_status', 'ascend/', 'browser_e2e']) {

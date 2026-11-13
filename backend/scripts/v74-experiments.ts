@@ -142,7 +142,11 @@ fs.writeFileSync(path.join(OUT, 'MANIFEST.json'), `${JSON.stringify({
   note: 'V7.4 实验根清单；稳定性 Pareto、surge、标定质量、Ascend、AgentArts、生产检查。',
   file_count: files.length, files,
 }, null, 2)}\n`);
-fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v74/LATEST.txt'), `${RUN_ID}\n`);
+if (only === 'all') {
+  fs.writeFileSync(path.resolve(__dirname, '../../evaluation/v74/LATEST.txt'), `${RUN_ID}\n`);
+} else {
+  console.log('[v74] partial run; LATEST.txt unchanged');
+}
 fs.writeFileSync(path.join(OUT, 'run_metadata.json'), `${JSON.stringify({
   generated_at: new Date().toISOString(), run_id: RUN_ID,
   node: process.version, platform: process.platform, cpu: os.cpus()[0]?.model ?? 'unknown',
