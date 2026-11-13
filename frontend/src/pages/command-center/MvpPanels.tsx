@@ -4,7 +4,8 @@
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AimOutlined } from '@ant-design/icons';
-import mvpApi, { type AgentRun, type MvpDashboard, type MultiRegionAnalysis, type WorkOrder } from '../../services/mvpApi';
+import mvpApi, { type AgentRun, type MvpDashboard, type MultiRegionAnalysis, type V70ForecastPreview, type V70JointPreview, type WorkOrder } from '../../services/mvpApi';
+import safetyApi, { type V70MpcPreview } from '../../services/safetyApi';
 import './MvpPanels.css';
 
 interface Props {
@@ -54,6 +55,13 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
   const [dashboard, setDashboard] = useState<MvpDashboard | null>(null);
   const [experiments, setExperiments] = useState<Awaited<ReturnType<typeof mvpApi.experiments>> | null>(null);
   const [multi, setMulti] = useState<MultiRegionAnalysis | null>(null);
+  const [v70, setV70] = useState<{
+    forecast: V70ForecastPreview;
+    joint: V70JointPreview;
+    mpc: V70MpcPreview;
+  } | null>(null);
+  const [v70Busy, setV70Busy] = useState(false);
+  const [v70Error, setV70Error] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
@@ -91,6 +99,28 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
     const timer = setInterval(() => { void refresh(); }, 5000);
     return () => clearInterval(timer);
   }, [refresh]);
+
+  const loadV70 = useCallback(async () => {
+    const region = selectedRegion ?? dashboard?.predictions[0]?.region_id ?? '';
+    if (!region) {
+      setV70Error('请先选择一个区域');
+      return;
+    }
+    setV70Busy(true);
+    setV70Error(null);
+    try {
+      const [forecast, joint, mpc] = await Promise.all([
+        mvpApi.v70Forecast(region, 5),
+        mvpApi.v70Joint(region),
+        safetyApi.v70Mpc(),
+      ]);
+      setV70({ forecast, joint, mpc });
+    } catch (caught) {
+      setV70Error(`V7 预览失败：${errorMessage(caught)}`);
+    } finally {
+      setV70Busy(false);
+    }
+  }, [selectedRegion, dashboard]);
 
   useEffect(() => {
     mvpApi.experiments().then(setExperiments).catch(() => setExperiments(null));
@@ -410,6 +440,73 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
             ))}
             {(dashboard?.predictions ?? []).length === 0 ? <p className="mvp-muted">暂无预测数据</p> : null}
           </div>
+        </section>
+
+        {/* V7 研究预览（显式触发，只读） */}
+        <section className="mvp-panel">
+          <div className="mvp-panel-title"><h3>V7 研究预览</h3><span>预测 / 联合 VoI / MPC</span></div>
+          <p className="mvp-muted mvp-small">
+            研究级、合成参数未标定；只读，不改变安全状态；带预测到达的 MPC 步骤是条件投影，不声明“已验证”。
+          </p>
+          <button type="button" className="primary" onClick={() => void loadV70()} disabled={v70Busy}>
+            {v70Busy ? '计算中…' : '运行 V7 预览'}
+          </button>
+          {v70Error ? <p className="mvp-muted mvp-small">{v70Error}</p> : null}
+          {v70 ? (
+            <div className="mvp-v70-grid">
+              <div className="mvp-v70-card">
+                <strong>集成预测</strong>
+                {v70.forecast.available && v70.forecast.result ? (
+                  <>
+                    <span className="mvp-pred-value">
+                      {v70.forecast.result.predicted}
+                      <small>（{v70.forecast.result.interval95.lower}~{v70.forecast.result.interval95.upper}）</small>
+                    </span>
+                    <span className="mvp-muted mvp-small">
+                      {v70.forecast.result.regime.label} · 可靠性 {v70.forecast.result.reliability.status}
+                      {v70.forecast.result.reliability.reasons.length > 0 ? ` · ${v70.forecast.result.reliability.reasons.join('、')}` : ''}
+                    </span>
+                    <span className="mvp-muted mvp-small">候选：{v70.forecast.result.effective_methods.join(' / ')}</span>
+                  </>
+                ) : <span className="mvp-muted mvp-small">{v70.forecast.reason ?? '不可用'}</span>}
+              </div>
+              <div className="mvp-v70-card">
+                <strong>联合 VoI</strong>
+                {v70.joint.available && v70.joint.decision ? (
+                  <>
+                    <span className="mvp-muted mvp-small">
+                      选择：{v70.joint.decision.selected.map(item => item.action_id).join(' → ') || '无'}
+                    </span>
+                    <span className="mvp-muted mvp-small">
+                      预期风险降低 {v70.joint.decision.total_expected_risk_reduction.toFixed(4)} · 停止：{v70.joint.decision.stop_reason ?? '—'}
+                    </span>
+                    <span className="mvp-muted mvp-small">
+                      相关性 {v70.joint.decision.config.correlation} · 参数来源 {v70.joint.decision.config.source}
+                    </span>
+                  </>
+                ) : <span className="mvp-muted mvp-small">{v70.joint.reason ?? '不可用'}</span>}
+              </div>
+              <div className="mvp-v70-card">
+                <strong>MPC 投影</strong>
+                {v70.mpc.available && v70.mpc.projection ? (
+                  <>
+                    <span className="mvp-muted mvp-small">
+                      {v70.mpc.steps?.length ?? 0} 控制步 · 完成 {v70.mpc.projection.completed_persons}/{v70.mpc.projection.total_input_persons}
+                    </span>
+                    <span className="mvp-muted mvp-small">
+                      未疏散 {v70.mpc.projection.unserved_persons} · 完成时间 {v70.mpc.projection.makespan_minute} min
+                    </span>
+                    <span className="mvp-muted mvp-small">
+                      队列 {v70.mpc.projection.total_queue_person_minutes.toFixed(0)} 人·分钟 · 第一步校验
+                      {v70.mpc.steps?.[0]?.validation.performed
+                        ? (v70.mpc.steps[0].validation.valid ? '通过' : '未通过')
+                        : '未执行（条件投影）'}
+                    </span>
+                  </>
+                ) : <span className="mvp-muted mvp-small">{v70.mpc.reason ?? '不可用'}</span>}
+              </div>
+            </div>
+          ) : null}
         </section>
 
         {/* 摄像头 + 人员 */}

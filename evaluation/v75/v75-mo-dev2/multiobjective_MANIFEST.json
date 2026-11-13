@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "run_id": "v75-mo-dev2",
+  "note": "V7.5 Track D 多目标证据（合成）。",
+  "file_count": 3,
+  "files": [
+    {
+      "path": "multiobjective_README.md",
+      "bytes": 2335,
+      "sha256": "d216be5d11f30abb8490999613acf16643eafdc7c60b1694ccae582b017bbd94"
+    },
+    {
+      "path": "multiobjective_rows.json",
+      "bytes": 1304821,
+      "sha256": "3ec66bbfea853086c724b4249b3eabcab9ab36cd750a12ef9a6e7b12ef018ac1"
+    },
+    {
+      "path": "multiobjective_summary.json",
+      "bytes": 6619,
+      "sha256": "7e0f6fa87b5af4fb7f7849b323da9afe607771e025775b83e97b4ceb2b633921"
+    }
+  ]
+}

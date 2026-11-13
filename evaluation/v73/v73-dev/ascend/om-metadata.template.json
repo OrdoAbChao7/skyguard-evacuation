@@ -1,0 +1,31 @@
+{
+  "model_name": "forecast_linear",
+  "soc_version": "Ascend910B3（模板占位，未实机）",
+  "cann_version": "CANN（未安装/未探测）",
+  "atc_command": "atc --model=forecast_linear.onnx --framework=5 --output=forecast_linear --soc_version=Ascend910B3（模板占位，未实机） --input_shape=\"history:1,12\" --log=error",
+  "om_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "onnx_sha256": "3837d2523cc688c2b5a931dfa2b89830186527b11cee340047243a32cdd14baa",
+  "input_shape": [
+    1,
+    12
+  ],
+  "output_shape": [
+    1,
+    5
+  ],
+  "device_evidence": {
+    "npu_smi_available": false
+  },
+  "benchmark": {
+    "executed_on": "none"
+  },
+  "numerical_consistency": {
+    "max_abs_diff": 0,
+    "tolerance": 0.001,
+    "passed": false
+  },
+  "generated_at": "2026-11-10T02:16:47.715Z",
+  "notes": [
+    "模板：尚未执行 ATC/NPU；不得作为昇腾实机证据。"
+  ]
+}

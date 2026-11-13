@@ -1,7 +1,7 @@
 {
   "scenario_id": "stadium-evacuation-v1",
   "name": "滨江体育中心 · 活动散场（合成场景）",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "大型体育场活动散场场景：看台、环廊、广场与四个出口。所有面积、坐标、容量与人员位置均为合成演示数据。",
   "notice": "合成演示场景：面积、通行能力、人员位置与概率参数均未经现场测绘或标定，不得用于真实疏散指挥。",
   "config": {
@@ -1047,6 +1047,11 @@
     "conflict": {
       "window_minutes": 10,
       "blend_prior": 0.5
+    },
+    "joint": {
+      "correlation": 0.5,
+      "redundancy_penalty": 0.6,
+      "max_sequence": 3
     },
     "budget": {
       "max_actions": 3,

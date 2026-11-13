@@ -1,0 +1,13 @@
+{
+  "valid": true,
+  "errors": [],
+  "warnings": [],
+  "checked_regions": 8,
+  "checked_corridors": 11,
+  "checked_exits": 4,
+  "checked_cameras": 8,
+  "provenance_counts": {
+    "uncalibrated": 42,
+    "estimated": 4
+  }
+}

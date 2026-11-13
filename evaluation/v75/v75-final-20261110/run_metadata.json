@@ -1,0 +1,35 @@
+{
+  "generated_at": "2026-11-10T08:31:10.609Z",
+  "run_id": "v75-final-20261110",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "cpu": "AMD Ryzen 7 7745HX with Radeon Graphics        ",
+  "git_head": "uncommitted",
+  "selected": [
+    {
+      "key": "detection",
+      "file": "v75-detection-benchmark.ts"
+    },
+    {
+      "key": "commitment",
+      "file": "v75-commitment-benchmark.ts"
+    },
+    {
+      "key": "multiobjective",
+      "file": "v75-multiobjective-benchmark.ts"
+    },
+    {
+      "key": "fusion",
+      "file": "v75-fusion-benchmark.ts"
+    },
+    {
+      "key": "ascend",
+      "file": "v75-ascend-pipeline.ts"
+    },
+    {
+      "key": "agentarts",
+      "file": "v75-agentarts-status.ts"
+    }
+  ],
+  "data_nature": "合成/夹具数据；不含真实人群、视频、授权数据、AgentArts 实机或昇腾 NPU 实测。"
+}

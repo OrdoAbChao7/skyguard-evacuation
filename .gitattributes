@@ -8,3 +8,28 @@ data/perception/** -text
 
 # 本仓库自己维护的来源清单保持文本 + LF，便于 review 与 diff。
 data/perception/**/PROVENANCE.json text eol=lf
+
+# 实验证据以 SHA-256 清单校验，必须保持检出字节稳定；禁止换行符转换。
+evaluation/** text eol=lf
+
+# 二进制证据禁止换行符转换：Git 的 text 过滤会把 PNG 中的 0x0D0A 当作 CRLF
+# 改写，导致提交后的字节与清单不一致。
+evaluation/**/*.png -text
+evaluation/**/*.jpg -text
+evaluation/**/*.jpeg -text
+evaluation/**/*.gif -text
+evaluation/**/*.webp -text
+evaluation/**/*.pdf -text
+evaluation/**/*.onnx -text
+evaluation/**/*.zip -text
+evaluation/**/*.gz -text
+evaluation/**/*.pt -text
+evaluation/**/*.pth -text
+evaluation/**/*.bin -text
+
+# V7.2 冻结基线清单按生成时的原始字节记录；eol 转换会使冻结哈希在
+# Linux 检出时失配。该目录保持原始字节，不做换行符归一化。
+evaluation/v72/baseline_snapshot/** -text
+
+# V7.5 最终证据清单同样记录生成时字节；保持原样以便跨平台校验。
+evaluation/v75/v75-final-20261110/** -text

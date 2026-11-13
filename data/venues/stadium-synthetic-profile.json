@@ -1,0 +1,720 @@
+{
+  "profile_id": "stadium-synthetic-calibration",
+  "venue_id": "stadium-evacuation-v1",
+  "name": "滨江体育中心 · 合成标定档案",
+  "version": "1.0.0",
+  "data_nature": "synthetic",
+  "created_at": "2026-11-09T17:16:04.238Z",
+  "updated_at": "2026-11-09T17:16:04.238Z",
+  "regions": [
+    {
+      "region_id": "R_NORTH_STAND",
+      "area_m2": {
+        "value": 900,
+        "unit": "m2",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景示意面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 1300,
+        "unit": "persons",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景在留容量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "camera_ids": [
+        "CAM-N-STAND"
+      ]
+    },
+    {
+      "region_id": "R_SOUTH_STAND",
+      "area_m2": {
+        "value": 900,
+        "unit": "m2",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景示意面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 1300,
+        "unit": "persons",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景在留容量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S-STAND"
+      ]
+    },
+    {
+      "region_id": "R_WEST_STAND",
+      "area_m2": {
+        "value": 750,
+        "unit": "m2",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景示意面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 1000,
+        "unit": "persons",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景在留容量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "camera_ids": [
+        "CAM-W-STAND"
+      ]
+    },
+    {
+      "region_id": "R_EAST_STAND",
+      "area_m2": {
+        "value": 750,
+        "unit": "m2",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景示意面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 1000,
+        "unit": "persons",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景在留容量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "camera_ids": [
+        "CAM-E-STAND"
+      ]
+    },
+    {
+      "region_id": "R_NORTH_CONCOURSE",
+      "area_m2": {
+        "value": 600,
+        "unit": "m2",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景示意面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 900,
+        "unit": "persons",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景在留容量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "camera_ids": [
+        "CAM-N-CONCOURSE"
+      ]
+    },
+    {
+      "region_id": "R_SOUTH_CONCOURSE",
+      "area_m2": {
+        "value": 600,
+        "unit": "m2",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景示意面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 900,
+        "unit": "persons",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景在留容量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "camera_ids": [
+        "CAM-S-CONCOURSE"
+      ]
+    },
+    {
+      "region_id": "R_EAST_PLAZA",
+      "area_m2": {
+        "value": 500,
+        "unit": "m2",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景示意面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 700,
+        "unit": "persons",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景在留容量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "camera_ids": [
+        "CAM-E-PLAZA"
+      ]
+    },
+    {
+      "region_id": "R_WEST_PLAZA",
+      "area_m2": {
+        "value": 500,
+        "unit": "m2",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景示意面积；未现场测绘",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "holding_capacity_persons": {
+        "value": 700,
+        "unit": "persons",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景在留容量；未现场标定",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "camera_ids": [
+        "CAM-W-PLAZA"
+      ]
+    }
+  ],
+  "corridors": [
+    {
+      "corridor_id": "C_N_STAND",
+      "from_region_id": "R_NORTH_STAND",
+      "to_region_id": "R_NORTH_CONCOURSE",
+      "capacity_per_min": {
+        "value": 420,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 45,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_S_STAND",
+      "from_region_id": "R_SOUTH_STAND",
+      "to_region_id": "R_SOUTH_CONCOURSE",
+      "capacity_per_min": {
+        "value": 420,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 45,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_W_N",
+      "from_region_id": "R_WEST_STAND",
+      "to_region_id": "R_NORTH_CONCOURSE",
+      "capacity_per_min": {
+        "value": 260,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 70,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_W_S",
+      "from_region_id": "R_WEST_STAND",
+      "to_region_id": "R_SOUTH_CONCOURSE",
+      "capacity_per_min": {
+        "value": 260,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 70,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_E_N",
+      "from_region_id": "R_EAST_STAND",
+      "to_region_id": "R_NORTH_CONCOURSE",
+      "capacity_per_min": {
+        "value": 260,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 70,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_E_S",
+      "from_region_id": "R_EAST_STAND",
+      "to_region_id": "R_SOUTH_CONCOURSE",
+      "capacity_per_min": {
+        "value": 260,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 70,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_MID",
+      "from_region_id": "R_NORTH_CONCOURSE",
+      "to_region_id": "R_SOUTH_CONCOURSE",
+      "capacity_per_min": {
+        "value": 180,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 90,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_NE",
+      "from_region_id": "R_NORTH_CONCOURSE",
+      "to_region_id": "R_EAST_PLAZA",
+      "capacity_per_min": {
+        "value": 300,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 60,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_NW",
+      "from_region_id": "R_NORTH_CONCOURSE",
+      "to_region_id": "R_WEST_PLAZA",
+      "capacity_per_min": {
+        "value": 300,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 60,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_SE",
+      "from_region_id": "R_SOUTH_CONCOURSE",
+      "to_region_id": "R_EAST_PLAZA",
+      "capacity_per_min": {
+        "value": 300,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 60,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "corridor_id": "C_SW",
+      "from_region_id": "R_SOUTH_CONCOURSE",
+      "to_region_id": "R_WEST_PLAZA",
+      "capacity_per_min": {
+        "value": 300,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "场景公开前的合成容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      },
+      "traversal_seconds": {
+        "value": 60,
+        "unit": "s",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "按通道长度与默认步速估算；未实测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    }
+  ],
+  "exits": [
+    {
+      "exit_id": "E_NORTH",
+      "region_id": "R_NORTH_CONCOURSE",
+      "capacity_per_min": {
+        "value": 200,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "合成出口容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "exit_id": "E_SOUTH",
+      "region_id": "R_SOUTH_CONCOURSE",
+      "capacity_per_min": {
+        "value": 200,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "合成出口容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "exit_id": "E_EAST",
+      "region_id": "R_EAST_PLAZA",
+      "capacity_per_min": {
+        "value": 260,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "合成出口容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    },
+    {
+      "exit_id": "E_WEST",
+      "region_id": "R_WEST_PLAZA",
+      "capacity_per_min": {
+        "value": 260,
+        "unit": "persons/min",
+        "provenance": "uncalibrated",
+        "source": "synthetic stadium scenario (未经现场测绘)",
+        "method": "合成出口容量；未现场观测",
+        "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+      }
+    }
+  ],
+  "cameras": [
+    {
+      "camera_id": "CAM-N-STAND",
+      "region_id": "R_NORTH_STAND",
+      "roi": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "calibration_status": "uncalibrated",
+      "calibration_version": "cam-n-stand-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 4.5,
+        "tilt_deg": 30,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S-STAND",
+      "region_id": "R_SOUTH_STAND",
+      "roi": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "calibration_status": "uncalibrated",
+      "calibration_version": "cam-s-stand-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 4.5,
+        "tilt_deg": 30,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-W-STAND",
+      "region_id": "R_WEST_STAND",
+      "roi": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "calibration_status": "uncalibrated",
+      "calibration_version": "cam-w-stand-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 4.5,
+        "tilt_deg": 30,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-E-STAND",
+      "region_id": "R_EAST_STAND",
+      "roi": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "calibration_status": "uncalibrated",
+      "calibration_version": "cam-e-stand-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 4.5,
+        "tilt_deg": 30,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-N-CONCOURSE",
+      "region_id": "R_NORTH_CONCOURSE",
+      "roi": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "calibration_status": "uncalibrated",
+      "calibration_version": "cam-n-concourse-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 4.5,
+        "tilt_deg": 30,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-S-CONCOURSE",
+      "region_id": "R_SOUTH_CONCOURSE",
+      "roi": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "calibration_status": "uncalibrated",
+      "calibration_version": "cam-s-concourse-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 4.5,
+        "tilt_deg": 30,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-E-PLAZA",
+      "region_id": "R_EAST_PLAZA",
+      "roi": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "calibration_status": "uncalibrated",
+      "calibration_version": "cam-e-plaza-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 4.5,
+        "tilt_deg": 30,
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "camera_id": "CAM-W-PLAZA",
+      "region_id": "R_WEST_PLAZA",
+      "roi": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "calibration_status": "uncalibrated",
+      "calibration_version": "cam-w-plaza-unc-0",
+      "sensor": {
+        "model_name": "synthetic-camera",
+        "mounting_height_m": 4.5,
+        "tilt_deg": 30,
+        "resolution": "1920x1080"
+      }
+    }
+  ],
+  "flow": {
+    "walking_speed_mps": {
+      "value": 1.25,
+      "unit": "m/s",
+      "provenance": "estimated",
+      "source": "synthetic stadium scenario (未经现场测绘)",
+      "method": "通用步行速度经验值；未用本场馆样本估计",
+      "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+    },
+    "bpr_a": {
+      "value": 0.15,
+      "unit": "dimensionless",
+      "provenance": "estimated",
+      "source": "synthetic stadium scenario (未经现场测绘)",
+      "method": "通用 BPR 系数；未标定",
+      "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+    },
+    "bpr_b": {
+      "value": 2,
+      "unit": "dimensionless",
+      "provenance": "estimated",
+      "source": "synthetic stadium scenario (未经现场测绘)",
+      "method": "通用 BPR 指数；未标定",
+      "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+    },
+    "exit_service_queue_scale": {
+      "value": 5,
+      "unit": "dimensionless",
+      "provenance": "estimated",
+      "source": "synthetic stadium scenario (未经现场测绘)",
+      "method": "出口排队服务衰减的经验尺度；未标定",
+      "notes": "合成/未标定值；不得作为真实场馆参数引用。"
+    }
+  },
+  "observation_adapters": [
+    {
+      "adapter_id": "camera-count-r_north_stand",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-N-STAND": "R_NORTH_STAND"
+      },
+      "calibration_version": "cam-n-stand-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r_south_stand",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S-STAND": "R_SOUTH_STAND"
+      },
+      "calibration_version": "cam-s-stand-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r_west_stand",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-W-STAND": "R_WEST_STAND"
+      },
+      "calibration_version": "cam-w-stand-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r_east_stand",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-E-STAND": "R_EAST_STAND"
+      },
+      "calibration_version": "cam-e-stand-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r_north_concourse",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-N-CONCOURSE": "R_NORTH_CONCOURSE"
+      },
+      "calibration_version": "cam-n-concourse-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r_south_concourse",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-S-CONCOURSE": "R_SOUTH_CONCOURSE"
+      },
+      "calibration_version": "cam-s-concourse-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r_east_plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-E-PLAZA": "R_EAST_PLAZA"
+      },
+      "calibration_version": "cam-e-plaza-unc-0"
+    },
+    {
+      "adapter_id": "camera-count-r_west_plaza",
+      "kind": "camera_count",
+      "region_mapping": {
+        "CAM-W-PLAZA": "R_WEST_PLAZA"
+      },
+      "calibration_version": "cam-w-plaza-unc-0"
+    }
+  ],
+  "notes": [
+    "全部参数为合成/未标定数据。",
+    "任何 measured/calibrated 声明都会被校验器拒绝，直到提供真实来源、时间与样本量。"
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "run_id": "v70-final-20261109T194300",
+  "generated_at": "2026-11-09T11:44:18.657Z",
+  "note": "V7.0 实验根清单；覆盖 prediction/planning/joint-voi 三组证据与汇总。",
+  "file_count": 16,
+  "files": [
+    {
+      "path": "V70_SUMMARY.md",
+      "bytes": 2388,
+      "sha256": "9e38577f7b531e63d07a0d13852498f73309e71293a6331a9296eef16f5f2f0c"
+    },
+    {
+      "path": "joint_voi_MANIFEST.json",
+      "bytes": 774,
+      "sha256": "a2605bfd7a5e5fb538a6341f7b53f4787cfd84b4abf804c8e1cfa888e5bc54b7"
+    },
+    {
+      "path": "joint_voi_README.md",
+      "bytes": 4370,
+      "sha256": "a42035d64e4568fc6ee245cd006039b81c9d5069337aa91eabed205fd18d946d"
+    },
+    {
+      "path": "joint_voi_metadata.json",
+      "bytes": 439,
+      "sha256": "bb3822a7b734a56bcbf67be01871b0876e84f730a05641d0f3ff38fdb03a6b44"
+    },
+    {
+      "path": "joint_voi_rows.json",
+      "bytes": 2890873,
+      "sha256": "397efc0f5292cc483ccba012e982ba9c538db959fae0ac4f9d8815dbd6aa7761"
+    },
+    {
+      "path": "joint_voi_summary.json",
+      "bytes": 192482,
+      "sha256": "6c2d5ad0c5a84dce232b7c27d2587fa483803203b679451a072a3b16096f8b65"
+    },
+    {
+      "path": "planning_MANIFEST.json",
+      "bytes": 763,
+      "sha256": "9d8aad3d6a65cff6f66fa3d11de1cc20f003a9fbcf0814c9ad469f4c2e7c49c6"
+    },
+    {
+      "path": "planning_README.md",
+      "bytes": 8102,
+      "sha256": "cd1f0fdd06cac8670d093f643f02f14a85ff34474eaa9e23394bee55eb891e1b"
+    },
+    {
+      "path": "planning_metadata.json",
+      "bytes": 439,
+      "sha256": "872a37251106fabc6f0bc731e32a7fb5405e1c50b5605bdb9e4ce76626e21359"
+    },
+    {
+      "path": "planning_rows.json",
+      "bytes": 117443,
+      "sha256": "ed5ea56db0592f0fe506cd15f9b5a2dac7710dddb464ef5cc2efa88bc269f5e9"
+    },
+    {
+      "path": "planning_summary.json",
+      "bytes": 37746,
+      "sha256": "bab9d27680ee505c1a52f9bf34dcffa047e2ca3c658839a9f9935dad37310259"
+    },
+    {
+      "path": "prediction_MANIFEST.json",
+      "bytes": 775,
+      "sha256": "3d2f30d6e852bc850947fd2186f37938c69322216a9b871579ed7aa81e89f98d"
+    },
+    {
+      "path": "prediction_README.md",
+      "bytes": 12349,
+      "sha256": "edd6ce57dc6c76857ba341be01d6a50352d8c7cb16f44ab7f1888e756b6ceb62"
+    },
+    {
+      "path": "prediction_metadata.json",
+      "bytes": 224,
+      "sha256": "29fc5132d27e042bd776ca943f371a8411f19d292bf6f78583760310c9bb0830"
+    },
+    {
+      "path": "prediction_rows.json",
+      "bytes": 25816325,
+      "sha256": "496ff5c244d26f54de21368353b0daef43607f10427fe61ab62a614923c631d3"
+    },
+    {
+      "path": "prediction_summary.json",
+      "bytes": 140146,
+      "sha256": "1174e058f67121eca81d57cc01f1ac9296f06cfd3b561af0a0b8b95114fe4218"
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "run_id": "v74-final-20261110T105851",
+  "generated_at": "2026-11-10T02:59:23.524Z",
+  "note": "V7.4 实验根清单；稳定性 Pareto、surge、标定质量、Ascend、AgentArts、生产检查。",
+  "file_count": 31,
+  "files": [
+    {
+      "path": "V74_SUMMARY.md",
+      "bytes": 2205,
+      "sha256": "b1bba4bcbac25cf8ed260fe20fffa34dd6ffddcdc3c68702ee27ea25eaa9bec3"
+    },
+    {
+      "path": "agentarts_MANIFEST.json",
+      "bytes": 482,
+      "sha256": "a759f6ae0b5c923a462c43b3e3f02cd08c414a858e0092acebeb53c8173d3c1f"
+    },
+    {
+      "path": "agentarts_status.json",
+      "bytes": 1706,
+      "sha256": "4bc21e1107f4b0fabee0d34cf0f5ee533d9a300cc62d32673c7a23373986a60b"
+    },
+    {
+      "path": "agentarts_status_README.md",
+      "bytes": 1323,
+      "sha256": "76e4103e3b8496bf94bef9f4ddd2a2de9c8b6778b20d27fbdf8bf50ff642f51e"
+    },
+    {
+      "path": "ascend/ascend_MANIFEST.json",
+      "bytes": 1277,
+      "sha256": "2966de2b440343e994baf0758de1c8d738e181f4324f861fa0e4be71945ae0a1"
+    },
+    {
+      "path": "ascend/ascend_pipeline.json",
+      "bytes": 3392,
+      "sha256": "336c27b5745e6c82470cedd5f7afcd5d10221a118cbfa1b587529288f6aca92b"
+    },
+    {
+      "path": "ascend/ascend_pipeline_README.md",
+      "bytes": 1439,
+      "sha256": "fc50e9cbfb11dde52b622709e7bb74f49c5f6ec529afcd18a3cc6b64aa7d24b1"
+    },
+    {
+      "path": "ascend/forecast_linear.onnx",
+      "bytes": 511,
+      "sha256": "3837d2523cc688c2b5a931dfa2b89830186527b11cee340047243a32cdd14baa"
+    },
+    {
+      "path": "ascend/forecast_linear_metadata.json",
+      "bytes": 1123,
+      "sha256": "005133ac40f66b76a51a257ca670441c9962f3a458c5adda28b24544c0d15227"
+    },
+    {
+      "path": "ascend/om-metadata.template.json",
+      "bytes": 930,
+      "sha256": "22bc9e26ba727704bd6a05e093f2cd43ad28ad9d0e085f3ac191c9171e04aa8c"
+    },
+    {
+      "path": "ascend/onnx_cpu_benchmark.json",
+      "bytes": 958,
+      "sha256": "d9c75aace3b87f45c37521719b3e919fd998fe5485c0b999dcb81e9d3d7215bf"
+    },
+    {
+      "path": "ascend/reference_history.npy",
+      "bytes": 176,
+      "sha256": "b2ca5f0cd00d9c2ce206b338f984a7a5448281995196ec8e6c0c33a37539984e"
+    },
+    {
+      "path": "browser_e2e.json",
+      "bytes": 554,
+      "sha256": "4d8a8c9bf68941bc2de7320e256bea027a2b715940dc8a4e58ef42f3046cd67f"
+    },
+    {
+      "path": "browser_e2e.png",
+      "bytes": 1446446,
+      "sha256": "f3eba26a366210d783cce164529a3b7f86e8fe68d76a10b3016a66733891f95a"
+    },
+    {
+      "path": "calibration_quality.json",
+      "bytes": 2947,
+      "sha256": "4ecdb19a05553c66c8d72918dc72b84ee1d320b995e3ea02760a5decfa86cf8f"
+    },
+    {
+      "path": "calibration_quality_MANIFEST.json",
+      "bytes": 638,
+      "sha256": "4c5211b73a4af55bf92f1fd4b1cf3e276cb529f57d0c3f80366dd04edf399e1d"
+    },
+    {
+      "path": "calibration_quality_README.md",
+      "bytes": 1162,
+      "sha256": "a040c3e9f6dab3d6ef7f6e72b74cdc3e5b098299b1e094d0c39d2471b0d2a9e7"
+    },
+    {
+      "path": "calibration_quality_metadata.json",
+      "bytes": 224,
+      "sha256": "7df711818c977cd7c75cf0eeef39aa8e92bfee1ea40c6f0e3f68b0f09c7e4b2c"
+    },
+    {
+      "path": "production_checks.json",
+      "bytes": 1388,
+      "sha256": "120ee4c31d2b9ecf3ed1f06997e2abe6d4e4216dfc4bace9680f0f03dfc67f45"
+    },
+    {
+      "path": "production_checks_MANIFEST.json",
+      "bytes": 454,
+      "sha256": "ddab27058a0bc16fe8c3b89a4d3cc66881ed108228709d76ae4dd0fc65b1ed54"
+    },
+    {
+      "path": "production_checks_README.md",
+      "bytes": 854,
+      "sha256": "d70570fe3e61da7c2cd988a9e811a8978abe331c3e2b0c903a3159b83970f0c7"
+    },
+    {
+      "path": "stability_MANIFEST.json",
+      "bytes": 796,
+      "sha256": "9ad16b64e2f3c083f12c5297da16e73e6ba72c1a61427bbeca8942506622f1ac"
+    },
+    {
+      "path": "stability_README.md",
+      "bytes": 11668,
+      "sha256": "235fdfc23cdabaa6751bd226b3308e692a2b48fe96e29e76ae9ebf10d7fe1c61"
+    },
+    {
+      "path": "stability_metadata.json",
+      "bytes": 224,
+      "sha256": "8554d81b02b45a90f64d7579a60b3d07f164378f3ff40512fefc6a14b3bf3cd7"
+    },
+    {
+      "path": "stability_rows.json",
+      "bytes": 1114429,
+      "sha256": "72972e6a010ee770db018d93b7ea65df4f7fabe96df323150d5bfd9eb8b9e719"
+    },
+    {
+      "path": "stability_summary.json",
+      "bytes": 272817,
+      "sha256": "a633023a997c34249e0b8cabb97ff077bb6d14416a68cd4de9392625dc34d798"
+    },
+    {
+      "path": "surge_MANIFEST.json",
+      "bytes": 754,
+      "sha256": "fb24ca0fd10786e5402b35c9607d00ebc889f7ca38d896d03d7152200cce4e80"
+    },
+    {
+      "path": "surge_README.md",
+      "bytes": 920,
+      "sha256": "4f943e1583d44d23adc893c92e90516394b58f77ab8fada778faab91bfacc981"
+    },
+    {
+      "path": "surge_metadata.json",
+      "bytes": 224,
+      "sha256": "0b79face34a4889ff09c80c36712d5e55db3b62de6244051ada669fcf485b4ac"
+    },
+    {
+      "path": "surge_rows.json",
+      "bytes": 52153,
+      "sha256": "04e8dc1330e755214ad538cbb5d1fb362c99b9f227d79e7e2499371e97591ec3"
+    },
+    {
+      "path": "surge_summary.json",
+      "bytes": 2525,
+      "sha256": "4685cb77dd29798b1d4e6a0a5d1538c37e6d64261befd9d6948b7d567155330c"
+    }
+  ]
+}

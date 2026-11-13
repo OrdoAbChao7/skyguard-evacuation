@@ -153,3 +153,25 @@ V6.2 冻结实验存在信息权限差异：`single` 策略只覆盖目标区域
 - 似然是场景给出的静态表，未做现场标定；
 - 损失矩阵是管理决策偏好，不是物理损失；
 - 大模型不参与概率、损失和成本的计算。
+
+## 6. V7.2 联合 VoI（`joint-voi-v1`）
+
+> 实现：`backend/src/services/mvp/joint-voi.ts`  
+> 参数：场景 `investigation.joint`（correlation、redundancy_penalty、max_sequence）  
+> API：`GET /api/v1/mvp/v70/joint-investigation?region_id=...`  
+> 实验：`evaluation/v70/<run>/joint_voi_*`（30 种子 × 40 trial）
+
+与多区域 VoI 的差异：
+
+1. **区域相关性**：调查一个区域会按 `correlation × 图边权` 对未直接覆盖的邻居产生间接信息价值；
+2. **动作冗余**：候选动作与已选动作的覆盖 Jaccard 重叠越大，边际价值按 `1 − redundancy_penalty × overlap` 折扣；
+3. **顺序选择**：每次选择后重新评估边际收益，直到预算/停止阈值/最大序列；
+4. **跨轮次记忆**：已执行动作与覆盖区域传入下一轮，避免重复调查。
+
+边界：
+
+- 启发式近似，不是联合 POMDP 精确解；
+- 参数来自场景但未在真实数据上标定；
+- 公平实验（相同动作覆盖、观测采样随机数、预算）显示：joint 总收益略低于 multi（−0.0026），
+  最坏区域风险略低（−0.0007），效应量很小；
+- **不得宣称联合 VoI 全面优于现有多区域 VoI**；Oracle 上界仅作参照。

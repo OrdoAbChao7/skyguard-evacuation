@@ -1,0 +1,115 @@
+{
+  "config": {
+    "seeds": [
+      20261111,
+      20261112,
+      20261113,
+      20261114,
+      20261115,
+      20261116,
+      20261117,
+      20261118,
+      20261119,
+      20261120,
+      20261121,
+      20261122,
+      20261123,
+      20261124,
+      20261125,
+      20261126,
+      20261127,
+      20261128,
+      20261129,
+      20261130,
+      20261131,
+      20261132,
+      20261133,
+      20261134,
+      20261135,
+      20261136,
+      20261137,
+      20261138,
+      20261139,
+      20261140
+    ],
+    "mechanisms": [
+      "stable",
+      "surge",
+      "regime_shift",
+      "noisy"
+    ],
+    "change_step": 30,
+    "detection_window": 10,
+    "data_nature": "synthetic；不代表真实预测精度。"
+  },
+  "summary": {
+    "changepoint": {
+      "stable": {
+        "n": 30,
+        "detection_rate": 0,
+        "median_latency": 0,
+        "mean_latency": 0,
+        "false_alarms_per_100": 0.6111,
+        "stable_false_positive_rate": 0.3333
+      },
+      "surge": {
+        "n": 30,
+        "detection_rate": 1,
+        "median_latency": 5,
+        "mean_latency": 5.2,
+        "false_alarms_per_100": 0,
+        "stable_false_positive_rate": null
+      },
+      "regime_shift": {
+        "n": 30,
+        "detection_rate": 1,
+        "median_latency": 7,
+        "mean_latency": 6,
+        "false_alarms_per_100": 0.3333,
+        "stable_false_positive_rate": null
+      },
+      "noisy": {
+        "n": 30,
+        "detection_rate": 0,
+        "median_latency": 0,
+        "mean_latency": 0,
+        "false_alarms_per_100": 0.7778,
+        "stable_false_positive_rate": null
+      }
+    },
+    "naive3sigma": {
+      "stable": {
+        "n": 30,
+        "detection_rate": 0,
+        "median_latency": 0,
+        "mean_latency": 0,
+        "false_alarms_per_100": 0.5556,
+        "stable_false_positive_rate": 0.3333
+      },
+      "surge": {
+        "n": 30,
+        "detection_rate": 0.7667,
+        "median_latency": 5,
+        "mean_latency": 4.957,
+        "false_alarms_per_100": 0.3333,
+        "stable_false_positive_rate": null
+      },
+      "regime_shift": {
+        "n": 30,
+        "detection_rate": 0.7333,
+        "median_latency": 7,
+        "mean_latency": 5.909,
+        "false_alarms_per_100": 0.3333,
+        "stable_false_positive_rate": null
+      },
+      "noisy": {
+        "n": 30,
+        "detection_rate": 0,
+        "median_latency": 0,
+        "mean_latency": 0,
+        "false_alarms_per_100": 0.5,
+        "stable_false_positive_rate": null
+      }
+    }
+  }
+}

@@ -1,0 +1,591 @@
+{
+  "scenario_id": "skyguard-demo-venue-v1",
+  "name": "SkyGuard 演示场馆（合成场景）",
+  "version": "1.0.0",
+  "description": "用于 SkyGuard 原型验证与演示的两层展厅 + 中庭拓扑。所有面积、坐标与容量均为合成演示数据。",
+  "notice": "本场景为合成演示数据，不是任何真实场馆的测绘成果。面积、通行能力与阈值均未经现场标定，不得用于真实疏散指挥。",
+  "config": {
+    "horizon_minutes": 8,
+    "max_observation_age_seconds": 90,
+    "min_confidence": 0.6,
+    "trend_window_seconds": 300,
+    "density_consistency_tolerance": 0.25,
+    "default_thresholds": {
+      "watch_density": 1.0,
+      "high_density": 2.0,
+      "critical_density": 3.0,
+      "rise_rate_watch": 0.5,
+      "source": "provisional default (通用人群密度分级经验值，未做现场标定)"
+    }
+  },
+  "regions": [
+    {
+      "id": "R_WEST",
+      "name": "西侧展区",
+      "area_m2": 280,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 20,
+        "y": 110,
+        "width": 150,
+        "height": 180
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 300,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-WEST-01",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-west-unc-0"
+      },
+      "source": "synthetic demo scenario",
+      "verified": false
+    },
+    {
+      "id": "R_MAIN",
+      "name": "主展厅",
+      "area_m2": 600,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 190,
+        "y": 110,
+        "width": 220,
+        "height": 180
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 700,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-MAIN-01",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-main-unc-0"
+      },
+      "source": "synthetic demo scenario",
+      "verified": false
+    },
+    {
+      "id": "R_ATRIUM",
+      "name": "中庭",
+      "area_m2": 350,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 430,
+        "y": 110,
+        "width": 160,
+        "height": 180
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 400,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-ATRIUM-01",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-atrium-unc-0"
+      },
+      "source": "synthetic demo scenario",
+      "verified": false
+    },
+    {
+      "id": "R_EAST",
+      "name": "东侧展区",
+      "area_m2": 450,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 610,
+        "y": 110,
+        "width": 180,
+        "height": 180
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 500,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-EAST-01",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-east-unc-0"
+      },
+      "source": "synthetic demo scenario",
+      "verified": false
+    },
+    {
+      "id": "R_NORTH",
+      "name": "北侧连廊",
+      "area_m2": 250,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 100,
+        "y": 20,
+        "width": 420,
+        "height": 80
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 260,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-NORTH-01",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-north-unc-0"
+      },
+      "source": "synthetic demo scenario",
+      "verified": false
+    },
+    {
+      "id": "R_SOUTH",
+      "name": "南侧连廊",
+      "area_m2": 300,
+      "area_provenance": "estimated",
+      "geometry": {
+        "x": 100,
+        "y": 310,
+        "width": 420,
+        "height": 80
+      },
+      "geometry_provenance": "estimated",
+      "holding_capacity_persons": 300,
+      "enabled": true,
+      "camera": {
+        "camera_id": "CAM-SOUTH-01",
+        "roi": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "calibration_status": "uncalibrated",
+        "calibration_version": "cam-south-unc-0"
+      },
+      "source": "synthetic demo scenario",
+      "verified": false
+    }
+  ],
+  "corridors": [
+    {
+      "id": "C01",
+      "name": "主展厅—中庭",
+      "from_region_id": "R_MAIN",
+      "to_region_id": "R_ATRIUM",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 90,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 40,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C02",
+      "name": "中庭—东侧展区",
+      "from_region_id": "R_ATRIUM",
+      "to_region_id": "R_EAST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 100,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 45,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C03",
+      "name": "主展厅—北侧连廊",
+      "from_region_id": "R_MAIN",
+      "to_region_id": "R_NORTH",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 70,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 60,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C04",
+      "name": "主展厅—西侧展区",
+      "from_region_id": "R_MAIN",
+      "to_region_id": "R_WEST",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 60,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C05",
+      "name": "主展厅—南侧连廊",
+      "from_region_id": "R_MAIN",
+      "to_region_id": "R_SOUTH",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 80,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 55,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C06",
+      "name": "中庭—北侧连廊",
+      "from_region_id": "R_ATRIUM",
+      "to_region_id": "R_NORTH",
+      "status": "open",
+      "direction": "forward",
+      "capacity_per_min": 50,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 55,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C07",
+      "name": "中庭—南侧连廊",
+      "from_region_id": "R_ATRIUM",
+      "to_region_id": "R_SOUTH",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 45,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 50,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C08",
+      "name": "东侧展区—北侧连廊",
+      "from_region_id": "R_EAST",
+      "to_region_id": "R_NORTH",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 35,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 90,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C09",
+      "name": "东侧展区—南侧连廊",
+      "from_region_id": "R_EAST",
+      "to_region_id": "R_SOUTH",
+      "status": "open",
+      "direction": "reverse",
+      "capacity_per_min": 30,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 85,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C10",
+      "name": "西侧展区—南侧连廊",
+      "from_region_id": "R_WEST",
+      "to_region_id": "R_SOUTH",
+      "status": "open",
+      "direction": "both",
+      "capacity_per_min": 40,
+      "capacity_provenance": "estimated",
+      "traversal_seconds": 70,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "C11",
+      "name": "北侧连廊—西侧展区（未核验）",
+      "from_region_id": "R_NORTH",
+      "to_region_id": "R_WEST",
+      "status": "unknown",
+      "direction": "both",
+      "capacity_per_min": null,
+      "capacity_provenance": "unknown",
+      "traversal_seconds": 75,
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z",
+      "closure_reason": "该通道未完成现场核验，通行状态与容量均未知"
+    }
+  ],
+  "exits": [
+    {
+      "id": "E_A",
+      "name": "主展厅南出口",
+      "region_id": "R_MAIN",
+      "status": "open",
+      "capacity_per_min": 90,
+      "capacity_provenance": "estimated",
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "E_B",
+      "name": "东侧主出口",
+      "region_id": "R_EAST",
+      "status": "open",
+      "capacity_per_min": 120,
+      "capacity_provenance": "estimated",
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "E_C",
+      "name": "北侧应急出口",
+      "region_id": "R_NORTH",
+      "status": "open",
+      "capacity_per_min": 40,
+      "capacity_provenance": "estimated",
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "E_D",
+      "name": "西侧辅助出口",
+      "region_id": "R_WEST",
+      "status": "open",
+      "capacity_per_min": 50,
+      "capacity_provenance": "estimated",
+      "status_source": "synthetic demo scenario",
+      "verified": false,
+      "updated_at": "2026-10-01T00:00:00.000Z"
+    }
+  ],
+  "demo_scenarios": [
+    {
+      "id": "A_normal",
+      "label": "场景 A · 常规风险预警",
+      "description": "模拟感知输入 → 风险评估 → 容量约束规划 → 独立校验通过 → 展示可行方案（NORMAL）。",
+      "expected_state": "NORMAL",
+      "steps": [
+        {
+          "action": "observe",
+          "observations": {
+            "R_MAIN": {
+              "count": 380,
+              "confidence": 0.92
+            },
+            "R_ATRIUM": {
+              "count": 140,
+              "confidence": 0.9
+            },
+            "R_EAST": {
+              "count": 220,
+              "confidence": 0.91
+            },
+            "R_NORTH": {
+              "count": 110,
+              "confidence": 0.88
+            },
+            "R_SOUTH": {
+              "count": 80,
+              "confidence": 0.9
+            },
+            "R_WEST": {
+              "count": 70,
+              "confidence": 0.89
+            }
+          }
+        },
+        {
+          "action": "recompute"
+        }
+      ]
+    },
+    {
+      "id": "B_exit_fire",
+      "label": "场景 B · B 出口突发火灾",
+      "description": "确认火情 → 关闭东侧主出口 E_B → 原方案失效 → 重新规划 → 校验通过后展示替代路线（REROUTE）。",
+      "expected_state": "REROUTE",
+      "steps": [
+        {
+          "action": "observe",
+          "observations": {
+            "R_MAIN": {
+              "count": 380,
+              "confidence": 0.92
+            },
+            "R_ATRIUM": {
+              "count": 140,
+              "confidence": 0.9
+            },
+            "R_EAST": {
+              "count": 220,
+              "confidence": 0.91
+            },
+            "R_NORTH": {
+              "count": 110,
+              "confidence": 0.88
+            },
+            "R_SOUTH": {
+              "count": 80,
+              "confidence": 0.9
+            },
+            "R_WEST": {
+              "count": 70,
+              "confidence": 0.89
+            }
+          }
+        },
+        {
+          "action": "recompute"
+        },
+        {
+          "action": "incident.create",
+          "type": "fire",
+          "severity": "critical",
+          "description": "东侧主出口 E_B 附近报火情",
+          "affected": {
+            "region_ids": [
+              "R_EAST"
+            ],
+            "corridor_ids": [],
+            "exit_ids": [
+              "E_B"
+            ]
+          },
+          "ref": "fire_b"
+        },
+        {
+          "action": "incident.confirm",
+          "ref": "fire_b"
+        },
+        {
+          "action": "recompute"
+        }
+      ]
+    },
+    {
+      "id": "C_capacity_shortage",
+      "label": "场景 C · C 出口容量不足",
+      "description": "高峰人群 + E_B 关闭 → 剩余出口容量不足 → 独立校验发现未解决需求 → 进入 REJECT 并提示人工介入。",
+      "expected_state": "REJECT",
+      "steps": [
+        {
+          "action": "observe",
+          "observations": {
+            "R_MAIN": {
+              "count": 620,
+              "confidence": 0.93
+            },
+            "R_ATRIUM": {
+              "count": 200,
+              "confidence": 0.9
+            },
+            "R_EAST": {
+              "count": 620,
+              "confidence": 0.92
+            },
+            "R_NORTH": {
+              "count": 150,
+              "confidence": 0.9
+            },
+            "R_SOUTH": {
+              "count": 120,
+              "confidence": 0.9
+            },
+            "R_WEST": {
+              "count": 90,
+              "confidence": 0.9
+            }
+          }
+        },
+        {
+          "action": "incident.create",
+          "type": "fire",
+          "severity": "critical",
+          "description": "东侧主出口 E_B 火情，需长期关闭",
+          "affected": {
+            "region_ids": [
+              "R_EAST"
+            ],
+            "corridor_ids": [],
+            "exit_ids": [
+              "E_B"
+            ]
+          },
+          "ref": "fire_c"
+        },
+        {
+          "action": "incident.confirm",
+          "ref": "fire_c"
+        },
+        {
+          "action": "recompute"
+        }
+      ]
+    }
+  ],
+  "map": {
+    "caption": "概念底图 · 合成场馆 · 区域未空间标定",
+    "backdrop": "/scenarios/venue-default.png",
+    "backdrop_opacity": 0.48,
+    "landmarks": []
+  },
+  "simulation_baseline": {
+    "R_MAIN": {
+      "count": 380,
+      "confidence": 0.92
+    },
+    "R_ATRIUM": {
+      "count": 140,
+      "confidence": 0.9
+    },
+    "R_EAST": {
+      "count": 220,
+      "confidence": 0.91
+    },
+    "R_NORTH": {
+      "count": 110,
+      "confidence": 0.88
+    },
+    "R_SOUTH": {
+      "count": 80,
+      "confidence": 0.9
+    },
+    "R_WEST": {
+      "count": 70,
+      "confidence": 0.89
+    }
+  }
+}

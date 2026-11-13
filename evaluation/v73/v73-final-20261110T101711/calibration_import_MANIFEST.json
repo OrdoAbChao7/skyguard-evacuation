@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v73-final-20261110T101711",
+  "note": "V7.3 场馆导入/标定流水线证据清单（合成/夹具）。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "calibration_import.json",
+      "bytes": 2058,
+      "sha256": "4c809cc0402d99cde108eec51e3b3df3684dee18fc79babf66e65cc8abcae045"
+    },
+    {
+      "path": "calibration_import_README.md",
+      "bytes": 1281,
+      "sha256": "db42e262d9ac34d907415b67ed10e2e35529af7ccff7cafdec8af518afc070c0"
+    },
+    {
+      "path": "calibration_import_metadata.json",
+      "bytes": 224,
+      "sha256": "32ffd6415fd541c6a118086c65153c2d01fbe57346bba8b380acbc87a4f3a644"
+    },
+    {
+      "path": "calibration_import_observations.json",
+      "bytes": 124,
+      "sha256": "3233dab35ea80e45b2b1dfabe8b7cb5e185c88ca4b1e4527c4f31acac595dead"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "run_id": "v74-calibration-dev",
+  "note": "V7.4 标定质量证据（合成）。",
+  "file_count": 3,
+  "files": [
+    {
+      "path": "calibration_quality.json",
+      "bytes": 2941,
+      "sha256": "53d98bd7ccfe8249a61d57e80a6cd807a7e6269ba087e0a5a1e81d894929a0f1"
+    },
+    {
+      "path": "calibration_quality_README.md",
+      "bytes": 1156,
+      "sha256": "93d46b07586493de3a184f1ec15b6efe7566e098d69f5e08fc563da78c3fc7f2"
+    },
+    {
+      "path": "calibration_quality_metadata.json",
+      "bytes": 218,
+      "sha256": "3f0b14c151a2dad26734c09d7a9314403d0d21b59271214751c0cba0249bf5d8"
+    }
+  ]
+}

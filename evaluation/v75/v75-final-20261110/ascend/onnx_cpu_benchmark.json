@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-11-10T08:31:07Z",
+  "model": "forecast_linear.onnx",
+  "model_sha256": "3837d2523cc688c2b5a931dfa2b89830186527b11cee340047243a32cdd14baa",
+  "onnx_check": {
+    "available": true,
+    "valid": true,
+    "error": null
+  },
+  "runtime": {
+    "name": "onnxruntime",
+    "version": "1.29.0",
+    "providers": [
+      "CPUExecutionProvider"
+    ],
+    "device": "cpu",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.7"
+  },
+  "workload": {
+    "input_shape": [
+      1,
+      12
+    ],
+    "output_shape": [
+      1,
+      5
+    ],
+    "iterations": 300
+  },
+  "latency_ms": {
+    "p50": 0.0107,
+    "p95": 0.0118,
+    "mean": 0.0109,
+    "max": 0.0177
+  },
+  "numerical_consistency": {
+    "max_abs_diff": 0.0,
+    "tolerance": 0.001,
+    "passed": true
+  },
+  "boundary": "CPUExecutionProvider；不是昇腾 NPU/CANN 实机结果；参考模型不是生产预测器。"
+}

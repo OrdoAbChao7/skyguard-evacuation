@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v74-stability-dev",
+  "note": "V7.4 稳定性—效率 Pareto 实验清单（合成）。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "stability_README.md",
+      "bytes": 11660,
+      "sha256": "81f58cd04d061a29c937ae7396e64a310a6df55ed513a1891e6016aae8aec822"
+    },
+    {
+      "path": "stability_metadata.json",
+      "bytes": 216,
+      "sha256": "c4399e348b31247645a8dfa9b5d29a858250ab3ecc44e1618ee46778c9119f41"
+    },
+    {
+      "path": "stability_rows.json",
+      "bytes": 1114423,
+      "sha256": "2d685d08632c17fba9ea56fc86092c7400603501ca999c997e589851f4b43a98"
+    },
+    {
+      "path": "stability_summary.json",
+      "bytes": 272798,
+      "sha256": "7fab5f77c92a326e9ba87df885b8bfff6d8edc8c166f0651f2a9faa6d5160f48"
+    }
+  ]
+}

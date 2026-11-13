@@ -1,0 +1,66 @@
+:root {
+  --font-sans: 'Inter', 'Segoe UI Variable Text', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --font-display: 'Bahnschrift', 'DIN Alternate', 'Segoe UI Variable Display', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --bg: #070b13;
+  --panel: #0c131f;
+  --panel-2: #111a29;
+  --text: #e9eff8;
+  --muted: #8295ad;
+  --faint: #6b7f99;
+  --border: #1d2a3d;
+  --border-strong: #2a3b55;
+  --line: #162032;
+  --accent: #34e0c8;
+  --accent-text: #04110f;
+  --ok: #43e0a0;
+  --warn: #f2c15c;
+  --degraded: #ff9b57;
+  --bad: #ff6b81;
+  --info: #7aa2ff;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { margin: 0; min-height: 100%; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+button, input, select, textarea { font: inherit; }
+::selection { background: color-mix(in srgb, var(--accent) 32%, transparent); color: #fff; }
+* { scrollbar-width: thin; scrollbar-color: #33465f transparent; }
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-thumb { background: #2a3b55; border-radius: 9px; border: 2px solid transparent; background-clip: content-box; }
+*::-webkit-scrollbar-thumb:hover { background: #3d5474; background-clip: content-box; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+.app-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  letter-spacing: .12em;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background:
+    radial-gradient(900px 480px at 70% -10%, rgba(52, 224, 200, .09), transparent 60%),
+    var(--bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}

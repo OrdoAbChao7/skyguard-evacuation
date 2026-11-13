@@ -33,6 +33,7 @@ import {
   type PlanInput,
   type PlanOutput,
 } from './planning/evacuation-planner';
+import { runShadowComparison, shadowConfig, type ShadowComparison } from './planning/v7-adapter';
 import { SimulationCrowdProvider } from './providers/simulation';
 
 export interface SafetyDecisionOptions {
@@ -151,6 +152,7 @@ export class SafetyDecisionService {
   private stateEnteredAt = new Date().toISOString();
   private inferenceHealth: { healthy: boolean; reason?: string } = { healthy: true };
   private lastPlanExclusions: Array<{ kind: string; id: string; reason: string }> = [];
+  private shadowComparisons: ShadowComparison[] = [];
   private onStateChange?: () => void;
   private assertWritable?: () => void;
 
@@ -271,6 +273,11 @@ export class SafetyDecisionService {
     return this.lastPlanExclusions;
   }
 
+  /** V7 Shadow Mode 最近比较记录（只读，不参与发布）。 */
+  getShadowComparisons(): ShadowComparison[] {
+    return [...this.shadowComparisons];
+  }
+
   // -------------------------------------------------------------------------
   // 评估
   // -------------------------------------------------------------------------
@@ -309,6 +316,13 @@ export class SafetyDecisionService {
 
       const reasons = [...assessment.untrustedReasons];
       if (network.sensorFailedRegionIds.has(region.id)) reasons.push('sensor_failure_incident');
+      const conflicts = this.observations.conflicts(
+        region.id,
+        Math.max(30, this.scenario.config.trend_window_seconds),
+        0.5,
+        now,
+      );
+      if (conflicts.length > 0) reasons.push('conflicting_observations');
       if (reasons.length > 0) untrustedRegions.push({ regionId: region.id, reasons });
 
       if (assessment.trusted && !network.sensorFailedRegionIds.has(region.id)) {
@@ -670,6 +684,50 @@ export class SafetyDecisionService {
       solve_ms: built.solveMs,
     });
     this.lastPlanExclusions = built.exclusions;
+
+    // V7 Shadow Mode：并行计算与比较，绝不替换 built.plan。
+    const shadowStarted = Date.now();
+    try {
+      const shadowConfigValue = shadowConfig();
+      if (shadowConfigValue.enabled) {
+        const comparison = runShadowComparison({
+          scenario: this.scenario,
+          network,
+          demandByRegion: demand,
+          versions: {
+            scenarioVersion: this.scenario.version,
+            constraintVersion: constraintVersionAtPlanningStart,
+            observationVersion: observationVersionAtPlanningStart,
+          },
+          latestObservations: this.latestObservationMap(),
+          config: this.scenario.config,
+          legacyPlan: built.plan,
+          legacySolveMs: built.solveMs,
+          now: this.now(),
+        });
+        this.shadowComparisons = [comparison, ...this.shadowComparisons]
+          .slice(0, shadowConfigValue.maxComparisons);
+        this.audit.addStage(
+          trace,
+          'shadow_comparison',
+          comparison.decision === 'v7_eligible_for_review' ? 'ok' : 'warning',
+          Date.now() - shadowStarted,
+          {
+            shadow_id: comparison.id,
+            decision: comparison.decision,
+            fallback_reason: comparison.fallback_reason,
+            legacy_valid: comparison.legacy.validation_valid,
+            v7_valid: comparison.v7?.validation_valid ?? null,
+            evacuated_delta: comparison.comparison.evacuated_delta,
+            makespan_delta: comparison.comparison.projected_makespan_delta,
+          },
+        );
+      }
+    } catch (error) {
+      this.audit.addStage(trace, 'shadow_comparison', 'failed', Date.now() - shadowStarted, {
+        reason: (error as Error).message,
+      });
+    }
 
     // 规划期间约束/观测是否发生变化（T11）
     const constraintDrift = this.constraintVersion !== constraintVersionAtPlanningStart;
@@ -1033,6 +1091,7 @@ export class SafetyDecisionService {
     this.stateEnteredAt = this.now().toISOString();
     this.constraintVersion = 0;
     this.lastPlanExclusions = [];
+    this.shadowComparisons = [];
     this.inferenceHealth = { healthy: true };
     this.audit.record({
       actor: actor.username,

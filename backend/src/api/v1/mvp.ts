@@ -11,6 +11,8 @@ import { SECRET, verifyToken } from './auth';
 import { getMvpService } from '../../services/mvp';
 import { WorkOrderCreateSchema, type OpsActor } from '../../services/mvp/ops';
 import { securityConfig } from '../../config/security';
+import { getSafetyService } from '../../services/safety';
+import { buildForecastPreview, buildJointVoIPreview } from '../../services/v70/research';
 
 export function createMvpRouter(): Router {
   const router = Router();
@@ -125,6 +127,28 @@ export function createMvpRouter(): Router {
   router.get('/predictions/:regionId', handle((req, res) => {
     const horizon = req.query.horizon_minutes ? Number(req.query.horizon_minutes) : undefined;
     res.json(getMvpService().predict(paramOf(req, 'regionId'), Number.isFinite(horizon) ? horizon : undefined));
+  }));
+
+  // ------------------------------------------------------- V7 研究预览（只读）
+  router.get('/v70/forecast/:regionId', handle((req, res) => {
+    const horizon = req.query.horizon_minutes ? Number(req.query.horizon_minutes) : 5;
+    res.json(buildForecastPreview(getSafetyService(), paramOf(req, 'regionId'), Number.isFinite(horizon) ? horizon : 5));
+  }));
+
+  router.get('/v70/joint-investigation', handle((req, res) => {
+    const target = typeof req.query.region_id === 'string' ? req.query.region_id : undefined;
+    if (!target) {
+      fail(res, 400, 'INVALID_INPUT', '需要 region_id 参数');
+      return;
+    }
+    const correlation = req.query.correlation !== undefined ? Number(req.query.correlation) : undefined;
+    const redundancy = req.query.redundancy !== undefined ? Number(req.query.redundancy) : undefined;
+    const maxSequence = req.query.max_sequence !== undefined ? Number(req.query.max_sequence) : undefined;
+    res.json(buildJointVoIPreview(getSafetyService(), target, {
+      correlation: Number.isFinite(correlation) ? correlation : undefined,
+      redundancyPenalty: Number.isFinite(redundancy) ? redundancy : undefined,
+      maxSequence: Number.isFinite(maxSequence) && (maxSequence as number) > 0 ? maxSequence : undefined,
+    }));
   }));
 
   router.get('/tools', handle((_req, res) => {

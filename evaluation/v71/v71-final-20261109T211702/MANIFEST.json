@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "run_id": "v71-final-20261109T211702",
+  "generated_at": "2026-11-09T13:17:14.209Z",
+  "note": "V7.1 实验根清单；覆盖预测区间与滚动重规划两组证据。",
+  "file_count": 11,
+  "files": [
+    {
+      "path": "V71_SUMMARY.md",
+      "bytes": 3075,
+      "sha256": "005096fb1e4a1c9eab089f04f81b1fa0792738573dbccbdadee4558ad3d64bde"
+    },
+    {
+      "path": "prediction_MANIFEST.json",
+      "bytes": 778,
+      "sha256": "e566d662d6e2cf81d412237a7cc4028a00ccf4b8185c827d4877a01716b9162a"
+    },
+    {
+      "path": "prediction_README.md",
+      "bytes": 3897,
+      "sha256": "0681890b238f11b710c918c9f61f55e194ea21a436e2209e2dd32d1abcd1c34d"
+    },
+    {
+      "path": "prediction_metadata.json",
+      "bytes": 224,
+      "sha256": "6eb337b2360e32103ffdf5db5ab4be40016cd0f5a9dfdfcf0ff1d7a42f40c0c7"
+    },
+    {
+      "path": "prediction_rows.json",
+      "bytes": 6673638,
+      "sha256": "34ab2b7f1a5a839406aa9e2876a1ce93a26fc42d90f782a00020256e785801f0"
+    },
+    {
+      "path": "prediction_summary.json",
+      "bytes": 37132,
+      "sha256": "36d200e0ccac3c318119809bdb278a0fa9fb03b7ed433bc8b6d04e164d6fd274"
+    },
+    {
+      "path": "replanning_MANIFEST.json",
+      "bytes": 788,
+      "sha256": "b9174a6e379cb17f1494f8ab5bc0b25777c4b365710885c93c5bfc51c347141f"
+    },
+    {
+      "path": "replanning_README.md",
+      "bytes": 15148,
+      "sha256": "ccd11c58736bc70b2a3912eff6d7b1f0e016b64acdbe14f43dc1164bc604c5d8"
+    },
+    {
+      "path": "replanning_metadata.json",
+      "bytes": 224,
+      "sha256": "d2738c4cbe9482a0e6ea0e512b6ff9457ea8cb7d846305641d05e5b242ddeefe"
+    },
+    {
+      "path": "replanning_rows.json",
+      "bytes": 531630,
+      "sha256": "09c57f6455fb22043c4268fe98318cb854095b41cbd6c28444d6c377afc8dde1"
+    },
+    {
+      "path": "replanning_summary.json",
+      "bytes": 144892,
+      "sha256": "526724e7e4ca275d27ef73ba1314d2145fcaa6f2d643d23257bbb0c656821de6"
+    }
+  ]
+}

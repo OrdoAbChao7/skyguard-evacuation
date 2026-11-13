@@ -1,0 +1,27 @@
+SkyGuard V7.5.2 test evidence
+Date: 2026-11-11
+Node: v24.19.0
+tsx: v4.23.15
+
+Command:
+  npx tsx --test backend/tests/simulation/v752.test.ts
+Result:
+  tests 10
+  pass 10
+  fail 0
+  duration_ms ~1865
+
+Command:
+  npm test --prefix backend
+Result:
+  tests 327
+  pass 327
+  fail 0
+  duration_ms ~10581
+
+Notes:
+- The 10 V7.5.2 tests cover mass conservation (no inflow / constant inflow / insufficient exit),
+  real closure and recovery, multiple exits, determinism, ST-02 backpressure/reroute,
+  ST-04 static-vs-greedy reroute, ST-05 fail-closed degraded observations, strategy path
+  differentiation, and safety rejection/continuation.
+- Full suite includes all pre-existing backend tests; no existing test was deleted or weakened.

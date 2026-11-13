@@ -244,6 +244,35 @@ export interface MultiRegionAnalysis {
   note?: string;
 }
 
+export interface V70ForecastPreview {
+  available: boolean;
+  reason?: string;
+  region_id: string;
+  horizon_minutes: number;
+  result?: {
+    predicted: number;
+    interval90: { lower: number; upper: number };
+    interval95: { lower: number; upper: number };
+    reliability: { status: 'ok' | 'warning' | 'failed'; reasons: string[] };
+    regime: { label: string };
+    effective_methods: string[];
+  };
+  provenance: { algorithm: string; data_source: string; note: string };
+}
+
+export interface V70JointPreview {
+  available: boolean;
+  reason?: string;
+  target_region_id: string;
+  decision?: {
+    selected: Array<{ action_id: string; kind: string; marginal_risk_reduction: number }>;
+    total_expected_risk_reduction: number;
+    stop_reason: string | null;
+    config: { correlation: number; redundancy_penalty: number; max_sequence: number; source: string };
+  };
+  provenance: { engine: string; note: string };
+}
+
 export const mvpApi = {
   dashboard: () => client.get<MvpDashboard>('/mvp/dashboard').then(response => response.data),
   scenario: () => client.get('/mvp/scenario').then(response => response.data),
@@ -308,6 +337,12 @@ export const mvpApi = {
     client.post('/mvp/replay/step', { count }, { headers: adminHeaders() }).then(response => response.data),
   toolCatalog: () => client.get<{ tools: Array<{ name: string; title: string; description: string }> }>('/mvp/tools')
     .then(response => response.data.tools),
+  v70Forecast: (regionId: string, horizonMinutes = 5) =>
+    client.get<V70ForecastPreview>(`/mvp/v70/forecast/${regionId}`, { params: { horizon_minutes: horizonMinutes } })
+      .then(response => response.data),
+  v70Joint: (regionId: string) =>
+    client.get<V70JointPreview>('/mvp/v70/joint-investigation', { params: { region_id: regionId } })
+      .then(response => response.data),
 };
 
 export default mvpApi;

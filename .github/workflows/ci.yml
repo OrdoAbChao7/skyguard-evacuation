@@ -28,8 +28,18 @@ jobs:
         run: npm run demo:mvp
       - name: V6.5 prediction experiment
         run: npm run benchmark:v65 --prefix backend
+      - name: V7.1 prediction + replanning experiments
+        run: npm run benchmark:v71 --prefix backend
+      - name: V7.2 stability + calibration + shadow + Huawei status
+        run: npm run benchmark:v72 --prefix backend
+      - name: V7.3 adaptive stability + venue import + shadow ops + Ascend + AgentArts
+        run: npm run benchmark:v73 --prefix backend
+      - name: V7.4 gated stability + surge detection + calibration quality + Ascend + AgentArts
+        run: npm run benchmark:v74 --prefix backend
+      - name: V7.5 detection + fusion smoke benchmarks
+        run: npm run benchmark:v75 --prefix backend -- --only=detection,fusion
       - name: Python syntax check (real-data tools)
-        run: python -m py_compile backend/python/real_data/*.py backend/python/real_data/tests/*.py
+        run: python -m py_compile backend/python/real_data/*.py backend/python/real_data/tests/*.py backend/python/ascend/*.py
       - name: Verify committed evidence manifest
         run: npx tsx backend/scripts/evidence-manifest.ts --verify
       - name: Verify evidence consistency (no benchmark reruns)

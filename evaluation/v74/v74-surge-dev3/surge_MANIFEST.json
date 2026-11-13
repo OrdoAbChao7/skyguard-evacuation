@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v74-surge-dev3",
+  "note": "V7.4 surge 检测证据（合成）。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "surge_README.md",
+      "bytes": 909,
+      "sha256": "843f799f22cd33845e3c32a13d42cd860b5bcb58cb42802e81dfe9407ccb3ed5"
+    },
+    {
+      "path": "surge_metadata.json",
+      "bytes": 213,
+      "sha256": "a0ad4d63f35b7e329e7af4ecf5defa733489a22dc79fd0eec6fabe3c995de07a"
+    },
+    {
+      "path": "surge_rows.json",
+      "bytes": 52153,
+      "sha256": "04e8dc1330e755214ad538cbb5d1fb362c99b9f227d79e7e2499371e97591ec3"
+    },
+    {
+      "path": "surge_summary.json",
+      "bytes": 2525,
+      "sha256": "4685cb77dd29798b1d4e6a0a5d1538c37e6d64261befd9d6948b7d567155330c"
+    }
+  ]
+}

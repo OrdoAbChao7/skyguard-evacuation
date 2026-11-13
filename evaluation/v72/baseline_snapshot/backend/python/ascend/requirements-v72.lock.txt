@@ -1,0 +1,5 @@
+# V7.2 ONNX/Ascend 工具链精确版本锁定（本机验证环境，2026-11-10）
+# 安装：pip install --only-binary=:all: -r requirements-v72.lock.txt
+onnx==1.23.2
+onnxruntime==1.29.0
+numpy==2.4.3

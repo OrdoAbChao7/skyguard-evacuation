@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "run_id": "v72-huawei-dev",
+  "note": "V7.2 华为生态集成状态清单。",
+  "file_count": 5,
+  "files": [
+    {
+      "path": "huawei_agentarts.json",
+      "bytes": 1423,
+      "sha256": "b198081861f426f61911213c31d79e451f9d062bad0bccbab5f034b9d2f7d99c"
+    },
+    {
+      "path": "huawei_ascend.json",
+      "bytes": 2537,
+      "sha256": "d3fbf01f7712320b42459db21a29c78dee4beeb00b87114bac215e3a15fd0cf6"
+    },
+    {
+      "path": "huawei_status.json",
+      "bytes": 4338,
+      "sha256": "94829a53a8dff92bfd394c13d08aa8f134c44310f7834529a1801a33c2f80921"
+    },
+    {
+      "path": "huawei_status_metadata.json",
+      "bytes": 213,
+      "sha256": "b9be174f42ed144ef17911d5a262856782c2f3767f82f8376249ffbad842beaa"
+    },
+    {
+      "path": "huawei_status_README.md",
+      "bytes": 1495,
+      "sha256": "52316c51fde3b470eba8ce014f09f084732d369c1672b789e79d1c479cbc5012"
+    }
+  ]
+}

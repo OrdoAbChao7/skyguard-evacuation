@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "run_id": "v73-final-20261110T101711",
+  "note": "V7.3 AgentArts 状态与幂等证据清单（stub）。",
+  "file_count": 2,
+  "files": [
+    {
+      "path": "agentarts_status.json",
+      "bytes": 1706,
+      "sha256": "3a26a3a50839cd6ec151b5e946d45fc469fae9adfaf78c777c202bb17d07e632"
+    },
+    {
+      "path": "agentarts_status_README.md",
+      "bytes": 1323,
+      "sha256": "9f88524c2fd97916784ab8fe57c47cd74baed522696c4dcc43af0e3391a24d86"
+    }
+  ]
+}

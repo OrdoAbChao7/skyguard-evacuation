@@ -1,0 +1,26 @@
+[
+  {
+    "case": "fresh_live",
+    "accepted": true,
+    "rejected_reason": null,
+    "source": "live_video",
+    "calibration_version": "camera-count-r_north_stand",
+    "estimated_count": 320
+  },
+  {
+    "case": "stale",
+    "accepted": false,
+    "rejected_reason": "stale_observation",
+    "source": null,
+    "calibration_version": null,
+    "estimated_count": null
+  },
+  {
+    "case": "low_confidence",
+    "accepted": false,
+    "rejected_reason": "low_confidence",
+    "source": null,
+    "calibration_version": null,
+    "estimated_count": null
+  }
+]

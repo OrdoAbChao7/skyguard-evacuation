@@ -167,6 +167,46 @@ export class ObservationStore {
     });
   }
 
+  /**
+   * V7.3：冲突观测检测。
+   * 仅当同一区域在时间窗内出现「不同 provider」且人数差超过相对阈值时才判定冲突；
+   * 同一 provider 的连续更新（正常观测流）不会被误报。
+   */
+  conflicts(
+    regionId: string,
+    windowSeconds: number,
+    relativeTolerance = 0.5,
+    now: Date = new Date(),
+  ): Array<{ providers: string[]; counts: number[]; difference: number }> {
+    const from = new Date(now.getTime() - Math.max(1, windowSeconds) * 1000);
+    const recent = this.window(regionId, from, now).filter(item => item.valid);
+    if (recent.length < 2) return [];
+    const byProvider = new Map<string, DensityObservation>();
+    for (const observation of recent) {
+      const existing = byProvider.get(observation.provider);
+      if (!existing || observation.observed_at > existing.observed_at) byProvider.set(observation.provider, observation);
+    }
+    if (byProvider.size < 2) return [];
+    const entries = [...byProvider.entries()];
+    const conflicts: Array<{ providers: string[]; counts: number[]; difference: number }> = [];
+    for (let i = 0; i < entries.length; i += 1) {
+      for (let j = i + 1; j < entries.length; j += 1) {
+        const [providerA, observationA] = entries[i];
+        const [providerB, observationB] = entries[j];
+        const maxCount = Math.max(observationA.estimated_count, observationB.estimated_count);
+        const difference = Math.abs(observationA.estimated_count - observationB.estimated_count);
+        if (maxCount > 0 && difference / maxCount > relativeTolerance) {
+          conflicts.push({
+            providers: [providerA, providerB],
+            counts: [observationA.estimated_count, observationB.estimated_count],
+            difference: Number((difference / maxCount).toFixed(4)),
+          });
+        }
+      }
+    }
+    return conflicts;
+  }
+
   snapshot(): DensityObservation[] {
     const out: DensityObservation[] = [];
     for (const list of this.history.values()) {

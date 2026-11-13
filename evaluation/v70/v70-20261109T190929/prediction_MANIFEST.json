@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v70-20261109T190929",
+  "note": "V7.1 预测实验独立清单。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "prediction_README.md",
+      "bytes": 12343,
+      "sha256": "8f944994e20ac8417da57257ed1fd851bf515c9f1553cd01f2a5b2cfb8070bdf"
+    },
+    {
+      "path": "prediction_metadata.json",
+      "bytes": 218,
+      "sha256": "d9b33253801a4f3ebc87102e6f58e269f654e29d30fc3969cfa4319cfecfb172"
+    },
+    {
+      "path": "prediction_rows.json",
+      "bytes": 25816325,
+      "sha256": "496ff5c244d26f54de21368353b0daef43607f10427fe61ab62a614923c631d3"
+    },
+    {
+      "path": "prediction_summary.json",
+      "bytes": 139237,
+      "sha256": "edc8816fb76e237719546364b96fc8f64e90dac50cc3643ac3007e9e1dec0189"
+    }
+  ]
+}

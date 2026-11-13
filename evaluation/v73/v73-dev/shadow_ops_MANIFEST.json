@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v73-dev",
+  "note": "V7.3 Shadow 运营验证清单（合成）。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "shadow_ops_README.md",
+      "bytes": 2052,
+      "sha256": "b7fe4b37ddd35305ee3f8e0b8156a5762dcd21cea4786d10417b93b8830df9df"
+    },
+    {
+      "path": "shadow_ops_metadata.json",
+      "bytes": 206,
+      "sha256": "e18d5e9f55e2d57e13b17171c4cafb0fd72af08a7fcf646e7d7c20ec1e2063e9"
+    },
+    {
+      "path": "shadow_ops_rows.json",
+      "bytes": 33803,
+      "sha256": "234f81d8ca4138ff478e560d449c65360511aae2b0f2626ac9eea6c4488d5a89"
+    },
+    {
+      "path": "shadow_ops_summary.json",
+      "bytes": 4121,
+      "sha256": "8d9a2eb5fc844c31f51d112e14b636e923d4ad6009113b3576709ee2cafad9af"
+    }
+  ]
+}

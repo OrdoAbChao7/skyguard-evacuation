@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "run_id": "v72-calib-dev",
+  "note": "V7.2 场馆标定流水线独立清单（合成数据）。",
+  "file_count": 7,
+  "files": [
+    {
+      "path": "calibration_README.md",
+      "bytes": 1598,
+      "sha256": "2da9f29acd237555ebff12bede83314e5e70b5033cc943e05123fd7748d19a5c"
+    },
+    {
+      "path": "calibration_application.json",
+      "bytes": 134,
+      "sha256": "952bcbf095e97f4a7a5ddd7b9cd70488365a3d05b6c1a647312acd89a33dde99"
+    },
+    {
+      "path": "calibration_estimates.json",
+      "bytes": 10243,
+      "sha256": "42c4f86684b62fd93944134926f9a1b78af13f7416855e099e79e0accb8d34d9"
+    },
+    {
+      "path": "calibration_evidence.json",
+      "bytes": 11522,
+      "sha256": "a57c0e4d4fea5a7a68a2ab6d1ea3d32b64d83bd071a1dabb9e6c7e8d6e8120ce"
+    },
+    {
+      "path": "calibration_metadata.json",
+      "bytes": 212,
+      "sha256": "624ba2f276abe551dc34695734983e3f36edc0a6d258f8258ce6c4c0fb1c1e06"
+    },
+    {
+      "path": "calibration_observations.json",
+      "bytes": 563,
+      "sha256": "f4eb9af1e238766f2230fb43b7e06550435d471509634d2c35e153c3fea9c157"
+    },
+    {
+      "path": "calibration_validation.json",
+      "bytes": 224,
+      "sha256": "3824a99fbfebeb0cfc20d2807ee3c9ccaad77d281c76ce99109d913ffe416293"
+    }
+  ]
+}

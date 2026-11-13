@@ -1,0 +1,46 @@
+{
+  "model": "forecast_linear.onnx",
+  "sha256": "3837d2523cc688c2b5a931dfa2b89830186527b11cee340047243a32cdd14baa",
+  "producer": "skyguard-v72-reference",
+  "input": {
+    "name": "history",
+    "shape": [
+      1,
+      12
+    ],
+    "dtype": "float32"
+  },
+  "output": {
+    "name": "forecast",
+    "shape": [
+      1,
+      5
+    ],
+    "dtype": "float32"
+  },
+  "semantics": "linear trend extrapolation from first/last history value, clamped at 0",
+  "reference_sample": {
+    "history": [
+      299.9169616699219,
+      301.57379150390625,
+      302.9051513671875,
+      302.1576232910156,
+      307.8633117675781,
+      292.7444763183594,
+      292.4954833984375,
+      292.3270263671875,
+      290.21337890625,
+      292.2469482421875,
+      297.8584289550781,
+      294.3507385253906
+    ],
+    "forecast": [
+      293.8447265625,
+      293.33868408203125,
+      292.8326721191406,
+      292.32666015625,
+      291.8206481933594
+    ]
+  },
+  "note": "参考模型，仅用于 ONNX/ATC 链路验证；不是 SkyGuard 生产预测器，也不是 NPU 实机证据。"
+}

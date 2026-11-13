@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v70-final-20261109T195122",
+  "note": "V7.2 联合 VoI 实验独立清单。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "joint_voi_README.md",
+      "bytes": 4370,
+      "sha256": "4b4a8b82279a32f306a282869cad360b8783b3ac8b5bf192415b72bad01d9812"
+    },
+    {
+      "path": "joint_voi_metadata.json",
+      "bytes": 439,
+      "sha256": "26a7e68fa24b0a184a86fa8a767bdc872e92c888d19102536f9137c5d4c1681a"
+    },
+    {
+      "path": "joint_voi_rows.json",
+      "bytes": 2890873,
+      "sha256": "397efc0f5292cc483ccba012e982ba9c538db959fae0ac4f9d8815dbd6aa7761"
+    },
+    {
+      "path": "joint_voi_summary.json",
+      "bytes": 192482,
+      "sha256": "6c2d5ad0c5a84dce232b7c27d2587fa483803203b679451a072a3b16096f8b65"
+    }
+  ]
+}

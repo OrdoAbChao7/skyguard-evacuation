@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v75-orchestrator-dev1",
+  "note": "V7.5 Track E 融合证据（合成）。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "fusion_README.md",
+      "bytes": 2899,
+      "sha256": "b0a51fbc91c4b46e90257fed1d9e656f3c71789d7b6dc49ee2b02f3451dd3832"
+    },
+    {
+      "path": "fusion_metadata.json",
+      "bytes": 220,
+      "sha256": "67b8f7e8119d78c1834aac3d6397e47d8166477f22d13bcf1e50c8232e428ec0"
+    },
+    {
+      "path": "fusion_rows.json",
+      "bytes": 825200,
+      "sha256": "fa0c6402b073dca9e8c9b8d2e8b3a2f929a6e65bbae698ee7f2c5475cd13fcee"
+    },
+    {
+      "path": "fusion_summary.json",
+      "bytes": 28118,
+      "sha256": "99be5d75edccf416eb441406fe95c237c812bb0a71bf3da1ece143918254ba9a"
+    }
+  ]
+}

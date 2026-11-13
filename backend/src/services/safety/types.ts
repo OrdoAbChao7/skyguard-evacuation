@@ -519,6 +519,15 @@ export const InvestigationPolicySchema = z.object({
     /** 冲突时后验与先验的混合系数：0 = 完全采用后验，1 = 完全保持先验。 */
     blend_prior: z.number().min(0).max(1),
   }).optional(),
+  /** 联合 VoI 参数（来自场景；缺省时使用默认值并在输出中标记 legacy_default）。 */
+  joint: z.object({
+    /** 区域间信息相关程度：0 = 独立，1 = 完全相关。 */
+    correlation: z.number().min(0).max(1),
+    /** 覆盖重叠造成的冗余折扣强度：0 = 不折扣，1 = 完全折扣。 */
+    redundancy_penalty: z.number().min(0).max(1),
+    /** 单次决策最多顺序选择的动作数。 */
+    max_sequence: z.number().int().positive().max(6).optional(),
+  }).optional(),
   /** VoI 低于该值即停止调查、转人工。 */
   stop_threshold: z.number(),
   max_investigations: z.number().int().positive().max(6),

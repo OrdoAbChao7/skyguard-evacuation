@@ -1,0 +1,1684 @@
+{
+  "config": {
+    "seeds": [
+      20261109,
+      20261110,
+      20261111,
+      20261112,
+      20261113,
+      20261114,
+      20261115,
+      20261116,
+      20261117,
+      20261118,
+      20261119,
+      20261120,
+      20261121,
+      20261122,
+      20261123,
+      20261124,
+      20261125,
+      20261126,
+      20261127,
+      20261128,
+      20261129,
+      20261130,
+      20261131,
+      20261132,
+      20261133,
+      20261134,
+      20261135,
+      20261136,
+      20261137,
+      20261138
+    ],
+    "strategies": [
+      "static_mcf",
+      "shortest_path",
+      "max_flow",
+      "milp_restricted",
+      "reactive_mcf",
+      "mpc_forecast",
+      "mpc_queue"
+    ],
+    "control_interval_minutes": 2,
+    "planning_horizon_minutes": 10,
+    "max_execution_minutes": 24,
+    "forecast_error_model": "时间 ±1 分钟、人数 ×[0.8,1.2]；显式合成误差，仅用于策略比较。",
+    "execution_model": "1 分钟离散 FIFO 队列 + BPR 行程时间放大（a=0.15, b=2，未标定）。",
+    "data_nature": "合成场景 + 合成入流；不代表真实场馆疏散效果。"
+  },
+  "summary": {
+    "static_mcf": {
+      "n": 30,
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.9161,
+        "lower": 0.9095,
+        "upper": 0.9226,
+        "sd": 0.0184,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 19,
+        "lower": 19,
+        "upper": 19,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 51293.4806,
+        "lower": 50194.745,
+        "upper": 52392.2162,
+        "sd": 3070.4197,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 5226.4142,
+        "lower": 5120.4548,
+        "upper": 5332.3735,
+        "sd": 296.1036,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 3.3946,
+        "lower": 3.3629,
+        "upper": 3.4263,
+        "sd": 0.0885,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 12.1,
+        "lower": 11.9908,
+        "upper": 12.2092,
+        "sd": 0.3051,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 1.4333,
+        "lower": 0.5045,
+        "upper": 2.3621,
+        "sd": 2.5955,
+        "n": 30
+      },
+      "validator_valid_rate": 1,
+      "plan_unresolved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      }
+    },
+    "shortest_path": {
+      "n": 30,
+      "completed": {
+        "mean": 5843.429,
+        "lower": 5779.4198,
+        "upper": 5907.4383,
+        "sd": 178.874,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 1439.3376,
+        "lower": 1335.3684,
+        "upper": 1543.3069,
+        "sd": 290.5424,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.8033,
+        "lower": 0.7908,
+        "upper": 0.8158,
+        "sd": 0.0349,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 24,
+        "lower": 24,
+        "upper": 24,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 70265.3727,
+        "lower": 68038.3221,
+        "upper": 72492.4233,
+        "sd": 6223.4992,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 4769.5434,
+        "lower": 4685.1992,
+        "upper": 4853.8876,
+        "sd": 235.7001,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 7.1815,
+        "lower": 7.0889,
+        "upper": 7.2741,
+        "sd": 0.2587,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 19.9667,
+        "lower": 19.8522,
+        "upper": 20.0811,
+        "sd": 0.3198,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 0.4333,
+        "lower": 0.253,
+        "upper": 0.6137,
+        "sd": 0.504,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      }
+    },
+    "max_flow": {
+      "n": 30,
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.9161,
+        "lower": 0.9095,
+        "upper": 0.9226,
+        "sd": 0.0184,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 17.0333,
+        "lower": 16.7149,
+        "upper": 17.3518,
+        "sd": 0.8899,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 37882.8695,
+        "lower": 36643.7985,
+        "upper": 39121.9406,
+        "sd": 3462.5875,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 3822.7083,
+        "lower": 3711.999,
+        "upper": 3933.4177,
+        "sd": 309.3776,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 2.8209,
+        "lower": 2.7412,
+        "upper": 2.9006,
+        "sd": 0.2227,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 6.6333,
+        "lower": 6.4344,
+        "upper": 6.8323,
+        "sd": 0.5561,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 1.6,
+        "lower": 1.0717,
+        "upper": 2.1283,
+        "sd": 1.4762,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      }
+    },
+    "milp_restricted": {
+      "n": 30,
+      "completed": {
+        "mean": 5833.7333,
+        "lower": 5752.5716,
+        "upper": 5914.8951,
+        "sd": 226.8068,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.8013,
+        "lower": 0.7927,
+        "upper": 0.81,
+        "sd": 0.0241,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 11.3,
+        "lower": 11.0487,
+        "upper": 11.5513,
+        "sd": 0.7022,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 18504.2152,
+        "lower": 17366.7531,
+        "upper": 19641.6772,
+        "sd": 3178.6409,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 2988.9931,
+        "lower": 2923.2989,
+        "upper": 3054.6872,
+        "sd": 183.5825,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 1.9558,
+        "lower": 1.9138,
+        "upper": 1.9978,
+        "sd": 0.1175,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 4.4667,
+        "lower": 4.2851,
+        "upper": 4.6482,
+        "sd": 0.5074,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 29.1,
+        "lower": 26.8342,
+        "upper": 31.3658,
+        "sd": 6.3319,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 835.7333,
+        "lower": 783.1295,
+        "upper": 888.3371,
+        "sd": 147.0015,
+        "n": 30
+      }
+    },
+    "reactive_mcf": {
+      "n": 30,
+      "completed": {
+        "mean": 5938.2054,
+        "lower": 5842.2523,
+        "upper": 6034.1584,
+        "sd": 268.1411,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 1344.5613,
+        "lower": 1299.8787,
+        "upper": 1389.2439,
+        "sd": 124.8655,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.8153,
+        "lower": 0.8092,
+        "upper": 0.8213,
+        "sd": 0.0169,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 7.5333,
+        "lower": 7.3518,
+        "upper": 7.7149,
+        "sd": 0.5074,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 55982.8589,
+        "lower": 54442.3293,
+        "upper": 57523.3884,
+        "sd": 4305.0142,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 3858.1538,
+        "lower": 3781.8604,
+        "upper": 3934.4471,
+        "sd": 213.2019,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 0.4207,
+        "lower": 0.4153,
+        "upper": 0.426,
+        "sd": 0.015,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 3286.8667,
+        "lower": 2800.3834,
+        "upper": 3773.35,
+        "sd": 1359.4789,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 2.5333,
+        "lower": 2.272,
+        "upper": 2.7947,
+        "sd": 0.7303,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 861.3333,
+        "lower": 812.5694,
+        "upper": 910.0972,
+        "sd": 136.2709,
+        "n": 30
+      }
+    },
+    "mpc_forecast": {
+      "n": 30,
+      "completed": {
+        "mean": 5906.2154,
+        "lower": 5821.4454,
+        "upper": 5990.9854,
+        "sd": 236.8899,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 1376.5512,
+        "lower": 1320.2876,
+        "upper": 1432.8149,
+        "sd": 157.2288,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.8111,
+        "lower": 0.8043,
+        "upper": 0.8179,
+        "sd": 0.0191,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 7.4333,
+        "lower": 7.23,
+        "upper": 7.6367,
+        "sd": 0.5683,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 56885.7344,
+        "lower": 54861.7459,
+        "upper": 58909.7229,
+        "sd": 5656.0416,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 3885.6225,
+        "lower": 3785.88,
+        "upper": 3985.3651,
+        "sd": 278.7309,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 0.4249,
+        "lower": 0.4197,
+        "upper": 0.4301,
+        "sd": 0.0145,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 3608.9667,
+        "lower": 3152.9846,
+        "upper": 4064.9487,
+        "sd": 1274.2432,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 2.7,
+        "lower": 2.3465,
+        "upper": 3.0535,
+        "sd": 0.9879,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 871.8667,
+        "lower": 806.2587,
+        "upper": 937.4747,
+        "sd": 183.3417,
+        "n": 30
+      }
+    },
+    "mpc_queue": {
+      "n": 30,
+      "completed": {
+        "mean": 5905.623,
+        "lower": 5820.6904,
+        "upper": 5990.5557,
+        "sd": 237.3445,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 1377.1436,
+        "lower": 1320.8234,
+        "upper": 1433.4639,
+        "sd": 157.3871,
+        "n": 30
+      },
+      "completion_ratio": {
+        "mean": 0.811,
+        "lower": 0.8042,
+        "upper": 0.8179,
+        "sd": 0.0191,
+        "n": 30
+      },
+      "makespan": {
+        "mean": 7.4,
+        "lower": 7.2217,
+        "upper": 7.5783,
+        "sd": 0.4983,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 56911.467,
+        "lower": 54890.0766,
+        "upper": 58932.8573,
+        "sd": 5648.7811,
+        "n": 30
+      },
+      "max_queue": {
+        "mean": 3885.6225,
+        "lower": 3785.88,
+        "upper": 3985.3651,
+        "sd": 278.7309,
+        "n": 30
+      },
+      "mean_wait": {
+        "mean": 0.4181,
+        "lower": 0.413,
+        "upper": 0.4231,
+        "sd": 0.0141,
+        "n": 30
+      },
+      "p95_wait": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "sd": 0,
+        "n": 30
+      },
+      "switch_persons": {
+        "mean": 3604.3333,
+        "lower": 3145.9261,
+        "upper": 4062.7405,
+        "sd": 1281.0203,
+        "n": 30
+      },
+      "runtime_ms": {
+        "mean": 2.4,
+        "lower": 2.1244,
+        "upper": 2.6756,
+        "sd": 0.7701,
+        "n": 30
+      },
+      "validator_valid_rate": 0,
+      "plan_unresolved": {
+        "mean": 871.8667,
+        "lower": 806.2587,
+        "upper": 937.4747,
+        "sd": 183.3417,
+        "n": 30
+      }
+    }
+  },
+  "paired": {
+    "static_mcf": {
+      "unserved": {
+        "shortest_path": {
+          "mean_diff": 826.0376,
+          "ci": {
+            "mean": 826.0376,
+            "lower": 744.8163,
+            "upper": 907.259,
+            "sd": 226.9732,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 746.8508,
+            "upper": 902.8311
+          },
+          "cohen_dz": 3.6394
+        },
+        "max_flow": {
+          "mean_diff": 0,
+          "ci": {
+            "mean": 0,
+            "lower": 0,
+            "upper": 0,
+            "sd": 0,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 0,
+            "upper": 0
+          },
+          "cohen_dz": 0.446
+        },
+        "milp_restricted": {
+          "mean_diff": 0,
+          "ci": {
+            "mean": 0,
+            "lower": 0,
+            "upper": 0,
+            "sd": 0,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 0,
+            "upper": 0
+          },
+          "cohen_dz": 0.0617
+        },
+        "reactive_mcf": {
+          "mean_diff": 731.2613,
+          "ci": {
+            "mean": 731.2613,
+            "lower": 659.0495,
+            "upper": 803.4731,
+            "sd": 201.7962,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 659.8402,
+            "upper": 804.9453
+          },
+          "cohen_dz": 3.6238
+        },
+        "mpc_forecast": {
+          "mean_diff": 763.2512,
+          "ci": {
+            "mean": 763.2512,
+            "lower": 697.0865,
+            "upper": 829.416,
+            "sd": 184.8976,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 697.5547,
+            "upper": 830.3486
+          },
+          "cohen_dz": 4.128
+        },
+        "mpc_queue": {
+          "mean_diff": 763.8436,
+          "ci": {
+            "mean": 763.8436,
+            "lower": 697.6327,
+            "upper": 830.0545,
+            "sd": 185.0265,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 698.1323,
+            "upper": 830.7924
+          },
+          "cohen_dz": 4.1283
+        }
+      },
+      "makespan": {
+        "shortest_path": {
+          "mean_diff": 5,
+          "ci": {
+            "mean": 5,
+            "lower": 5,
+            "upper": 5,
+            "sd": 0,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 5,
+            "upper": 5
+          },
+          "cohen_dz": 0
+        },
+        "max_flow": {
+          "mean_diff": -1.9667,
+          "ci": {
+            "mean": -1.9667,
+            "lower": -2.2851,
+            "upper": -1.6482,
+            "sd": 0.8899,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -2.3,
+            "upper": -1.6667
+          },
+          "cohen_dz": -2.2099
+        },
+        "milp_restricted": {
+          "mean_diff": -7.7,
+          "ci": {
+            "mean": -7.7,
+            "lower": -7.9513,
+            "upper": -7.4487,
+            "sd": 0.7022,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -7.9667,
+            "upper": -7.4333
+          },
+          "cohen_dz": -10.9653
+        },
+        "reactive_mcf": {
+          "mean_diff": -11.4667,
+          "ci": {
+            "mean": -11.4667,
+            "lower": -11.6482,
+            "upper": -11.2851,
+            "sd": 0.5074,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -11.6333,
+            "upper": -11.3
+          },
+          "cohen_dz": -22.5981
+        },
+        "mpc_forecast": {
+          "mean_diff": -11.5667,
+          "ci": {
+            "mean": -11.5667,
+            "lower": -11.77,
+            "upper": -11.3633,
+            "sd": 0.5683,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -11.7667,
+            "upper": -11.3667
+          },
+          "cohen_dz": -20.3524
+        },
+        "mpc_queue": {
+          "mean_diff": -11.6,
+          "ci": {
+            "mean": -11.6,
+            "lower": -11.7783,
+            "upper": -11.4217,
+            "sd": 0.4983,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -11.7667,
+            "upper": -11.4333
+          },
+          "cohen_dz": -23.2804
+        }
+      },
+      "queue_person_minutes": {
+        "shortest_path": {
+          "mean_diff": 18971.8921,
+          "ci": {
+            "mean": 18971.8921,
+            "lower": 17172.5338,
+            "upper": 20771.2504,
+            "sd": 5028.3118,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 17210.8055,
+            "upper": 20703.0425
+          },
+          "cohen_dz": 3.773
+        },
+        "max_flow": {
+          "mean_diff": -13410.6111,
+          "ci": {
+            "mean": -13410.6111,
+            "lower": -13999.542,
+            "upper": -12821.6802,
+            "sd": 1645.7691,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -13969.2645,
+            "upper": -12824.909
+          },
+          "cohen_dz": -8.1485
+        },
+        "milp_restricted": {
+          "mean_diff": -32789.2655,
+          "ci": {
+            "mean": -32789.2655,
+            "lower": -33124.96,
+            "upper": -32453.5709,
+            "sd": 938.0994,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -33123.9172,
+            "upper": -32450.4667
+          },
+          "cohen_dz": -34.9529
+        },
+        "reactive_mcf": {
+          "mean_diff": 4689.3782,
+          "ci": {
+            "mean": 4689.3782,
+            "lower": 2796.0046,
+            "upper": 6582.7518,
+            "sd": 5291.038,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 2760.8347,
+            "upper": 6594.862
+          },
+          "cohen_dz": 0.8863
+        },
+        "mpc_forecast": {
+          "mean_diff": 5592.2538,
+          "ci": {
+            "mean": 5592.2538,
+            "lower": 3670.5412,
+            "upper": 7513.9663,
+            "sd": 5370.2312,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 3784.8596,
+            "upper": 7503.2074
+          },
+          "cohen_dz": 1.0413
+        },
+        "mpc_queue": {
+          "mean_diff": 5617.9864,
+          "ci": {
+            "mean": 5617.9864,
+            "lower": 3697.4277,
+            "upper": 7538.545,
+            "sd": 5367.0067,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 3815.0841,
+            "upper": 7524.5803
+          },
+          "cohen_dz": 1.0468
+        }
+      }
+    },
+    "reactive_mcf": {
+      "unserved": {
+        "static_mcf": {
+          "mean_diff": -731.2613,
+          "ci": {
+            "mean": -731.2613,
+            "lower": -803.4731,
+            "upper": -659.0495,
+            "sd": 201.7962,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -804.6952,
+            "upper": -659.2462
+          },
+          "cohen_dz": -3.6238
+        },
+        "shortest_path": {
+          "mean_diff": 94.7763,
+          "ci": {
+            "mean": 94.7763,
+            "lower": -13.4056,
+            "upper": 202.9583,
+            "sd": 302.3149,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -12.6411,
+            "upper": 197.6456
+          },
+          "cohen_dz": 0.3135
+        },
+        "max_flow": {
+          "mean_diff": -731.2613,
+          "ci": {
+            "mean": -731.2613,
+            "lower": -803.4731,
+            "upper": -659.0495,
+            "sd": 201.7962,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -804.6952,
+            "upper": -659.2462
+          },
+          "cohen_dz": -3.6238
+        },
+        "milp_restricted": {
+          "mean_diff": -731.2613,
+          "ci": {
+            "mean": -731.2613,
+            "lower": -803.4731,
+            "upper": -659.0495,
+            "sd": 201.7962,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -804.6952,
+            "upper": -659.2462
+          },
+          "cohen_dz": -3.6238
+        },
+        "mpc_forecast": {
+          "mean_diff": 31.9899,
+          "ci": {
+            "mean": 31.9899,
+            "lower": -22.0228,
+            "upper": 86.0027,
+            "sd": 150.9389,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -17.1966,
+            "upper": 86.5428
+          },
+          "cohen_dz": 0.2119
+        },
+        "mpc_queue": {
+          "mean_diff": 32.5823,
+          "ci": {
+            "mean": 32.5823,
+            "lower": -21.3854,
+            "upper": 86.55,
+            "sd": 150.8129,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -16.5611,
+            "upper": 86.8005
+          },
+          "cohen_dz": 0.216
+        }
+      },
+      "makespan": {
+        "static_mcf": {
+          "mean_diff": 11.4667,
+          "ci": {
+            "mean": 11.4667,
+            "lower": 11.2851,
+            "upper": 11.6482,
+            "sd": 0.5074,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 11.3,
+            "upper": 11.6333
+          },
+          "cohen_dz": 22.5981
+        },
+        "shortest_path": {
+          "mean_diff": 16.4667,
+          "ci": {
+            "mean": 16.4667,
+            "lower": 16.2851,
+            "upper": 16.6482,
+            "sd": 0.5074,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 16.3,
+            "upper": 16.6333
+          },
+          "cohen_dz": 32.452
+        },
+        "max_flow": {
+          "mean_diff": 9.5,
+          "ci": {
+            "mean": 9.5,
+            "lower": 9.0931,
+            "upper": 9.9069,
+            "sd": 1.1371,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 9.1,
+            "upper": 9.9
+          },
+          "cohen_dz": 8.3542
+        },
+        "milp_restricted": {
+          "mean_diff": 3.7667,
+          "ci": {
+            "mean": 3.7667,
+            "lower": 3.5062,
+            "upper": 4.0272,
+            "sd": 0.7279,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 3.5,
+            "upper": 4.0333
+          },
+          "cohen_dz": 5.1745
+        },
+        "mpc_forecast": {
+          "mean_diff": -0.1,
+          "ci": {
+            "mean": -0.1,
+            "lower": -0.2441,
+            "upper": 0.0441,
+            "sd": 0.4026,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -0.2333,
+            "upper": 0.0333
+          },
+          "cohen_dz": -0.2484
+        },
+        "mpc_queue": {
+          "mean_diff": -0.1333,
+          "ci": {
+            "mean": -0.1333,
+            "lower": -0.2571,
+            "upper": -0.0096,
+            "sd": 0.3457,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -0.2667,
+            "upper": -0.0333
+          },
+          "cohen_dz": -0.3856
+        }
+      },
+      "queue_person_minutes": {
+        "static_mcf": {
+          "mean_diff": -4689.3782,
+          "ci": {
+            "mean": -4689.3782,
+            "lower": -6582.7518,
+            "upper": -2796.0046,
+            "sd": 5291.038,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -6592.3421,
+            "upper": -2757.7821
+          },
+          "cohen_dz": -0.8863
+        },
+        "shortest_path": {
+          "mean_diff": 14282.5139,
+          "ci": {
+            "mean": 14282.5139,
+            "lower": 12010.4858,
+            "upper": 16554.5419,
+            "sd": 6349.1888,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": 12018.8336,
+            "upper": 16524.5785
+          },
+          "cohen_dz": 2.2495
+        },
+        "max_flow": {
+          "mean_diff": -18099.9893,
+          "ci": {
+            "mean": -18099.9893,
+            "lower": -19977.0801,
+            "upper": -16222.8986,
+            "sd": 5245.5355,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -20071.2038,
+            "upper": -16246.9189
+          },
+          "cohen_dz": -3.4506
+        },
+        "milp_restricted": {
+          "mean_diff": -37478.6437,
+          "ci": {
+            "mean": -37478.6437,
+            "lower": -39455.8196,
+            "upper": -35501.4678,
+            "sd": 5525.2236,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -39530.0564,
+            "upper": -35521.8979
+          },
+          "cohen_dz": -6.7832
+        },
+        "mpc_forecast": {
+          "mean_diff": 902.8755,
+          "ci": {
+            "mean": 902.8755,
+            "lower": -915.6235,
+            "upper": 2721.3746,
+            "sd": 5081.8007,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -760.3502,
+            "upper": 2703.5887
+          },
+          "cohen_dz": 0.1777
+        },
+        "mpc_queue": {
+          "mean_diff": 928.6081,
+          "ci": {
+            "mean": 928.6081,
+            "lower": -884.9722,
+            "upper": 2742.1885,
+            "sd": 5068.0555,
+            "n": 30
+          },
+          "bootstrap": {
+            "lower": -735.3668,
+            "upper": 2725.0487
+          },
+          "cohen_dz": 0.1832
+        }
+      }
+    }
+  },
+  "holm_families": {
+    "static_mcf|unserved": {
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "reactive_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_forecast": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_queue": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0.014569,
+        "adjusted": 0.029138,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0.735442,
+        "adjusted": 0.735442,
+        "rejected_0_05": false
+      }
+    },
+    "static_mcf|makespan": {
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "reactive_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_forecast": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_queue": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      }
+    },
+    "static_mcf|queue_person_minutes": {
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_queue": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_forecast": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "reactive_mcf": {
+        "raw": 0.000001,
+        "adjusted": 0.000001,
+        "rejected_0_05": true
+      }
+    },
+    "reactive_mcf|unserved": {
+      "static_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "shortest_path": {
+        "raw": 0.085957,
+        "adjusted": 0.257871,
+        "rejected_0_05": false
+      },
+      "mpc_queue": {
+        "raw": 0.23668,
+        "adjusted": 0.473361,
+        "rejected_0_05": false
+      },
+      "mpc_forecast": {
+        "raw": 0.245706,
+        "adjusted": 0.473361,
+        "rejected_0_05": false
+      }
+    },
+    "reactive_mcf|makespan": {
+      "static_mcf": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "mpc_queue": {
+        "raw": 0.034666,
+        "adjusted": 0.069332,
+        "rejected_0_05": false
+      },
+      "mpc_forecast": {
+        "raw": 0.17366,
+        "adjusted": 0.17366,
+        "rejected_0_05": false
+      }
+    },
+    "reactive_mcf|queue_person_minutes": {
+      "shortest_path": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "max_flow": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "milp_restricted": {
+        "raw": 0,
+        "adjusted": 0,
+        "rejected_0_05": true
+      },
+      "static_mcf": {
+        "raw": 0.000001,
+        "adjusted": 0.000004,
+        "rejected_0_05": true
+      },
+      "mpc_queue": {
+        "raw": 0.315581,
+        "adjusted": 0.631163,
+        "rejected_0_05": false
+      },
+      "mpc_forecast": {
+        "raw": 0.330489,
+        "adjusted": 0.631163,
+        "rejected_0_05": false
+      }
+    }
+  },
+  "congestion_model_sensitivity": {
+    "scheduled": {
+      "makespan": {
+        "mean": 10,
+        "lower": 10,
+        "upper": 10,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 0,
+        "lower": 0,
+        "upper": 0,
+        "sd": 0,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "note": "计划口径：不考虑拥堵与队列，仅用于下界诊断；queue_person_minutes 未建模，记为 0。"
+    },
+    "queue_nominal": {
+      "makespan": {
+        "mean": 19,
+        "lower": 19,
+        "upper": 19,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 56785.9495,
+        "lower": 55652.9793,
+        "upper": 57918.9197,
+        "sd": 3166.0885,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "note": "执行口径：显式 FIFO 队列，BPR 系数 a=0（无行程时间放大）。"
+    },
+    "queue_bpr": {
+      "makespan": {
+        "mean": 19,
+        "lower": 19,
+        "upper": 19,
+        "sd": 0,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 51293.4806,
+        "lower": 50194.745,
+        "upper": 52392.2162,
+        "sd": 3070.4197,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 613.3,
+        "lower": 560.9472,
+        "upper": 665.6528,
+        "sd": 146.3002,
+        "n": 30
+      },
+      "completed": {
+        "mean": 6669.4667,
+        "lower": 6587.6643,
+        "upper": 6751.2691,
+        "sd": 228.597,
+        "n": 30
+      },
+      "note": "执行口径：显式 FIFO 队列 + BPR 行程时间放大（a=0.15, b=2）。"
+    },
+    "mpc_queue": {
+      "makespan": {
+        "mean": 7.4,
+        "lower": 7.2217,
+        "upper": 7.5783,
+        "sd": 0.4983,
+        "n": 30
+      },
+      "queue_person_minutes": {
+        "mean": 56911.467,
+        "lower": 54890.0766,
+        "upper": 58932.8573,
+        "sd": 5648.7811,
+        "n": 30
+      },
+      "unserved": {
+        "mean": 1377.1436,
+        "lower": 1320.8234,
+        "upper": 1433.4639,
+        "sd": 157.3871,
+        "n": 30
+      },
+      "completed": {
+        "mean": 5905.623,
+        "lower": 5820.6904,
+        "upper": 5990.5557,
+        "sd": 237.3445,
+        "n": 30
+      },
+      "note": "MPC+Queue：预测 + 队列反馈 + 滚动重规划；执行口径同 queue_bpr。"
+    }
+  },
+  "worst_cases": {
+    "mpc_queue": [
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261132,
+        "total_input": 7452,
+        "completed": 5706.33994903688,
+        "unserved": 1745.6600509631198,
+        "completion_ratio": 0.7657,
+        "makespan": 7,
+        "queue_person_minutes": 70916.19625640668,
+        "max_queue": 4753.84354010288,
+        "mean_wait": 0.4138,
+        "p95_wait": 1,
+        "switch_persons": 2593,
+        "runtime_ms": 3,
+        "plan_unresolved": 425,
+        "validator_valid": null,
+        "validator_codes": []
+      },
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261134,
+        "total_input": 7596,
+        "completed": 5983.118568232661,
+        "unserved": 1612.8814317673387,
+        "completion_ratio": 0.7877,
+        "makespan": 7,
+        "queue_person_minutes": 65410.02746226551,
+        "max_queue": 4138.151371807,
+        "mean_wait": 0.4008,
+        "p95_wait": 1,
+        "switch_persons": 1619,
+        "runtime_ms": 2,
+        "plan_unresolved": 820,
+        "validator_valid": null,
+        "validator_codes": []
+      },
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261120,
+        "total_input": 7731,
+        "completed": 6131.779286926995,
+        "unserved": 1599.2207130730048,
+        "completion_ratio": 0.7931,
+        "makespan": 8,
+        "queue_person_minutes": 64989.04991749649,
+        "max_queue": 3771.238640791832,
+        "mean_wait": 0.4389,
+        "p95_wait": 1,
+        "switch_persons": 6513,
+        "runtime_ms": 2,
+        "plan_unresolved": 1067,
+        "validator_valid": null,
+        "validator_codes": []
+      },
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261118,
+        "total_input": 7641,
+        "completed": 6052.481595745072,
+        "unserved": 1588.518404254928,
+        "completion_ratio": 0.7921,
+        "makespan": 7,
+        "queue_person_minutes": 63085.98257771894,
+        "max_queue": 3724.5821486832906,
+        "mean_wait": 0.392,
+        "p95_wait": 1,
+        "switch_persons": 2758,
+        "runtime_ms": 3,
+        "plan_unresolved": 1089,
+        "validator_valid": null,
+        "validator_codes": []
+      },
+      {
+        "strategy": "mpc_queue",
+        "seed": 20261126,
+        "total_input": 7336,
+        "completed": 5824.666666666667,
+        "unserved": 1511.333333333333,
+        "completion_ratio": 0.794,
+        "makespan": 8,
+        "queue_person_minutes": 61114.85136489748,
+        "max_queue": 3883.047619047619,
+        "mean_wait": 0.4181,
+        "p95_wait": 1,
+        "switch_persons": 2840,
+        "runtime_ms": 3,
+        "plan_unresolved": 1026,
+        "validator_valid": null,
+        "validator_codes": []
+      }
+    ],
+    "static_mcf": [
+      {
+        "strategy": "static_mcf",
+        "seed": 20261129,
+        "total_input": 7834,
+        "completed": 6905.000000000001,
+        "unserved": 928.9999999999991,
+        "completion_ratio": 0.8814,
+        "makespan": 19,
+        "queue_person_minutes": 55540.93011005543,
+        "max_queue": 5322.825112223054,
+        "mean_wait": 3.2264,
+        "p95_wait": 12,
+        "switch_persons": 0,
+        "runtime_ms": 1,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      },
+      {
+        "strategy": "static_mcf",
+        "seed": 20261135,
+        "total_input": 7266,
+        "completed": 6382.000000000001,
+        "unserved": 883.9999999999991,
+        "completion_ratio": 0.8783,
+        "makespan": 19,
+        "queue_person_minutes": 54499.27531174225,
+        "max_queue": 4829.031891638174,
+        "mean_wait": 3.4586,
+        "p95_wait": 12,
+        "switch_persons": 0,
+        "runtime_ms": 1,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      },
+      {
+        "strategy": "static_mcf",
+        "seed": 20261130,
+        "total_input": 7436,
+        "completed": 6584,
+        "unserved": 852,
+        "completion_ratio": 0.8854,
+        "makespan": 19,
+        "queue_person_minutes": 56478.070432417546,
+        "max_queue": 4947.058223111633,
+        "mean_wait": 3.3883,
+        "p95_wait": 12,
+        "switch_persons": 0,
+        "runtime_ms": 1,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      },
+      {
+        "strategy": "static_mcf",
+        "seed": 20261118,
+        "total_input": 7641,
+        "completed": 6840,
+        "unserved": 801,
+        "completion_ratio": 0.8952,
+        "makespan": 19,
+        "queue_person_minutes": 56413.10778420252,
+        "max_queue": 5406.831162448297,
+        "mean_wait": 3.3166,
+        "p95_wait": 13,
+        "switch_persons": 0,
+        "runtime_ms": 1,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      },
+      {
+        "strategy": "static_mcf",
+        "seed": 20261134,
+        "total_input": 7596,
+        "completed": 6795,
+        "unserved": 801,
+        "completion_ratio": 0.8945,
+        "makespan": 19,
+        "queue_person_minutes": 54600.82721138034,
+        "max_queue": 5275.646037221609,
+        "mean_wait": 3.3562,
+        "p95_wait": 12,
+        "switch_persons": 0,
+        "runtime_ms": 1,
+        "plan_unresolved": 0,
+        "validator_valid": true,
+        "validator_codes": []
+      }
+    ]
+  }
+}

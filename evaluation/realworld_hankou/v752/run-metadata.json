@@ -1,0 +1,123 @@
+{
+  "protocol": "SkyGuard V7.5.2 benchmark",
+  "started_at": "2026-11-10T20:42:22.043Z",
+  "finished_at": "2026-11-10T20:44:25.076Z",
+  "branch": "feat/v752-simulation-integrity",
+  "head": "345f4d1660573c44de12ad26fa19136a6a5e9122",
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "strategies": [
+    {
+      "id": "STATIC_SHORTEST_PATH",
+      "label": "Static shortest path (frozen at t=0)"
+    },
+    {
+      "id": "GREEDY_DYNAMIC",
+      "label": "Greedy dynamic least-cost reassignment"
+    },
+    {
+      "id": "V73_STABILITY",
+      "label": "V7.3 switch-penalty / hysteresis"
+    },
+    {
+      "id": "V74_COMMITMENT",
+      "label": "V7.4 commitment window + risk release"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "ST-01",
+      "name": "日常客流基线",
+      "expected_state": "NORMAL",
+      "initial_persons": 18000,
+      "events": 0,
+      "corridor_capacity_factor": 1,
+      "exit_capacity_factor": 1,
+      "sensor_mode": "nominal"
+    },
+    {
+      "id": "ST-02",
+      "name": "节假日高峰与辅助闸口管控",
+      "expected_state": "REROUTE",
+      "initial_persons": 120000,
+      "events": 1,
+      "corridor_capacity_factor": 1,
+      "exit_capacity_factor": 0.25,
+      "sensor_mode": "holiday"
+    },
+    {
+      "id": "ST-03",
+      "name": "突发激增散场",
+      "expected_state": "NORMAL",
+      "initial_persons": 80000,
+      "events": 0,
+      "corridor_capacity_factor": 1,
+      "exit_capacity_factor": 1,
+      "sensor_mode": "surge"
+    },
+    {
+      "id": "ST-04",
+      "name": "闸口阻断与三级平台封闭",
+      "expected_state": "REROUTE",
+      "initial_persons": 60000,
+      "events": 2,
+      "corridor_capacity_factor": 1,
+      "exit_capacity_factor": 1,
+      "sensor_mode": "closure"
+    },
+    {
+      "id": "ST-05",
+      "name": "传感器降级与恢复",
+      "expected_state": "DEGRADED",
+      "initial_persons": 45000,
+      "events": 0,
+      "corridor_capacity_factor": 1,
+      "exit_capacity_factor": 1,
+      "sensor_mode": "degraded"
+    }
+  ],
+  "runs": 600,
+  "code_sha256": {
+    "scripts/simulation/v752/types.ts": "52c7a364cd1d568feb495447bb637dfc7e534a25d4be05457769e002d4138c81",
+    "scripts/simulation/v752/scenario.ts": "89b598689bedd2f8579ae92bb5f679e6b034bec454e99be5882c1c99afb64795",
+    "scripts/simulation/v752/network.ts": "86ef38b82dd67194e90ca648e9ce070c88a684fa17ee36bf5e2286cf5fa35fd0",
+    "scripts/simulation/v752/sensors.ts": "8af2a659fffe6c2e846dceeb9ff21144d6483ea77aa8e4e9100e970ac8b0477d",
+    "scripts/simulation/v752/strategies.ts": "e62d78fe714c74c23b22d97666d2466f167e85a56515bdb3fb5f78c9adbf0bd7",
+    "scripts/simulation/v752/safety.ts": "4e6ddd853633b3e332d43a1b38a58298c5fbbd2624a7d8a68bc56d626a092d11",
+    "scripts/simulation/v752/engine.ts": "b2afc3d0b646a585767302fcc3346de772c1117331c4f09274bf8a3430db2cb9",
+    "scripts/simulation/v752/generate-scenarios.ts": "9e9721ebb8026cd4023622ddc0a4168b42e12bed23784fb75b1ce4790c465cb8",
+    "scripts/simulation/v752/run-benchmark.ts": "6afe65869137d89d93c5875920164ebf351647bfa9585dfcb9b7490625be64db",
+    "data/scenarios/hankou-marshland-v752-base.json": "9e3c10988289e6804d08b7c4d88166c1af947b73d2f0bc1c5c732c7d47a95b24",
+    "data/scenarios/hankou-v752-stress.json": "caedf4244a53258fc4ae040d1464957d2f0403023d925b1e47cceabb03654bcb"
+  }
+}

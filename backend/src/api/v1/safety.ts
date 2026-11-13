@@ -20,6 +20,9 @@ import {
 } from '../../services/safety';
 import { ProviderUnavailableError } from '../../services/safety/providers/types';
 import { IncidentTransitionError } from '../../services/safety/incidents';
+import { buildCongestionPreview, buildMpcPreview } from '../../services/v70/research';
+import { shadowConfig, shadowComparisonsOf } from '../../services/safety/planning/v7-adapter';
+import { securityConfig } from '../../config/security';
 
 export interface SafetyRouterOptions {
   /** 测试用：跳过 JWT（默认 false）。 */
@@ -205,6 +208,53 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
       });
     } catch (error) {
       fail(res, 500, 'PROVIDER_STATUS_FAILED', (error as Error).message);
+    }
+  });
+
+  // ------------------------------------------------------- V7 研究预览（只读）
+  router.get('/v70/mpc-preview', (req, res) => {
+    try {
+      const booleanOf = (value: unknown, fallback: boolean): boolean => {
+        if (value === undefined) return fallback;
+        return value === '1' || value === 'true' || value === 'yes';
+      };
+      const numberParam = (value: unknown): number | undefined => {
+        if (value === undefined) return undefined;
+        const parsed = Number(value);
+        return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
+      };
+      const preview = buildMpcPreview(getSafetyService(), {
+        controlIntervalMinutes: numberParam(req.query.control_interval),
+        planningHorizonMinutes: numberParam(req.query.planning_horizon),
+        useForecast: booleanOf(req.query.use_forecast, true),
+        queueFeedback: booleanOf(req.query.queue_feedback, true),
+        maxSteps: numberParam(req.query.max_steps),
+      });
+      res.json(preview);
+    } catch (error) {
+      fail(res, 500, 'V70_MPC_PREVIEW_FAILED', securityConfig().errorDetail ? (error as Error).message : '服务器内部错误');
+    }
+  });
+
+  router.get('/v70/congestion-preview', (_req, res) => {
+    try {
+      res.json(buildCongestionPreview(getSafetyService()));
+    } catch (error) {
+      fail(res, 500, 'V70_CONGESTION_PREVIEW_FAILED', securityConfig().errorDetail ? (error as Error).message : '服务器内部错误');
+    }
+  });
+
+  router.get('/v70/shadow', (_req, res) => {
+    try {
+      const config = shadowConfig();
+      res.json({
+        enabled: config.enabled,
+        config,
+        comparisons: shadowComparisonsOf(getSafetyService()),
+        note: 'Shadow Mode 只读比较；V7 方案不会发布、审批或改变安全状态。',
+      });
+    } catch (error) {
+      fail(res, 500, 'V70_SHADOW_READ_FAILED', securityConfig().errorDetail ? (error as Error).message : '服务器内部错误');
     }
   });
 

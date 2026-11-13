@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v72-stability-dev2",
+  "note": "V7.2 路线稳定性与安全 MPC 实验独立清单。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "stability_README.md",
+      "bytes": 11098,
+      "sha256": "05492394b4556fa9e18d176187ca0521291a5bec31b614e49dac8d395adbf164"
+    },
+    {
+      "path": "stability_metadata.json",
+      "bytes": 217,
+      "sha256": "d58833daa1d24531924e1222ac36bd3108f2eca0eeea57dae89f1a2ca6ec8477"
+    },
+    {
+      "path": "stability_rows.json",
+      "bytes": 628953,
+      "sha256": "0d5ea6cb7c2f32229bb8d90e9bcfe5de82b4042e91cc8c0933d6b0997e9aa128"
+    },
+    {
+      "path": "stability_summary.json",
+      "bytes": 160519,
+      "sha256": "7c212bf613ffe69f348c747c91991796339599784b78304ef206d36d284edd41"
+    }
+  ]
+}

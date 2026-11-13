@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "run_id": "v75-final-20261110",
+  "note": "V7.5 Track A 检测证据（合成）。",
+  "file_count": 5,
+  "files": [
+    {
+      "path": "detection_MANIFEST.json",
+      "bytes": 925,
+      "sha256": "0edf541416da8e9a3c3b7a89300577dff8c31d4719deb5f1d663c63a402299ac"
+    },
+    {
+      "path": "detection_README.md",
+      "bytes": 3425,
+      "sha256": "4d30ed51f8f24b24b4555ef77bd317c1aad21982fb49786d6bcd6983636dec64"
+    },
+    {
+      "path": "detection_metadata.json",
+      "bytes": 217,
+      "sha256": "fe212cfc8c89b519610ee5bab46d594363dc440bda5db8a4fa854ecd6a348cc0"
+    },
+    {
+      "path": "detection_rows.json",
+      "bytes": 403584,
+      "sha256": "1cf55d430961e3e03a6a85a04f7c9ff6d95fa6455e227c89b3c35636f977cdb5"
+    },
+    {
+      "path": "detection_summary.json",
+      "bytes": 18063,
+      "sha256": "79e827c08697b498333cee4dbcc1e3fd2795cab54b80691f5776bb9896cec093"
+    }
+  ]
+}

@@ -13,6 +13,7 @@
  *  - 远程返回的决策必须经过本地工具注册表的权限与参数校验后才执行；
  *  - 超时、鉴权失败、响应结构不符都会显式失败，不回退伪装成已连接。
  */
+import crypto from 'node:crypto';
 import { z } from 'zod';
 
 export type AgentArtsMode = 'LOCAL_DEMO' | 'AGENTARTS_CONNECTED' | 'AGENTARTS_UNAVAILABLE';
@@ -31,6 +32,10 @@ export interface AgentArtsConfig {
   runtimeName: string;
   invokeMode: 'debug' | 'published' | null;
   sessionHeader: string;
+  /** V7.3：幂等键请求头；重试时保持同一键，避免平台重复执行工具。 */
+  idempotencyHeader?: string;
+  /** V7.4：trace 关联请求头。 */
+  traceHeader?: string;
   invokePath: string;
   healthPath: string;
   timeoutMs: number;
@@ -94,6 +99,8 @@ export interface AgentArtsSelectInput {
   traceId: string;
   /** 全链路会话 ID（同一次运行的多个步骤共用）；缺省使用 traceId。 */
   sessionId?: string;
+  /** V7.3：幂等键；缺省按 agent/session/trace/region 稳定生成，重试复用。 */
+  idempotencyKey?: string;
   /** 官方运行时契约的 query 字段（单/多智能体必填）。 */
   query?: string;
   context: Record<string, unknown>;
@@ -171,6 +178,8 @@ export function loadAgentArtsConfig(env: NodeJS.ProcessEnv = process.env): Agent
     runtimeName,
     invokeMode,
     sessionHeader: env.AGENTARTS_SESSION_HEADER?.trim() || 'x-hw-agentarts-session-id',
+    idempotencyHeader: env.AGENTARTS_IDEMPOTENCY_HEADER?.trim() || 'x-idempotency-key',
+    traceHeader: env.AGENTARTS_TRACE_HEADER?.trim() || 'x-skyguard-trace-id',
     invokePath: env.AGENTARTS_INVOKE_PATH?.trim()
       || (contract === 'official' ? '/runtimes/{runtime_name}/invocations' : '/v1/agents/{agent_id}/invoke'),
     healthPath: env.AGENTARTS_HEALTH_PATH?.trim() || '/health',
@@ -275,7 +284,7 @@ export class AgentArtsClient {
     return new URL(replaced, this.config.baseUrl).toString();
   }
 
-  private async request(pathTemplate: string, init: RequestInit, sessionId?: string): Promise<Response> {
+  private async request(pathTemplate: string, init: RequestInit, sessionId?: string, idempotencyKey?: string, traceId?: string): Promise<Response> {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.config.timeoutMs);
     try {
@@ -288,6 +297,8 @@ export class AgentArtsClient {
           ...(this.config.projectId ? { 'X-Project-Id': this.config.projectId } : {}),
           ...(this.config.invokeMode ? { 'X-Invoke-Mode': this.config.invokeMode } : {}),
           ...(sessionId ? { [this.config.sessionHeader]: sessionId.slice(0, 64) } : {}),
+          ...(idempotencyKey ? { [this.config.idempotencyHeader ?? 'x-idempotency-key']: idempotencyKey } : {}),
+          ...(traceId ? { [this.config.traceHeader ?? 'x-skyguard-trace-id']: traceId.slice(0, 128) } : {}),
           ...(init.headers ?? {}),
         },
       });
@@ -300,7 +311,7 @@ export class AgentArtsClient {
    * 有界重试：只对超时/网络错误/429/5xx 重试；4xx 业务错误立即返回。
    * 平台决策请求本身不执行本地工具，重试不会重复产生本地副作用。
    */
-  private async invokeWithRetry(body: unknown, sessionId: string): Promise<Response> {
+  private async invokeWithRetry(body: unknown, sessionId: string, idempotencyKey: string, traceId: string): Promise<Response> {
     const attempts = this.config.invokeRetries + 1;
     let lastError: Error | null = null;
     for (let attempt = 0; attempt < attempts; attempt += 1) {
@@ -308,7 +319,7 @@ export class AgentArtsClient {
         const response = await this.request(this.config.invokePath, {
           method: 'POST',
           body: JSON.stringify(body),
-        }, sessionId);
+        }, sessionId, idempotencyKey, traceId);
         if (response.ok) return response;
         if ((response.status === 429 || response.status >= 500) && attempt < attempts - 1) {
           await response.text().catch(() => undefined);
@@ -412,7 +423,16 @@ export class AgentArtsClient {
         contract_version: 'skyguard-agentarts-v1',
       };
 
-    const response = await this.invokeWithRetry(body, input.sessionId ?? input.traceId);
+    const sessionId = input.sessionId ?? input.traceId;
+    const idempotencyKey = input.idempotencyKey ?? crypto.createHash('sha256').update(JSON.stringify({
+      agent: this.config.runtimeName || this.config.agentId,
+      sessionId,
+      traceId: input.traceId,
+      scenarioId: input.scenarioId ?? null,
+      regionId: input.regionId,
+      trigger: input.trigger,
+    })).digest('hex');
+    const response = await this.invokeWithRetry(body, sessionId, idempotencyKey, input.traceId);
     const text = await response.text();
     if (!response.ok) {
       throw new AgentArtsUnavailableError(`AgentArts 调用失败：HTTP ${response.status} ${text.slice(0, 300)}`);

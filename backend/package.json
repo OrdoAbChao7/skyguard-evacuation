@@ -24,7 +24,16 @@
     "manifest:evidence": "tsx scripts/evidence-manifest.ts",
     "benchmark:v62": "tsx scripts/v62-benchmark.ts",
     "benchmark:voi-v2": "tsx scripts/voi-v2-benchmark.ts",
-    "benchmark:v65": "tsx scripts/v65-prediction-benchmark.ts"
+    "benchmark:v65": "tsx scripts/v65-prediction-benchmark.ts",
+    "benchmark:v70": "tsx scripts/v70-experiments.ts",
+    "benchmark:v71": "tsx scripts/v71-experiments.ts",
+    "benchmark:v72": "tsx scripts/v72-experiments.ts",
+    "benchmark:v73": "tsx scripts/v73-experiments.ts",
+    "benchmark:v74": "tsx scripts/v74-experiments.ts",
+    "benchmark:v75": "tsx scripts/v75-experiments.ts",
+    "freeze:v72": "tsx scripts/v72-version-freeze.ts --write",
+    "freeze:verify": "tsx scripts/v72-version-freeze.ts --verify",
+    "freeze:verify:baseline": "tsx ../evaluation/v72/baseline_snapshot/backend/scripts/v72-version-freeze.ts --verify"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

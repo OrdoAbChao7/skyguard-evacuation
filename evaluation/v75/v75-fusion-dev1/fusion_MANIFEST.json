@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "run_id": "v75-fusion-dev1",
+  "note": "V7.5 Track E 融合证据（合成）。",
+  "file_count": 4,
+  "files": [
+    {
+      "path": "fusion_README.md",
+      "bytes": 2616,
+      "sha256": "4ee3589eed5394b1517bff6d56d7576519cac598454de4fea85387790b83ab6c"
+    },
+    {
+      "path": "fusion_metadata.json",
+      "bytes": 214,
+      "sha256": "6d67b7f97ae6a41e47e9ad0bc77e4055c39d923b2a3b619d6f674c45530493b5"
+    },
+    {
+      "path": "fusion_rows.json",
+      "bytes": 760196,
+      "sha256": "b7ca1414005f20795727d8a429cfb6108b263d25191de420f7bcf1ec4f9f00c6"
+    },
+    {
+      "path": "fusion_summary.json",
+      "bytes": 26894,
+      "sha256": "bc8cd18fc5d31987c3c914be4b45741dc9380e85700bae5ba10a8c7fd3f010b6"
+    }
+  ]
+}

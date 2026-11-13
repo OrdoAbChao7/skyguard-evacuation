@@ -109,6 +109,9 @@ test('面积与场景区域不一致或置信度不足时降级为不可信观�
       model: 'test-model',
       model_version: '1.0.0',
       confidence: 0.9,
+      // 两次上报必须使用不同 observed_at：同来源/人数/毫秒时间戳会被
+      // ObservationStore 判为重复上报，导致第二次的低置信度观测被忽略。
+      observed_at: new Date(Date.now() - 2000).toISOString(),
       mapping: {
         region_id: region.id,
         zone_id: 'demo',
@@ -127,6 +130,7 @@ test('面积与场景区域不一致或置信度不足时降级为不可信观�
       model: 'test-model',
       model_version: '1.0.0',
       confidence: 0.3,
+      observed_at: new Date(Date.now() - 1000).toISOString(),
       mapping: {
         region_id: region.id,
         zone_id: 'demo',

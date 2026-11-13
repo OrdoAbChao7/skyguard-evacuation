@@ -1,0 +1,4 @@
+# V7.2 ONNX 导出/基准依赖（仅参考模型与 CPU 链路）
+onnx>=1.17
+onnxruntime>=1.17
+numpy>=1.26

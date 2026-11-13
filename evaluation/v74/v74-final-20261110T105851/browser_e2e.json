@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-11-10T02:59:20.854Z",
+  "frontend_url": "http://localhost:5173",
+  "backend_url": "http://localhost:8010",
+  "steps": [
+    {
+      "step": "servers_ready",
+      "ok": true
+    },
+    {
+      "step": "admin_login",
+      "ok": true,
+      "token_present": true
+    },
+    {
+      "step": "command_center_loaded",
+      "ok": true,
+      "body_chars": 5910
+    },
+    {
+      "step": "api_via_frontend_proxy",
+      "ok": true,
+      "http_status": 200
+    }
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "passed": true
+}

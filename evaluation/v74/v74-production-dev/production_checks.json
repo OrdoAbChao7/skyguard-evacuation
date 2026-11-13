@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-11-10T02:57:34.059Z",
+  "run_id": "v74-production-dev",
+  "host": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.19.0",
+    "cpus": 16
+  },
+  "docker": {
+    "status": "blocked",
+    "server_version": null,
+    "dockerfile_exists": true,
+    "build_attempted": false,
+    "note": "Docker daemon 不可用；未执行 docker build，不得声称镜像已验证。"
+  },
+  "ci": {
+    "workflow_exists": true,
+    "yaml_parse": "ok",
+    "stderr": ""
+  },
+  "api_contract": [
+    {
+      "path": "/health",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "path": "/api/v1/safety/status",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "path": "/api/v1/safety/scenario",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "load_test": {
+    "iterations": 100,
+    "concurrency": 10,
+    "errors": 0,
+    "p50_ms": 4.793,
+    "p95_ms": 7.944,
+    "max_ms": 9.351
+  },
+  "browser_e2e": {
+    "script": "frontend/e2e/smoke.mjs",
+    "status": "see browser_e2e.json",
+    "note": "登录 → 指挥中心 → 代理 API；需要 dev servers 与 Playwright。"
+  },
+  "boundaries": [
+    "Docker daemon 未运行；镜像/容器部署未验证。",
+    "负载测试为单机本地状态端点，不代表真实并发或疏散规划吞吐。",
+    "浏览器 E2E 只覆盖冒烟路径，不覆盖全部业务写操作。"
+  ]
+}
