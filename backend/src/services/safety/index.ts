@@ -46,7 +46,7 @@ function loadSafetyScenarioWithFallback() {
   } catch (error) {
     // 显式配置的场景不存在时必须失败，不能静默换回默认场馆。
     if (configured && configured !== 'undefined') throw error;
-    const fallback = path.resolve(__dirname, '../../../../data/scenarios/stadium-evacuation.json');
+    const fallback = path.resolve(__dirname, '../../../../data/scenarios/hankou-mvp.json');
     if (fs.existsSync(fallback)) {
       console.warn(
         `[safety] 当前 DATA_ROOT 下未找到场景文件，回退到仓库默认场景：${fallback}`,

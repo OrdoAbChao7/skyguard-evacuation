@@ -14,6 +14,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
+import { pythonProbe, which } from './lib/benchmark';
 import {
   AgentArtsClient,
   loadAgentArtsConfig,
@@ -26,23 +27,7 @@ const OUT = path.resolve(__dirname, '../../evaluation/v72', RUN_ID);
 const ASCEND_OUT = path.join(OUT, 'ascend');
 const ASCEND_DIR = path.resolve(__dirname, '../python/ascend');
 
-function which(command: string): { available: boolean; path: string | null } {
-  try {
-    const output = execFileSync(process.platform === 'win32' ? 'where' : 'which', [command], { encoding: 'utf8' }).trim();
-    return { available: true, path: output.split(/\r?\n/)[0] ?? null };
-  } catch {
-    return { available: false, path: null };
-  }
-}
 
-function pythonProbe(moduleName: string): { available: boolean; version: string | null; error: string | null } {
-  try {
-    const output = execFileSync('python', ['-c', `import ${moduleName}; print(getattr(${moduleName}, '__version__', 'unknown'))`], { encoding: 'utf8' }).trim();
-    return { available: true, version: output || 'unknown', error: null };
-  } catch (error) {
-    return { available: false, version: null, error: (error as Error).message.slice(0, 300) };
-  }
-}
 
 interface StubCapture {
   sessionHeader: string | null;
@@ -75,7 +60,7 @@ async function runAgentArtsLocalStub(): Promise<Record<string, unknown>> {
         });
         const decision = JSON.stringify({
           tool: 'camera_query',
-          arguments: { region_id: 'R_NORTH_STAND' },
+          arguments: { region_id: 'R_S01_L1_CREST' },
           reasoning: 'local stub decision',
         });
         res.writeHead(200, { 'Content-Type': 'text/event-stream' });
@@ -112,12 +97,12 @@ async function runAgentArtsLocalStub(): Promise<Record<string, unknown>> {
     const decisions = [];
     for (const traceId of ['trace-stub-1', 'trace-stub-2']) {
       decisions.push(await client.select({
-        regionId: 'R_NORTH_STAND',
+        regionId: 'R_S01_L1_CREST',
         trigger: 'v72:huawei-status',
         traceId,
         sessionId: 'session-stub-1',
-        query: '请为北看台选择下一步安全调查工具',
-        context: { scenario_id: 'stadium-evacuation-v1' },
+        query: '请为洞庭门滩顶选择下一步安全调查工具',
+        context: { scenario_id: 'hankou-marshland-v1' },
         tools: [{ name: 'camera_query', description: '查询相机', roles: ['admin'] }],
       }));
     }

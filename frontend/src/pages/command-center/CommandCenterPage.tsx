@@ -7,68 +7,24 @@
  *  - 已验证方案与候选方案在视觉上严格区分；
  *  - REJECT 下不显示任何绿色路线，DEGRADED 下不把过期数据当成实时状态。
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import safetyApi from '../../services/safetyApi';
 import type {
   AuditEntry,
-  DemoRunResult,
-  EvacuationPlan,
-  EvacuationRoute,
   ProviderStatus,
-  SafetyIncident,
-  SafetyRegion,
   SafetyScenarioSummary,
-  ScenarioMap,
-  SafetyStateName,
   SafetyStatus,
-  SafetyValidationResult,
 } from '../../services/safetyApi';
 import { AppstoreOutlined, RadarChartOutlined, EyeOutlined, SafetyCertificateOutlined, AlertOutlined, HistoryOutlined, SettingOutlined, AimOutlined, TeamOutlined, ApiOutlined } from '@ant-design/icons';
 import MvpPanels from './MvpPanels';
 import PerceptionReplayPanel from './PerceptionReplayPanel';
 import './CommandCenterPage.css';
 import ThemeSettings, { useWorkspaceTheme } from './ThemeSettings';
-
-const STATE_LABEL: Record<SafetyStateName, string> = {
-  NORMAL: '常态运行',
-  REROUTE: '重规划中',
-  DEGRADED: '感知降级',
-  REJECT: '安全拒绝',
-};
-
-const RISK_LABEL: Record<string, string> = {
-  normal: '正常',
-  watch: '关注',
-  high: '高风险',
-  critical: '极高风险',
-  unknown: '未知',
-};
+import { MAP_FOCUS_ZOOM, MAP_MAX_ZOOM, MAP_MIN_ZOOM, MAP_ZOOM_STEP, RISK_LABEL, STATE_LABEL, affectedOf, centreOf, formatAffected, formatSince, formatTime, textOf } from './commandCenterUtils';
+import { ExitAllocation, IncidentPanel, Legend, PanelTitle, ProviderList, StateBadge, ValidationPanel } from './components/Panels';
+import NetworkMap from './components/NetworkMap';
 
 const POLL_INTERVAL_MS = 5000;
-const MAP_MIN_ZOOM = 1;
-const MAP_MAX_ZOOM = 3;
-const MAP_ZOOM_STEP = 0.25;
-const MAP_WHEEL_FACTOR = 1.25;
-const MAP_FOCUS_ZOOM = 1.5;
-const MAP_DRAG_CLICK_THRESHOLD_PX = 4;
-
-function formatTime(iso: string | null | undefined): string {
-  if (!iso) return '—';
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return '—';
-  return date.toLocaleTimeString('zh-CN', { hour12: false });
-}
-
-function formatSince(iso: string | null | undefined): string {
-  if (!iso) return '无';
-  const time = new Date(iso).getTime();
-  if (Number.isNaN(time)) return '时间未知';
-  const seconds = Math.max(0, Math.round((Date.now() - time) / 1000));
-  if (seconds < 60) return `${seconds}s 前`;
-  if (seconds < 3600) return `${Math.round(seconds / 60)}min 前`;
-  return `${(seconds / 3600).toFixed(1)}h 前`;
-}
-
 const NAV_ITEMS = [
   { icon: <AppstoreOutlined />, label: '总览', target: 'overview' },
   { icon: <RadarChartOutlined />, label: '态势监控', target: 'situation' },
@@ -77,7 +33,7 @@ const NAV_ITEMS = [
   { icon: <SafetyCertificateOutlined />, label: '可信决策', target: 'decision' },
   { icon: <AlertOutlined />, label: '事件管理', target: 'incidents' },
   { icon: <HistoryOutlined />, label: '审计记录', target: 'audit' },
-  { icon: <SettingOutlined />, label: '演示场景', target: 'demos' },
+  { icon: <SettingOutlined />, label: '演示场景', target: 'operations' },
 ] as const;
 
 export default function CommandCenterPage() {
@@ -97,8 +53,6 @@ export default function CommandCenterPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const [selectedDemo, setSelectedDemo] = useState<string>('');
-  const [demoResult, setDemoResult] = useState<DemoRunResult | null>(null);
   const [nlText, setNlText] = useState('');
   const [draftSummary, setDraftSummary] = useState<string | null>(null);
   const [incidentForm, setIncidentForm] = useState({
@@ -127,7 +81,6 @@ export default function CommandCenterPage() {
         if (cancelled) return;
         setScenario(nextScenario);
         setProviders(nextProviders);
-        setSelectedDemo(current => current || nextScenario.demo_scenarios[0]?.id || '');
         const firstExit = nextScenario.exits[0];
         setIncidentForm(current => current.target || !firstExit
           ? current
@@ -260,7 +213,7 @@ export default function CommandCenterPage() {
             <small>{status.risks.some(risk => risk.trusted) ? '个区域' : '无可信观测'}</small>
           </div>
         </div>
-        <div className="cc-kpi" data-tone={!error && status.state.publishable ? 'ok' : 'bad'}>
+        <div className="cc-kpi" data-value="text" data-tone={!error && status.state.publishable ? 'ok' : 'bad'}>
           <span className="cc-kpi-icon" aria-hidden="true"><SafetyCertificateOutlined /></span>
           <div>
             <span>可信方案</span>
@@ -268,7 +221,7 @@ export default function CommandCenterPage() {
             <small>方案状态 {status.state.state}</small>
           </div>
         </div>
-        <div className="cc-kpi" data-tone={status.inference_health.healthy ? 'ok' : 'bad'}>
+        <div className="cc-kpi" data-value="text" data-tone={status.inference_health.healthy ? 'ok' : 'bad'}>
           <span className="cc-kpi-icon" aria-hidden="true"><ApiOutlined /></span>
           <div>
             <span>推理链路</span>
@@ -360,10 +313,11 @@ export default function CommandCenterPage() {
             title="区域态势与疏散路线"
             subtitle={`时限 ${status.scenario.horizon_minutes} 分钟 · ${displayPlan ? `方案 ${displayPlan.plan_id}` : '暂无方案'}`}
           />
-          <div className="cc-map-wrap"><div className="cc-map-caption"><strong>场馆态势</strong><span>{scenario?.map?.caption ?? '合成场景 · 区域未空间标定'}</span></div><NetworkMap map={scenario?.map} status={status} selectedRegion={selectedRegion} onSelectRegion={selectRegion} allowRoutes={!error} zoom={mapZoom} setZoom={setMapZoom} center={mapCenter} setCenter={setMapCenter} showBackdrop={showBackdrop} layers={layers} />
+          <div className="cc-map-wrap"><NetworkMap map={scenario?.map} status={status} selectedRegion={selectedRegion} onSelectRegion={selectRegion} allowRoutes={!error} zoom={mapZoom} setZoom={setMapZoom} center={mapCenter} setCenter={setMapCenter} showBackdrop={showBackdrop} layers={layers} />
             <div className="cc-map-tools" aria-label="地图工具"><button type="button" title="放大" aria-label="放大地图" disabled={mapZoom >= MAP_MAX_ZOOM} onClick={() => setMapZoom(value => Math.min(MAP_MAX_ZOOM, value + MAP_ZOOM_STEP))}>+</button><button type="button" title="缩小" aria-label="缩小地图" disabled={mapZoom <= MAP_MIN_ZOOM} onClick={() => setMapZoom(value => Math.max(MAP_MIN_ZOOM, value - MAP_ZOOM_STEP))}>−</button><button type="button" onClick={() => setShowLayers(value => !value)} aria-expanded={showLayers} title="选择地图图层">图层</button><button type="button" onClick={() => { setMapZoom(MAP_MIN_ZOOM); setMapCenter(null); setSelectedRegion(null); }} title="重置视图">复位</button></div>
             {showLayers ? <div className="cc-layer-menu"><label><input type="checkbox" checked={showBackdrop} onChange={() => setShowBackdrop(value => !value)} />概念底图</label>{([['landmarks','场景地标'],['regions','模拟区域'],['risks','风险区域'],['corridors','通道与出口'],['validated','已验证路线'],['candidate','候选路线'],['incidents','事件标记']] as const).map(([key,label]) => <label key={key}><input type="checkbox" checked={layers[key]} onChange={() => setLayers(value => ({...value,[key]: !value[key]}))} />{label}</label>)}</div> : null}
             {selectedRegion ? <div className="cc-map-detail"><strong>{status.regions.find(region => region.id === selectedRegion)?.name}</strong><span>风险：{RISK_LABEL[status.risks.find(risk => risk.regionId === selectedRegion)?.level ?? 'unknown']}</span><span>人数：{status.risks.find(risk => risk.regionId === selectedRegion)?.count ?? '—'} · 密度：{status.risks.find(risk => risk.regionId === selectedRegion)?.density?.toFixed(2) ?? '—'}</span><span>置信度：{status.risks.find(risk => risk.regionId === selectedRegion)?.confidence ?? '—'} · 时效：{formatSince(status.observations.find(item => item.region_id === selectedRegion)?.observed_at)}</span><span>来源：{status.observations.find(item => item.region_id === selectedRegion)?.source ?? '无数据'}</span><button type="button" onClick={() => setSelectedRegion(null)}>关闭</button></div> : null}</div>
+          <div className="cc-map-caption"><strong>场馆态势</strong><span>{scenario?.map?.caption ?? '合成场景 · 区域未空间标定'} · 行：门区 / 滩顶 / 生态 / 亲水 · 点选区域查看详情</span></div>
           <Legend isCandidate={isCandidate} hasPlan={Boolean(displayPlan)} />
           <div className="cc-route-summary">
             {displayPlan ? (
@@ -548,43 +502,6 @@ export default function CommandCenterPage() {
             {draftSummary ? <p className="cc-muted cc-small">{draftSummary}</p> : null}
           </div>
 
-          <h4 className="cc-subtitle" id="demos">演示场景</h4>
-          <div className="cc-form-row">
-            <select
-              aria-label="演示场景"
-              value={selectedDemo}
-              onChange={event => setSelectedDemo(event.target.value)}
-            >
-              {(scenario?.demo_scenarios ?? []).map(demo => (
-                <option key={demo.id} value={demo.id}>
-                  {demo.label}
-                </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              disabled={busy !== null || !selectedDemo}
-              onClick={() =>
-                void runAction(
-                  'demo',
-                  async () => {
-                    const result = await safetyApi.runDemo(selectedDemo);
-                    setDemoResult(result);
-                  },
-                  '演示已执行',
-                )
-              }
-            >
-              运行演示
-            </button>
-          </div>
-          {demoResult ? (
-            <p className={`cc-small ${demoResult.matched ? 'cc-ok' : 'cc-bad'}`}>
-              期望 {demoResult.expected_state} / 实际 {demoResult.actual_state} ·{' '}
-              {demoResult.matched ? '一致' : '不一致'}
-            </p>
-          ) : null}
-
           <h4 className="cc-subtitle" id="audit">事件时间线（审计）</h4>
           <ul className="cc-timeline">
             {audit.slice(0, 12).map(entry => (
@@ -616,6 +533,7 @@ export default function CommandCenterPage() {
         <MvpPanels
           selectedRegion={selectedRegion}
           onSelectRegion={id => { if (id) selectRegion(id); }}
+          onDataChanged={() => void refresh()}
         />
       </section>
       <footer className="cc-footer">
@@ -627,524 +545,6 @@ export default function CommandCenterPage() {
   );
 }
 
-function textOf(form: { description: string }, text: string): string {
-  return (text || form.description || '').trim();
-}
-
-function formatAffected(affected: { region_ids: string[]; corridor_ids: string[]; exit_ids: string[] }): string {
-  const parts = [
-    ...affected.region_ids.map(id => `区域 ${id}`),
-    ...affected.corridor_ids.map(id => `通道 ${id}`),
-    ...affected.exit_ids.map(id => `出口 ${id}`),
-  ];
-  return parts.length > 0 ? parts.join('、') : '未识别';
-}
-
-function affectedOf(target: string): { region_ids: string[]; corridor_ids: string[]; exit_ids: string[] } {
-  const [kind, id] = target.split(':');
-  if (kind === 'exit') return { region_ids: [], corridor_ids: [], exit_ids: [id] };
-  if (kind === 'corridor') return { region_ids: [], corridor_ids: [id], exit_ids: [] };
-  return { region_ids: [id], corridor_ids: [], exit_ids: [] };
-}
-
-function PanelTitle({ title, subtitle }: { title: string; subtitle: string }) {
-  return (
-    <div className="cc-panel-title">
-      <h3>{title}</h3>
-      <span>{subtitle}</span>
-    </div>
-  );
-}
-
-function StateBadge({ state, headline }: { state: SafetyStateName; headline: string }) {
-  return (
-    <div className={`cc-state-badge state-${state}`} role="status">
-      <strong>{state}</strong>
-      <span>{STATE_LABEL[state]}</span>
-      <em>{headline}</em>
-    </div>
-  );
-}
-
-function ProviderList({ providers }: { providers: ProviderStatus[] }) {
-  if (providers.length === 0) return <p className="cc-muted">正在探测感知 provider…</p>;
-  return (
-    <ul className="cc-providers">
-      {providers.map(provider => (
-        <li key={provider.id} className={provider.available ? 'cc-ok' : 'cc-bad'}>
-          <div>
-            <strong>{provider.kind}</strong> · {provider.model_version}
-          </div>
-          <div className="cc-small">
-            {provider.available ? '可用' : '不可用'} · 本机验证：
-            {provider.verified_on_this_host ? '是' : '否'}
-          </div>
-          {provider.checks.some(check => !check.ok) ? <details><summary>查看诊断信息</summary>{provider.checks.filter(check => !check.ok).map(check => <div key={check.name} className="cc-small cc-muted">{check.name}：{check.detail}</div>)}</details> : null}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function ValidationPanel({
-  validation,
-  candidateShown,
-}: {
-  validation: SafetyValidationResult | null;
-  candidateShown: boolean;
-}) {
-  if (!validation) {
-    return <p className="cc-muted">尚无校验记录。</p>;
-  }
-  return (
-    <div className="cc-validation">
-      <div className={validation.valid ? 'cc-badge cc-badge-ok' : 'cc-badge cc-badge-bad'}>
-        {validation.valid ? '通过独立校验' : '未通过独立校验'}
-      </div>
-      <div className="cc-small cc-muted">
-        校验于 {formatTime(validation.checked_at)} · {validation.checks_run.length} 项检查
-      </div>
-      {validation.violations.length > 0 ? (
-        <ul className="cc-violations">
-          {validation.violations.map((violation, index) => (
-            <li key={`${violation.code}-${index}`} className={`severity-${violation.severity}`}>
-              <code>{violation.code}</code> {violation.message}
-            </li>
-          ))}
-        </ul>
-      ) : null}
-      {candidateShown && !validation.valid ? (
-        <p className="cc-small cc-bad">当前展示的是候选方案，仅供人工研判，未经安全验证。</p>
-      ) : null}
-    </div>
-  );
-}
-
-function ExitAllocation({ status, plan }: { status: SafetyStatus; plan: EvacuationPlan | null }) {
-  return (
-    <table className="cc-table">
-      <thead>
-        <tr>
-          <th>出口</th>
-          <th>有效状态</th>
-          <th>容量（人/分）</th>
-          <th>分配</th>
-        </tr>
-      </thead>
-      <tbody>
-        {status.exits.map(exit => {
-          const allocated = plan ? (plan.exit_totals.find(item => item.exit_id === exit.id)?.persons ?? 0) : '—';
-          const closed = exit.effective_status !== 'open' || !exit.usable;
-          return (
-            <tr key={exit.id} className={closed ? 'cc-closed' : undefined}>
-              <td>
-                {exit.name}
-                <span className="cc-muted"> {exit.id}</span>
-              </td>
-              <td>
-                {exit.effective_status}
-                {exit.blocked_by_incident_id ? <span className="cc-muted"> (事件)</span> : null}
-              </td>
-              <td>{exit.capacity_per_min ?? '未知'}</td>
-              <td>{allocated}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  );
-}
-
-function IncidentPanel({
-  incidents,
-  onLocate,
-  busy,
-  onConfirm,
-  onResolve,
-}: {
-  incidents: SafetyIncident[];
-  onLocate: (incident: SafetyIncident) => void;
-  busy: string | null;
-  onConfirm: (id: string) => void;
-  onResolve: (id: string) => void;
-}) {
-  if (incidents.length === 0) return <p className="cc-muted">当前无事件。</p>;
-  return (
-    <ul className="cc-incidents">
-      {incidents.map(incident => (
-        <li key={incident.id} className={`incident-${incident.status}`}>
-          <div>
-            <strong>{incident.type}</strong> · {incident.description}
-          </div>
-          <div className="cc-small cc-muted">
-            状态 {incident.status} · 影响 {formatAffected(incident.affected)} · 上报 {formatTime(incident.reported_at)}
-          </div>
-          <div className="cc-form-row">
-            {(incident.affected.region_ids.length + incident.affected.corridor_ids.length + incident.affected.exit_ids.length) > 0 ? <button type="button" onClick={() => onLocate(incident)}>定位关联区域</button> : null}
-            {incident.status === 'reported' ? (
-              <button type="button" disabled={busy !== null} onClick={() => onConfirm(incident.id)}>
-                确认事件
-              </button>
-            ) : null}
-            {incident.status === 'confirmed' ? (
-              <button type="button" disabled={busy !== null} onClick={() => onResolve(incident.id)}>
-                解除事件
-              </button>
-            ) : null}
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function Legend({ isCandidate, hasPlan }: { isCandidate: boolean; hasPlan: boolean }) {
-  return (
-    <div className="cc-legend">
-      <span><i className="legend-swatch validated" /> 已验证路线{hasPlan && !isCandidate ? '（当前显示）' : ''}</span>
-      <span><i className="legend-swatch candidate" /> 候选路线（未校验）</span>
-      <span><i className="legend-swatch closed" /> 已关闭通道/出口</span>
-      <span><i className="legend-swatch unknown" /> 状态未知</span>
-    </div>
-  );
-}
-
 // ---------------------------------------------------------------------------
 // 态势图
 // ---------------------------------------------------------------------------
-
-interface RouteGroup {
-  key: string;
-  fromRegionId: string;
-  exitId: string;
-  persons: number;
-  points: Array<{ x: number; y: number }>;
-  earliestMinute: number;
-  latestMinute: number;
-}
-
-function centreOf(region: SafetyRegion): { x: number; y: number } {
-  return { x: region.geometry.x + region.geometry.width / 2, y: region.geometry.y + region.geometry.height / 2 };
-}
-
-function groupRoutes(
-  plan: EvacuationPlan | null,
-  regions: SafetyRegion[],
-  exits: SafetyStatus['exits'],
-): RouteGroup[] {
-  if (!plan) return [];
-  const regionById = new Map(regions.map(region => [region.id, region]));
-  const exitById = new Map(exits.map(exit => [exit.id, exit]));
-  const groups = new Map<string, RouteGroup>();
-
-  for (const route of plan.routes as EvacuationRoute[]) {
-    const key = `${route.from_region_id}->${route.exit_id}`;
-    const existing = groups.get(key);
-    const points = buildRoutePoints(route, regionById, exitById);
-    if (existing) {
-      existing.persons += route.persons;
-      existing.earliestMinute = Math.min(existing.earliestMinute, route.depart_minute);
-      existing.latestMinute = Math.max(existing.latestMinute, route.arrive_minute);
-      continue;
-    }
-    groups.set(key, {
-      key,
-      fromRegionId: route.from_region_id,
-      exitId: route.exit_id,
-      persons: route.persons,
-      points,
-      earliestMinute: route.depart_minute,
-      latestMinute: route.arrive_minute,
-    });
-  }
-  return [...groups.values()];
-}
-
-function buildRoutePoints(
-  route: EvacuationRoute,
-  regionById: Map<string, SafetyRegion>,
-  exitById: Map<string, SafetyStatus['exits'][number]>,
-): Array<{ x: number; y: number }> {
-  const points: Array<{ x: number; y: number }> = [];
-  const origin = regionById.get(route.from_region_id);
-  if (origin) points.push(centreOf(origin));
-  for (const step of route.steps) {
-    const region = regionById.get(step.to_region_id);
-    if (region) points.push(centreOf(region));
-  }
-  const exit = exitById.get(route.exit_id);
-  if (exit) {
-    const region = regionById.get(exit.region_id);
-    if (region) {
-      points.push({
-        x: region.geometry.x + region.geometry.width,
-        y: region.geometry.y + region.geometry.height / 2,
-      });
-    }
-  }
-  return points;
-}
-
-function NetworkMap({ map, status, selectedRegion, onSelectRegion, allowRoutes, zoom, setZoom, center, setCenter, showBackdrop, layers }: { map?: ScenarioMap; allowRoutes: boolean; status: SafetyStatus; selectedRegion: string | null; onSelectRegion: (id: string) => void; zoom: number; setZoom: (value: number) => void; center: {x:number; y:number} | null; setCenter: (value: {x:number; y:number}) => void; showBackdrop: boolean; layers: {landmarks:boolean; regions:boolean; risks:boolean; corridors:boolean; validated:boolean; candidate:boolean; incidents:boolean} }) {
-  const dragging = useRef<{x:number; y:number; centerX:number; centerY:number; scaleX:number; scaleY:number; pointerId:number; moved:boolean; captured:boolean} | null>(null);
-  const mapRef = useRef<SVGSVGElement | null>(null);
-  const suppressClick = useRef(false);
-  const plan = status.plan;
-  const candidate = status.candidate_plan;
-  const showValidated = allowRoutes && Boolean(plan) && status.state.state !== 'REJECT' && status.state.validated_route_display_allowed;
-  const showCandidate = allowRoutes && !showValidated && Boolean(candidate) && status.state.candidate_route_display_allowed;
-  const activePlan = showValidated ? plan : showCandidate ? candidate : null;
-
-  const bounds = useMemo(() => {
-    let maxX = 0;
-    let maxY = 0;
-    for (const region of status.regions) {
-      maxX = Math.max(maxX, region.geometry.x + region.geometry.width);
-      maxY = Math.max(maxY, region.geometry.y + region.geometry.height);
-    }
-    return { width: maxX + 40, height: maxY + 40 };
-  }, [status.regions]);
-
-  const routes = useMemo(
-    () => groupRoutes(activePlan, status.regions, status.exits),
-    [activePlan, status.regions, status.exits],
-  );
-
-  const regionById = new Map(status.regions.map(region => [region.id, region]));
-
-  // 把路线经过的通道高亮出来
-  const highlighted = new Set<string>();
-  for (const route of activePlan?.routes ?? []) {
-    for (const step of route.steps) highlighted.add(step.corridor_id);
-  }
-
-  const clampCenter = (point: { x: number; y: number }, level: number) => {
-    const halfWidth = bounds.width / (2 * level);
-    const halfHeight = bounds.height / (2 * level);
-    return {
-      x: Math.min(Math.max(point.x, halfWidth), bounds.width - halfWidth),
-      y: Math.min(Math.max(point.y, halfHeight), bounds.height - halfHeight),
-    };
-  };
-
-  // React 的 onWheel 以 passive 方式挂载，无法阻止页面滚动，因此改用原生非 passive 监听。
-  const viewRef = useRef({ bounds, center, zoom });
-  viewRef.current = { bounds, center, zoom };
-  useEffect(() => {
-    const element = mapRef.current;
-    if (!element) return undefined;
-    const onWheel = (event: WheelEvent) => {
-      const { bounds: currentBounds, center: currentCenter, zoom: currentZoom } = viewRef.current;
-      const factor = event.deltaY < 0 ? MAP_WHEEL_FACTOR : 1 / MAP_WHEEL_FACTOR;
-      const next = Math.max(MAP_MIN_ZOOM, Math.min(MAP_MAX_ZOOM, currentZoom * factor));
-      // 到达缩放边界时不再拦截滚动，避免地图区域变成“滚动黑洞”。
-      if (next === currentZoom) return;
-      event.preventDefault();
-      const matrix = element.getScreenCTM();
-      if (!matrix) return;
-      const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
-      const origin = currentCenter ?? { x: currentBounds.width / 2, y: currentBounds.height / 2 };
-      const halfWidth = currentBounds.width / (2 * next);
-      const halfHeight = currentBounds.height / (2 * next);
-      setCenter({
-        x: Math.min(Math.max(point.x + (origin.x - point.x) * currentZoom / next, halfWidth), currentBounds.width - halfWidth),
-        y: Math.min(Math.max(point.y + (origin.y - point.y) * currentZoom / next, halfHeight), currentBounds.height - halfHeight),
-      });
-      setZoom(next);
-    };
-    element.addEventListener('wheel', onWheel, { passive: false });
-    return () => element.removeEventListener('wheel', onWheel);
-  }, [setCenter, setZoom]);
-
-  return (
-    <svg
-      ref={mapRef}
-      className="cc-map"
-      style={{ touchAction: zoom > MAP_MIN_ZOOM ? 'none' : 'pan-y' }}
-      viewBox={`${(center?.x ?? bounds.width / 2) - bounds.width / zoom / 2} ${(center?.y ?? bounds.height / 2) - bounds.height / zoom / 2} ${bounds.width / zoom} ${bounds.height / zoom}`}
-      onPointerDown={event => {
-        if (event.button !== 0) return;
-        const matrix = event.currentTarget.getScreenCTM();
-        if (!matrix) return;
-        suppressClick.current = false;
-        dragging.current = {
-          x: event.clientX,
-          y: event.clientY,
-          centerX: center?.x ?? bounds.width / 2,
-          centerY: center?.y ?? bounds.height / 2,
-          scaleX: matrix.a,
-          scaleY: matrix.d,
-          pointerId: event.pointerId,
-          moved: false,
-          captured: false,
-        };
-      }}
-      onPointerMove={event => {
-        const drag = dragging.current;
-        if (!drag || drag.pointerId !== event.pointerId) return;
-        if (event.pointerType === 'mouse' && event.buttons === 0) {
-          dragging.current = null;
-          return;
-        }
-        const dx = event.clientX - drag.x;
-        const dy = event.clientY - drag.y;
-        if (!drag.moved && (Math.abs(dx) > MAP_DRAG_CLICK_THRESHOLD_PX || Math.abs(dy) > MAP_DRAG_CLICK_THRESHOLD_PX)) {
-          drag.moved = true;
-          // 仅在真正开始拖动后捕获指针，避免把普通点击重定向到 SVG 而丢失区域选择。
-          if (typeof event.currentTarget.setPointerCapture === 'function') {
-            try {
-              event.currentTarget.setPointerCapture(event.pointerId);
-              drag.captured = true;
-            } catch {
-              drag.captured = false;
-            }
-          }
-        }
-        setCenter(clampCenter({ x: drag.centerX - dx / drag.scaleX, y: drag.centerY - dy / drag.scaleY }, zoom));
-      }}
-      onPointerUp={event => {
-        const drag = dragging.current;
-        if (!drag) return;
-        if (drag.captured) {
-          try { event.currentTarget.releasePointerCapture(event.pointerId); } catch { /* capture already released */ }
-        }
-        if (drag.moved) {
-          // 拖动结束后浏览器仍会派发 click，短暂抑制以免误选区域。
-          suppressClick.current = true;
-          window.setTimeout(() => { suppressClick.current = false; }, 250);
-        }
-        dragging.current = null;
-      }}
-      onPointerCancel={event => {
-        const drag = dragging.current;
-        if (drag?.captured) {
-          try { event.currentTarget.releasePointerCapture(event.pointerId); } catch { /* capture already released */ }
-        }
-        dragging.current = null;
-      }}
-      onLostPointerCapture={() => { dragging.current = null; }}
-      role="group"
-      aria-label="区域态势与疏散路线示意图"
-      aria-describedby="map-help"
-    >
-      <desc id="map-help">拖拽平移地图，滚轮缩放；使用 Tab 聚焦区域，按回车查看详情。</desc>
-      <defs>
-        <marker id="route-arrow-valid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#43e0a0" /></marker>
-        <marker id="route-arrow-candidate" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff9b57" /></marker>
-        <pattern id="map-grid" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M 44 0 L 0 0 0 44" className="map-grid-line" /></pattern>
-      </defs>
-      <rect x={0} y={0} width={bounds.width} height={bounds.height} className="map-bg" />
-      <rect x={0} y={0} width={bounds.width} height={bounds.height} className="map-grid-bg" fill="url(#map-grid)" aria-hidden="true" />
-      <g className="map-corner" aria-hidden="true"><path d={`M 8 30 V 8 H 30`} /><path d={`M ${bounds.width - 30} 8 H ${bounds.width - 8} V 30`} /><path d={`M 8 ${bounds.height - 30} V ${bounds.height - 8} H 30`} /><path d={`M ${bounds.width - 30} ${bounds.height - 8} H ${bounds.width - 8} V ${bounds.height - 30}`} /></g>
-      {showBackdrop && map?.backdrop ? <><image href={map.backdrop} x={0} y={0} width={bounds.width} height={bounds.height} preserveAspectRatio="xMidYMid slice" /><rect x={0} y={0} width={bounds.width} height={bounds.height} fill="#091310" opacity={map.backdrop_opacity ?? 0.48} /></> : null}
-
-      {layers.landmarks && (map?.landmarks?.length ?? 0) > 0 ? <g className="map-landmarks" aria-label="场景地标，未空间标定">{(map?.landmarks ?? []).map(landmark => <g key={landmark.name}><circle cx={landmark.x * bounds.width} cy={landmark.y * bounds.height} r="3" /><text x={landmark.x * bounds.width + 7} y={landmark.y * bounds.height - 5}>{landmark.name}</text></g>)}</g> : null}
-      {layers.corridors && status.corridors.map(corridor => {
-        const from = regionById.get(corridor.from_region_id);
-        const to = regionById.get(corridor.to_region_id);
-        if (!from || !to) return null;
-        const start = centreOf(from);
-        const end = centreOf(to);
-        const className =
-          corridor.effective_status === 'closed' || !corridor.usable
-            ? 'map-corridor map-corridor-closed'
-            : corridor.effective_status === 'unknown'
-              ? 'map-corridor map-corridor-unknown'
-              : highlighted.has(corridor.id)
-                ? 'map-corridor map-corridor-active'
-                : 'map-corridor';
-        return (
-          <g key={corridor.id}>
-            <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} className={`${className} ${selectedRegion && (corridor.from_region_id === selectedRegion || corridor.to_region_id === selectedRegion) ? 'map-related' : ''}`} />
-            <title>
-              {corridor.name} · 状态 {corridor.effective_status} · 容量 {corridor.capacity_per_min ?? '未知'} 人/分 ·{' '}
-              {corridor.status_reason}
-            </title>
-            {selectedRegion && (corridor.from_region_id === selectedRegion || corridor.to_region_id === selectedRegion) ? <text x={(start.x + end.x) / 2} y={(start.y + end.y) / 2 - 4} className="map-label">{corridor.id}</text> : null}
-          </g>
-        );
-      })}
-
-      {layers.regions && status.regions.map(region => {
-        const risk = status.risks.find(item => item.regionId === region.id);
-        const geometry = region.geometry;
-        return (
-          <g key={region.id} role="button" tabIndex={0} aria-label={`查看${region.name}详情`} onClick={() => { if (suppressClick.current) return; onSelectRegion(region.id); }} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelectRegion(region.id); } }} className={selectedRegion === region.id ? 'map-selected' : selectedRegion ? 'map-dimmed' : ''}>
-            <rect
-              x={geometry.x}
-              y={geometry.y}
-              width={geometry.width}
-              height={geometry.height}
-              rx={10}
-              className={`map-region risk-${layers.risks ? risk?.level ?? 'unknown' : 'unknown'}`}
-            />
-            <circle cx={centreOf(region).x} cy={centreOf(region).y} r={5} className={`map-node risk-${risk?.level ?? 'unknown'}`} />
-            <text x={geometry.x + 12} y={geometry.y + 26} className="map-region-name">
-              {region.name}
-            </text>
-            <text x={geometry.x + 12} y={geometry.y + 46} className="map-region-info">
-              风险 {RISK_LABEL[risk?.level ?? 'unknown']}
-              {risk && !risk.trusted ? '（数据不可信）' : ''}
-            </text>
-            <title>
-              {region.name} · {risk?.count ?? '无数据'} 人 · 密度 {risk?.density?.toFixed(2) ?? '无数据'} · 置信度 {risk?.confidence ?? '无数据'} · 时间 {formatSince(risk?.observedAt)} · 面积 {region.area_m2} m² ({region.area_provenance}) · 摄像机标定{' '}
-              {region.camera.calibration_status}
-            </title>
-          </g>
-        );
-      })}
-
-      {layers.corridors && status.exits.map((exit, index) => {
-        const region = regionById.get(exit.region_id);
-        if (!region) return null;
-        const y = region.geometry.y + region.geometry.height / 2 + index * 14 - 20;
-        const x = region.geometry.x + region.geometry.width;
-        const labelWidth = Math.max(32, exit.id.length * 7 + 12);
-        return (
-          <g key={exit.id}>
-            <rect
-              x={x - 4}
-              y={y - 10}
-              width={labelWidth}
-              height={20}
-              rx={6}
-              className={`map-exit ${exit.effective_status === 'open' && exit.usable ? 'map-exit-open' : 'map-exit-closed'}`}
-            />
-            <text x={x - 4 + labelWidth / 2} y={y + 4} textAnchor="middle" className="map-exit-label">
-              {exit.id}
-            </text>
-            <title>
-              出口 {exit.name} · {exit.effective_status} · 容量 {exit.capacity_per_min ?? '未知'} 人/分
-            </title>
-          </g>
-        );
-      })}
-
-      {layers.incidents && status.incidents.filter(incident => incident.status === 'confirmed' || incident.status === 'reported').map(incident => { const id = incident.affected.region_ids[0] ?? status.corridors.find(c => incident.affected.corridor_ids.includes(c.id))?.from_region_id ?? status.exits.find(e => incident.affected.exit_ids.includes(e.id))?.region_id; const region = status.regions.find(item => item.id === id); if (!region) return null; const point = centreOf(region); return <g key={incident.id}><circle cx={point.x+12} cy={point.y-12} r="6" className="map-incident" /><title>{incident.type} · {incident.description}</title></g>; })}
-      {((showValidated && layers.validated) || (showCandidate && layers.candidate)) && routes.map(route => (
-        <g key={route.key}>
-          <polyline
-            points={route.points.map(point => `${point.x},${point.y}`).join(' ')}
-            className={showValidated ? 'map-route map-route-validated' : 'map-route map-route-candidate'}
-            fill="none" markerEnd={showValidated ? 'url(#route-arrow-valid)' : 'url(#route-arrow-candidate)'}
-          />
-          <title>
-            {route.fromRegionId} → {route.exitId} · {route.persons} 人 · t{route.earliestMinute}–{route.latestMinute} 分钟 ·{' '}
-            {showValidated ? '已通过独立校验' : '候选方案，未通过校验'}
-          </title>
-        </g>
-      ))}
-
-      {routes.length > 0 && ((showValidated && layers.validated) || (showCandidate && layers.candidate))
-        ? routes.map(route => {
-            const last = route.points[route.points.length - 1];
-            return (
-              <text key={`${route.key}-label`} x={last.x - 46} y={last.y - 8} className="map-route-label">
-                {route.persons}人
-              </text>
-            );
-          })
-        : null}
-    </svg>
-  );
-}

@@ -2,12 +2,32 @@
  * MVP HTTP 集成测试：真实鉴权、Agent 运行、审批、工单流转、反馈写回。
  */
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { jsonBody, startTestServer } from '../helpers/api-fixtures';
+import { readScenarioJson } from '../../src/services/safety/scenario-overlay';
 
-const STADIUM = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
-process.env.SAFETY_SCENARIO_FILE = STADIUM;
+const SCENARIO = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
+process.env.SAFETY_SCENARIO_FILE = SCENARIO;
+
+type ScenarioShape = {
+  regions: Array<{ id: string; enabled?: boolean }>;
+  simulation_baseline?: Record<string, { count: number; confidence: number }>;
+};
+const scenario = readScenarioJson(SCENARIO) as ScenarioShape;
+/**
+ * 场景的全部启用区域都必须有可信观测，否则未覆盖区域会让安全状态保持 DEGRADED。
+ * 这里用场景自带的仿真基线填充，只把目标区域留给低置信观测。
+ */
+const trustedObservations = Object.fromEntries(
+  scenario.regions
+    .filter(region => region.enabled !== false && region.id !== 'R_S04_L1_CREST')
+    .map(region => {
+      const baseline = scenario.simulation_baseline?.[region.id];
+      return [region.id, { count: baseline?.count ?? 60, confidence: baseline?.confidence ?? 0.95 }];
+    }),
+);
 
 async function loginAdmin(server: Awaited<ReturnType<typeof startTestServer>>): Promise<Record<string, string>> {
   const response = await server.request('/api/v1/auth/login', jsonBody({
@@ -43,15 +63,7 @@ test('HTTP 闭环：低置信观测 → Agent → 审批 → 派发 → 执行 �
 
     const simulate = await server.request('/api/v1/safety/observations/simulate', {
       ...jsonBody({
-        observations: {
-          R_NORTH_STAND: { count: 350, confidence: 0.92 },
-          R_SOUTH_STAND: { count: 300, confidence: 0.91 },
-          R_WEST_STAND: { count: 280, confidence: 0.9 },
-          R_NORTH_CONCOURSE: { count: 120, confidence: 0.9 },
-          R_SOUTH_CONCOURSE: { count: 110, confidence: 0.9 },
-          R_EAST_PLAZA: { count: 60, confidence: 0.88 },
-          R_WEST_PLAZA: { count: 55, confidence: 0.88 },
-        },
+        observations: trustedObservations,
         recompute: true,
       }),
       headers: { ...admin, 'Content-Type': 'application/json' },
@@ -60,7 +72,7 @@ test('HTTP 闭环：低置信观测 → Agent → 审批 → 派发 → 执行 �
 
     const observation = await server.request('/api/v1/safety/observations', {
       ...jsonBody({
-        region_id: 'R_EAST_STAND',
+        region_id: 'R_S04_L1_CREST',
         count: 900,
         confidence: 0.35,
         source: 'simulation',
@@ -76,7 +88,7 @@ test('HTTP 闭环：低置信观测 → Agent → 审批 → 派发 → 执行 �
     assert.equal(statusBefore.body.state.state, 'DEGRADED');
 
     const runResponse = await server.request('/api/v1/mvp/agent/runs', {
-      ...jsonBody({ region_id: 'R_EAST_STAND', trigger: 'http_test' }),
+      ...jsonBody({ region_id: 'R_S04_L1_CREST', trigger: 'http_test' }),
       headers: { ...admin, 'Content-Type': 'application/json' },
     });
     assert.equal(runResponse.status, 201, JSON.stringify(runResponse.body));
@@ -87,7 +99,7 @@ test('HTTP 闭环：低置信观测 → Agent → 审批 → 派发 → 执行 �
     assert.ok(run.trace.some((item: { tool: string }) => item.tool === 'request_uav_observation'));
 
     const ordersResponse = await server.request('/api/v1/mvp/work-orders?status=PENDING_APPROVAL');
-    const pending = ordersResponse.body.work_orders.filter((order: { region_id: string }) => order.region_id === 'R_EAST_STAND');
+    const pending = ordersResponse.body.work_orders.filter((order: { region_id: string }) => order.region_id === 'R_S04_L1_CREST');
     assert.ok(pending.length >= 2);
 
     for (const order of pending) {
@@ -113,7 +125,10 @@ test('HTTP 闭环：低置信观测 → Agent → 审批 → 派发 → 执行 �
       const staffId = assign.body.work_order.assigned_staff_id as string;
       assert.ok(staffId);
 
-      const accessCode = staffId === 'STF-02' ? '1002' : staffId === 'STF-04' ? '1004' : null;
+      const accessCodes: Record<string, string> = Object.fromEntries(
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(index => [`STAFF_GATE_${String(index).padStart(2, '0')}`, `CODE_G${String(index).padStart(2, '0')}`]),
+      );
+      const accessCode = accessCodes[staffId] ?? null;
       assert.ok(accessCode, `unexpected staff ${staffId}`);
       const staff = await loginStaff(server, staffId, accessCode!);
 
@@ -135,13 +150,13 @@ test('HTTP 闭环：低置信观测 → Agent → 审批 → 派发 → 执行 �
     }
 
     const after = await server.request('/api/v1/safety/status');
-    const eastObservation = after.body.observations.find((item: { region_id: string }) => item.region_id === 'R_EAST_STAND');
+    const eastObservation = after.body.observations.find((item: { region_id: string }) => item.region_id === 'R_S04_L1_CREST');
     assert.ok(['field_report', 'uav_observation'].includes(eastObservation.source));
     assert.notEqual(after.body.state.state, 'DEGRADED');
 
     const dashboard = await server.request('/api/v1/mvp/dashboard');
     assert.equal(dashboard.status, 200);
-    assert.equal(dashboard.body.scenario.regions, 8);
+    assert.equal(dashboard.body.scenario.regions, 44);
     assert.ok(dashboard.body.work_orders.every((order: { status: string }) => ['COMPLETED', 'FAILED', 'REJECTED'].includes(order.status)));
     assert.ok(Array.isArray(dashboard.body.audit));
     assert.ok(dashboard.body.audit.length > 0);
@@ -157,7 +172,7 @@ test('HTTP 闭环：低置信观测 → Agent → 审批 → 派发 → 执行 �
 test('HTTP 权限：未登录不能运行 Agent，staff 不能审批，Agent 不能反馈', async () => {
   const server = await startTestServer();
   try {
-    const anonymousRun = await server.request('/api/v1/mvp/agent/runs', jsonBody({ region_id: 'R_EAST_STAND', trigger: 'x' }));
+    const anonymousRun = await server.request('/api/v1/mvp/agent/runs', jsonBody({ region_id: 'R_S04_L1_CREST', trigger: 'x' }));
     assert.equal(anonymousRun.status, 401);
 
     const admin = await loginAdmin(server);
@@ -166,7 +181,7 @@ test('HTTP 权限：未登录不能运行 Agent，staff 不能审批，Agent 不
     });
     assert.equal(reset.status, 200);
 
-    const staff = await loginStaff(server, 'STF-02', '1002');
+    const staff = await loginStaff(server, 'STAFF_GATE_02', 'CODE_G02');
     const staffApprove = await server.request('/api/v1/mvp/work-orders/WO-NOT-EXIST/approve', {
       ...jsonBody({}), headers: { ...staff, 'Content-Type': 'application/json' },
     });

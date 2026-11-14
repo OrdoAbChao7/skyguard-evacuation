@@ -22,10 +22,11 @@ import {
 } from '../src/services/safety/planning/multi-objective';
 import type { Incident, SafetyScenario } from '../src/services/safety/types';
 
+import { mulberry32 } from './lib/benchmark';
 const RUN_ID = process.env.V75_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v75', RUN_ID);
 const SEEDS = Array.from({ length: 30 }, (_, index) => 20261111 + index);
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const CONTROL_INTERVAL = 2;
 const PLANNING_HORIZON = 10;
 const MAX_EXECUTION = 24;
@@ -48,16 +49,6 @@ type Profile = keyof typeof PROFILES;
 type CandidateId = Profile | 'no_commitment' | 'global_commitment' | 'region_selective' | 'emergency_release';
 const CANDIDATES: CandidateId[] = [...(Object.keys(PROFILES) as Profile[]), 'no_commitment', 'global_commitment', 'region_selective', 'emergency_release'];
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 interface InflowEvent { regionId: string; minute: number; persons: number }
 interface ScenarioSetup {
@@ -108,14 +99,14 @@ function buildSetup(baseScenario: SafetyScenario, variant: ScenarioVariant, seed
   }
   const incidents: Incident[] = [];
   const midRunDisruptions: ScenarioSetup['midRunDisruptions'] = [];
-  if (variant === 'exit_failure') incidents.push(incidentFor(['E_NORTH'], [], 'EXIT'));
-  if (variant === 'corridor_closure') incidents.push(incidentFor([], ['C_NE'], 'CORR'));
-  if (variant === 'midrun_exit_failure') midRunDisruptions.push({ minute: 4, exit_ids: ['E_NORTH'], corridor_ids: [], description: '第 4 分钟北出口故障' });
+  if (variant === 'exit_failure') incidents.push(incidentFor(['GATE_01_G01'], [], 'EXIT'));
+  if (variant === 'corridor_closure') incidents.push(incidentFor([], ['C_S01_L1_GATE'], 'CORR'));
+  if (variant === 'midrun_exit_failure') midRunDisruptions.push({ minute: 4, exit_ids: ['GATE_01_G01'], corridor_ids: [], description: '第 4 分钟北出口故障' });
   const corridorFactor = variant === 'dynamic_capacity'
-    ? (id: string, minute: number) => (minute >= 4 && (id === 'C_NE' || id === 'C_NW') ? 0.5 : 1)
+    ? (id: string, minute: number) => (minute >= 4 && (id === 'C_S01_L1_GATE' || id === 'C_S02_L1_GATE') ? 0.5 : 1)
     : undefined;
   const exitFactor = variant === 'dynamic_capacity'
-    ? (id: string, minute: number) => (minute >= 5 && id === 'E_NORTH' ? 0.7 : 1)
+    ? (id: string, minute: number) => (minute >= 5 && id === 'GATE_01_G01' ? 0.7 : 1)
     : undefined;
   return { scenario, variant, demand, inflows: flows, forecast, incidents, midRunDisruptions, corridorFactor, exitFactor };
 }

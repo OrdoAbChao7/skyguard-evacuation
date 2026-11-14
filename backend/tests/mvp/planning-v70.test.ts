@@ -11,7 +11,7 @@ import { validateSafetyPlan } from '../../src/services/safety/validator';
 import { buildObservation } from '../../src/services/safety/observations';
 import type { DensityObservation } from '../../src/services/safety/types';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function setup() {
   const scenario = loadSafetyScenario(scenarioPath);
@@ -110,7 +110,7 @@ test('MPC 无预测时第一步方案通过独立校验器', () => {
 test('MPC 预测到达计入总输入并保守执行', () => {
   const { scenario, network, demand, versions } = setup();
   const predictedArrivals = new Map<string, Array<{ offsetMinute: number; persons: number }>>();
-  predictedArrivals.set('R_NORTH_STAND', [{ offsetMinute: 2, persons: 100 }]);
+  predictedArrivals.set('R_S01_L1_CREST', [{ offsetMinute: 2, persons: 100 }]);
   const mpc = planEvacuationMpc({
     scenario,
     network,
@@ -146,8 +146,8 @@ test('受限 MILP 在非均匀需求下不会因零费用残量环死循环', ()
   const { scenario, network, versions } = setup();
   // 该需求组合曾触发 SPFA 路径回溯死循环；Dijkstra 求解器必须快速返回。
   const demand = new Map<string, number>([
-    ['R_NORTH_STAND', 239], ['R_SOUTH_STAND', 228], ['R_WEST_STAND', 318], ['R_EAST_STAND', 306],
-    ['R_NORTH_CONCOURSE', 243], ['R_SOUTH_CONCOURSE', 228], ['R_EAST_PLAZA', 251], ['R_WEST_PLAZA', 296],
+    ['R_S01_L1_CREST', 239], ['R_S02_L1_CREST', 228], ['R_S03_L1_CREST', 318], ['R_S04_L1_CREST', 306],
+    ['R_S05_L1_CREST', 243], ['R_S06_L1_CREST', 228], ['R_GATE_01_PLAZA', 251], ['R_GATE_02_PLAZA', 296],
   ]);
   const started = Date.now();
   const milp = planRestrictedMilp({ scenario, network, demandByRegion: demand, versions });

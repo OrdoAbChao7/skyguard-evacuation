@@ -31,7 +31,7 @@ test('未显式配置场景且 DATA_ROOT 无文件时回退仓库默认场景', 
   resetSafetyServiceForTests();
   try {
     const service = getSafetyService();
-    assert.equal(service.getScenario().scenario_id, 'stadium-evacuation-v1');
+    assert.equal(service.getScenario().scenario_id, 'hankou-mvp-v1');
   } finally {
     resetSafetyServiceForTests();
     if (previousRoot === undefined) delete process.env.DATA_ROOT; else process.env.DATA_ROOT = previousRoot;

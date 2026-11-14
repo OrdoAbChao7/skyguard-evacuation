@@ -16,6 +16,7 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { ensembleForecast } from '../src/services/mvp/forecast-advanced';
+import { bootstrap, gaussian, holm, mulberry32, normalCdf, pairedPValue } from './lib/benchmark';
 import {
   AdaptiveConformalCalibrator,
   OnlineChangePointDetector,
@@ -44,58 +45,6 @@ const ci = (values: number[]) => {
 };
 const dz = (diffs: number[]): number => (std(diffs) === 0 ? 0 : Number((mean(diffs) / std(diffs)).toFixed(4)));
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function gaussian(rng: () => number): number {
-  const u = Math.max(1e-9, rng());
-  const v = Math.max(1e-9, rng());
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
-function bootstrap(values: number[], iterations = 2000, seed = 43): { lower: number; upper: number } {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    for (let j = 0; j < values.length; j += 1) sum += values[Math.floor(rng() * values.length)];
-    stats.push(sum / values.length);
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
-function normalCdf(value: number): number {
-  const t = 1 / (1 + 0.2316419 * Math.abs(value));
-  const poly = t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
-  const cdf = 1 - (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * value * value) * poly;
-  return value >= 0 ? cdf : 1 - cdf;
-}
-function pairedPValue(diffs: number[]): number {
-  if (diffs.length < 2) return 1;
-  const sd = std(diffs);
-  if (sd === 0) return mean(diffs) === 0 ? 1 : 0;
-  const z = Math.abs(mean(diffs)) / (sd / Math.sqrt(diffs.length));
-  return Math.max(0, Math.min(1, 2 * (1 - normalCdf(z))));
-}
-function holm(pValues: Record<string, number>): Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> {
-  const entries = Object.entries(pValues).sort((a, b) => a[1] - b[1]);
-  const m = entries.length;
-  const result: Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> = {};
-  let previous = 0;
-  for (let index = 0; index < entries.length; index += 1) {
-    const [key, value] = entries[index];
-    const next = Math.min(1, Math.max(previous, (m - index) * value));
-    previous = next;
-    result[key] = { raw: Number(value.toFixed(6)), adjusted: Number(next.toFixed(6)), rejected_0_05: next < 0.05 };
-  }
-  return result;
-}
 
 function generateSeries(mechanism: Mechanism, seed: number): Array<{ x: number; y: number } | null> {
   const rng = mulberry32(seed * 101 + MECHANISMS.indexOf(mechanism) * 7_919);
@@ -176,8 +125,8 @@ function runVariant(
     const horizon = target.x - train[train.length - 1].x;
     const forecast = ensembleForecast(train, { horizonMinutes: horizon, seed });
     const predicted = forecast.predicted;
-    let interval90 = forecast.interval90;
-    let interval95 = forecast.interval95;
+    let interval90: { lower: number; upper: number; calibrated?: boolean; alpha?: number } = forecast.interval90;
+    let interval95: { lower: number; upper: number; calibrated?: boolean; alpha?: number } = forecast.interval95;
     let calibrated = false;
     let alpha = 0;
     let reliability: 'ok' | 'warning' | 'failed' | null = null;
@@ -188,8 +137,8 @@ function runVariant(
     } else {
       interval90 = calibrator90.interval(predicted, forecast.interval90);
       interval95 = calibrator95.interval(predicted, forecast.interval95);
-      calibrated = interval95.calibrated;
-      alpha = interval95.alpha;
+      calibrated = interval95.calibrated ?? false;
+      alpha = interval95.alpha ?? 0;
       if (detector) {
         const detection = detector.update(Math.abs(predicted - target.y));
         changeDetected = detection.detected;
@@ -200,7 +149,7 @@ function runVariant(
       }
       const reliabilityResult = assessConformalReliability({
         calibrator: calibrator95,
-        interval: interval95,
+        interval: interval95 as import('../src/services/mvp/conformal').ConformalInterval,
         predicted,
         changeDetected,
         maxRelativeWidth: RELIABILITY_THRESHOLD,
@@ -290,7 +239,7 @@ for (const reference of ['v70_static', 'aci'] as Variant[]) {
         diffs.push(aggregate(current)[metric] - aggregate(baseline)[metric]);
       }
     }
-    metrics[metric] = { mean_diff: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs), cohen_dz: dz(diffs), n: diffs.length };
+    metrics[metric] = { mean_diff: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs, 2000, 43), cohen_dz: dz(diffs), n: diffs.length };
     pValues[metric] = pairedPValue(diffs);
   }
   paired[reference] = metrics;

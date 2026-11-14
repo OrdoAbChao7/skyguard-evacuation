@@ -84,10 +84,10 @@ X-Invoke-Mode: published            # 可选
 
 ```json
 {
-  "query": "为区域 R_EAST_STAND 选择下一步安全调查工具……",
+  "query": "为区域 R_S04_L1_CREST 选择下一步安全调查工具……",
   "inputs": {
-    "scenario_id": "stadium-evacuation-v1",
-    "region_id": "R_EAST_STAND",
+    "scenario_id": "hankou-mvp-v1",
+    "region_id": "R_S04_L1_CREST",
     "trigger": "crowd_surge_alert",
     "trace_id": "RUN-XXXXXXXX-S1",
     "context": { "safety_state": {}, "region": {}, "risk": {}, "camera": {}, "prediction": {}, "previous_steps": [], "pending_work_orders": [] },
@@ -102,7 +102,7 @@ X-Invoke-Mode: published            # 可选
 
 ```json
 { "event": "message",
-  "data": { "text": "{\"tool\":\"get_crowd_status\",\"arguments\":{\"region_id\":\"R_EAST_STAND\"},\"reasoning\":\"...\"}",
+  "data": { "text": "{\"tool\":\"get_crowd_status\",\"arguments\":{\"region_id\":\"R_S04_L1_CREST\"},\"reasoning\":\"...\"}",
             "node_id": "node_end", "node_type": "End" },
   "createdTime": 1760169416635 }
 ```

@@ -3,7 +3,7 @@ import test from 'node:test';
 import { loadSafetyScenario } from '../../src/services/safety/scenario';
 import { ObservationStore, buildObservation } from '../../src/services/safety/observations';
 
-const scenario = loadSafetyScenario('stadium-evacuation.json');
+const scenario = loadSafetyScenario('hankou-mvp.json');
 const region = scenario.regions[0];
 
 function observation(at: string, count = 120) {

@@ -6,11 +6,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AimOutlined } from '@ant-design/icons';
 import mvpApi, { type AgentRun, type MvpDashboard, type MultiRegionAnalysis, type V70ForecastPreview, type V70JointPreview, type WorkOrder } from '../../services/mvpApi';
 import safetyApi, { type V70MpcPreview } from '../../services/safetyApi';
+import SimulationPanel from './SimulationPanel';
 import './MvpPanels.css';
 
 interface Props {
   selectedRegion: string | null;
   onSelectRegion: (id: string | null) => void;
+  onDataChanged?: () => void;
 }
 
 const STATUS_LABEL: Record<string, string> = {
@@ -51,7 +53,7 @@ function pct(value: number | null): string {
   return value === null ? '—' : value.toFixed(3);
 }
 
-export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
+export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChanged }: Props) {
   const [dashboard, setDashboard] = useState<MvpDashboard | null>(null);
   const [experiments, setExperiments] = useState<Awaited<ReturnType<typeof mvpApi.experiments>> | null>(null);
   const [multi, setMulti] = useState<MultiRegionAnalysis | null>(null);
@@ -100,6 +102,11 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
     return () => clearInterval(timer);
   }, [refresh]);
 
+  const handleSimulationChanged = useCallback(() => {
+    void refresh();
+    onDataChanged?.();
+  }, [refresh, onDataChanged]);
+
   const loadV70 = useCallback(async () => {
     const region = selectedRegion ?? dashboard?.predictions[0]?.region_id ?? '';
     if (!region) {
@@ -136,8 +143,16 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
   }, [selectedRegion]);
 
   useEffect(() => {
-    if (selectedRegion) setAgentRegion(selectedRegion);
-  }, [selectedRegion]);
+    if (selectedRegion) {
+      setAgentRegion(selectedRegion);
+      return;
+    }
+    // 未从地图点选区域时，默认指向首个预测区域，避免“运行 Agent”因未选择而静默不可用。
+    if (!agentRegion && dashboard) {
+      const fallback = dashboard.predictions[0]?.region_id ?? dashboard.safety.regions[0]?.id;
+      if (fallback) setAgentRegion(fallback);
+    }
+  }, [selectedRegion, agentRegion, dashboard]);
 
   useEffect(() => {
     if (!feedback) return undefined;
@@ -271,7 +286,7 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
   }
 
   return (
-    <section className="mvp" aria-label="MVP 业务闭环">
+    <section className="mvp" id="operations" aria-label="MVP 业务闭环">
       <header className="mvp-header">
         <div>
           <h2>现场协同管理</h2>
@@ -290,31 +305,44 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
               状态快照 rev {dashboard.state_store.revision}{dashboard.state_store.writable ? '' : ' · 只读'}
             </span>
           )}
-          <a className="mvp-link" href="/staff">工作人员移动端</a>
-          <button type="button" disabled={busy !== null} onClick={() => void act('demo-A', async () => {
+        </div>
+      </header>
+
+      <div className="mvp-demo-bar" role="group" aria-label="演示场景快捷操作">
+        <div className="mvp-demo-copy">
+          <strong>演示推演</strong>
+          <span>载入合成场景，联动安全状态、工单与审计</span>
+        </div>
+        <div className="mvp-demo-actions">
+          <button type="button" className="mvp-demo-btn" aria-label="推演 A：正常散场" disabled={busy !== null} onClick={() => void act('demo-A', async () => {
             const result = await mvpApi.runDemo('A_normal');
             setRun(result.run);
-          }, '一键推演 A 完成')}>推演 A</button>
-          <button type="button" disabled={busy !== null} onClick={() => void act('demo-B', async () => {
+          }, '一键推演 A 完成')}><strong>推演 A</strong><span>正常散场</span></button>
+          <button type="button" className="mvp-demo-btn" aria-label="推演 B：局部积聚" disabled={busy !== null} onClick={() => void act('demo-B', async () => {
             const result = await mvpApi.runDemo('B_surge');
             setRun(result.run);
-          }, '一键推演 B 完成')}>推演 B</button>
-          <button type="button" disabled={busy !== null} onClick={() => void act('demo-C', async () => {
+          }, '一键推演 B 完成')}><strong>推演 B</strong><span>局部积聚 · 信息缺口</span></button>
+          <button type="button" className="mvp-demo-btn" aria-label="推演 C：不可信与容量不足" disabled={busy !== null} onClick={() => void act('demo-C', async () => {
             const result = await mvpApi.runDemo('C_untrusted');
             setRun(result.run);
-          }, '一键推演 C 完成')}>推演 C</button>
+          }, '一键推演 C 完成')}><strong>推演 C</strong><span>不可信 · 容量不足</span></button>
+        </div>
+        <div className="mvp-demo-util">
           <button type="button" disabled={busy !== null} onClick={() => void act('reset', async () => {
             await mvpApi.reset();
             setRun(null);
             setFeedback(null);
           }, '演示已重置')}>重置</button>
           <button type="button" onClick={() => void refresh()} disabled={busy !== null}>刷新</button>
+          <a className="mvp-link" href="/staff">工作人员移动端 →</a>
         </div>
-      </header>
+      </div>
 
       {dashboard?.scenario.notice ? <p className="mvp-disclaimer">⚠ {dashboard.scenario.notice}</p> : null}
       {notice ? <p className="mvp-notice">{notice}</p> : null}
       {error ? <p className="mvp-error" role="alert">{error}</p> : null}
+
+      <SimulationPanel onChanged={handleSimulationChanged} />
 
       <div className="mvp-grid">
         {/* Agent 控制台 */}
@@ -344,9 +372,11 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
             >
               {busy === 'agent' ? '运行中…' : '运行 Agent'}
             </button>
+            {!agentRegion ? <span className="mvp-muted mvp-small">请先在左侧地图点选调查区域</span> : null}
             {shownRun ? <span className={`mvp-chip ${shownRun.status === 'completed' ? 'ok' : shownRun.status === 'failed' ? 'bad' : 'warn'}`}>{shownRun.status}</span> : null}
           </div>
 
+          <div className="mvp-agent-body">
           {shownRun ? (
             <>
               <p className="mvp-summary">{shownRun.summary}</p>
@@ -413,6 +443,7 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
               <span>选择调查区域并运行 Agent，查看调查决策、工具调用、信念更新与建议。Agent 只创建待审批工单，不会直接派发或控制现场资源。</span>
             </div>
           )}
+          </div>
         </section>
 
         {/* 预测 */}
@@ -560,8 +591,8 @@ export default function MvpPanels({ selectedRegion, onSelectRegion }: Props) {
             ) : (
               <>
                 <span className="mvp-muted">接单/执行/反馈需要工作人员登录（演示工号与登录码来自场景名册）。</span>
-                <input aria-label="工作人员工号" placeholder="工号，如 STF-02" value={staffIdInput} onChange={event => setStaffIdInput(event.target.value)} />
-                <input aria-label="工作人员登录码" placeholder="登录码，如 1002" value={staffCodeInput} onChange={event => setStaffCodeInput(event.target.value)} />
+                <input aria-label="工作人员工号" placeholder="工号，如 STAFF_GATE_02" value={staffIdInput} onChange={event => setStaffIdInput(event.target.value)} />
+                <input aria-label="工作人员登录码" placeholder="登录码，如 CODE_G02" value={staffCodeInput} onChange={event => setStaffCodeInput(event.target.value)} />
                 <button type="button" disabled={busy !== null || !staffIdInput || !staffCodeInput} onClick={() => void act('staff-login', loginStaff, '工作人员登录成功')}>工作人员登录</button>
               </>
             )}

@@ -11,12 +11,12 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
 const BACKEND_ROOT = path.resolve(__dirname, '../..');
-const STADIUM = path.resolve(BACKEND_ROOT, '../data/scenarios/stadium-evacuation.json');
+const SCENARIO = path.resolve(BACKEND_ROOT, '../data/scenarios/hankou-mvp.json');
 
 test('HTTP MCP 与网页共享同一业务状态', { timeout: 30_000 }, async () => {
   const dataRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'skyguard-mcp-http-'));
   process.env.DATA_ROOT = dataRoot;
-  process.env.SAFETY_SCENARIO_FILE = STADIUM;
+  process.env.SAFETY_SCENARIO_FILE = SCENARIO;
   process.env.MCP_ACTOR_ROLE = 'agent';
   process.env.SECRET_KEY = 'mcp-http-test-secret';
   const { app } = await import('../../src/app');
@@ -37,7 +37,7 @@ test('HTTP MCP 与网页共享同一业务状态', { timeout: 30_000 }, async ()
       type: 'scene_verification',
       title: 'HTTP MCP 共享状态工单',
       description: '通过 /mcp 创建，应从网页服务读到同一工单',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
       idempotency_key: 'mcp-http-shared-001',
     };
@@ -63,7 +63,7 @@ test('HTTP MCP 与网页共享同一业务状态', { timeout: 30_000 }, async ()
     assert.equal(denied.status, 401);
     const allowed = await fetch(url, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', authorization: 'Bearer mcp-http-secret' },
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.MCP_HTTP_TOKEN ?? ''}` },
       body: '{}',
     });
     assert.notEqual(allowed.status, 401);

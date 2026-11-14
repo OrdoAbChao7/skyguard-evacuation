@@ -10,7 +10,7 @@ import { MvpService } from '../../src/services/mvp';
 import { PersistentStateStore, StateStoreError } from '../../src/services/state/persistent-store';
 import { ADMIN } from './fixtures';
 
-const SCENARIO_PATH = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function newService(file: string, dir: string) {
   const scenario = loadSafetyScenario(SCENARIO_PATH);
@@ -42,7 +42,7 @@ test('统一状态跨业务恢复：证据、事件、工单/预留、预算、A
       type: 'corridor_closure',
       description: '状态恢复测试事件',
       severity: 'high',
-      affected: { exit_ids: ['E_EAST'] },
+      affected: { exit_ids: ['GATE_03_G03'] },
       source: 'operator',
       actor: ADMIN.username,
     });
@@ -52,14 +52,14 @@ test('统一状态跨业务恢复：证据、事件、工单/预留、预算、A
       type: 'scene_verification',
       title: '状态恢复工单',
       description: '验证跨业务恢复',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
       idempotency_key: 'state-idem-1',
-      resource_request: { staff_id: 'STF-02', budget_units: 0.2, person_minutes: 1 },
+      resource_request: { staff_id: 'STAFF_GATE_02', budget_units: 0.2, person_minutes: 1 },
     });
     first.mvp.ops.approve(order.id, ADMIN);
-    first.mvp.ops.assignStaff(order.id, ADMIN, 'STF-02');
-    const member = first.mvp.ops.getStaff('STF-02')!;
+    first.mvp.ops.assignStaff(order.id, ADMIN, 'STAFF_GATE_02');
+    const member = first.mvp.ops.getStaff('STAFF_GATE_02')!;
     const staff = { username: member.name, role: 'staff' as const, staff_id: member.id };
     first.mvp.ops.accept(order.id, staff);
     first.mvp.ops.start(order.id, staff);
@@ -67,7 +67,7 @@ test('统一状态跨业务恢复：证据、事件、工单/预留、预算、A
       note: '现场核查完成',
       observation: { count: 150, confidence: 0.95 },
     });
-    const run = await first.mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'state_test', runtime: 'local' });
+    const run = await first.mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: 'state_test', runtime: 'local' });
     const beforeHealth = first.mvp.getStateStoreHealth();
     const beforeStatus = first.safety.getStatus();
     assert.ok(beforeHealth.revision >= 2);
@@ -82,7 +82,7 @@ test('统一状态跨业务恢复：证据、事件、工单/预留、预算、A
     assert.equal(second.safety.getVersions().constraint, beforeStatus.versions.constraint);
     assert.equal(second.safety.getStatus().state.state, beforeStatus.state.state);
     assert.ok(second.safety.getObservationStore().window(
-      'R_EAST_STAND',
+      'R_S04_L1_CREST',
       new Date(Date.now() - 86_400_000),
       new Date(Date.now() + 60_000),
     ).some(item => item.estimated_count === 150));
@@ -92,7 +92,7 @@ test('统一状态跨业务恢复：证据、事件、工单/预留、预算、A
     assert.ok(restoredOrder);
     assert.equal(restoredOrder?.status, 'COMPLETED');
     assert.equal(restoredOrder?.reservation?.state, 'RELEASED');
-    assert.equal(second.mvp.ops.getStaff('STF-02')?.runtime_status, 'available');
+    assert.equal(second.mvp.ops.getStaff('STAFF_GATE_02')?.runtime_status, 'available');
     const budget = second.mvp.ops.getBudgetStatus();
     assert.equal(budget.settled.actions, 1);
     assert.equal(budget.settled.cost, 0.2);
@@ -105,10 +105,10 @@ test('统一状态跨业务恢复：证据、事件、工单/预留、预算、A
       type: 'scene_verification',
       title: '状态恢复工单',
       description: '验证跨业务恢复',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
       idempotency_key: 'state-idem-1',
-      resource_request: { staff_id: 'STF-02', budget_units: 0.2, person_minutes: 1 },
+      resource_request: { staff_id: 'STAFF_GATE_02', budget_units: 0.2, person_minutes: 1 },
     });
     assert.equal(replay.id, order.id);
     assert.equal(second.mvp.ops.getBudgetStatus().reserved.actions, 0);

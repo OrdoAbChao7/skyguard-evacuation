@@ -17,16 +17,16 @@ vi.mock('../../services/mvpApi', () => ({ default: mocks }));
 const order = {
   id: 'WO-STAFF-1',
   type: 'scene_verification',
-  title: '东看台现场核查',
-  description: '核查东看台人流',
+  title: '洞庭门滩顶现场核查',
+  description: '核查洞庭门滩顶人流',
   priority: 'high',
-  region_id: 'R_EAST_STAND',
+  region_id: 'R_S04_L1_CREST',
   status: 'ASSIGNED',
   created_by: { username: 'skyguard-agent', role: 'agent', kind: 'agent' },
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
   approval: null,
-  assigned_staff_id: 'STF-02',
+  assigned_staff_id: 'STAFF_GATE_02',
   feedback: null,
   context_version: { observation: 1, constraint: 1, scenario: '1.0.0' },
   stale: false,
@@ -50,10 +50,10 @@ describe('工作人员移动端', () => {
 
   it('登录后只展示指派给本人的工单并可接单', async () => {
     localStorage.setItem('staff_token', 'token');
-    localStorage.setItem('staff_id', 'STF-02');
+    localStorage.setItem('staff_id', 'STAFF_GATE_02');
     localStorage.setItem('staff_name', '李巡（演示）');
     render(<StaffPage />);
-    await waitFor(() => expect(screen.getByText('东看台现场核查')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('洞庭门滩顶现场核查')).toBeInTheDocument());
     expect(screen.getByText(/李巡/)).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: '接单' }));
     await waitFor(() => expect(mocks.accept).toHaveBeenCalledWith('WO-STAFF-1'));

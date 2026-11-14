@@ -13,7 +13,7 @@ import { loadDisplayPackage } from '../../src/services/perception/display';
 import { adaptDisplayFrame, ingestPerceptionDraft } from '../../src/services/perception/adapter';
 import { ADMIN } from './fixtures';
 
-const SCENARIO_PATH = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function service(dir: string) {
   const scenario = loadSafetyScenario(SCENARIO_PATH);
@@ -50,13 +50,13 @@ test('P0-2 反馈写入失败时回滚工单完成、预留与预算', () => {
       type: 'scene_verification',
       title: 'rollback',
       description: 'rollback',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
-      resource_request: { staff_id: 'STF-02', budget_units: 0.2, person_minutes: 1 },
+      resource_request: { staff_id: 'STAFF_GATE_02', budget_units: 0.2, person_minutes: 1 },
     });
     mvp.ops.approve(order.id, ADMIN);
-    mvp.ops.assignStaff(order.id, ADMIN, 'STF-02');
-    const member = mvp.ops.getStaff('STF-02')!;
+    mvp.ops.assignStaff(order.id, ADMIN, 'STAFF_GATE_02');
+    const member = mvp.ops.getStaff('STAFF_GATE_02')!;
     const staff = { username: member.name, role: 'staff' as const, staff_id: member.id };
     mvp.ops.accept(order.id, staff);
     mvp.ops.start(order.id, staff);
@@ -73,7 +73,7 @@ test('P0-2 反馈写入失败时回滚工单完成、预留与预算', () => {
     assert.equal(after.status, 'IN_PROGRESS');
     assert.equal(after.feedback, null);
     assert.equal(after.reservation?.state, 'CONFIRMED');
-    assert.equal(mvp.ops.getStaff('STF-02')?.runtime_status, 'busy');
+    assert.equal(mvp.ops.getStaff('STAFF_GATE_02')?.runtime_status, 'busy');
     assert.equal(mvp.ops.getBudgetStatus().settled.actions, 0);
     const saved = JSON.parse(fs.readFileSync(file, 'utf8'));
     const savedOrder = saved.payload.ops.workOrders.find((item: { id: string }) => item.id === order.id);
@@ -96,7 +96,7 @@ test('P0-3 状态写入失败后不返回未持久化工单，幂等重试被只
       type: 'scene_verification' as const,
       title: 'readonly',
       description: 'readonly',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
       idempotency_key: 'p0-readonly-key',
     };
@@ -115,7 +115,7 @@ test('P0-4 伪造/未签名的感知草稿不能进入安全域', () => {
   process.env.MVP_STATE_FILE = path.join(dir, 'state.json');
   try {
     const { scenario, safety } = service(dir);
-    const region = scenario.regions.find(item => item.id === 'R_EAST_STAND')!;
+    const region = scenario.regions.find(item => item.id === 'R_S04_L1_CREST')!;
     const loaded = loadDisplayPackage('citystreet-display');
     const original = adaptDisplayFrame(loaded, loaded.frames[0])[0];
     const forged = {

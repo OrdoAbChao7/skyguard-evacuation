@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { loadSafetyScenario } from '../../src/services/safety/scenario';
+import { buildSyntheticVenueProfile } from '../../src/services/safety/calibration/synthetic-profile';
 import {
   adaptAuthorizedRealRows,
   adaptPublicDatasetRows,
@@ -17,20 +18,19 @@ import {
 } from '../../src/services/safety/calibration/importers';
 import { validateVenueProfile, type VenueProfile } from '../../src/services/safety/calibration/venue-calibration';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
-const profilePath = path.resolve(__dirname, '../../../data/venues/stadium-synthetic-profile.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 const csvPath = path.resolve(__dirname, '../../../data/venues/fixtures/observations-sample.csv');
 const publicCsvPath = path.resolve(__dirname, '../../../data/venues/fixtures/public-sample.csv');
 
 function loadProfile(): VenueProfile {
-  return JSON.parse(fs.readFileSync(profilePath, 'utf8')) as VenueProfile;
+  return buildSyntheticVenueProfile(loadSafetyScenario(scenarioPath));
 }
 
 test('CSV 解析支持 BOM、引号、CRLF，并拒绝非法数值', () => {
-  const csv = '﻿region_id,observed_at,count,confidence\r\n"R_NORTH_STAND","2026-11-10T01:00:00Z",320,0.95\r\nR_SOUTH_STAND,2026-11-10T01:00:00Z,not-a-number,0.9\r\n';
+  const csv = '﻿region_id,observed_at,count,confidence\r\n"R_S01_L1_CREST","2026-11-10T01:00:00Z",320,0.95\r\nR_S02_L1_CREST,2026-11-10T01:00:00Z,not-a-number,0.9\r\n';
   const parsed = parseObservationCsv(csv);
   assert.equal(parsed.rows.length, 1);
-  assert.equal(parsed.rows[0].region_id, 'R_NORTH_STAND');
+  assert.equal(parsed.rows[0].region_id, 'R_S01_L1_CREST');
   assert.equal(parsed.rows[0].count, 320);
   assert.ok(parsed.errors.some(item => item.code === 'csv_invalid_count'));
 });
@@ -55,7 +55,7 @@ test('观测导入：replay 允许历史数据，live 拒绝过期/未来时间�
   const live = toDensityObservations(scenario, parsed.rows, { now, mode: 'live' });
   assert.equal(live.observations.length, parsed.rows.length);
   const stale = toDensityObservations(scenario, [{
-    region_id: 'R_NORTH_STAND',
+    region_id: 'R_S01_L1_CREST',
     observed_at: '2026-11-10T00:50:00Z',
     count: 300,
     confidence: 0.95,
@@ -64,7 +64,7 @@ test('观测导入：replay 允许历史数据，live 拒绝过期/未来时间�
   assert.equal(stale.observations.length, 0);
   assert.equal(stale.rejected[0].reason, 'stale_observation');
   const future = toDensityObservations(scenario, [{
-    region_id: 'R_NORTH_STAND',
+    region_id: 'R_S01_L1_CREST',
     observed_at: '2026-11-10T01:10:00Z',
     count: 300,
     confidence: 0.95,

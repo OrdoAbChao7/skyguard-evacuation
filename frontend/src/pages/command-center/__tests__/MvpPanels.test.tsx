@@ -28,22 +28,22 @@ vi.mock('../../../services/safetyApi', () => ({ default: { v70Mpc: mocks.v70Mpc 
 
 const dashboard = {
   scenario: {
-    id: 'stadium-evacuation-v1',
-    name: '滨江体育中心 · 活动散场（合成场景）',
+    id: 'hankou-mvp-v1',
+    name: '武汉汉口江滩 · 人群疏散（合成场景）',
     version: '1.0.0',
     notice: '合成演示场景，不得用于真实疏散指挥。',
-    venue: { name: '滨江体育中心（合成）', kind: 'stadium' },
+    venue: { name: '武汉汉口江滩（合成）', kind: 'urban_riverfront_park' },
     horizon_minutes: 10,
     regions: 1,
     exits: 1,
   },
   safety: {
     state: { state: 'NORMAL', headline: '常态运行' },
-    regions: [{ id: 'R_EAST_STAND', name: '东看台' }],
+    regions: [{ id: 'R_S04_L1_CREST', name: '洞庭门滩顶' }],
   },
   cameras: [{
-    region_id: 'R_EAST_STAND',
-    region_name: '东看台',
+    region_id: 'R_S04_L1_CREST',
+    region_name: '洞庭门滩顶',
     camera_id: 'CAM-E-STAND',
     state: 'degraded',
     declared_status: 'degraded',
@@ -55,8 +55,8 @@ const dashboard = {
     reason: '设备清单声明摄像头降级',
   }],
   predictions: [{
-    region_id: 'R_EAST_STAND',
-    region_name: '东看台',
+    region_id: 'R_S04_L1_CREST',
+    region_name: '洞庭门滩顶',
     generated_at: new Date().toISOString(),
     algorithm: 'ema-linear-v1',
     algorithm_version: '1.0.0',
@@ -72,12 +72,12 @@ const dashboard = {
     uncertainty_note: '合成数据',
   }],
   staff: [{
-    id: 'STF-02', name: '李巡（演示）', role: 'security', region_id: 'R_EAST_STAND',
+    id: 'STAFF_GATE_02', name: '李巡（演示）', role: 'security', region_id: 'R_S04_L1_CREST',
     status: 'available', skills: ['crowd_check'], source: 'simulation', verified: false, runtime_status: 'available',
   }],
   work_orders: [{
-    id: 'WO-TEST', type: 'scene_verification', title: '东看台现场核查', description: '核查人流',
-    priority: 'high', region_id: 'R_EAST_STAND', status: 'PENDING_APPROVAL',
+    id: 'WO-TEST', type: 'scene_verification', title: '洞庭门滩顶现场核查', description: '核查人流',
+    priority: 'high', region_id: 'R_S04_L1_CREST', status: 'PENDING_APPROVAL',
     created_by: { username: 'skyguard-agent', role: 'agent', kind: 'agent' },
     created_at: new Date().toISOString(), updated_at: new Date().toISOString(),
     approval: null, assigned_staff_id: null, feedback: null, history: [],
@@ -93,9 +93,9 @@ const run = {
   run_id: 'RUN-TEST',
   mode: 'LOCAL_DEMO',
   runtime_detail: '本地',
-  scenario_id: 'stadium-evacuation-v1',
+  scenario_id: 'hankou-mvp-v1',
   trigger: 'console_manual',
-  region_id: 'R_EAST_STAND',
+  region_id: 'R_S04_L1_CREST',
   status: 'awaiting_evidence',
   started_at: new Date().toISOString(),
   completed_at: new Date().toISOString(),
@@ -130,7 +130,7 @@ const run = {
   prediction: null,
   camera: null,
   staff_recommendation: null,
-  work_orders: [{ id: 'WO-TEST', type: 'scene_verification', status: 'PENDING_APPROVAL', title: '东看台现场核查' }],
+  work_orders: [{ id: 'WO-TEST', type: 'scene_verification', status: 'PENDING_APPROVAL', title: '洞庭门滩顶现场核查' }],
   recommendations: ['创建了现场核查工单，等待审批。'],
   trace: [{ seq: 1, tool: 'get_crowd_status', ok: true, result_summary: 'regions=1', source: 'safety', confidence: null, duration_ms: 2 }],
   summary: '检测到信息缺口，已创建待审批工单。',
@@ -147,7 +147,7 @@ describe('MVP 指挥面板', () => {
     });
     mocks.multiRegion.mockResolvedValue({ available: false, reason: '测试未配置' });
     mocks.v70Forecast.mockResolvedValue({
-      available: true, region_id: 'R_EAST_STAND', horizon_minutes: 5,
+      available: true, region_id: 'R_S04_L1_CREST', horizon_minutes: 5,
       result: {
         predicted: 530, interval90: { lower: 500, upper: 560 }, interval95: { lower: 480, upper: 580 },
         reliability: { status: 'ok', reasons: [] }, regime: { label: 'surge' }, effective_methods: ['kalman', 'persistence'],
@@ -155,7 +155,7 @@ describe('MVP 指挥面板', () => {
       provenance: { algorithm: 'ensemble_v70', data_source: 'observations', note: '合成' },
     });
     mocks.v70Joint.mockResolvedValue({
-      available: true, target_region_id: 'R_EAST_STAND',
+      available: true, target_region_id: 'R_S04_L1_CREST',
       decision: {
         selected: [{ action_id: 'A_CAMERA', kind: 'camera_query', marginal_risk_reduction: 0.02 }],
         total_expected_risk_reduction: 0.02, stop_reason: 'max_investigations_reached',
@@ -180,20 +180,26 @@ describe('MVP 指挥面板', () => {
   });
 
   it('展示后端态势、预测、摄像头与待审批工单，并标记 LOCAL DEMO', async () => {
-    render(<MvpPanels selectedRegion="R_EAST_STAND" onSelectRegion={() => {}} />);
+    render(<MvpPanels selectedRegion="R_S04_L1_CREST" onSelectRegion={() => {}} />);
     await waitFor(() => expect(screen.getByText('LOCAL DEMO')).toBeInTheDocument());
     expect(screen.getByText('短时人流预测')).toBeInTheDocument();
-    expect(screen.getAllByText('东看台').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('洞庭门滩顶').length).toBeGreaterThan(0);
     expect(screen.getByText(/420 → 529/)).toBeInTheDocument();
     expect(screen.getAllByText('待审批').length).toBeGreaterThan(0);
-    expect(screen.getByText('东看台现场核查')).toBeInTheDocument();
+    expect(screen.getByText('洞庭门滩顶现场核查')).toBeInTheDocument();
+  });
+
+  it('未从地图点选区域时默认使用首个预测区域，运行 Agent 仍可用', async () => {
+    render(<MvpPanels selectedRegion={null} onSelectRegion={() => {}} />);
+    await waitFor(() => expect(screen.getByText('LOCAL DEMO')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole('button', { name: '运行 Agent' })).toBeEnabled());
   });
 
   it('运行 Agent 后展示调查轮次、VoI 评分与工具 Trace', async () => {
-    render(<MvpPanels selectedRegion="R_EAST_STAND" onSelectRegion={() => {}} />);
+    render(<MvpPanels selectedRegion="R_S04_L1_CREST" onSelectRegion={() => {}} />);
     await waitFor(() => expect(screen.getByText('LOCAL DEMO')).toBeInTheDocument());
     await userEvent.click(screen.getByRole('button', { name: '运行 Agent' }));
-    await waitFor(() => expect(mocks.runAgent).toHaveBeenCalledWith('R_EAST_STAND', 'console_manual'));
+    await waitFor(() => expect(mocks.runAgent).toHaveBeenCalledWith('R_S04_L1_CREST', 'console_manual'));
     expect(await screen.findByText(/检测到信息缺口/)).toBeInTheDocument();
     expect(screen.getByText('请求现场工作人员核查')).toBeInTheDocument();
     expect(screen.getByText('get_crowd_status')).toBeInTheDocument();
@@ -218,7 +224,7 @@ describe('MVP 指挥面板', () => {
         },
       },
     });
-    render(<MvpPanels selectedRegion="R_EAST_STAND" onSelectRegion={() => {}} />);
+    render(<MvpPanels selectedRegion="R_S04_L1_CREST" onSelectRegion={() => {}} />);
     await waitFor(() => expect(screen.getByText('AGENTARTS CONNECTED')).toBeInTheDocument());
     expect(screen.getByText('可达性 可达 · 业务闭环 未验证')).toBeInTheDocument();
   });
@@ -232,7 +238,7 @@ describe('V7 研究预览', () => {
     mocks.multiRegion.mockResolvedValue({ available: false, reason: '测试未配置' });
     mocks.experiments.mockResolvedValue({ available: false, generated_at: null, experiments: {}, report_path: 'x', note: '合成' });
     mocks.v70Forecast.mockResolvedValue({
-      available: true, region_id: 'R_EAST_STAND', horizon_minutes: 5,
+      available: true, region_id: 'R_S04_L1_CREST', horizon_minutes: 5,
       result: {
         predicted: 530, interval90: { lower: 500, upper: 560 }, interval95: { lower: 480, upper: 580 },
         reliability: { status: 'ok', reasons: [] }, regime: { label: 'surge' }, effective_methods: ['kalman', 'persistence'],
@@ -240,7 +246,7 @@ describe('V7 研究预览', () => {
       provenance: { algorithm: 'ensemble_v70', data_source: 'observations', note: '合成' },
     });
     mocks.v70Joint.mockResolvedValue({
-      available: true, target_region_id: 'R_EAST_STAND',
+      available: true, target_region_id: 'R_S04_L1_CREST',
       decision: {
         selected: [{ action_id: 'A_CAMERA', kind: 'camera_query', marginal_risk_reduction: 0.02 }],
         total_expected_risk_reduction: 0.02, stop_reason: 'max_investigations_reached',
@@ -265,7 +271,7 @@ describe('V7 研究预览', () => {
   });
 
   it('按钮触发后展示预测、联合 VoI 与 MPC 投影，并标注只读边界', async () => {
-    render(<MvpPanels selectedRegion="R_EAST_STAND" onSelectRegion={() => {}} />);
+    render(<MvpPanels selectedRegion="R_S04_L1_CREST" onSelectRegion={() => {}} />);
     await waitFor(() => expect(mocks.dashboard).toHaveBeenCalled());
     await userEvent.click(screen.getByRole('button', { name: '运行 V7 预览' }));
     await waitFor(() => expect(screen.getByText('集成预测')).toBeInTheDocument());

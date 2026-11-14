@@ -16,7 +16,7 @@ test('失败后进入冷却，冷却结束可重试，达到最大次数后不�
   try {
     const policy = fixture.scenario.investigation!;
     const action = policy.actions.find(item => item.id === 'A_CAMERA')!;
-    const session = createInvestigationSession('R_EAST_STAND');
+    const session = createInvestigationSession('R_S04_L1_CREST');
     const t0 = new Date('2026-11-05T10:00:00.000Z');
 
     assert.equal(actionAvailability(policy, action, session, t0).available, true);
@@ -44,7 +44,7 @@ test('调查预算耗尽后所有动作不可用', () => {
   try {
     const policy = fixture.scenario.investigation!;
     const tight = { ...policy, budget: { ...(policy.budget ?? { max_actions: 1, max_total_cost: 10, max_total_time_minutes: 10 }), max_actions: 1 } };
-    const session = createInvestigationSession('R_EAST_STAND');
+    const session = createInvestigationSession('R_S04_L1_CREST');
     const action = tight.actions[0];
     recordAttempt(session, action, { success: true, outcome: 'signal_normal' }, new Date());
     assert.equal(budgetExhausted(tight, session), true);
@@ -61,7 +61,7 @@ test('相反证据触发冲突，并以折扣方式更新信念', () => {
   try {
     const policy = fixture.scenario.investigation!;
     const action = policy.actions.find(item => item.kind === 'staff_check')!;
-    const session = createInvestigationSession('R_EAST_STAND');
+    const session = createInvestigationSession('R_S04_L1_CREST');
     const now = new Date('2026-11-05T10:00:00.000Z');
     recordAttempt(session, action, { success: true, outcome: 'signal_normal' }, now);
 
@@ -86,7 +86,7 @@ test('候选动作自身成本超预算时不可用，便宜动作仍可用', ()
   try {
     const policy = fixture.scenario.investigation!;
     const tight = { ...policy, budget: { max_actions: 3, max_total_cost: 0.1, max_total_time_minutes: 8 } };
-    const session = createInvestigationSession('R_EAST_STAND');
+    const session = createInvestigationSession('R_S04_L1_CREST');
     session.spentCost = 0.06;
     const camera = tight.actions.find(item => item.id === 'A_CAMERA')!;
     const history = tight.actions.find(item => item.id === 'A_HISTORY')!;
@@ -108,7 +108,7 @@ test('冲突时间窗与混合系数来自场景配置', () => {
       conflict: { window_minutes: 3, blend_prior: 0.8 },
     };
     const action = policy.actions.find(item => item.kind === 'staff_check')!;
-    const session = createInvestigationSession('R_EAST_STAND');
+    const session = createInvestigationSession('R_S04_L1_CREST');
     const now = new Date('2026-11-05T10:00:00.000Z');
     recordAttempt(session, action, { success: true, outcome: 'signal_normal' }, now);
     // 4 分钟后：默认 10 分钟窗口会命中，但场景配置 3 分钟窗口不应命中。

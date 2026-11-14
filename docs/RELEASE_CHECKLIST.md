@@ -63,3 +63,20 @@
 
 **候选版本（Research Prototype Candidate）**：可复现、可审计、可演示；
 **不是生产就绪**：平台/硬件/真实数据未验证，安全认证未完成。
+
+## F. V7.6 提交快照核验（2026-11-14）
+
+- [x] 后端 **334/334**、前端 **17/17**；根 `npm test`、`npm run build`、后端 typecheck 通过
+- [x] `verify:evidence` **178/178**；V7.2 基线快照 **299 文件**通过
+- [x] 「系统仿真」9 步时间轴与人工审批/反馈闭环在浏览器实测通过
+- [x] 提交包截图 5 张与自动采集脚本 `frontend/e2e/capture-submission.mjs`
+- [x] 提交包凭证脱敏：开发默认口令与开发 JWT 密钥替换为占位值
+- [x] 提交包内后端 **334/334**、前端 **17/17**、`npm run build` 通过（临时依赖，不随包分发）
+- [x] 提交包目录与 zip 生成，`MANIFEST.json` / `SHA256SUMS.txt` 校验通过
+- [x] 提交包模板 `docs/SUBMISSION_PACKAGE.md` 与 `submission/VERIFICATION.md`
+- [ ] 官方赛规/材料格式/演示时长核验（外部）
+- [ ] 6–8 分钟演示视频录制
+- [ ] AgentArts 真实租户与平台 Trace（阻塞）
+- [ ] 昇腾 NPU/CANN/OM 实机（阻塞）
+- [ ] 真实场馆/摄像机/授权人流（阻塞）
+- [ ] Docker/CI 实机、第三方安全评审（阻塞/未完成）

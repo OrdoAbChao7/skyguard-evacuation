@@ -15,6 +15,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { OnlineChangePointDetector } from '../src/services/mvp/conformal';
 
+import { gaussian, mulberry32 } from './lib/benchmark';
 const RUN_ID = process.env.V74_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v74', RUN_ID);
 const SEEDS = Array.from({ length: 30 }, (_, index) => 20261111 + index);
@@ -23,21 +24,6 @@ type Mechanism = (typeof MECHANISMS)[number];
 const CHANGE_STEP = 30;
 const WINDOW = 10;
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function gaussian(rng: () => number): number {
-  const u = Math.max(1e-9, rng());
-  const v = Math.max(1e-9, rng());
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
 
 interface SeriesResult { values: number[]; changeStep: number | null }
 function seriesFor(mechanism: Mechanism, seed: number): SeriesResult {

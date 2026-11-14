@@ -23,7 +23,7 @@ import type { DensityObservation } from '../src/services/safety/types';
 
 const RUN_ID = process.env.V74_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v74', RUN_ID);
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 fs.mkdirSync(OUT, { recursive: true });
 
 const scenario = loadSafetyScenario(SCENARIO_PATH);
@@ -69,9 +69,9 @@ const evidence = {
     entries: schedule.entries,
     validation: scheduleValidation,
     samples: [
-      { minute: 5, corridor_factor: corridorFactor('C_NE', 5), exit_factor: exitFactor('E_NORTH', 5) },
-      { minute: 12, corridor_factor: corridorFactor('C_NE', 12), exit_factor: exitFactor('E_NORTH', 12) },
-      { minute: 20, corridor_factor: corridorFactor('C_NE', 20), exit_factor: exitFactor('E_NORTH', 20) },
+      { minute: 5, corridor_factor: corridorFactor('C_S01_L1_GATE', 5), exit_factor: exitFactor('GATE_01_G01', 5) },
+      { minute: 12, corridor_factor: corridorFactor('C_S01_L1_GATE', 12), exit_factor: exitFactor('GATE_01_G01', 12) },
+      { minute: 20, corridor_factor: corridorFactor('C_S01_L1_GATE', 20), exit_factor: exitFactor('GATE_01_G01', 20) },
     ],
   },
   boundaries: [
@@ -109,7 +109,7 @@ ${reliability.map(item => `| ${item.provider} | ${item.observations} | ${item.re
 ## 5. 动态容量计划
 
 - 校验：错误 ${scheduleValidation.errors.length}，警告 ${scheduleValidation.warnings.length}
-- 示例：t=5 corridor=${corridorFactor('C_NE', 5)}，t=12 exit=${exitFactor('E_NORTH', 12)}，t=20 corridor=${corridorFactor('C_NE', 20)}
+- 示例：t=5 corridor=${corridorFactor('C_S01_L1_GATE', 5)}，t=12 exit=${exitFactor('GATE_01_G01', 12)}，t=20 corridor=${corridorFactor('C_S01_L1_GATE', 20)}
 
 ## 6. 边界
 

@@ -7,311 +7,45 @@
  *  - 接单、执行、反馈由被指派的 staff 身份执行；
  *  - 反馈可写回安全域观测并触发重新评估（由上层注入回调）。
  */
-import { createHash, randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { z } from 'zod';
 import type { SafetyScenario, StaffMember } from '../safety/types';
-import type { AuditActor, AuditLog } from '../safety/audit';
+import type { AuditLog } from '../safety/audit';
+import {
+  ALLOWED_TRANSITIONS,
+  IdempotencyConflictError,
+  ResourceUnavailableError,
+  TERMINAL_STATUSES,
+  WorkOrderCreateSchema,
+  WorkOrderTransitionError,
+  requestFingerprint,
+  type OpsActor,
+  type OpsPersistedState,
+  type RecommendStaffResult,
+  type ReservationPreview,
+  type ResourceReservation,
+  type WorkOrder,
+  type WorkOrderCreateInput,
+  type WorkOrderStatus,
+} from './ops/model';
+import {
+  authenticateStaff as authenticateStaffMember,
+  getStaff as findStaff,
+  listStaff as listStaffMembers,
+  recommendStaff as recommendStaffForRegion,
+} from './ops/staff';
+import {
+  budgetSnapshot as calcBudgetSnapshot,
+  buildReservation as createReservation,
+  previewReservation as previewReservationResult,
+  releaseReservation as releaseOrderReservation,
+  sweepExpiredReservations as sweepReservations,
+  type ReservationContext,
+} from './ops/reservations';
 
-export const WORK_ORDER_TYPE = [
-  'scene_verification',
-  'crowd_control',
-  'corridor_check',
-  'camera_observation',
-  'uav_observation',
-] as const;
-export type WorkOrderType = (typeof WORK_ORDER_TYPE)[number];
+export * from './ops/model';
 
-export const WORK_ORDER_STATUS = [
-  'DRAFT',
-  'PENDING_APPROVAL',
-  'APPROVED',
-  'REJECTED',
-  'ASSIGNED',
-  'ACCEPTED',
-  'IN_PROGRESS',
-  'COMPLETED',
-  'FAILED',
-  'CANCELLED',
-] as const;
-export type WorkOrderStatus = (typeof WORK_ORDER_STATUS)[number];
-
-export const RESERVATION_STATE = ['HELD', 'CONFIRMED', 'RELEASED', 'EXPIRED'] as const;
-export type ReservationState = (typeof RESERVATION_STATE)[number];
-
-export const ResourceRequestSchema = z.object({
-  /** 期望预留的具体工作人员；缺省时使用推荐人员。 */
-  staff_id: z.string().min(1).optional(),
-  /** 预计占用的人员分钟数（计入调查时间预算）。 */
-  person_minutes: z.number().nonnegative().default(0),
-  /** 预计消耗的调查预算单位（计入 max_total_cost）。 */
-  budget_units: z.number().nonnegative().default(0),
-  /** 覆盖场景默认 TTL（分钟）。 */
-  ttl_minutes: z.number().positive().max(1440).optional(),
-});
-export type ResourceRequest = z.infer<typeof ResourceRequestSchema>;
-
-export interface ResourceReservation {
-  reservation_id: string;
-  state: ReservationState;
-  staff_id: string | null;
-  person_minutes: number;
-  budget_units: number;
-  /** 是否计入调查预算（未提供 resource_request 的普通工单为 false）。 */
-  budget_tracked: boolean;
-  created_at: string;
-  expires_at: string;
-  confirmed_at: string | null;
-  released_at: string | null;
-  release_reason: string | null;
-  scenario_version: string;
-  context_version: { observation: number; constraint: number; scenario: string };
-}
-
-export interface ReservationPreview {
-  eligible: boolean;
-  reason_code:
-    | 'OK'
-    | 'NO_BUDGET'
-    | 'ACTION_BUDGET_EXCEEDED'
-    | 'COST_BUDGET_EXCEEDED'
-    | 'TIME_BUDGET_EXCEEDED'
-    | 'STAFF_UNAVAILABLE'
-    | 'UNKNOWN_STAFF'
-    | 'INVALID_REQUEST';
-  reason: string | null;
-  staff_id: string | null;
-  budget: {
-    max_actions: number | null;
-    max_total_cost: number | null;
-    max_total_time_minutes: number | null;
-    settled: { actions: number; cost: number; person_minutes: number };
-    reserved: { actions: number; cost: number; person_minutes: number };
-    remaining: { actions: number | null; cost: number | null; person_minutes: number | null };
-  };
-}
-
-export const EvidenceRefSchema = z.object({
-  evidence_id: z.string().min(1),
-  kind: z.string().min(1),
-  summary: z.string().min(1),
-  source: z.string().min(1),
-  confidence: z.number().min(0).max(1).nullable().optional(),
-  observed_at: z.string().datetime({ offset: true }).optional(),
-});
-
-export const WorkOrderCreateSchema = z.object({
-  type: z.enum(WORK_ORDER_TYPE),
-  title: z.string().min(1),
-  description: z.string().min(1),
-  priority: z.enum(['low', 'medium', 'high', 'critical']).default('medium'),
-  region_id: z.string().min(1).optional(),
-  target: z.string().min(1).optional(),
-  required_skills: z.array(z.string()).default([]),
-  evidence: z.array(EvidenceRefSchema).default([]),
-  recommendation: z.object({
-    staff_id: z.string().min(1).nullable(),
-    reasons: z.array(z.string()).default([]),
-    score: z.number().nullable(),
-  }).optional(),
-  /** 资源预留请求；缺省时仍会尝试预留推荐人员，但不计入调查预算。 */
-  resource_request: ResourceRequestSchema.optional(),
-  /** true 时直接进入待审批（Agent 默认）；false 时保持 DRAFT。 */
-  submit: z.boolean().default(true),
-  /** 幂等键：同一键重复创建返回同一工单，避免 Agent 重试产生重复任务。 */
-  idempotency_key: z.string().min(1).max(100).optional(),
-});
-export type WorkOrderCreateInput = z.infer<typeof WorkOrderCreateSchema>;
-
-export interface WorkOrderEvent {
-  ts: string;
-  status: WorkOrderStatus;
-  actor: string;
-  role: string;
-  note?: string;
-}
-
-export interface WorkOrder {
-  id: string;
-  type: WorkOrderType;
-  title: string;
-  description: string;
-  priority: 'low' | 'medium' | 'high' | 'critical';
-  region_id?: string;
-  target?: string;
-  required_skills: string[];
-  evidence: z.infer<typeof EvidenceRefSchema>[];
-  status: WorkOrderStatus;
-  created_by: { username: string; role: string; kind: 'agent' | 'human' };
-  created_at: string;
-  updated_at: string;
-  approval: {
-    decision: 'approved' | 'rejected';
-    by: string;
-    role: string;
-    at: string;
-    note?: string;
-  } | null;
-  assigned_staff_id: string | null;
-  assigned_at: string | null;
-  accepted_at: string | null;
-  started_at: string | null;
-  completed_at: string | null;
-  feedback: {
-    staff_id: string;
-    note: string;
-    at: string;
-    observation?: { count: number; confidence: number; valid: boolean; reason?: string };
-  } | null;
-  failure_reason: string | null;
-  /** 创建时的场景/约束/观测版本；用于检测审批后环境变化。 */
-  context_version: { observation: number; constraint: number; scenario: string };
-  idempotency_key: string | null;
-  /** 资源预留（人员、预算、有效期）；所有工单在创建时建立。 */
-  reservation: ResourceReservation | null;
-  /** 当前上下文是否已落后（读取时计算）。 */
-  stale: boolean;
-  stale_reason: string | null;
-  history: WorkOrderEvent[];
-}
-
-export interface StaffRecommendation {
-  staff_id: string;
-  name: string;
-  role: string;
-  region_id: string;
-  status: string;
-  skills: string[];
-  travel_seconds: number | null;
-  travel_minutes: number | null;
-  score: number | null;
-  reasons: string[];
-  source: string;
-  verified: boolean;
-}
-
-export interface RecommendStaffResult {
-  region_id: string;
-  required_skills: string[];
-  candidates: StaffRecommendation[];
-  recommended: StaffRecommendation | null;
-  shortage: boolean;
-  reason: string;
-}
-
-export interface OpsActor extends AuditActor {
-  staff_id?: string;
-  kind?: 'agent' | 'human';
-}
-
-export class WorkOrderTransitionError extends Error {
-  readonly status = 409;
-  constructor(message: string) {
-    super(message);
-    this.name = 'WorkOrderTransitionError';
-  }
-}
-
-export class ResourceUnavailableError extends Error {
-  readonly status = 409;
-  constructor(message: string) {
-    super(message);
-    this.name = 'ResourceUnavailableError';
-  }
-}
-
-export class IdempotencyConflictError extends Error {
-  readonly status = 409;
-  constructor(message: string) {
-    super(message);
-    this.name = 'IdempotencyConflictError';
-  }
-}
-
-const ALLOWED_TRANSITIONS: Record<WorkOrderStatus, WorkOrderStatus[]> = {
-  DRAFT: ['PENDING_APPROVAL', 'CANCELLED'],
-  PENDING_APPROVAL: ['APPROVED', 'REJECTED', 'CANCELLED'],
-  APPROVED: ['ASSIGNED', 'CANCELLED'],
-  REJECTED: [],
-  ASSIGNED: ['ACCEPTED', 'FAILED', 'CANCELLED'],
-  ACCEPTED: ['IN_PROGRESS', 'FAILED', 'CANCELLED'],
-  IN_PROGRESS: ['COMPLETED', 'FAILED'],
-  COMPLETED: [],
-  FAILED: [],
-  CANCELLED: [],
-};
-
-const TERMINAL_STATUSES: WorkOrderStatus[] = ['COMPLETED', 'FAILED', 'REJECTED', 'CANCELLED'];
-const BUDGET_EPSILON = 1e-9;
-
-/** 稳定序列化：对象键排序，保证同一请求得到同一幂等指纹。 */
-function stableStringify(value: unknown): string {
-  if (value === null || typeof value !== 'object') return JSON.stringify(value);
-  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
-  const record = value as Record<string, unknown>;
-  const keys = Object.keys(record).sort();
-  return `{${keys.map(key => `${JSON.stringify(key)}:${stableStringify(record[key])}`).join(',')}}`;
-}
-
-function requestFingerprint(input: unknown): string {
-  return createHash('sha256').update(stableStringify(input)).digest('hex');
-}
-
-const STAFF_STATUSES = { available: 'available', busy: 'busy' } as const;
-
-function travelSecondsBetween(
-  scenario: SafetyScenario,
-  fromRegionId: string,
-  toRegionId: string,
-): number | null {
-  if (fromRegionId === toRegionId) return 0;
-  const adjacency = new Map<string, Array<{ to: string; seconds: number }>>();
-  for (const corridor of scenario.corridors) {
-    if (corridor.status !== 'open' || corridor.capacity_per_min === null) continue;
-    if (corridor.direction === 'both' || corridor.direction === 'forward') {
-      const list = adjacency.get(corridor.from_region_id) ?? [];
-      list.push({ to: corridor.to_region_id, seconds: corridor.traversal_seconds });
-      adjacency.set(corridor.from_region_id, list);
-    }
-    if (corridor.direction === 'both' || corridor.direction === 'reverse') {
-      const list = adjacency.get(corridor.to_region_id) ?? [];
-      list.push({ to: corridor.from_region_id, seconds: corridor.traversal_seconds });
-      adjacency.set(corridor.to_region_id, list);
-    }
-  }
-
-  const distances = new Map<string, number>();
-  const visited = new Set<string>();
-  distances.set(fromRegionId, 0);
-  while (true) {
-    let current: string | null = null;
-    let best = Infinity;
-    for (const [regionId, distance] of distances) {
-      if (!visited.has(regionId) && distance < best) {
-        best = distance;
-        current = regionId;
-      }
-    }
-    if (current === null) break;
-    if (current === toRegionId) return best;
-    visited.add(current);
-    for (const edge of adjacency.get(current) ?? []) {
-      const next = best + edge.seconds;
-      if (next < (distances.get(edge.to) ?? Infinity)) distances.set(edge.to, next);
-    }
-  }
-  return distances.get(toRegionId) ?? null;
-}
-
-export interface OpsPersistedState {
-  version: 2;
-  saved_at: string;
-  workOrders: WorkOrder[];
-  staffStatus: Array<[string, StaffMember['status']]>;
-  idempotency: Array<[string, { orderId: string; fingerprint: string }]>;
-  budgetSettled: { actions: number; cost: number; person_minutes: number };
-}
 
 export class OpsService {
   private staffStatus = new Map<string, StaffMember['status']>();
@@ -456,169 +190,22 @@ export class OpsService {
   // 资源预留与预算
   // -------------------------------------------------------------------------
 
-  private activeReservationTotals(): { actions: number; cost: number; person_minutes: number } {
-    let actions = 0;
-    let cost = 0;
-    let personMinutes = 0;
-    for (const order of this.workOrders.values()) {
-      const reservation = order.reservation;
-      if (!reservation?.budget_tracked) continue;
-      if (reservation.state !== 'HELD' && reservation.state !== 'CONFIRMED') continue;
-      actions += 1;
-      cost += reservation.budget_units;
-      personMinutes += reservation.person_minutes;
-    }
+  private reservationContext(): ReservationContext {
     return {
-      actions,
-      cost: Number(cost.toFixed(6)),
-      person_minutes: Number(personMinutes.toFixed(6)),
+      scenario: this.scenario,
+      workOrders: this.workOrders,
+      staffStatus: this.staffStatus,
+      budgetSettled: this.budgetSettled,
+      audit: this.audit,
+      currentVersion: () => this.currentVersion(),
+      persist: () => this.persist(),
+      getStaff: staffId => this.getStaff(staffId),
+      recommendStaff: input => this.recommendStaff(input),
     };
   }
 
-  private budgetSnapshot() {
-    const budget = this.scenario.investigation?.budget ?? null;
-    const reserved = this.activeReservationTotals();
-    const settled = {
-      actions: this.budgetSettled.actions,
-      cost: Number(this.budgetSettled.cost.toFixed(6)),
-      person_minutes: Number(this.budgetSettled.person_minutes.toFixed(6)),
-    };
-    return {
-      max_actions: budget?.max_actions ?? null,
-      max_total_cost: budget?.max_total_cost ?? null,
-      max_total_time_minutes: budget?.max_total_time_minutes ?? null,
-      settled,
-      reserved,
-      remaining: {
-        actions: budget ? Math.max(0, budget.max_actions - settled.actions - reserved.actions) : null,
-        cost: budget ? Number(Math.max(0, budget.max_total_cost - settled.cost - reserved.cost).toFixed(6)) : null,
-        person_minutes: budget
-          ? Number(Math.max(0, budget.max_total_time_minutes - settled.person_minutes - reserved.person_minutes).toFixed(6))
-          : null,
-      },
-    };
-  }
-
-  /** 候选工单的资源与预算预检；不产生任何预留。 */
-  previewReservation(input: WorkOrderCreateInput): ReservationPreview {
-    this.sweepExpiredReservations();
-    const parsed = WorkOrderCreateSchema.parse(input);
-    const budget = this.budgetSnapshot();
-    let staffId: string | null = null;
-    try {
-      staffId = this.chooseHoldStaff(parsed, true);
-    } catch (error) {
-      return {
-        eligible: false,
-        reason_code: error instanceof ResourceUnavailableError && /unknown staff/.test(error.message)
-          ? 'UNKNOWN_STAFF'
-          : 'STAFF_UNAVAILABLE',
-        reason: (error as Error).message,
-        staff_id: null,
-        budget,
-      };
-    }
-
-    const request = parsed.resource_request;
-    if (!request) {
-      return { eligible: true, reason_code: 'NO_BUDGET', reason: null, staff_id: staffId, budget };
-    }
-    if (budget.max_actions === null) {
-      return { eligible: true, reason_code: 'NO_BUDGET', reason: null, staff_id: staffId, budget };
-    }
-
-    const actionsUsed = budget.settled.actions + budget.reserved.actions;
-    const costUsed = budget.settled.cost + budget.reserved.cost;
-    const minutesUsed = budget.settled.person_minutes + budget.reserved.person_minutes;
-    if (actionsUsed + 1 > budget.max_actions! + BUDGET_EPSILON) {
-      return {
-        eligible: false,
-        reason_code: 'ACTION_BUDGET_EXCEEDED',
-        reason: `调查动作预算 ${budget.max_actions} 已用/预留 ${actionsUsed}，候选工单将超限`,
-        staff_id: staffId,
-        budget,
-      };
-    }
-    if (costUsed + request.budget_units > budget.max_total_cost! + BUDGET_EPSILON) {
-      return {
-        eligible: false,
-        reason_code: 'COST_BUDGET_EXCEEDED',
-        reason: `调查预算 ${budget.max_total_cost}，已用/预留 ${costUsed.toFixed(4)}，候选 ${request.budget_units} 将超限`,
-        staff_id: staffId,
-        budget,
-      };
-    }
-    if (minutesUsed + request.person_minutes > budget.max_total_time_minutes! + BUDGET_EPSILON) {
-      return {
-        eligible: false,
-        reason_code: 'TIME_BUDGET_EXCEEDED',
-        reason: `调查时间预算 ${budget.max_total_time_minutes} 分钟，已用/预留 ${minutesUsed.toFixed(4)}，候选 ${request.person_minutes} 将超限`,
-        staff_id: staffId,
-        budget,
-      };
-    }
-    return { eligible: true, reason_code: 'OK', reason: null, staff_id: staffId, budget };
-  }
-
-  getBudgetStatus(): ReservationPreview['budget'] {
-    this.sweepExpiredReservations();
-    return this.budgetSnapshot();
-  }
-
-  /**
-   * 选择要软预留的工作人员：显式请求必须可用；推荐人员不可用时重新推荐。
-   * 返回 null 表示没有可预留人员，但工单仍可进入待审批（派发时再检查）。
-   */
-  private chooseHoldStaff(input: WorkOrderCreateInput, strictExplicit: boolean): string | null {
-    const explicit = input.resource_request?.staff_id;
-    if (explicit) {
-      const member = this.getStaff(explicit);
-      if (!member) throw new ResourceUnavailableError(`unknown staff: ${explicit}`);
-      if (member.runtime_status !== 'available') {
-        throw new ResourceUnavailableError(`工作人员 ${explicit} 当前为 ${member.runtime_status}，不可预留`);
-      }
-      return explicit;
-    }
-    const recommended = input.recommendation?.staff_id;
-    if (recommended) {
-      const member = this.getStaff(recommended);
-      if (member?.runtime_status === 'available') return recommended;
-    }
-    if (input.region_id) {
-      const recommendation = this.recommendStaff({
-        region_id: input.region_id,
-        required_skills: input.required_skills,
-      });
-      return recommendation.recommended?.staff_id ?? null;
-    }
-    if (strictExplicit) return null;
-    return null;
-  }
-
-  private buildReservation(
-    input: WorkOrderCreateInput,
-    staffId: string | null,
-  ): ResourceReservation {
-    const request = input.resource_request;
-    const ttlMinutes = request?.ttl_minutes
-      ?? this.scenario.config.work_order_reservation_ttl_minutes
-      ?? 15;
-    const now = new Date();
-    return {
-      reservation_id: `RES-${randomUUID().slice(0, 8).toUpperCase()}`,
-      state: 'HELD',
-      staff_id: staffId,
-      person_minutes: request?.person_minutes ?? 0,
-      budget_units: request?.budget_units ?? 0,
-      budget_tracked: Boolean(request),
-      created_at: now.toISOString(),
-      expires_at: new Date(now.getTime() + ttlMinutes * 60_000).toISOString(),
-      confirmed_at: null,
-      released_at: null,
-      release_reason: null,
-      scenario_version: this.currentVersion().scenario,
-      context_version: this.currentVersion(),
-    };
+  private sweepExpiredReservations(now?: Date): void {
+    sweepReservations(this.reservationContext(), now);
   }
 
   private releaseReservation(
@@ -627,57 +214,25 @@ export class OpsService {
     reason: string,
     settleBudget = false,
   ): boolean {
-    const reservation = order.reservation;
-    if (!reservation) return false;
-    if (reservation.state === 'RELEASED' || reservation.state === 'EXPIRED') return false;
-    if (reservation.staff_id) {
-      const current = this.staffStatus.get(reservation.staff_id);
-      if (current === 'reserved' || current === 'busy') {
-        this.staffStatus.set(reservation.staff_id, 'available');
-      }
-    }
-    if (settleBudget && reservation.budget_tracked) {
-      this.budgetSettled.actions += 1;
-      this.budgetSettled.cost = Number((this.budgetSettled.cost + reservation.budget_units).toFixed(6));
-      this.budgetSettled.person_minutes = Number(
-        (this.budgetSettled.person_minutes + reservation.person_minutes).toFixed(6),
-      );
-    }
-    reservation.state = state;
-    reservation.released_at = new Date().toISOString();
-    reservation.release_reason = reason;
-    return true;
+    return releaseOrderReservation(this.reservationContext(), order, state, reason, settleBudget);
   }
 
-  /** 释放所有已过期的 HELD 预留；工单本身保持待审批，但需要重新确认资源。 */
-  private sweepExpiredReservations(now: Date = new Date()): void {
-    let changed = false;
-    for (const order of this.workOrders.values()) {
-      const reservation = order.reservation;
-      if (!reservation || reservation.state !== 'HELD') continue;
-      if (new Date(reservation.expires_at).getTime() > now.getTime()) continue;
-      this.releaseReservation(order, 'EXPIRED', '资源预留过期');
-      order.updated_at = now.toISOString();
-      order.history.push({
-        ts: now.toISOString(),
-        status: order.status,
-        actor: 'system',
-        role: 'system',
-        note: '资源预留过期，已释放；需管理员重新确认',
-      });
-      this.audit.record({
-        actor: 'system',
-        role: 'system',
-        action: 'work_order.reservation_expired',
-        entity_type: 'work_order',
-        entity_id: order.id,
-        summary: `工单 ${order.id} 的资源预留已过期并释放`,
-        result: 'success',
-        after: { reservation_id: reservation.reservation_id },
-      });
-      changed = true;
-    }
-    if (changed) this.persist();
+  private buildReservation(
+    input: WorkOrderCreateInput,
+    staffId: string | null,
+  ): ResourceReservation {
+    return createReservation(this.reservationContext(), input, staffId);
+  }
+
+  /** 候选工单的资源与预算预检；不产生任何预留。 */
+  previewReservation(input: WorkOrderCreateInput): ReservationPreview {
+    return previewReservationResult(this.reservationContext(), input);
+  }
+
+  getBudgetStatus(): ReservationPreview['budget'] {
+    const ctx = this.reservationContext();
+    sweepReservations(ctx);
+    return calcBudgetSnapshot(this.scenario, this.workOrders, this.budgetSettled);
   }
 
   /** 刷新并返回上下文失效状态；终态工单不标记过期。 */
@@ -717,23 +272,16 @@ export class OpsService {
   }
 
   listStaff(): Array<StaffMember & { runtime_status: string }> {
-    return this.scenario.staff.map(member => ({
-      ...member,
-      runtime_status: this.staffStatus.get(member.id) ?? member.status,
-    }));
+    return listStaffMembers(this.scenario, this.staffStatus);
   }
 
   getStaff(staffId: string): (StaffMember & { runtime_status: string }) | undefined {
-    const member = this.scenario.staff.find(item => item.id === staffId);
-    if (!member) return undefined;
-    return { ...member, runtime_status: this.staffStatus.get(member.id) ?? member.status };
+    return findStaff(this.scenario, this.staffStatus, staffId);
   }
 
   /** 演示用身份校验：真实部署必须替换为正式身份系统。 */
   authenticateStaff(staffId: string, accessCode: string): StaffMember | null {
-    const member = this.scenario.staff.find(item => item.id === staffId);
-    if (!member || !member.access_code) return null;
-    return member.access_code === accessCode ? member : null;
+    return authenticateStaffMember(this.scenario, staffId, accessCode);
   }
 
   recommendStaff(input: {
@@ -741,79 +289,7 @@ export class OpsService {
     required_skills?: string[];
     preferred_roles?: string[];
   }): RecommendStaffResult {
-    const regionId = input.region_id;
-    const requiredSkills = input.required_skills ?? [];
-    const preferredRoles = new Set(input.preferred_roles ?? []);
-    const regionExists = this.scenario.regions.some(region => region.id === regionId);
-    if (!regionExists) throw new Error(`unknown region: ${regionId}`);
-
-    const candidates: StaffRecommendation[] = [];
-    for (const member of this.scenario.staff) {
-      const runtimeStatus = this.staffStatus.get(member.id) ?? member.status;
-      const reasons: string[] = [];
-      const missingSkills = requiredSkills.filter(skill => !member.skills.includes(skill));
-
-      if (runtimeStatus !== STAFF_STATUSES.available) {
-        reasons.push(`当前状态为 ${runtimeStatus}，不可派单`);
-      }
-      if (missingSkills.length > 0) {
-        reasons.push(`缺少技能：${missingSkills.join('、')}`);
-      }
-
-      const travel = travelSecondsBetween(this.scenario, member.region_id, regionId);
-      if (travel === null) reasons.push('按现有通道不可达（需人工确认）');
-
-      const available = runtimeStatus === STAFF_STATUSES.available;
-      const skillOk = missingSkills.length === 0;
-      const reachable = travel !== null;
-      let score: number | null = null;
-      if (available && skillOk && reachable) {
-        const travelMinutes = travel / 60;
-        const roleBonus = preferredRoles.has(member.role) ? 12 : 0;
-        const skillBonus = requiredSkills.length > 0 ? 10 : 4;
-        score = Number((100 - travelMinutes * 2 + roleBonus + skillBonus).toFixed(2));
-        reasons.push(`状态可用`);
-        reasons.push(requiredSkills.length > 0 ? `技能匹配：${requiredSkills.join('、')}` : '无强制技能要求');
-        reasons.push(`预计到达 ${travelMinutes.toFixed(1)} 分钟`);
-        if (roleBonus > 0) reasons.push(`岗位匹配：${member.role}`);
-      }
-
-      candidates.push({
-        staff_id: member.id,
-        name: member.name,
-        role: member.role,
-        region_id: member.region_id,
-        status: runtimeStatus,
-        skills: member.skills,
-        travel_seconds: travel,
-        travel_minutes: travel === null ? null : Number((travel / 60).toFixed(2)),
-        score,
-        reasons,
-        source: member.source,
-        verified: member.verified,
-      });
-    }
-
-    const ranked = candidates
-      .filter(item => item.score !== null)
-      .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-    const recommended = ranked[0] ?? null;
-
-    return {
-      region_id: regionId,
-      required_skills: requiredSkills,
-      candidates: candidates.sort((a, b) => {
-        if (a.score === null && b.score === null) return a.staff_id.localeCompare(b.staff_id);
-        if (a.score === null) return 1;
-        if (b.score === null) return -1;
-        return b.score - a.score;
-      }),
-      recommended,
-      shortage: recommended === null,
-      reason: recommended
-        ? `推荐 ${recommended.name}（${recommended.staff_id}）：${recommended.reasons.join('；')}`
-        : '没有同时满足状态、技能与可达性要求的可用人员，需人工协调或调整任务。',
-    };
+    return recommendStaffForRegion(this.scenario, this.staffStatus, input);
   }
 
   createWorkOrder(actor: OpsActor, input: WorkOrderCreateInput): WorkOrder {

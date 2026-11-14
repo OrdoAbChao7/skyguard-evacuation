@@ -212,6 +212,37 @@ export function createMvpRouter(): Router {
     res.status(201).json(await getMvpService().runDemoScenario(parsed.data.scenario, actorOf(req)));
   }));
 
+  // ---------------------------------------------------------------- 时间轴仿真（合成数据）
+  router.get('/simulation', handle((_req, res) => {
+    res.json(getMvpService().simulationStatus());
+  }));
+
+  const SimulationStartBody = z.object({ autoplay: z.boolean().optional() }).default({});
+  router.post('/simulation/start', ...operatorOnly, handle(async (req, res) => {
+    const parsed = SimulationStartBody.safeParse(req.body ?? {});
+    if (!parsed.success) {
+      fail(res, 400, 'INVALID_BODY', '仿真参数不正确', parsed.error.flatten());
+      return;
+    }
+    res.status(201).json(await getMvpService().startSimulation(actorOf(req), parsed.data));
+  }));
+
+  router.post('/simulation/step', ...operatorOnly, handle(async (_req, res) => {
+    res.json(await getMvpService().stepSimulation());
+  }));
+
+  router.post('/simulation/pause', ...operatorOnly, handle((_req, res) => {
+    res.json(getMvpService().pauseSimulation());
+  }));
+
+  router.post('/simulation/resume', ...operatorOnly, handle(async (_req, res) => {
+    res.json(await getMvpService().resumeSimulation());
+  }));
+
+  router.post('/simulation/stop', ...operatorOnly, handle((_req, res) => {
+    res.json(getMvpService().stopSimulation());
+  }));
+
   router.get('/multi-region', handle((req, res) => {
     const regionId = typeof req.query.region_id === 'string' ? req.query.region_id : undefined;
     res.json(getMvpService().getMultiRegionAnalysis(regionId));

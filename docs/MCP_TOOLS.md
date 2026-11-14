@@ -83,7 +83,7 @@ Claude Desktop / 兼容 MCP 的客户端：
       ],
       "env": {
         "DATA_ROOT": "<仓库绝对路径>/data",
-        "SAFETY_SCENARIO_FILE": "<仓库绝对路径>/data/scenarios/stadium-evacuation.json",
+        "SAFETY_SCENARIO_FILE": "<仓库绝对路径>/data/scenarios/hankou-mvp.json",
         "MCP_ACTOR_ROLE": "agent",
         "SECRET_KEY": "change-me"
       }
@@ -96,7 +96,7 @@ Claude Desktop / 兼容 MCP 的客户端：
 
 - 官方 SDK Client 通过 stdio 连接真实 MCP Server；
 - 15 个工具全部可列出；
-- `get_crowd_status` 返回 8 个区域；
+- `get_crowd_status` 返回 44 个区域；
 - `submit_worker_feedback` 在 agent 身份下被拒绝；
 - `create_candidate_work_order` 能创建待审批工单；
 - 见 `backend/tests/mvp/mcp.test.ts`。

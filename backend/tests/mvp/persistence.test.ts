@@ -13,7 +13,7 @@ test('Agent 运行记录写入快照并在新服务实例中恢复', async () =>
   process.env.MVP_RUNS_FILE = file;
   try {
     const mvp = new MvpService({ scenario: fixture.scenario, safety: fixture.safety, audit: fixture.audit });
-    const run = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'persist_test', runtime: 'local' });
+    const run = await mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: 'persist_test', runtime: 'local' });
     assert.ok(run.run_id);
     assert.equal(fs.existsSync(file), true);
 

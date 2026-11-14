@@ -22,9 +22,10 @@ import {
 import { actionAvailability, createInvestigationSession, recordAttempt } from '../src/services/mvp/investigation-session';
 import { forecastWithMethod, selectForecastMethod, selectIntervalQuantile } from '../src/services/mvp/prediction';
 
+import { bootstrap, clusterBootstrap, dz, mulberry32, sampleIndex } from './lib/benchmark';
 const SEEDS = Array.from({ length: 30 }, (_, index) => 20261105 + index);
 const OUT = path.resolve(__dirname, '../../evaluation/v62');
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const scenario: SafetyScenario = loadSafetyScenario(SCENARIO_PATH);
 const policy = scenario.investigation;
 if (!policy) throw new Error('缺少 investigation 策略');
@@ -37,48 +38,6 @@ const ci = (values: number[]) => {
   const half = values.length > 1 ? 1.96 * std(values) / Math.sqrt(values.length) : 0;
   return { mean: Number(m.toFixed(4)), lower: Number((m - half).toFixed(4)), upper: Number((m + half).toFixed(4)), sd: Number(std(values).toFixed(4)), n: values.length };
 };
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function sampleIndex(probabilities: number[], rng: () => number): number {
-  const total = probabilities.reduce((a, b) => a + b, 0);
-  let threshold = rng() * total;
-  for (let i = 0; i < probabilities.length; i += 1) { threshold -= probabilities[i]; if (threshold <= 0) return i; }
-  return probabilities.length - 1;
-}
-function bootstrap(values: number[], iterations = 1000, seed = 23) {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    for (let j = 0; j < values.length; j += 1) sum += values[Math.floor(rng() * values.length)];
-    stats.push(sum / values.length);
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
-function clusterBootstrap(groups: number[][], iterations = 1000, seed = 29) {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0; let count = 0;
-    for (let g = 0; g < groups.length; g += 1) {
-      const group = groups[Math.floor(rng() * groups.length)];
-      for (let j = 0; j < group.length; j += 1) { sum += group[Math.floor(rng() * group.length)]; count += 1; }
-    }
-    stats.push(sum / count);
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
-function dz(diffs: number[]) { return std(diffs) === 0 ? 0 : Number((mean(diffs) / std(diffs)).toFixed(4)); }
 function write(name: string, data: unknown) { fs.writeFileSync(path.join(OUT, name), `${JSON.stringify(data, null, 2)}\n`); }
 
 function makeRisk(regionId: string, trueH: string, trusted: boolean): RegionRisk {
@@ -92,7 +51,7 @@ function makeRisk(regionId: string, trueH: string, trusted: boolean): RegionRisk
   };
 }
 function outcomeFor(kind: string, trueH: string): InvestigationOutcome {
-  const row = policy!.likelihoods[kind as keyof typeof policy!.likelihoods][trueH] ?? {};
+  const row = policy!.likelihoods[kind as keyof NonNullable<typeof policy>['likelihoods']][trueH] ?? {};
   let best: InvestigationOutcome = 'inconclusive'; let value = -1;
   for (const outcome of policy!.outcomes) if ((row[outcome] ?? 0) > value) { best = outcome; value = row[outcome] ?? 0; }
   return best;
@@ -206,9 +165,9 @@ function experimentA() {
     },
     summary: Object.fromEntries(strategies.map(strategy => [strategy, summarize(strategy)])),
     paired: {
-      trial_level: { mean: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs), cohen_dz: dz(diffs), n: diffs.length },
+      trial_level: { mean: Number(mean(diffs).toFixed(4)), ci: ci(diffs), bootstrap: bootstrap(diffs, 1000, 23), cohen_dz: dz(diffs), n: diffs.length },
       seed_level: { mean: Number(mean(seedMeans).toFixed(4)), ci: ci(seedMeans), n: seedMeans.length, values: seedMeans.map(value => Number(value.toFixed(4))), note: 'seed 级仅报告均值/CI；由于每个 seed 内 trial 数固定，seed 级 d_z 会因组间方差小而被放大，不作效应量解释。' },
-      cluster_bootstrap_by_seed: clusterBootstrap(groups),
+      cluster_bootstrap_by_seed: clusterBootstrap(groups, 1000, 29),
       efficiency_diff: ci(multi.map(row => row.benefit / Math.max(1e-6, row.cost)).map((value, index) => value - (single[index].benefit / Math.max(1e-6, single[index].cost)))),
     },
     raw: rows,
@@ -220,7 +179,7 @@ function simulateSequential(seed: number, trial: number, failureProbability: num
   const trueH = policy!.hypotheses[sampleIndex(policy!.hypotheses.map(h => h.prior), rng)].id;
   const failures = Array.from({ length: 10 }, () => rng() < failureProbability);
   let belief = priorBelief(policy!);
-  const session = createInvestigationSession('R_EAST_STAND');
+  const session = createInvestigationSession('R_S04_L1_CREST');
   const used = new Set<string>();
   let success = false; let attempts = 0; let failuresCount = 0;
   for (let round = 0; round < 10 && attempts < budget; round += 1) {
@@ -325,12 +284,12 @@ function experimentD() {
   const clone = () => JSON.parse(JSON.stringify(scenario)) as SafetyScenario;
   variants.push({ name: 'baseline', scenario: scenario });
   const noMid = clone();
-  for (const corridor of noMid.corridors) if (corridor.id === 'C_MID') corridor.status = 'closed';
+  for (const corridor of noMid.corridors) if (corridor.id === 'C_DYKE_01_02') corridor.status = 'closed';
   variants.push({ name: 'no_mid_corridor', scenario: noMid });
   const noEast = clone();
-  noEast.regions = noEast.regions.filter(region => region.id !== 'R_EAST_PLAZA');
-  noEast.corridors = noEast.corridors.filter(corridor => !['R_EAST_PLAZA'].includes(corridor.from_region_id) && !['R_EAST_PLAZA'].includes(corridor.to_region_id));
-  noEast.exits = noEast.exits.filter(exit => exit.id !== 'E_EAST');
+  noEast.regions = noEast.regions.filter(region => region.id !== 'R_GATE_01_PLAZA');
+  noEast.corridors = noEast.corridors.filter(corridor => !['R_GATE_01_PLAZA'].includes(corridor.from_region_id) && !['R_GATE_01_PLAZA'].includes(corridor.to_region_id));
+  noEast.exits = noEast.exits.filter(exit => exit.id !== 'GATE_03_G03');
   variants.push({ name: 'no_east_plaza', scenario: noEast });
   const rows: Array<any> = [];
   for (const variant of variants) {

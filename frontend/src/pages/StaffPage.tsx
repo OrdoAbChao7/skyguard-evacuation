@@ -128,7 +128,7 @@ export default function StaffPage() {
         <section className="staff-card">
           <h1>SkyGuard 工作人员任务</h1>
           <p className="staff-muted">使用场景名册中的工号与演示登录码登录。真实部署需替换为正式身份系统。</p>
-          <label>工号<input value={idInput} onChange={event => setIdInput(event.target.value)} placeholder="STF-02" /></label>
+          <label>工号<input value={idInput} onChange={event => setIdInput(event.target.value)} placeholder="STAFF_GATE_02" /></label>
           <label>登录码<input value={codeInput} onChange={event => setCodeInput(event.target.value)} placeholder="演示登录码" inputMode="numeric" /></label>
           {error ? <p className="staff-error" role="alert">{error}</p> : null}
           <button type="button" disabled={busy !== null || !idInput || !codeInput} onClick={() => void login()}>

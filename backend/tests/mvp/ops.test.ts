@@ -10,11 +10,11 @@ test('人员推荐按技能、状态与通道距离排序', () => {
   const fixture = makeMvpFixture();
   try {
     const result = fixture.mvp.ops.recommendStaff({
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
     });
     assert.ok(result.recommended);
-    assert.equal(result.recommended?.staff_id, 'STF-02');
+    assert.equal(result.recommended?.staff_id, 'STAFF_GATE_04');
     assert.ok(result.candidates.every(item => item.status !== 'off_duty' || item.score === null));
     assert.ok(result.candidates.every(item => item.score === null || item.travel_seconds !== null));
     assert.match(result.reason, /推荐/);
@@ -27,7 +27,7 @@ test('员工不足时明确返回 shortage 而不是伪造推荐', () => {
   const fixture = makeMvpFixture();
   try {
     const result = fixture.mvp.ops.recommendStaff({
-      region_id: 'R_NORTH_STAND',
+      region_id: 'R_S01_L1_CREST',
       required_skills: ['不存在的技能'],
     });
     assert.equal(result.recommended, null);
@@ -47,7 +47,7 @@ test('Agent 不能审批工单，只有管理员可以', () => {
         type: 'scene_verification',
         title: '测试工单',
         description: '测试',
-        region_id: 'R_EAST_STAND',
+        region_id: 'R_S04_L1_CREST',
         required_skills: ['crowd_check'],
       },
     );
@@ -69,18 +69,18 @@ test('工单状态机拒绝跳跃，并完整走到 COMPLETED', () => {
     const order = fixture.mvp.ops.createWorkOrder(ADMIN, {
       type: 'scene_verification',
       title: '现场核查',
-      description: '核查东看台',
-      region_id: 'R_EAST_STAND',
+      description: '核查江滩 S04 滩顶平台',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
     });
-    assert.throws(() => fixture.mvp.ops.accept(order.id, staffActor(fixture, 'STF-02')), WorkOrderTransitionError);
+    assert.throws(() => fixture.mvp.ops.accept(order.id, staffActor(fixture, 'STAFF_GATE_04')), WorkOrderTransitionError);
 
     fixture.mvp.ops.approve(order.id, ADMIN);
     const assigned = fixture.mvp.ops.assignStaff(order.id, ADMIN);
     assert.equal(assigned.status, 'ASSIGNED');
-    assert.equal(assigned.assigned_staff_id, 'STF-02');
+    assert.equal(assigned.assigned_staff_id, 'STAFF_GATE_04');
 
-    const actor = staffActor(fixture, 'STF-02');
+    const actor = staffActor(fixture, 'STAFF_GATE_04');
     assert.equal(fixture.mvp.ops.accept(order.id, actor).status, 'ACCEPTED');
     assert.equal(fixture.mvp.ops.start(order.id, actor).status, 'IN_PROGRESS');
     const completed = fixture.mvp.ops.complete(order.id, actor, {
@@ -90,11 +90,11 @@ test('工单状态机拒绝跳跃，并完整走到 COMPLETED', () => {
     assert.equal(completed.status, 'COMPLETED');
     assert.equal(completed.feedback?.observation?.count, 920);
 
-    const observation = fixture.safety.getObservationStore().latest('R_EAST_STAND');
+    const observation = fixture.safety.getObservationStore().latest('R_S04_L1_CREST');
     assert.equal(observation?.source, 'field_report');
     assert.equal(observation?.estimated_count, 920);
 
-    const staff = fixture.mvp.ops.getStaff('STF-02');
+    const staff = fixture.mvp.ops.getStaff('STAFF_GATE_04');
     assert.equal(staff?.runtime_status, 'available');
   } finally {
     fixture.cleanup();
@@ -108,13 +108,13 @@ test('工作人员只能操作指派给本人的工单', () => {
       type: 'scene_verification',
       title: '现场核查',
       description: '核查',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
     });
     fixture.mvp.ops.approve(order.id, ADMIN);
-    fixture.mvp.ops.assignStaff(order.id, ADMIN, 'STF-02');
+    fixture.mvp.ops.assignStaff(order.id, ADMIN, 'STAFF_GATE_02');
     assert.throws(
-      () => fixture.mvp.ops.accept(order.id, staffActor(fixture, 'STF-03')),
+      () => fixture.mvp.ops.accept(order.id, staffActor(fixture, 'STAFF_GATE_03')),
       WorkOrderTransitionError,
     );
   } finally {
@@ -129,7 +129,7 @@ test('拒绝工单必须填写审批意见', () => {
       type: 'crowd_control',
       title: '疏导',
       description: '测试',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
     });
     assert.throws(() => fixture.mvp.ops.reject(order.id, ADMIN, '  '), /审批意见/);
     const rejected = fixture.mvp.ops.reject(order.id, ADMIN, '当前资源不足');
@@ -146,11 +146,11 @@ test('不可用人员不会被派发', () => {
       type: 'scene_verification',
       title: '现场核查',
       description: '测试',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
     });
     fixture.mvp.ops.approve(order.id, ADMIN);
-    assert.throws(() => fixture.mvp.ops.assignStaff(order.id, ADMIN, 'STF-06'), /不可派发/);
+    assert.throws(() => fixture.mvp.ops.assignStaff(order.id, ADMIN, 'STAFF_GATE_06'), /不可派发/);
   } finally {
     fixture.cleanup();
   }
@@ -163,7 +163,7 @@ test('工单幂等键避免 Agent 重试产生重复任务', () => {
       type: 'scene_verification' as const,
       title: '幂等测试',
       description: '同一幂等键只应创建一个工单',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
       idempotency_key: 'idem-001',
     };
@@ -183,12 +183,12 @@ test('审批后观测变化使工单过期，必须重新确认才能派发', ()
       type: 'scene_verification',
       title: '上下文失效测试',
       description: '审批后环境变化',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
     });
     fixture.mvp.ops.approve(order.id, ADMIN);
     fixture.safety.ingestObservation({
-      regionId: 'R_EAST_STAND',
+      regionId: 'R_S04_L1_CREST',
       count: 900,
       confidence: 0.95,
       source: 'simulation',
@@ -221,7 +221,7 @@ test('可选持久化：工单与幂等键在重启后恢复', () => {
       type: 'scene_verification',
       title: '持久化测试',
       description: '重启后应恢复',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
       idempotency_key: 'persist-001',
     });
@@ -233,7 +233,7 @@ test('可选持久化：工单与幂等键在重启后恢复', () => {
       type: 'scene_verification',
       title: '持久化测试',
       description: '重启后应恢复',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
       idempotency_key: 'persist-001',
     });

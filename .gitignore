@@ -39,3 +39,11 @@ data/perception/**/*.png
 # Python cache
 __pycache__/
 *.pyc
+
+# 生成的参赛提交包（可用 scripts/build-submission.mjs 重新生成）
+submission/SkyGuard-submission-*/
+submission/*.zip
+submission/*.zip.sha256
+
+# 本地演示运行产物（可用 frontend/e2e/capture-submission.mjs 重跑）
+submission/demo-run-*/

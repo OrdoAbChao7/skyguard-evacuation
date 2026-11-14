@@ -44,36 +44,19 @@ import { decideSafetyState } from '../src/services/safety/state-machine';
 import type { Incident, SafetyScenario } from '../src/services/safety/types';
 import type { WorkOrder } from '../src/services/mvp/ops';
 
+import { mean, mulberry32, std } from './lib/benchmark';
 const SEEDS = [20261105, 20261106, 20261107, 20261108, 20261109];
 const OUT_DIR = path.resolve(__dirname, '../../evaluation/competition');
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const scenario: SafetyScenario = loadSafetyScenario(SCENARIO_PATH);
-const policy = scenario.investigation;
-if (!policy) throw new Error('stadium scenario 缺少 investigation 策略');
+const policy = scenario.investigation as NonNullable<typeof scenario.investigation>;
+if (!policy) throw new Error('hankou scenario 缺少 investigation 策略');
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
 type Rng = () => number;
 
-function mulberry32(seed: number): Rng {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
-function mean(values: number[]): number {
-  return values.length === 0 ? 0 : values.reduce((sum, value) => sum + value, 0) / values.length;
-}
 
-function std(values: number[]): number {
-  if (values.length < 2) return 0;
-  const avg = mean(values);
-  return Math.sqrt(values.reduce((sum, value) => sum + (value - avg) ** 2, 0) / (values.length - 1));
-}
 
 function ci95(values: number[]): { mean: number; lower: number; upper: number; n: number } {
   const avg = mean(values);
@@ -256,6 +239,7 @@ function runExperimentA(): Record<string, unknown> {
       strategy,
       risk_reduction: Number(mean(subset.map(item => item.risk_reduction)).toFixed(4)),
       total_cost: Number(mean(subset.map(item => item.time_cost + item.resource_cost * 10)).toFixed(4)),
+      dominated: false,
     };
   });
   for (const point of pareto) {
@@ -504,9 +488,9 @@ function runExperimentC(): Record<string, unknown> {
         for (const demandMultiplier of [1, 2.5]) {
           const perturbed = cloneScenario(scenario, capacityScale);
           const incidents: Incident[] = [];
-          if (exitFailure === 'east') incidents.push(confirmedIncident(`INC-E-${capacityScale}`, { region_ids: [], corridor_ids: [], exit_ids: ['E_EAST'] }));
-          if (exitFailure === 'east_west') incidents.push(confirmedIncident(`INC-EW-${capacityScale}`, { region_ids: [], corridor_ids: [], exit_ids: ['E_EAST', 'E_WEST'] }));
-          if (corridorFailure) incidents.push(confirmedIncident(`INC-C-${capacityScale}`, { region_ids: [], corridor_ids: ['C_MID'], exit_ids: [] }));
+          if (exitFailure === 'east') incidents.push(confirmedIncident(`INC-E-${capacityScale}`, { region_ids: [], corridor_ids: [], exit_ids: ['GATE_03_G03'] }));
+          if (exitFailure === 'east_west') incidents.push(confirmedIncident(`INC-EW-${capacityScale}`, { region_ids: [], corridor_ids: [], exit_ids: ['GATE_03_G03', 'GATE_04_G04'] }));
+          if (corridorFailure) incidents.push(confirmedIncident(`INC-C-${capacityScale}`, { region_ids: [], corridor_ids: ['C_DYKE_01_02'], exit_ids: [] }));
           const network = resolveEffectiveNetwork(perturbed, incidents);
           const demand = normalDemand(demandMultiplier);
           const output = planEvacuation({
@@ -599,7 +583,7 @@ function runExperimentC(): Record<string, unknown> {
 
   return {
     config: {
-      perturbations: '容量 ±20%、关闭 E_EAST、关闭 C_MID、需求 ×1.6',
+      perturbations: '容量 ±20%、关闭 GATE_03_G03、关闭 C_DYKE_01_02、需求 ×1.6',
       cases: rows.length,
       fault_model: 'route_over_capacity / closed_exit_route / unknown_corridor_step / negative_route_persons / duplicate_route_id',
       note: '合成需求与注入故障；只验证机制能否发现，不代表真实场馆安全水平。',
@@ -640,7 +624,7 @@ function runExperimentD(): Record<string, unknown> {
   const cases = [
     { name: 'normal', input: { hasObservations: true, inferenceHealthy: true, untrustedRegions: [], activeIncidentIds: [], plan: validPlan, validation: validValidation, planInvalidated: false, lastValidObservationAt: new Date().toISOString() }, expected: 'NORMAL' },
     { name: 'no_observations', input: { hasObservations: false, inferenceHealthy: true, untrustedRegions: [], activeIncidentIds: [], plan: validPlan, validation, planInvalidated: false, lastValidObservationAt: null }, expected: 'DEGRADED' },
-    { name: 'untrusted', input: { hasObservations: true, inferenceHealthy: true, untrustedRegions: [{ regionId: 'R_EAST_STAND', reasons: ['stale:120s>90s'] }], activeIncidentIds: [], plan: validPlan, validation, planInvalidated: false, lastValidObservationAt: new Date().toISOString() }, expected: 'DEGRADED' },
+    { name: 'untrusted', input: { hasObservations: true, inferenceHealthy: true, untrustedRegions: [{ regionId: 'R_S04_L1_CREST', reasons: ['stale:120s>90s'] }], activeIncidentIds: [], plan: validPlan, validation, planInvalidated: false, lastValidObservationAt: new Date().toISOString() }, expected: 'DEGRADED' },
     { name: 'inference_down', input: { hasObservations: true, inferenceHealthy: false, inferenceFailureReason: 'provider timeout', untrustedRegions: [], activeIncidentIds: [], plan: validPlan, validation, planInvalidated: false, lastValidObservationAt: new Date().toISOString() }, expected: 'DEGRADED' },
     { name: 'invalid_plan', input: { hasObservations: true, inferenceHealthy: true, untrustedRegions: [], activeIncidentIds: [], plan: validPlan, validation: { ...validation, valid: false }, planInvalidated: false, lastValidObservationAt: new Date().toISOString() }, expected: 'REJECT' },
     { name: 'plan_invalidated', input: { hasObservations: true, inferenceHealthy: true, untrustedRegions: [], activeIncidentIds: ['INC-1'], plan: validPlan, validation: validValidation, planInvalidated: true, lastValidObservationAt: new Date().toISOString() }, expected: 'REROUTE' },
@@ -700,20 +684,20 @@ async function runExperimentE(): Promise<Record<string, unknown>> {
       mvp.resetAll(admin);
       try {
         for (const [regionId, item] of Object.entries(scenario.simulation_baseline ?? {})) {
-          if (regionId === 'R_EAST_STAND') continue;
+          if (regionId === 'R_S04_L1_CREST') continue;
           safety.ingestObservation({
             regionId, count: item.count, confidence: item.confidence,
             source: 'simulation', provider: 'benchmark', modelVersion: 'benchmark/1.0.0', observedAt: new Date(),
           }, admin);
         }
         safety.ingestObservation({
-          regionId: 'R_EAST_STAND', count: 900, confidence: 0.35,
+          regionId: 'R_S04_L1_CREST', count: 900, confidence: 0.35,
           source: 'simulation', provider: 'benchmark', modelVersion: 'benchmark/1.0.0', observedAt: new Date(),
         }, admin);
-        const run = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: `bench_loop_${index}` });
+        const run = await mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: `bench_loop_${index}` });
         const pending = mvp.ops.listWorkOrders().filter(order => order.status === 'PENDING_APPROVAL');
         for (const order of pending) completeOrder(mvp, order, admin, order.type === 'uav_observation' ? 940 : 920);
-        const run2 = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'feedback_reevaluation' });
+        const run2 = await mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: 'feedback_reevaluation' });
         for (const raw of run2.work_orders) {
           const current = mvp.ops.getWorkOrder(String(raw.id));
           if (current?.status === 'PENDING_APPROVAL') completeOrder(mvp, current, admin, 700);
@@ -793,7 +777,7 @@ async function runExperimentF(): Promise<Record<string, unknown>> {
     }
     for (let i = 0; i < 10; i += 1) {
       const t0 = process.hrtime.bigint();
-      await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: `latency_${i}` });
+      await mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: `latency_${i}` });
       samples.agent.push(Number(process.hrtime.bigint() - t0) / 1e6);
     }
   } finally {

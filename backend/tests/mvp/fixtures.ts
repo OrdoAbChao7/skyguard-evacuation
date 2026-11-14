@@ -1,4 +1,4 @@
-/** MVP 测试夹具：体育场场景 + 临时审计目录 + 隔离的 MvpService。 */
+/** MVP 测试夹具：汉口江滩场景 + 临时审计目录 + 隔离的 MvpService。 */
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -8,7 +8,7 @@ import { loadSafetyScenario } from '../../src/services/safety/scenario';
 import type { SafetyScenario } from '../../src/services/safety/types';
 import { MvpService } from '../../src/services/mvp';
 
-export const STADIUM_SCENARIO_PATH = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+export const DEFAULT_SCENARIO_PATH = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 export interface MvpFixture {
   scenario: SafetyScenario;
@@ -21,7 +21,7 @@ export interface MvpFixture {
 
 export function makeMvpFixture(options: { scenarioPath?: string } = {}): MvpFixture {
   const dataRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'skyguard-mvp-test-'));
-  const scenario = loadSafetyScenario(options.scenarioPath ?? STADIUM_SCENARIO_PATH);
+  const scenario = loadSafetyScenario(options.scenarioPath ?? DEFAULT_SCENARIO_PATH);
   const audit = new AuditLog(path.join(dataRoot, 'audit'));
   const safety = new SafetyDecisionService({ scenario, auditLog: audit });
   const mvp = new MvpService({ scenario, safety, audit });

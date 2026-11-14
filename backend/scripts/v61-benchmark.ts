@@ -38,6 +38,7 @@ import {
 import { forecastWithMethod, selectForecastMethod, selectIntervalQuantile } from '../src/services/mvp/prediction';
 import { matchPoints } from '../src/services/perception/metrics';
 
+import { clusterBootstrap, mulberry32, sampleIndex } from './lib/benchmark';
 const SEEDS = [20261105, 20261106, 20261107, 20261108, 20261109];
 const OUT = process.env.V61_OUT_DIR
   ? path.resolve(process.env.V61_OUT_DIR)
@@ -45,9 +46,9 @@ const OUT = process.env.V61_OUT_DIR
 const REPORT_PATH = process.env.V61_REPORT_PATH
   ? path.resolve(process.env.V61_REPORT_PATH)
   : path.resolve(__dirname, '../../evaluation/V6_1_REPORT.md');
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const scenario: SafetyScenario = loadSafetyScenario(SCENARIO_PATH);
-const policy = scenario.investigation;
+const policy = scenario.investigation as NonNullable<typeof scenario.investigation>;
 if (!policy) throw new Error('缺少 investigation 策略');
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -69,47 +70,10 @@ function bootstrapCI(values: number[], iterations = 1000, seed = 17) {
   stats.sort((a, b) => a - b);
   return { mean: Number(mean(values).toFixed(4)), lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
 }
-function clusterBootstrap(groups: number[][], iterations = 1000, seed = 19) {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    let count = 0;
-    for (let g = 0; g < groups.length; g += 1) {
-      const group = groups[Math.floor(rng() * groups.length)];
-      for (let j = 0; j < group.length; j += 1) {
-        sum += group[Math.floor(rng() * group.length)];
-        count += 1;
-      }
-    }
-    stats.push(sum / count);
-  }
-  stats.sort((a, b) => a - b);
-  return { lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)), upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)) };
-}
 
 function cohenDz(diffs: number[]): number {
   const sd = std(diffs);
   return sd === 0 ? 0 : Number((mean(diffs) / sd).toFixed(4));
-}
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function sampleIndex(probabilities: number[], rng: () => number): number {
-  const total = probabilities.reduce((a, b) => a + b, 0);
-  let threshold = rng() * total;
-  for (let i = 0; i < probabilities.length; i += 1) {
-    threshold -= probabilities[i];
-    if (threshold <= 0) return i;
-  }
-  return probabilities.length - 1;
 }
 function write(name: string, data: unknown) { fs.writeFileSync(path.join(OUT, name), `${JSON.stringify(data, null, 2)}\n`); }
 
@@ -291,6 +255,8 @@ function experimentA2() {
         bootstrap: bootstrapCI(paired.map(item => item.benefit)),
         bootstrap_cluster_by_seed: clusterBootstrap(
           SEEDS.map(seed => paired.filter((_, index) => rows.filter(row => row.quality === 0.6 && row.budget === 2 && row.strategy === 'multi')[index]?.seed === seed).map(item => item.benefit)),
+          1000,
+          19,
         ),
         cohen_dz: cohenDz(paired.map(item => item.benefit)),
       },
@@ -335,7 +301,7 @@ function simulateSequential(seed: number, trial: number, failureProbability: num
     actions: policy!.actions.map(action => ({ ...action, retry: { max_retries: 0, cooldown_minutes: 0, backoff_factor: 1 } })),
   };
   let belief = priorBelief(localPolicy);
-  const session = createInvestigationSession('R_EAST_STAND');
+  const session = createInvestigationSession('R_S04_L1_CREST');
   const used = new Set<string>();
   let now = new Date('2026-11-05T10:00:00.000Z');
   let success = false;

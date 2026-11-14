@@ -10,7 +10,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
 const BACKEND_ROOT = path.resolve(__dirname, '../..');
-const STADIUM = path.resolve(BACKEND_ROOT, '../data/scenarios/stadium-evacuation.json');
+const SCENARIO = path.resolve(BACKEND_ROOT, '../data/scenarios/hankou-mvp.json');
 const TSX_CLI = path.resolve(BACKEND_ROOT, 'node_modules/tsx/dist/cli.mjs');
 
 test('MCP Server 暴露 15 个工具并执行权限校验', { timeout: 60_000 }, async () => {
@@ -22,7 +22,7 @@ test('MCP Server 暴露 15 个工具并执行权限校验', { timeout: 60_000 },
     env: {
       ...(process.env as Record<string, string>),
       DATA_ROOT: dataRoot,
-      SAFETY_SCENARIO_FILE: STADIUM,
+      SAFETY_SCENARIO_FILE: SCENARIO,
       MCP_ACTOR_ROLE: 'agent',
       SECRET_KEY: 'mcp-test-secret',
     },
@@ -59,7 +59,7 @@ test('MCP Server 暴露 15 个工具并执行权限校验', { timeout: 60_000 },
     assert.equal(status.isError, false);
     const statusPayload = JSON.parse((status.content as Array<{ type: string; text: string }>)[0].text);
     assert.equal(statusPayload.ok, true);
-    assert.equal(statusPayload.data.regions.length, 8);
+    assert.equal(statusPayload.data.regions.length, 44);
 
     const denied = await client.callTool({
       name: 'submit_worker_feedback',
@@ -74,7 +74,7 @@ test('MCP Server 暴露 15 个工具并执行权限校验', { timeout: 60_000 },
       type: 'scene_verification',
       title: 'MCP 测试工单',
       description: '由 MCP 客户端创建',
-      region_id: 'R_EAST_STAND',
+      region_id: 'R_S04_L1_CREST',
       required_skills: ['crowd_check'],
       idempotency_key: 'mcp-idem-001',
     };
@@ -89,8 +89,8 @@ test('MCP Server 暴露 15 个工具并执行权限校验', { timeout: 60_000 },
     assert.equal(duplicatePayload.data.work_order.id, orderPayload.data.work_order.id);
 
     // 工具调用回放：同参数重复读取应稳定
-    const replayA = await client.callTool({ name: 'get_crowd_status', arguments: { region_id: 'R_EAST_STAND' } });
-    const replayB = await client.callTool({ name: 'get_crowd_status', arguments: { region_id: 'R_EAST_STAND' } });
+    const replayA = await client.callTool({ name: 'get_crowd_status', arguments: { region_id: 'R_S04_L1_CREST' } });
+    const replayB = await client.callTool({ name: 'get_crowd_status', arguments: { region_id: 'R_S04_L1_CREST' } });
     const payloadA = JSON.parse((replayA.content as Array<{ type: string; text: string }>)[0].text);
     const payloadB = JSON.parse((replayB.content as Array<{ type: string; text: string }>)[0].text);
     assert.deepEqual(payloadA.data.regions[0].region_id, payloadB.data.regions[0].region_id);

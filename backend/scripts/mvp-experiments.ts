@@ -37,39 +37,18 @@ import { decideSafetyState } from '../src/services/safety/state-machine';
 import type { Incident, SafetyScenario } from '../src/services/safety/types';
 import type { WorkOrder } from '../src/services/mvp/ops';
 
+import { mean, mulberry32, sampleIndex } from './lib/benchmark';
 const SEED = 20261105;
 const OUT_DIR = path.resolve(__dirname, '../../evaluation/mvp');
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-mvp.json');
 const scenario: SafetyScenario = loadSafetyScenario(SCENARIO_PATH);
-const policy = scenario.investigation;
-if (!policy) throw new Error('stadium scenario 缺少 investigation 策略');
+const policy = scenario.investigation as NonNullable<typeof scenario.investigation>;
+if (!policy) throw new Error('hankou scenario 缺少 investigation 策略');
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
-function mean(values: number[]): number {
-  return values.length === 0 ? 0 : values.reduce((sum, value) => sum + value, 0) / values.length;
-}
 
-function sampleIndex(probabilities: number[], rng: () => number): number {
-  const total = probabilities.reduce((sum, value) => sum + value, 0);
-  let threshold = rng() * total;
-  for (let index = 0; index < probabilities.length; index += 1) {
-    threshold -= probabilities[index];
-    if (threshold <= 0) return index;
-  }
-  return probabilities.length - 1;
-}
 
 function writeJson(name: string, data: unknown): void {
   fs.writeFileSync(path.join(OUT_DIR, name), `${JSON.stringify(data, null, 2)}\n`);
@@ -501,7 +480,7 @@ async function runExperiment4(): Promise<{
       let error: string | null = null;
       try {
         for (const [regionId, item] of Object.entries(scenario.simulation_baseline ?? {})) {
-          if (regionId === 'R_EAST_STAND') continue;
+          if (regionId === 'R_S04_L1_CREST') continue;
           safety.ingestObservation({
             regionId,
             count: item.count,
@@ -513,7 +492,7 @@ async function runExperiment4(): Promise<{
           }, admin);
         }
         const low = safety.ingestObservation({
-          regionId: 'R_EAST_STAND',
+          regionId: 'R_S04_L1_CREST',
           count: 900,
           confidence: 0.35,
           source: 'simulation',
@@ -523,13 +502,13 @@ async function runExperiment4(): Promise<{
         }, admin);
         feedbackIngested = low.source === 'simulation';
 
-        const run = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: `experiment_loop_${index}` });
+        const run = await mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: `experiment_loop_${index}` });
         const pending = mvp.ops.listWorkOrders().filter(order => order.status === 'PENDING_APPROVAL');
         const completedIds: string[] = [];
         for (const order of pending) {
           completedIds.push(completeOrder(mvp, order, admin, order.type === 'uav_observation' ? 940 : 920));
         }
-        const run2 = await mvp.runAgent({ regionId: 'R_EAST_STAND', trigger: 'feedback_reevaluation' });
+        const run2 = await mvp.runAgent({ regionId: 'R_S04_L1_CREST', trigger: 'feedback_reevaluation' });
         for (const order of run2.work_orders as unknown as WorkOrder[]) {
           const current = mvp.ops.getWorkOrder(order.id);
           if (current?.status === 'PENDING_APPROVAL') {
@@ -611,7 +590,7 @@ function buildReport(
   experiment1: ReturnType<typeof runExperiment1>,
   experiment2: ReturnType<typeof runExperiment2>,
   experiment3: ReturnType<typeof runExperiment3>,
-  experiment4: ReturnType<typeof runExperiment4>,
+  experiment4: Awaited<ReturnType<typeof runExperiment4>>,
 ): string {
   const r1 = experiment1.summary;
   const r3 = experiment3.summary;

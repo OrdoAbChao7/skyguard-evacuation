@@ -16,7 +16,7 @@ import {
 } from '../../src/services/safety/planning/v73-stability';
 import type { EvacuationRoute } from '../../src/services/safety/types';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function route(regionId: string, exitId: string, persons: number, arrive = 2): EvacuationRoute {
   return {
@@ -59,20 +59,20 @@ test('自适应惩罚随队列压力上升、随风险上升而下降', () => {
 });
 
 test('A→B→A 振荡检测', () => {
-  const history = new Map([['R_NORTH_STAND', ['E_NORTH', 'E_EAST']]]);
-  const candidate = [route('R_NORTH_STAND', 'E_NORTH', 200)];
+  const history = new Map([['R_S01_L1_CREST', ['GATE_01_G01', 'GATE_03_G03']]]);
+  const candidate = [route('R_S01_L1_CREST', 'GATE_01_G01', 200)];
   const detected = detectOscillatingRegions(history, candidate);
-  assert.deepEqual(detected.regions, ['R_NORTH_STAND']);
+  assert.deepEqual(detected.regions, ['R_S01_L1_CREST']);
   assert.equal(detected.persons, 200);
-  const nonOscillating = detectOscillatingRegions(history, [route('R_NORTH_STAND', 'E_SOUTH', 200)]);
+  const nonOscillating = detectOscillatingRegions(history, [route('R_S01_L1_CREST', 'GATE_02_G02', 200)]);
   assert.deepEqual(nonOscillating.regions, []);
 });
 
 test('风险加权切换人数不低于普通切换人数，且计划评分有限', () => {
   const scenario = loadSafetyScenario(scenarioPath);
-  const occupancy = new Map([['R_NORTH_STAND', 600], ['R_EAST_STAND', 500]]);
-  const previous = new Map([['R_NORTH_STAND', 'E_NORTH'], ['R_EAST_STAND', 'E_EAST']]);
-  const routes = [route('R_NORTH_STAND', 'E_SOUTH', 400), route('R_EAST_STAND', 'E_WEST', 300)];
+  const occupancy = new Map([['R_S01_L1_CREST', 600], ['R_S04_L1_CREST', 500]]);
+  const previous = new Map([['R_S01_L1_CREST', 'GATE_01_G01'], ['R_S04_L1_CREST', 'GATE_03_G03']]);
+  const routes = [route('R_S01_L1_CREST', 'GATE_02_G02', 400), route('R_S04_L1_CREST', 'GATE_04_G04', 300)];
   const raw = weightedSwitchPersons({ candidateRoutes: routes, previousExits: previous, scenario, occupancy, riskWeight: 0 });
   const weighted = weightedSwitchPersons({ candidateRoutes: routes, previousExits: previous, scenario, occupancy, riskWeight: 1 });
   assert.equal(raw, 700);
@@ -94,8 +94,8 @@ test('动态容量因子进入求解器与容量复核口径', () => {
   const network = resolveEffectiveNetwork(scenario, []);
   const demand = new Map(scenario.regions.map(region => [region.id, region.enabled ? 260 : 0]));
   const versions = { scenarioVersion: scenario.version, constraintVersion: 0, observationVersion: 0 };
-  const corridorFactor = (id: string, minute: number) => (minute >= 3 && (id === 'C_NE' || id === 'C_NW') ? 0.5 : 1);
-  const exitFactor = (id: string, minute: number) => (minute >= 4 && id === 'E_NORTH' ? 0.7 : 1);
+  const corridorFactor = (id: string, minute: number) => (minute >= 3 && (id === 'C_S01_L1_GATE' || id === 'C_S02_L1_GATE') ? 0.5 : 1);
+  const exitFactor = (id: string, minute: number) => (minute >= 4 && id === 'GATE_01_G01' ? 0.7 : 1);
   const solved = solveTimeExpandedPlan({
     scenario, network, demandByRegion: demand, horizonMinutes: 10, versions, now: new Date(),
     corridorCapacityFactor: corridorFactor, exitCapacityFactor: exitFactor,

@@ -13,7 +13,7 @@ function policy() {
   const fixture = makeMvpFixture();
   try {
     const investigation = fixture.scenario.investigation;
-    assert.ok(investigation, 'stadium scenario must define investigation policy');
+    assert.ok(investigation, 'hankou scenario must define investigation policy');
     return investigation;
   } finally {
     fixture.cleanup();

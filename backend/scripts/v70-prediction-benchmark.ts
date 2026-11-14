@@ -29,6 +29,7 @@ import {
 } from '../src/services/mvp/forecast-advanced';
 import { selectForecastMethod, type ForecastMethod } from '../src/services/mvp/prediction';
 
+import { bootstrap, clusterBootstrap, gaussian, holm, mulberry32, normalCdf, pairedPValue } from './lib/benchmark';
 export const V70_SEEDS = Array.from({ length: 30 }, (_, index) => 20261109 + index);
 export const V70_RUN_ID = process.env.V70_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 export const V70_OUT = path.resolve(__dirname, '../../evaluation/v70', V70_RUN_ID);
@@ -56,89 +57,12 @@ const ci = (values: number[]) => {
 };
 const dz = (diffs: number[]): number => (std(diffs) === 0 ? 0 : Number((mean(diffs) / std(diffs)).toFixed(4)));
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
-function gaussian(rng: () => number): number {
-  const u = Math.max(1e-9, rng());
-  const v = Math.max(1e-9, rng());
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
 
-function bootstrap(values: number[], iterations = 2000, seed = 23): { lower: number; upper: number } {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    for (let j = 0; j < values.length; j += 1) sum += values[Math.floor(rng() * values.length)];
-    stats.push(sum / values.length);
-  }
-  stats.sort((a, b) => a - b);
-  return {
-    lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)),
-    upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)),
-  };
-}
 
-function clusterBootstrap(groups: number[][], iterations = 2000, seed = 29): { lower: number; upper: number } {
-  const rng = mulberry32(seed);
-  const stats: number[] = [];
-  for (let i = 0; i < iterations; i += 1) {
-    let sum = 0;
-    let count = 0;
-    for (let g = 0; g < groups.length; g += 1) {
-      const group = groups[Math.floor(rng() * groups.length)];
-      for (let j = 0; j < group.length; j += 1) {
-        sum += group[Math.floor(rng() * group.length)];
-        count += 1;
-      }
-    }
-    stats.push(sum / Math.max(1, count));
-  }
-  stats.sort((a, b) => a - b);
-  return {
-    lower: Number(stats[Math.floor(iterations * 0.025)].toFixed(4)),
-    upper: Number(stats[Math.floor(iterations * 0.975)].toFixed(4)),
-  };
-}
 
-function normalCdf(value: number): number {
-  // Abramowitz–Stegun 近似
-  const t = 1 / (1 + 0.2316419 * Math.abs(value));
-  const poly = t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
-  const cdf = 1 - (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * value * value) * poly;
-  return value >= 0 ? cdf : 1 - cdf;
-}
 
-function pairedPValue(diffs: number[]): number {
-  if (diffs.length < 2) return 1;
-  const sd = std(diffs);
-  if (sd === 0) return mean(diffs) === 0 ? 1 : 0;
-  const z = Math.abs(mean(diffs)) / (sd / Math.sqrt(diffs.length));
-  return Math.max(0, Math.min(1, 2 * (1 - normalCdf(z))));
-}
 
-function holm(pValues: Record<string, number>): Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> {
-  const entries = Object.entries(pValues).sort((a, b) => a[1] - b[1]);
-  const m = entries.length;
-  const adjusted: Record<string, { raw: number; adjusted: number; rejected_0_05: boolean }> = {};
-  let previous = 0;
-  for (let index = 0; index < entries.length; index += 1) {
-    const [key, value] = entries[index];
-    const next = Math.min(1, Math.max(previous, (m - index) * value));
-    previous = next;
-    adjusted[key] = { raw: Number(value.toFixed(6)), adjusted: Number(next.toFixed(6)), rejected_0_05: next < 0.05 };
-  }
-  return adjusted;
-}
 
 function generateSeries(mechanism: Mechanism, seed: number): Array<{ x: number; y: number } | null> {
   const rng = mulberry32(seed * 101 + MECHANISMS.indexOf(mechanism) * 7_919);
@@ -396,9 +320,9 @@ export function runPredictionBenchmark(): PredictionBenchmarkResult {
     }
     paired[baseline] = {
       ensemble_minus_baseline_abs_error: ci(diffs),
-      bootstrap: bootstrap(diffs),
+      bootstrap: bootstrap(diffs, 2000, 23),
       seed_level: ci(perSeed.map(group => mean(group))),
-      cluster_bootstrap_by_seed: clusterBootstrap(perSeed),
+      cluster_bootstrap_by_seed: clusterBootstrap(perSeed, 2000, 29),
       cohen_dz: dz(diffs),
       coverage95_diff: ci(coverageDiffs),
       n_pairs: diffs.length,

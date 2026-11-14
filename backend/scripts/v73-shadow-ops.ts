@@ -19,9 +19,10 @@ import { buildObservation } from '../src/services/safety/observations';
 import { regionRiskRatio } from '../src/services/safety/planning/route-stability';
 import type { DensityObservation, Incident, SafetyScenario } from '../src/services/safety/types';
 
+import { mulberry32 } from './lib/benchmark';
 const RUN_ID = process.env.V73_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v73', RUN_ID);
-const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/stadium-evacuation.json');
+const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
 const SEEDS = Array.from({ length: 10 }, (_, index) => 20261111 + index);
 const CASES = [
   'historical_replay',
@@ -35,16 +36,6 @@ const CASES = [
 ] as const;
 type CaseName = (typeof CASES)[number];
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 function incidentFor(type: 'fire' | 'sensor_failure', exitIds: string[], corridorIds: string[], regionIds: string[], suffix: string): Incident {
   const now = new Date().toISOString();
@@ -85,11 +76,11 @@ function buildSetup(base: SafetyScenario, caseName: CaseName, seed: number): Set
   if (caseName === 'sensor_failure') {
     incidents.push(incidentFor('sensor_failure', [], [], [base.regions.find(region => region.enabled)!.id], 'SENSOR'));
   }
-  if (caseName === 'corridor_closure') incidents.push(incidentFor('fire', [], ['C_NE'], [], 'CORR'));
-  if (caseName === 'exit_failure') incidents.push(incidentFor('fire', ['E_NORTH'], [], [], 'EXIT'));
+  if (caseName === 'corridor_closure') incidents.push(incidentFor('fire', [], ['C_S01_L1_GATE'], [], 'CORR'));
+  if (caseName === 'exit_failure') incidents.push(incidentFor('fire', ['GATE_01_G01'], [], [], 'EXIT'));
   if (caseName === 'concurrent_events') {
-    incidents.push(incidentFor('fire', ['E_NORTH'], [], [], 'EXIT'));
-    incidents.push(incidentFor('fire', [], ['C_NE'], [], 'CORR'));
+    incidents.push(incidentFor('fire', ['GATE_01_G01'], [], [], 'EXIT'));
+    incidents.push(incidentFor('fire', [], ['C_S01_L1_GATE'], [], 'CORR'));
   }
   const network = resolveEffectiveNetwork(base, incidents);
   const surge = caseName === 'sudden_surge' ? 350 : 0;

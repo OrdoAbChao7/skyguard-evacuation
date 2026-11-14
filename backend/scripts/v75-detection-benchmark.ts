@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { gaussian, mulberry32 } from './lib/benchmark';
 import {
   AdaptiveCusumDetector,
   CusumDetector,
@@ -31,21 +32,6 @@ const STEPS = 60;
 const CHANGE_STEP = 30;
 const WINDOW = 15;
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function gaussian(rng: () => number): number {
-  const u = Math.max(1e-9, rng());
-  const v = Math.max(1e-9, rng());
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
 
 interface SensorSpec { id: string; reliability: number; sigma: number }
 const SENSORS: SensorSpec[] = [

@@ -54,7 +54,7 @@ async function runStub(): Promise<Record<string, unknown>> {
           res.end('{"error":"transient"}');
           return;
         }
-        const decision = JSON.stringify({ tool: 'camera_query', arguments: { region_id: 'R_NORTH_STAND' }, reasoning: 'stub decision' });
+        const decision = JSON.stringify({ tool: 'camera_query', arguments: { region_id: 'R_S01_L1_CREST' }, reasoning: 'stub decision' });
         res.writeHead(200, { 'Content-Type': 'text/event-stream' });
         res.end(`data: ${JSON.stringify({ event: 'message', data: { text: decision } })}\n\n`);
       });
@@ -88,12 +88,12 @@ async function runStub(): Promise<Record<string, unknown>> {
     const client = new AgentArtsClient(config);
     const status = await client.healthCheck();
     const decision = await client.select({
-      regionId: 'R_NORTH_STAND',
+      regionId: 'R_S01_L1_CREST',
       trigger: 'v75:agentarts-status',
       traceId: 'trace-v75-1',
       sessionId: 'session-v75',
       query: '请选择下一步安全调查工具',
-      context: { scenario_id: 'stadium-evacuation-v1' },
+      context: { scenario_id: 'hankou-marshland-v1' },
       tools: [{ name: 'camera_query', description: 'camera', roles: ['admin'] }],
     });
     return {

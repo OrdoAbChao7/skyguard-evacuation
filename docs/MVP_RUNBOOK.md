@@ -45,10 +45,10 @@ npm start
 | 身份 | 账号 | 密码/登录码 |
 | --- | --- | --- |
 | 管理员 | `admin` | `skyguard2026`（可用环境变量覆盖） |
-| 工作人员 | `STF-01` ~ `STF-08` | 场景文件中的 `access_code`（演示：1001~1008） |
+| 工作人员 | `STAFF_GATE_01` ~ `STAFF_GATE_11` | 场景文件中的 `access_code`（演示：`CODE_G01`~`CODE_G11`） |
 
 工作人员登录：大屏「审批中心与工单」→ 工作人员登录（工号 + 登录码）。
-演示登录码来自 `data/scenarios/stadium-evacuation.json` 的合成名册，
+演示登录码来自 `data/scenarios/hankou-mvp.json` 的合成名册，
 真实部署必须替换为正式身份系统。
 
 ## 4. 演示
@@ -117,10 +117,10 @@ stdio 传输；stdout 只输出协议消息。客户端配置见 `docs/MCP_TOOLS
 ```text
 MCP_ACTOR_ROLE=agent|viewer|staff
 MCP_ACTOR_NAME=mcp-agent
-MCP_STAFF_ID=STF-02        # 仅 role=staff
-MCP_STAFF_CODE=1002        # 仅 role=staff
+MCP_STAFF_ID=STAFF_GATE_02        # 仅 role=staff
+MCP_STAFF_CODE=CODE_G02    # 仅 role=staff
 DATA_ROOT=<仓库>/data
-SAFETY_SCENARIO_FILE=<仓库>/data/scenarios/stadium-evacuation.json
+SAFETY_SCENARIO_FILE=<仓库>/data/scenarios/hankou-mvp.json
 ```
 
 ## 8. HTTP API 速查
@@ -158,7 +158,7 @@ $token = (Invoke-RestMethod -Method Post http://localhost:8010/api/v1/auth/login
 
 Invoke-RestMethod -Method Post http://localhost:8010/api/v1/mvp/agent/runs `
   -Headers @{ Authorization = "Bearer $token" } -ContentType 'application/json' `
-  -Body '{"region_id":"R_EAST_STAND","trigger":"manual"}'
+  -Body '{"region_id":"R_S04_L1_CREST","trigger":"manual"}'
 ```
 
 ## 9. 常见问题

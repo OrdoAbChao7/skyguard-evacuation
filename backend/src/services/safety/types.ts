@@ -548,6 +548,65 @@ export const UiDemoSeriesSchema = z.object({
   series: z.record(z.array(z.number().nonnegative()).min(1)),
 });
 
+/** 时间轴仿真中的单个区域观测（合成）。 */
+export const UiSimulationRegionSchema = z.object({
+  count: z.number().nonnegative(),
+  confidence: z.number().min(0).max(1),
+  valid: z.boolean().default(true),
+  reason: z.string().min(1).optional(),
+});
+
+export const UiSimulationIncidentSchema = z.object({
+  type: z.enum(INCIDENT_TYPE),
+  description: z.string().min(1),
+  severity: z.enum(['low', 'medium', 'high', 'critical']),
+  region_ids: z.array(z.string().min(1)).default([]),
+  corridor_ids: z.array(z.string().min(1)).default([]),
+  exit_ids: z.array(z.string().min(1)).default([]),
+});
+
+/**
+ * 时间轴仿真步骤：由场景配置驱动，代码不写死区域与人数。
+ * 所有观测均标记 source=simulation，用于演示处理链路，不是真实数据。
+ */
+export const UiSimulationStepSchema = z.object({
+  id: z.string().min(1),
+  phase: z.string().min(1),
+  title: z.string().min(1),
+  narrative: z.string().min(1),
+  action: z.enum([
+    'recompute',
+    'baseline',
+    'observe',
+    'incident',
+    'resolve_incident',
+    'refresh_baseline',
+    'agent',
+    'await_human',
+  ]),
+  /** observe 步骤写入的区域观测。 */
+  regions: z.record(UiSimulationRegionSchema).optional(),
+  /** baseline / refresh_baseline 使用的置信度；缺省取仿真配置。 */
+  confidence: z.number().min(0).max(1).optional(),
+  /** agent 步骤调查的区域。 */
+  agent_region_id: z.string().min(1).optional(),
+  /** incident 步骤登记并确认的事件。 */
+  incident: UiSimulationIncidentSchema.optional(),
+  recompute: z.boolean().default(true),
+  next_actions: z.array(z.string().min(1)).default([]),
+});
+
+export const UiSimulationSchema = z.object({
+  name: z.string().min(1),
+  /** 必须明确写出“合成/非真实”，前端原样展示。 */
+  notice: z.string().min(1),
+  tick_ms: z.number().int().min(800).max(60_000).default(2400),
+  baseline_confidence: z.number().min(0).max(1).default(0.92),
+  steps: z.array(UiSimulationStepSchema).min(2),
+});
+export type UiSimulation = z.infer<typeof UiSimulationSchema>;
+export type UiSimulationStep = z.infer<typeof UiSimulationStepSchema>;
+
 export const UiDemoSchema = z.object({
   normal: UiDemoSeriesSchema.optional(),
   surge: UiDemoSeriesSchema.extend({
@@ -576,6 +635,8 @@ export const UiDemoSchema = z.object({
       corridor_ids: z.array(z.string().min(1)).default([]),
     }),
   }).optional(),
+  /** 时间轴仿真剧本（合成观测，按步骤推进）。 */
+  simulation: UiSimulationSchema.optional(),
 });
 export type UiDemo = z.infer<typeof UiDemoSchema>;
 

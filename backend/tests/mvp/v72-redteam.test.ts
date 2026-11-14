@@ -12,7 +12,7 @@ import { validateSafetyPlan } from '../../src/services/safety/validator';
 import { buildObservation } from '../../src/services/safety/observations';
 import type { DensityObservation, SafetyScenario } from '../../src/services/safety/types';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function cloneScenario(scenario: SafetyScenario): SafetyScenario {
   return JSON.parse(JSON.stringify(scenario)) as SafetyScenario;
@@ -132,11 +132,11 @@ test('运行中通道封控：故障后执行路线不再经过关闭通道', ()
     useForecast: true,
     queueFeedback: true,
     stability: { mode: 'commitment', commitMinutes: 12 },
-    midRunDisruptions: [{ minute: 4, corridor_ids: ['C_NE'], description: '红队：运行中通道封控' }],
+    midRunDisruptions: [{ minute: 4, corridor_ids: ['C_S01_L1_GATE'], description: '红队：运行中通道封控' }],
   });
   assert.equal(result.unserved_persons, 0);
   const after = result.steps.filter(step => step.start_minute >= 4).flatMap(step => step.executed_routes);
-  assert.ok(!after.some(route => route.steps.some(step => step.corridor_id === 'C_NE')));
+  assert.ok(!after.some(route => route.steps.some(step => step.corridor_id === 'C_S01_L1_GATE')));
 });
 
 test('极速需求下承诺式求解不静默超容量：冲突必须显式报告', () => {
@@ -154,10 +154,10 @@ test('极速需求下承诺式求解不静默超容量：冲突必须显式报�
     versions,
     now,
     commitments: new Map([
-      ['R_NORTH_STAND', 'E_NORTH'],
-      ['R_SOUTH_STAND', 'E_SOUTH'],
-      ['R_EAST_STAND', 'E_EAST'],
-      ['R_WEST_STAND', 'E_WEST'],
+      ['R_S01_L1_CREST', 'GATE_01_G01'],
+      ['R_S02_L1_CREST', 'GATE_02_G02'],
+      ['R_S04_L1_CREST', 'GATE_03_G03'],
+      ['R_S03_L1_CREST', 'GATE_04_G04'],
     ]),
   });
   const independent = checkPlanCapacity(scenario, result.plan.routes, 0);

@@ -30,17 +30,18 @@ test('风险沿开放通道传播，未知通道被排除', () => {
   const fixture = makeMvpFixture();
   try {
     const graph = buildRegionGraph(fixture.scenario);
-    assert.ok(neighborsOf(graph, 'R_EAST_STAND').includes('R_NORTH_CONCOURSE'));
-    assert.ok(!neighborsOf(graph, 'R_EAST_PLAZA').includes('R_WEST_PLAZA'), 'unknown corridor must be excluded');
+    assert.ok(neighborsOf(graph, 'R_S04_L1_CREST').includes('R_S05_L1_CREST'));
+    const graphEdges = [...graph.adjacency.values()].flat();
+    assert.ok(!graphEdges.some(edge => edge.corridorId === 'C_FLOOD_ESCAPE_UNKNOWN'), 'unknown corridor must be excluded');
 
     const risks = fixture.scenario.regions.map(region =>
-      risk(region.id, region.id === 'R_EAST_STAND' ? 'critical' : 'normal'));
+      risk(region.id, region.id === 'R_S04_L1_CREST' ? 'critical' : 'normal'));
     const propagated = propagateRisk(fixture.scenario, risks);
-    const east = propagated.find(item => item.regionId === 'R_EAST_STAND')!;
-    const neighbour = propagated.find(item => item.regionId === 'R_NORTH_CONCOURSE')!;
+    const east = propagated.find(item => item.regionId === 'R_S04_L1_CREST')!;
+    const neighbour = propagated.find(item => item.regionId === 'R_S05_L1_CREST')!;
     assert.equal(east.localRisk, riskValue('critical'));
     assert.ok(neighbour.propagatedRisk > neighbour.localRisk);
-    assert.ok(neighbour.contributors.some(item => item.regionId === 'R_EAST_STAND'));
+    assert.ok(neighbour.contributors.some(item => item.regionId === 'R_S04_L1_CREST'));
   } finally {
     fixture.cleanup();
   }
@@ -50,12 +51,12 @@ test('调查优先级综合传播风险、不确定性与中心性', () => {
   const fixture = makeMvpFixture();
   try {
     const risks = fixture.scenario.regions.map(region =>
-      risk(region.id, region.id === 'R_EAST_STAND' ? 'critical' : 'watch', region.id !== 'R_EAST_STAND'));
+      risk(region.id, region.id === 'R_S04_L1_CREST' ? 'critical' : 'watch', region.id !== 'R_S04_L1_CREST'));
     const propagated = propagateRisk(fixture.scenario, risks);
     const ranked = rankInvestigationPriorities(fixture.scenario, risks, propagated);
     assert.equal(ranked.length, fixture.scenario.regions.length);
     assert.ok(ranked[0].priority >= ranked[ranked.length - 1].priority);
-    const east = ranked.find(item => item.regionId === 'R_EAST_STAND')!;
+    const east = ranked.find(item => item.regionId === 'R_S04_L1_CREST')!;
     assert.equal(east.uncertainty, 1);
     assert.ok(east.priority > 0);
   } finally {

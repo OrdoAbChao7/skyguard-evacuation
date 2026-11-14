@@ -19,6 +19,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { gaussian, mulberry32 } from './lib/benchmark';
 import {
   FORECAST_METHODS,
   forecastWithMethod,
@@ -51,22 +52,7 @@ const ci = (values: number[]) => {
 };
 const dz = (diffs: number[]) => std(diffs) === 0 ? 0 : Number((mean(diffs) / std(diffs)).toFixed(4));
 
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state += 0x6d2b79f5;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
-function gaussian(rng: () => number): number {
-  const u = Math.max(1e-9, rng());
-  const v = Math.max(1e-9, rng());
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
 
 function generateSeries(mechanism: Mechanism, seed: number): Array<{ x: number; y: number } | null> {
   const rng = mulberry32(seed * 101 + MECHANISMS.indexOf(mechanism) * 7_919);

@@ -15,7 +15,7 @@ import { validateSafetyPlan } from '../../src/services/safety/validator';
 import { buildObservation } from '../../src/services/safety/observations';
 import type { DensityObservation } from '../../src/services/safety/types';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 function setup(count: number) {
   const scenario = loadSafetyScenario(scenarioPath);
@@ -76,14 +76,14 @@ test('出口中途故障触发紧急覆盖，承诺失效且不再经过故障�
   const result = planEvacuationMpc({
     ...input,
     stability: { mode: 'commitment', commitMinutes: 12, hysteresisGap: 0.02 },
-    midRunDisruptions: [{ minute: 2, exit_ids: ['E_NORTH'], description: '测试：运行中出口故障' }],
+    midRunDisruptions: [{ minute: 2, exit_ids: ['GATE_01_G01'], description: '测试：运行中出口故障' }],
   });
   assert.equal(result.unserved_persons, 0);
   assert.ok(result.emergency_overrides >= 1, `emergency_overrides=${result.emergency_overrides}`);
   const afterFailure = result.steps
     .filter(step => step.start_minute >= 2)
     .flatMap(step => step.executed_routes);
-  assert.ok(!afterFailure.some(route => route.exit_id === 'E_NORTH'), '故障后的执行路线不得使用 E_NORTH');
+  assert.ok(!afterFailure.some(route => route.exit_id === 'GATE_01_G01'), '故障后的执行路线不得使用 GATE_01_G01');
 });
 
 test('承诺式求解结果满足逐分钟容量约束并通过独立校验', () => {
@@ -98,10 +98,10 @@ test('承诺式求解结果满足逐分钟容量约束并通过独立校验', ()
     versions,
     now,
     commitments: new Map([
-      ['R_NORTH_STAND', 'E_NORTH'],
-      ['R_SOUTH_STAND', 'E_SOUTH'],
-      ['R_EAST_STAND', 'E_EAST'],
-      ['R_WEST_STAND', 'E_WEST'],
+      ['R_S01_L1_CREST', 'GATE_01_G01'],
+      ['R_S02_L1_CREST', 'GATE_02_G02'],
+      ['R_S04_L1_CREST', 'GATE_03_G03'],
+      ['R_S03_L1_CREST', 'GATE_04_G04'],
     ]),
   });
   assert.equal(base.plan.unresolved_persons, 0, JSON.stringify(base.plan.unresolved));

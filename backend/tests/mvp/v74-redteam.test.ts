@@ -13,7 +13,7 @@ import {
 } from '../../src/services/safety/calibration/quality';
 import { buildObservation } from '../../src/services/safety/observations';
 
-const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/stadium-evacuation.json');
+const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 
 test('执行门控不能增加切换人数；门控拒绝时回退标准方案', () => {
   const scenario = loadSafetyScenario(scenarioPath);

@@ -1,0 +1,323 @@
+{
+  "extends": "hankou-marshland-v752-base.json",
+  "overrides": {
+    "scenario_id": "hankou-mvp-v1",
+    "name": "武汉汉口江滩 · MVP 人群疏散场景",
+    "version": "7.6.0",
+    "description": "武汉汉口江滩 (一期与二期，江汉门至长江二桥段，总长 3.6 km) 人群疏散 MVP 场景。几何、容量与区域拓扑派生自冻结的 V7.5 研究场景 hankou-marshland.json，未改动任何区域/通道/出口参数；仅补充 MVP 运行所需的岗位技能、调查联合配置与 UI 演示时间序列。",
+    "notice": "派生自 V7.5 研究场景的 MVP 配置副本，verified: false。所有面积、容量与通过耗时仍为估算/合成值，未经现场全站仪复测，不得用于实际疏散应急指挥；冻结证据请以 data/scenarios/hankou-marshland.json 为准。",
+    "staff": [
+      {
+        "id": "STAFF_GATE_01",
+        "skills": ["gate_control", "crowd_divert", "crowd_check", "crowd_control"]
+      },
+      {
+        "id": "STAFF_GATE_02",
+        "skills": ["gate_control", "crowd_divert", "crowd_check", "corridor_check"]
+      },
+      {
+        "id": "STAFF_GATE_03",
+        "skills": ["gate_control", "crowd_divert", "first_aid", "crowd_check"]
+      },
+      {
+        "id": "STAFF_GATE_04",
+        "skills": ["gate_control", "crowd_divert", "uav_operation", "crowd_check"]
+      },
+      {
+        "id": "STAFF_GATE_05",
+        "skills": ["gate_control", "crowd_divert", "approval", "crowd_control"]
+      },
+      {
+        "id": "STAFF_GATE_06",
+        "status": "off_duty",
+        "skills": ["gate_control", "crowd_divert", "crowd_check"]
+      },
+      {
+        "id": "STAFF_GATE_07",
+        "status": "busy",
+        "skills": ["gate_control", "crowd_divert", "corridor_check"]
+      },
+      {
+        "id": "STAFF_GATE_08",
+        "skills": ["gate_control", "crowd_divert", "uav_operation"]
+      }
+    ],
+    "investigation": {
+      "joint": {
+        "correlation": 0.5,
+        "redundancy_penalty": 0.6,
+        "max_sequence": 3
+      }
+    },
+    "ui_demos": {
+      "normal": {
+        "region_id": "R_S04_L1_CREST",
+        "confidence": 0.9,
+        "series": {
+          "R_GATE_01_PLAZA": [60, 59, 58, 56, 55, 54],
+          "R_S01_L1_CREST": [1800, 1764, 1728, 1692, 1656, 1620],
+          "R_S01_L2_ECO": [600, 588, 576, 564, 552, 540],
+          "R_S01_L3_RIVER": [400, 392, 384, 376, 368, 360],
+          "R_GATE_02_PLAZA": [64, 63, 61, 60, 59, 58],
+          "R_S02_L1_CREST": [600, 588, 576, 564, 552, 540],
+          "R_S02_L2_ECO": [300, 294, 288, 282, 276, 270],
+          "R_S02_L3_RIVER": [200, 196, 192, 188, 184, 180],
+          "R_GATE_03_PLAZA": [68, 67, 65, 64, 63, 61],
+          "R_S03_L1_CREST": [600, 588, 576, 564, 552, 540],
+          "R_S03_L2_ECO": [300, 294, 288, 282, 276, 270],
+          "R_S03_L3_RIVER": [200, 196, 192, 188, 184, 180],
+          "R_GATE_04_PLAZA": [72, 71, 69, 68, 66, 65],
+          "R_S04_L1_CREST": [600, 610, 620, 630, 640, 650],
+          "R_S04_L2_ECO": [300, 294, 288, 282, 276, 270],
+          "R_S04_L3_RIVER": [200, 196, 192, 188, 184, 180],
+          "R_GATE_05_PLAZA": [76, 74, 73, 71, 70, 68],
+          "R_S05_L1_CREST": [1200, 1176, 1152, 1128, 1104, 1080],
+          "R_S05_L2_ECO": [300, 294, 288, 282, 276, 270],
+          "R_S05_L3_RIVER": [200, 196, 192, 188, 184, 180],
+          "R_GATE_06_PLAZA": [80, 78, 77, 75, 74, 72],
+          "R_S06_L1_CREST": [600, 588, 576, 564, 552, 540],
+          "R_S06_L2_ECO": [300, 294, 288, 282, 276, 270],
+          "R_S06_L3_RIVER": [200, 196, 192, 188, 184, 180],
+          "R_GATE_07_PLAZA": [84, 82, 81, 79, 77, 76],
+          "R_S07_L1_CREST": [2500, 2450, 2400, 2350, 2300, 2250],
+          "R_S07_L2_ECO": [800, 784, 768, 752, 736, 720],
+          "R_S07_L3_RIVER": [500, 490, 480, 470, 460, 450],
+          "R_GATE_08_PLAZA": [88, 86, 84, 83, 81, 79],
+          "R_S08_L1_CREST": [600, 588, 576, 564, 552, 540],
+          "R_S08_L2_ECO": [300, 294, 288, 282, 276, 270],
+          "R_S08_L3_RIVER": [200, 196, 192, 188, 184, 180],
+          "R_GATE_09_PLAZA": [92, 90, 88, 86, 85, 83],
+          "R_S09_L1_CREST": [600, 588, 576, 564, 552, 540],
+          "R_S09_L2_ECO": [300, 294, 288, 282, 276, 270],
+          "R_S09_L3_RIVER": [200, 196, 192, 188, 184, 180],
+          "R_GATE_10_PLAZA": [96, 94, 92, 90, 88, 86],
+          "R_S10_L1_CREST": [1500, 1470, 1440, 1410, 1380, 1350],
+          "R_S10_L2_ECO": [300, 294, 288, 282, 276, 270],
+          "R_S10_L3_RIVER": [200, 196, 192, 188, 184, 180],
+          "R_GATE_11_PLAZA": [100, 98, 96, 94, 92, 90],
+          "R_S11_L1_CREST": [600, 588, 576, 564, 552, 540],
+          "R_S11_L2_ECO": [300, 294, 288, 282, 276, 270],
+          "R_S11_L3_RIVER": [200, 196, 192, 188, 184, 180]
+        }
+      },
+      "surge": {
+        "region_id": "R_GATE_04_PLAZA",
+        "confidence": 0.9,
+        "series": {
+          "R_GATE_01_PLAZA": [60, 59, 59],
+          "R_S01_L1_CREST": [1800, 1782, 1764],
+          "R_S01_L2_ECO": [600, 594, 588],
+          "R_S01_L3_RIVER": [400, 396, 392],
+          "R_GATE_02_PLAZA": [64, 63, 63],
+          "R_S02_L1_CREST": [600, 594, 588],
+          "R_S02_L2_ECO": [300, 297, 294],
+          "R_S02_L3_RIVER": [200, 198, 196],
+          "R_GATE_03_PLAZA": [68, 67, 67],
+          "R_S03_L1_CREST": [600, 594, 588],
+          "R_S03_L2_ECO": [300, 297, 294],
+          "R_S03_L3_RIVER": [200, 198, 196],
+          "R_GATE_04_PLAZA": [3000, 3100, 3200],
+          "R_S04_L1_CREST": [600, 700, 800],
+          "R_S04_L2_ECO": [300, 297, 294],
+          "R_S04_L3_RIVER": [200, 198, 196],
+          "R_GATE_05_PLAZA": [76, 75, 74],
+          "R_S05_L1_CREST": [1200, 1188, 1176],
+          "R_S05_L2_ECO": [300, 297, 294],
+          "R_S05_L3_RIVER": [200, 198, 196],
+          "R_GATE_06_PLAZA": [80, 79, 78],
+          "R_S06_L1_CREST": [600, 594, 588],
+          "R_S06_L2_ECO": [300, 297, 294],
+          "R_S06_L3_RIVER": [200, 198, 196],
+          "R_GATE_07_PLAZA": [84, 83, 82],
+          "R_S07_L1_CREST": [2500, 2475, 2450],
+          "R_S07_L2_ECO": [800, 792, 784],
+          "R_S07_L3_RIVER": [500, 495, 490],
+          "R_GATE_08_PLAZA": [88, 87, 86],
+          "R_S08_L1_CREST": [600, 594, 588],
+          "R_S08_L2_ECO": [300, 297, 294],
+          "R_S08_L3_RIVER": [200, 198, 196],
+          "R_GATE_09_PLAZA": [92, 91, 90],
+          "R_S09_L1_CREST": [600, 594, 588],
+          "R_S09_L2_ECO": [300, 297, 294],
+          "R_S09_L3_RIVER": [200, 198, 196],
+          "R_GATE_10_PLAZA": [96, 95, 94],
+          "R_S10_L1_CREST": [1500, 1485, 1470],
+          "R_S10_L2_ECO": [300, 297, 294],
+          "R_S10_L3_RIVER": [200, 198, 196],
+          "R_GATE_11_PLAZA": [100, 99, 98],
+          "R_S11_L1_CREST": [600, 594, 588],
+          "R_S11_L2_ECO": [300, 297, 294],
+          "R_S11_L3_RIVER": [200, 198, 196]
+        },
+        "degraded": {
+          "region_id": "R_GATE_04_PLAZA",
+          "count": 3300,
+          "confidence": 0.35
+        }
+      },
+      "reject": {
+        "region_id": "R_S04_L1_CREST",
+        "offline": {
+          "count": 800,
+          "confidence": 0.9,
+          "reason": "摄像头离线（演示构造）"
+        },
+        "capacity_by_region": {
+          "R_GATE_01_PLAZA": 18000,
+          "R_S01_L1_CREST": 180000,
+          "R_S01_L2_ECO": 48000,
+          "R_S01_L3_RIVER": 32000,
+          "R_GATE_02_PLAZA": 12800,
+          "R_S02_L1_CREST": 144000,
+          "R_S02_L2_ECO": 48000,
+          "R_S02_L3_RIVER": 32000,
+          "R_GATE_03_PLAZA": 12800,
+          "R_S03_L1_CREST": 144000,
+          "R_S03_L2_ECO": 48000,
+          "R_S03_L3_RIVER": 32000,
+          "R_GATE_04_PLAZA": 12800,
+          "R_S04_L1_CREST": 144000,
+          "R_S04_L2_ECO": 48000,
+          "R_S04_L3_RIVER": 32000,
+          "R_GATE_05_PLAZA": 12800,
+          "R_S05_L1_CREST": 192000,
+          "R_S05_L2_ECO": 48000,
+          "R_S05_L3_RIVER": 32000,
+          "R_GATE_06_PLAZA": 12800,
+          "R_S06_L1_CREST": 144000,
+          "R_S06_L2_ECO": 48000,
+          "R_S06_L3_RIVER": 32000,
+          "R_GATE_07_PLAZA": 26000,
+          "R_S07_L1_CREST": 260000,
+          "R_S07_L2_ECO": 72000,
+          "R_S07_L3_RIVER": 48000,
+          "R_GATE_08_PLAZA": 12800,
+          "R_S08_L1_CREST": 144000,
+          "R_S08_L2_ECO": 48000,
+          "R_S08_L3_RIVER": 32000,
+          "R_GATE_09_PLAZA": 12800,
+          "R_S09_L1_CREST": 144000,
+          "R_S09_L2_ECO": 48000,
+          "R_S09_L3_RIVER": 32000,
+          "R_GATE_10_PLAZA": 20000,
+          "R_S10_L1_CREST": 208000,
+          "R_S10_L2_ECO": 48000,
+          "R_S10_L3_RIVER": 32000,
+          "R_GATE_11_PLAZA": 12800,
+          "R_S11_L1_CREST": 144000,
+          "R_S11_L2_ECO": 48000,
+          "R_S11_L3_RIVER": 32000
+        },
+        "capacity_confidence": 0.95,
+        "incident": {
+          "type": "corridor_closure",
+          "description": "江汉门与洞庭门出口临时关闭（控制台演示）",
+          "severity": "critical",
+          "exit_ids": ["GATE_03_G03", "GATE_04_G04"],
+          "region_ids": [],
+          "corridor_ids": []
+        }
+      },
+      "simulation": {
+        "name": "晚高峰 · 客流上升 / 出口调整 / 感知异常",
+        "notice": "合成仿真数据：按步骤生成的观测流，用于演示处理链路，不是真实场馆实时数据，也不能用于精度评估。",
+        "tick_ms": 2400,
+        "baseline_confidence": 0.92,
+        "steps": [
+          {
+            "id": "cold_start",
+            "phase": "冷启动",
+            "title": "系统启动，尚未收到任何观测",
+            "narrative": "没有观测就不知道现场情况。系统默认 DEGRADED，并禁止发布任何路线——未知不能被当成安全。",
+            "action": "recompute",
+            "next_actions": []
+          },
+          {
+            "id": "baseline",
+            "phase": "基线巡检",
+            "title": "44 路区域感知写入基线快照",
+            "narrative": "44 个区域的合成观测写入安全域，触发风险评估、容量约束规划与独立校验，系统首次具备可发布方案。",
+            "action": "baseline",
+            "recompute": true
+          },
+          {
+            "id": "surge",
+            "phase": "客流上升",
+            "title": "洞庭门方向客流快速上升",
+            "narrative": "江汉门门区与滩顶人数明显上升（合成）。风险图刷新，预测转为上升，系统重新计算疏散方案。",
+            "action": "observe",
+            "regions": {
+              "R_GATE_04_PLAZA": { "count": 4200, "confidence": 0.9 },
+              "R_S04_L1_CREST": { "count": 1600, "confidence": 0.9 },
+              "R_S04_L2_ECO": { "count": 520, "confidence": 0.88 }
+            },
+            "recompute": true
+          },
+          {
+            "id": "exit_closure",
+            "phase": "出口调整",
+            "title": "洞庭门疏散闸口临时关闭",
+            "narrative": "确认出口关闭事件后，约束版本升级，既有方案立即失效；系统重新规划，并只有通过独立校验的替代方案才允许发布。",
+            "action": "incident",
+            "incident": {
+              "type": "corridor_closure",
+              "description": "洞庭门疏散闸口因临时施工关闭（仿真事件）",
+              "severity": "critical",
+              "exit_ids": ["GATE_04_G04"],
+              "region_ids": [],
+              "corridor_ids": []
+            },
+            "recompute": true
+          },
+          {
+            "id": "sensor_gap",
+            "phase": "感知异常",
+            "title": "该区域摄像头置信度骤降",
+            "narrative": "低置信观测进入系统。系统先降级、停止发布，不拿不可信数据生成新路线，把不确定性交给人工调查。",
+            "action": "observe",
+            "regions": {
+              "R_GATE_04_PLAZA": { "count": 4400, "confidence": 0.35 }
+            },
+            "recompute": true
+          },
+          {
+            "id": "investigate",
+            "phase": "Agent 调查",
+            "title": "Agent 评估信息价值并创建待审批工单",
+            "narrative": "Agent 读取态势、评估 VoI、调用工具取证，只创建待审批工单；它不能审批、派发或控制现场资源。",
+            "action": "agent",
+            "agent_region_id": "R_GATE_04_PLAZA"
+          },
+          {
+            "id": "await_human",
+            "phase": "人工介入",
+            "title": "等待人工审批与现场反馈",
+            "narrative": "审批与派发必须由管理员完成，现场反馈必须由被指派的工作人员提交。仿真在这里暂停，不替人做决定。",
+            "action": "await_human",
+            "next_actions": [
+              "在「审批中心与工单」批准一条现场核查或无人机观察工单，并派发",
+              "以被指派工号登录 /staff，接单并提交现场反馈（人数建议填 4200 左右）",
+              "回到本面板点击「继续仿真」，系统补采基线并复核状态"
+            ]
+          },
+          {
+            "id": "revalidate",
+            "phase": "闭环复核",
+            "title": "补采基线并复核可信度",
+            "narrative": "只补采缺少或已过期的区域；现场反馈与仍可疑的观测不会被覆盖。若现场反馈已写入，系统重新获得可信证据。",
+            "action": "refresh_baseline",
+            "recompute": true
+          },
+          {
+            "id": "resolve_incident",
+            "phase": "恢复通行",
+            "title": "出口恢复，事件解除",
+            "narrative": "约束再次变化，系统重新规划；若数据可信且方案通过独立校验，状态回到 NORMAL。",
+            "action": "resolve_incident",
+            "recompute": true
+          }
+        ]
+      }
+    }
+  }
+}

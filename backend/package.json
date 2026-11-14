@@ -9,6 +9,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
+    "typecheck:scripts": "tsc -p tsconfig.scripts.json",
     "test": "tsx --test tests/**/*.test.ts",
     "test:safety": "tsx --test tests/safety/*.test.ts",
     "demo:safety": "tsx scripts/skyguard-demo.ts",
