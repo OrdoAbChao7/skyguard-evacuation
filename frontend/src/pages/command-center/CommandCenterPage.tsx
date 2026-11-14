@@ -11,7 +11,6 @@ import { useCallback, useEffect, useState } from 'react';
 import safetyApi from '../../services/safetyApi';
 import type {
   AuditEntry,
-  DemoRunResult,
   ProviderStatus,
   SafetyScenarioSummary,
   SafetyStatus,
@@ -34,7 +33,7 @@ const NAV_ITEMS = [
   { icon: <SafetyCertificateOutlined />, label: '可信决策', target: 'decision' },
   { icon: <AlertOutlined />, label: '事件管理', target: 'incidents' },
   { icon: <HistoryOutlined />, label: '审计记录', target: 'audit' },
-  { icon: <SettingOutlined />, label: '演示场景', target: 'demos' },
+  { icon: <SettingOutlined />, label: '演示场景', target: 'operations' },
 ] as const;
 
 export default function CommandCenterPage() {
@@ -54,8 +53,6 @@ export default function CommandCenterPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const [selectedDemo, setSelectedDemo] = useState<string>('');
-  const [demoResult, setDemoResult] = useState<DemoRunResult | null>(null);
   const [nlText, setNlText] = useState('');
   const [draftSummary, setDraftSummary] = useState<string | null>(null);
   const [incidentForm, setIncidentForm] = useState({
@@ -84,7 +81,6 @@ export default function CommandCenterPage() {
         if (cancelled) return;
         setScenario(nextScenario);
         setProviders(nextProviders);
-        setSelectedDemo(current => current || nextScenario.demo_scenarios[0]?.id || '');
         const firstExit = nextScenario.exits[0];
         setIncidentForm(current => current.target || !firstExit
           ? current
@@ -505,43 +501,6 @@ export default function CommandCenterPage() {
             </div>
             {draftSummary ? <p className="cc-muted cc-small">{draftSummary}</p> : null}
           </div>
-
-          <h4 className="cc-subtitle" id="demos">演示场景</h4>
-          <div className="cc-form-row">
-            <select
-              aria-label="演示场景"
-              value={selectedDemo}
-              onChange={event => setSelectedDemo(event.target.value)}
-            >
-              {(scenario?.demo_scenarios ?? []).map(demo => (
-                <option key={demo.id} value={demo.id}>
-                  {demo.label}
-                </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              disabled={busy !== null || !selectedDemo}
-              onClick={() =>
-                void runAction(
-                  'demo',
-                  async () => {
-                    const result = await safetyApi.runDemo(selectedDemo);
-                    setDemoResult(result);
-                  },
-                  '演示已执行',
-                )
-              }
-            >
-              运行演示
-            </button>
-          </div>
-          {demoResult ? (
-            <p className={`cc-small ${demoResult.matched ? 'cc-ok' : 'cc-bad'}`}>
-              期望 {demoResult.expected_state} / 实际 {demoResult.actual_state} ·{' '}
-              {demoResult.matched ? '一致' : '不一致'}
-            </p>
-          ) : null}
 
           <h4 className="cc-subtitle" id="audit">事件时间线（审计）</h4>
           <ul className="cc-timeline">

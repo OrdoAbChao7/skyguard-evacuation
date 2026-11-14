@@ -189,6 +189,12 @@ describe('MVP 指挥面板', () => {
     expect(screen.getByText('洞庭门滩顶现场核查')).toBeInTheDocument();
   });
 
+  it('未从地图点选区域时默认使用首个预测区域，运行 Agent 仍可用', async () => {
+    render(<MvpPanels selectedRegion={null} onSelectRegion={() => {}} />);
+    await waitFor(() => expect(screen.getByText('LOCAL DEMO')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole('button', { name: '运行 Agent' })).toBeEnabled());
+  });
+
   it('运行 Agent 后展示调查轮次、VoI 评分与工具 Trace', async () => {
     render(<MvpPanels selectedRegion="R_S04_L1_CREST" onSelectRegion={() => {}} />);
     await waitFor(() => expect(screen.getByText('LOCAL DEMO')).toBeInTheDocument());

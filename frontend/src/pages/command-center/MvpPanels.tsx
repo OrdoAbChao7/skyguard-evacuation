@@ -143,8 +143,16 @@ export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChange
   }, [selectedRegion]);
 
   useEffect(() => {
-    if (selectedRegion) setAgentRegion(selectedRegion);
-  }, [selectedRegion]);
+    if (selectedRegion) {
+      setAgentRegion(selectedRegion);
+      return;
+    }
+    // 未从地图点选区域时，默认指向首个预测区域，避免“运行 Agent”因未选择而静默不可用。
+    if (!agentRegion && dashboard) {
+      const fallback = dashboard.predictions[0]?.region_id ?? dashboard.safety.regions[0]?.id;
+      if (fallback) setAgentRegion(fallback);
+    }
+  }, [selectedRegion, agentRegion, dashboard]);
 
   useEffect(() => {
     if (!feedback) return undefined;
@@ -278,7 +286,7 @@ export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChange
   }
 
   return (
-    <section className="mvp" aria-label="MVP 业务闭环">
+    <section className="mvp" id="operations" aria-label="MVP 业务闭环">
       <header className="mvp-header">
         <div>
           <h2>现场协同管理</h2>
@@ -364,6 +372,7 @@ export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChange
             >
               {busy === 'agent' ? '运行中…' : '运行 Agent'}
             </button>
+            {!agentRegion ? <span className="mvp-muted mvp-small">请先在左侧地图点选调查区域</span> : null}
             {shownRun ? <span className={`mvp-chip ${shownRun.status === 'completed' ? 'ok' : shownRun.status === 'failed' ? 'bad' : 'warn'}`}>{shownRun.status}</span> : null}
           </div>
 
