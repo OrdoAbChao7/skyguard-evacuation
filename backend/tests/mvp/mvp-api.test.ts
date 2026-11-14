@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { jsonBody, startTestServer } from '../helpers/api-fixtures';
+import { readScenarioJson } from '../../src/services/safety/scenario-overlay';
 
 const SCENARIO = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
 process.env.SAFETY_SCENARIO_FILE = SCENARIO;
@@ -14,7 +15,7 @@ type ScenarioShape = {
   regions: Array<{ id: string; enabled?: boolean }>;
   simulation_baseline?: Record<string, { count: number; confidence: number }>;
 };
-const scenario = JSON.parse(fs.readFileSync(SCENARIO, 'utf8')) as ScenarioShape;
+const scenario = readScenarioJson(SCENARIO) as ScenarioShape;
 /**
  * 场景的全部启用区域都必须有可信观测，否则未覆盖区域会让安全状态保持 DEGRADED。
  * 这里用场景自带的仿真基线填充，只把目标区域留给低置信观测。

@@ -6,8 +6,26 @@ import type {
   SafetyStatus,
   ScenarioMap,
 } from '../../../services/safetyApi';
-import { MAP_DRAG_CLICK_THRESHOLD_PX, MAP_WHEEL_FACTOR, MAP_MAX_ZOOM, MAP_MIN_ZOOM, RISK_LABEL, centreOf, formatSince } from '../commandCenterUtils';
+import { MAP_DRAG_CLICK_THRESHOLD_PX, MAP_WHEEL_FACTOR, MAP_MAX_ZOOM, MAP_MIN_ZOOM, centreOf, formatSince } from '../commandCenterUtils';
 
+
+/** 地图上使用短标签：完整区域名在点选详情里展示。 */
+function mapRegionLabel(region: SafetyRegion): string {
+  const gate = region.id.match(/^R_GATE_(\d+)_PLAZA$/);
+  if (gate) return `G${gate[1]} 门区`;
+  const section = region.id.match(/^R_S(\d+)_L(\d+)_(CREST|ECO|RIVER)$/);
+  if (section) {
+    const row = section[3] === 'CREST' ? '滩顶' : section[3] === 'ECO' ? '生态' : '亲水';
+    return `S${section[1]} ${row}`;
+  }
+  return region.name.length > 7 ? `${region.name.slice(0, 6)}…` : region.name;
+}
+
+/** 出口标签只保留闸口编号，完整名称在悬浮提示里。 */
+function mapExitLabel(id: string): string {
+  const gate = id.match(/GATE_\d+_(G\d+)/);
+  return gate ? gate[1] : id;
+}
 
 interface RouteGroup {
   key: string;
@@ -271,12 +289,8 @@ function NetworkMap({ map, status, selectedRegion, onSelectRegion, allowRoutes, 
               className={`map-region risk-${layers.risks ? risk?.level ?? 'unknown' : 'unknown'}`}
             />
             <circle cx={centreOf(region).x} cy={centreOf(region).y} r={5} className={`map-node risk-${risk?.level ?? 'unknown'}`} />
-            <text x={geometry.x + 12} y={geometry.y + 26} className="map-region-name">
-              {region.name}
-            </text>
-            <text x={geometry.x + 12} y={geometry.y + 46} className="map-region-info">
-              风险 {RISK_LABEL[risk?.level ?? 'unknown']}
-              {risk && !risk.trusted ? '（数据不可信）' : ''}
+            <text x={geometry.x + geometry.width / 2} y={geometry.y + geometry.height / 2 + 9} textAnchor="middle" className="map-region-name">
+              {mapRegionLabel(region)}
             </text>
             <title>
               {region.name} · {risk?.count ?? '无数据'} 人 · 密度 {risk?.density?.toFixed(2) ?? '无数据'} · 置信度 {risk?.confidence ?? '无数据'} · 时间 {formatSince(risk?.observedAt)} · 面积 {region.area_m2} m² ({region.area_provenance}) · 摄像机标定{' '}
@@ -289,21 +303,23 @@ function NetworkMap({ map, status, selectedRegion, onSelectRegion, allowRoutes, 
       {layers.corridors && status.exits.map((exit, index) => {
         const region = regionById.get(exit.region_id);
         if (!region) return null;
-        const y = region.geometry.y + region.geometry.height / 2 + index * 14 - 20;
+        const stacked = status.exits.slice(0, index).filter(item => item.region_id === exit.region_id).length;
+        const y = region.geometry.y + region.geometry.height / 2 + stacked * 30;
         const x = region.geometry.x + region.geometry.width;
-        const labelWidth = Math.max(32, exit.id.length * 7 + 12);
+        const label = mapExitLabel(exit.id);
+        const labelWidth = Math.max(44, label.length * 9 + 16);
         return (
           <g key={exit.id}>
             <rect
               x={x - 4}
-              y={y - 10}
+              y={y - 14}
               width={labelWidth}
-              height={20}
-              rx={6}
+              height={28}
+              rx={7}
               className={`map-exit ${exit.effective_status === 'open' && exit.usable ? 'map-exit-open' : 'map-exit-closed'}`}
             />
-            <text x={x - 4 + labelWidth / 2} y={y + 4} textAnchor="middle" className="map-exit-label">
-              {exit.id}
+            <text x={x - 4 + labelWidth / 2} y={y + 5} textAnchor="middle" className="map-exit-label">
+              {label}
             </text>
             <title>
               出口 {exit.name} · {exit.effective_status} · 容量 {exit.capacity_per_min ?? '未知'} 人/分

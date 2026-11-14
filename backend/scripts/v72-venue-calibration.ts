@@ -3,7 +3,7 @@
  *
  *   npm run benchmark:v72 --prefix backend -- --only=calibration
  *
- * 输入：data/venues/hankou-synthetic-profile.json（合成、未标定档案）
+ * 输入：由江滩场景确定性生成的合成标定档案（buildSyntheticVenueProfile，未标定）
  * 输出：evaluation/v72/<run>/calibration_*.json|md
  *
  * 本脚本不修改场景文件、不写入安全状态；所有估计值来自合成样本，
@@ -21,17 +21,16 @@ import {
   estimateServiceRate,
   estimateWalkingSpeed,
   validateVenueProfile,
-  type VenueProfile,
 } from '../src/services/safety/calibration/venue-calibration';
+import { buildSyntheticVenueProfile } from '../src/services/safety/calibration/synthetic-profile';
 
 const RUN_ID = process.env.V72_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v72', RUN_ID);
 const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
-const PROFILE_PATH = path.resolve(__dirname, '../../data/venues/hankou-synthetic-profile.json');
 
 
 const scenario = loadSafetyScenario(SCENARIO_PATH);
-const profile = JSON.parse(fs.readFileSync(PROFILE_PATH, 'utf8')) as VenueProfile;
+const profile = buildSyntheticVenueProfile(scenario);
 fs.mkdirSync(OUT, { recursive: true });
 
 const validation = validateVenueProfile(profile, scenario);

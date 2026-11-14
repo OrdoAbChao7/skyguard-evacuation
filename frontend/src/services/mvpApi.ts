@@ -218,6 +218,55 @@ export interface MvpDashboard {
   generated_at: string;
 }
 
+export interface SimulationEvent {
+  seq: number;
+  at: string;
+  step_id: string;
+  phase: string;
+  kind: 'system' | 'observation' | 'plan' | 'state' | 'incident' | 'agent' | 'work_order' | 'human';
+  title: string;
+  detail?: string;
+  state: 'NORMAL' | 'REROUTE' | 'DEGRADED' | 'REJECT' | null;
+}
+
+export interface SimulationStatus {
+  available: boolean;
+  reason?: string;
+  running: boolean;
+  paused: boolean;
+  awaiting_human: boolean;
+  finished: boolean;
+  name: string;
+  notice: string;
+  started_at: string | null;
+  finished_at: string | null;
+  sequence: number;
+  step_index: number;
+  step_total: number;
+  progress: number;
+  steps: Array<{ index: number; id: string; phase: string; title: string; action: string }>;
+  current: {
+    index: number;
+    total: number;
+    id: string;
+    phase: string;
+    title: string;
+    narrative: string;
+    action: string;
+  } | null;
+  state: 'NORMAL' | 'REROUTE' | 'DEGRADED' | 'REJECT';
+  headline: string;
+  counts: {
+    observations: number;
+    untrusted_regions: number;
+    pending_work_orders: number;
+    work_orders: number;
+    agent_runs: number;
+  };
+  next_actions: string[];
+  events: SimulationEvent[];
+}
+
 export interface MultiRegionAnalysis {
   available: boolean;
   reason?: string;
@@ -322,6 +371,23 @@ export const mvpApi = {
   runDemo: (scenario: 'A_normal' | 'B_surge' | 'C_untrusted') =>
     client.post('/mvp/demo/run', { scenario }, { headers: adminHeaders() })
       .then(response => response.data as { scenario: string; state: { state: string }; run: AgentRun; dashboard: MvpDashboard }),
+  simulation: () =>
+    client.get<SimulationStatus>('/mvp/simulation').then(response => response.data),
+  startSimulation: (autoplay = true) =>
+    client.post<SimulationStatus>('/mvp/simulation/start', { autoplay }, { headers: adminHeaders() })
+      .then(response => response.data),
+  stepSimulation: () =>
+    client.post<SimulationStatus>('/mvp/simulation/step', {}, { headers: adminHeaders() })
+      .then(response => response.data),
+  pauseSimulation: () =>
+    client.post<SimulationStatus>('/mvp/simulation/pause', {}, { headers: adminHeaders() })
+      .then(response => response.data),
+  resumeSimulation: () =>
+    client.post<SimulationStatus>('/mvp/simulation/resume', {}, { headers: adminHeaders() })
+      .then(response => response.data),
+  stopSimulation: () =>
+    client.post<SimulationStatus>('/mvp/simulation/stop', {}, { headers: adminHeaders() })
+      .then(response => response.data),
   multiRegion: (regionId?: string) =>
     client.get<MultiRegionAnalysis>('/mvp/multi-region', { params: regionId ? { region_id: regionId } : {} })
       .then(response => response.data),

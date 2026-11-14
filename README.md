@@ -99,7 +99,7 @@ npm run mcp --prefix backend   # 标准 MCP stdio Server
 | V6.5 资源/状态/预测/感知加固 | [`docs/V6_5_IMPLEMENTATION_REPORT.md`](docs/V6_5_IMPLEMENTATION_REPORT.md)、[`evaluation/v65/`](evaluation/v65/) |
 | 研究资料库（38 条来源、10 篇专题笔记） | [`research/INDEX.md`](research/INDEX.md) |
 | 当前状态事实源 | [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md) |
-| 6–8 分钟演示脚本 | [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md)、[`docs/DEMO_SCRIPT_6_8MIN.md`](docs/DEMO_SCRIPT_6_8MIN.md) |
+| 6–8 分钟演示脚本 | [`docs/DEMO_SCRIPT_FRONTEND.md`](docs/DEMO_SCRIPT_FRONTEND.md)（前端实拍分镜）、[`docs/DEMO_SCRIPT_6_8MIN.md`](docs/DEMO_SCRIPT_6_8MIN.md)、[`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) |
 | 答辩问题库 | [`docs/DEFENSE_QA.md`](docs/DEFENSE_QA.md)（40 问）、[`docs/QA_BANK.md`](docs/QA_BANK.md) |
 | 核心研究贡献 | [`docs/RESEARCH_CONTRIBUTIONS.md`](docs/RESEARCH_CONTRIBUTIONS.md) |
 | 完整技术报告 | [`docs/COMPETITION_TECHNICAL_REPORT.md`](docs/COMPETITION_TECHNICAL_REPORT.md) |

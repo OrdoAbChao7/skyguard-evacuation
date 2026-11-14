@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { resolveDataPath } from '../../config/paths';
 import { SafetyScenarioSchema, type SafetyScenario } from './types';
+import { readScenarioJson } from './scenario-overlay';
 
 export const SCENARIO_DIR = 'scenarios';
 export const DEFAULT_SCENARIO_FILE = 'hankou-mvp.json';
@@ -203,6 +204,58 @@ export function validateScenarioReferences(scenario: SafetyScenario): string[] {
         if (!exitIds.has(id)) errors.push(`ui_demos.reject incident references unknown exit: ${id}`);
       }
     }
+
+    const simulation = scenario.ui_demos.simulation;
+    if (simulation) {
+      const seen = new Set<string>();
+      const needsBaseline = simulation.steps.some(step =>
+        step.action === 'baseline' || step.action === 'refresh_baseline');
+      if (needsBaseline && !scenario.ui_demos.normal) {
+        errors.push('ui_demos.simulation baseline/refresh_baseline requires ui_demos.normal.series');
+      }
+      if (needsBaseline && scenario.ui_demos.normal) {
+        const covered = new Set(Object.keys(scenario.ui_demos.normal.series));
+        for (const region of scenario.regions) {
+          if (region.enabled && !covered.has(region.id)) {
+            errors.push(`ui_demos.simulation baseline missing region: ${region.id}`);
+          }
+        }
+      }
+      for (const step of simulation.steps) {
+        if (seen.has(step.id)) errors.push(`ui_demos.simulation duplicate step id: ${step.id}`);
+        seen.add(step.id);
+        if (step.action === 'observe') {
+          if (!step.regions || Object.keys(step.regions).length === 0) {
+            errors.push(`ui_demos.simulation ${step.id} observe requires regions`);
+          }
+          for (const regionId of Object.keys(step.regions ?? {})) {
+            if (!regionIds.has(regionId)) {
+              errors.push(`ui_demos.simulation ${step.id} observes unknown region: ${regionId}`);
+            }
+          }
+        }
+        if (step.action === 'agent') {
+          if (!step.agent_region_id || !regionIds.has(step.agent_region_id)) {
+            errors.push(`ui_demos.simulation ${step.id} agent_region_id unknown: ${step.agent_region_id ?? 'missing'}`);
+          }
+        }
+        if (step.action === 'incident') {
+          if (!step.incident) {
+            errors.push(`ui_demos.simulation ${step.id} incident config missing`);
+          } else {
+            for (const id of step.incident.region_ids) {
+              if (!regionIds.has(id)) errors.push(`ui_demos.simulation ${step.id} incident references unknown region: ${id}`);
+            }
+            for (const id of step.incident.corridor_ids) {
+              if (!corridorIds.has(id)) errors.push(`ui_demos.simulation ${step.id} incident references unknown corridor: ${id}`);
+            }
+            for (const id of step.incident.exit_ids) {
+              if (!exitIds.has(id)) errors.push(`ui_demos.simulation ${step.id} incident references unknown exit: ${id}`);
+            }
+          }
+        }
+      }
+    }
   }
 
   return errors;
@@ -212,10 +265,7 @@ export function loadSafetyScenario(fileName: string = getScenarioFileName()): Sa
   const filePath = path.isAbsolute(fileName)
     ? fileName
     : resolveDataPath(SCENARIO_DIR, fileName);
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`Safety scenario not found: ${filePath}`);
-  }
-  const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  const raw = readScenarioJson(filePath);
   const scenario = SafetyScenarioSchema.parse(raw);
   const errors = validateScenarioReferences(scenario);
   if (errors.length > 0) {
@@ -252,7 +302,7 @@ export function listScenarioFiles(): ScenarioFileListing[] {
     .map(file => {
       const full = path.join(dir, file);
       try {
-        const raw = JSON.parse(fs.readFileSync(full, 'utf8'));
+        const raw = readScenarioJson(full);
         const scenario = SafetyScenarioSchema.parse(raw);
         const errors = validateScenarioReferences(scenario);
         return {

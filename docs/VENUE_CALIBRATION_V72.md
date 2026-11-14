@@ -1,7 +1,7 @@
 # V7.2 场馆标定流水线使用说明
 
 > 代码：`backend/src/services/safety/calibration/venue-calibration.ts`
-> 示例档案：`data/venues/hankou-synthetic-profile.json`（**合成、未标定**）
+> 示例档案：由 `backend/src/services/safety/calibration/synthetic-profile.ts` 的 `buildSyntheticVenueProfile` 从江滩场景确定性生成（**合成、未标定**，不再在仓库中保存推导产物）
 > 证据脚本：`backend/scripts/v72-venue-calibration.ts`（`npm run benchmark:v72 -- --only=calibration`）
 
 ## 1. 档案结构

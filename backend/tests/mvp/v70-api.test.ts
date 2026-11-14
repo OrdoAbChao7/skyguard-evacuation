@@ -16,7 +16,9 @@ async function startServer(): Promise<TestServer> {
   const server = await startTestServer();
   const scenarioDir = path.join(server.dataRoot, 'scenarios');
   fs.mkdirSync(scenarioDir, { recursive: true });
-  fs.copyFileSync(REPO_SCENARIO, path.join(scenarioDir, 'hankou-mvp.json'));
+  for (const file of ['hankou-mvp.json', 'hankou-marshland-v752-base.json']) {
+    fs.copyFileSync(path.join(path.dirname(REPO_SCENARIO), file), path.join(scenarioDir, file));
+  }
   delete process.env.SAFETY_SCENARIO_FILE;
   return server;
 }

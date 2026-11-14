@@ -3,9 +3,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { startTestServer } from '../helpers/api-fixtures';
+import { readScenarioJson } from '../../src/services/safety/scenario-overlay';
 
 const SCENARIO_PATH = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
-const ENABLED_REGIONS = (JSON.parse(fs.readFileSync(SCENARIO_PATH, 'utf8')) as { regions: Array<{ enabled?: boolean }> })
+const ENABLED_REGIONS = (readScenarioJson(SCENARIO_PATH) as { regions: Array<{ enabled?: boolean }> })
   .regions.filter(region => region.enabled !== false).length;
 
 test('多区域协同 API 返回风险传播、优先级与联合调查决策', async () => {

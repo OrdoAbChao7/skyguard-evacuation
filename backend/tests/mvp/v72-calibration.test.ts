@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { loadSafetyScenario } from '../../src/services/safety/scenario';
+import { buildSyntheticVenueProfile } from '../../src/services/safety/calibration/synthetic-profile';
 import {
   adaptCameraCount,
   applyVenueProfile,
@@ -13,10 +13,9 @@ import {
 } from '../../src/services/safety/calibration/venue-calibration';
 
 const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
-const profilePath = path.resolve(__dirname, '../../../data/venues/hankou-synthetic-profile.json');
 
 function loadProfile(): VenueProfile {
-  return JSON.parse(fs.readFileSync(profilePath, 'utf8')) as VenueProfile;
+  return buildSyntheticVenueProfile(loadSafetyScenario(scenarioPath));
 }
 
 test('合成标定档案通过结构校验，并覆盖场景的全部启用区域', () => {

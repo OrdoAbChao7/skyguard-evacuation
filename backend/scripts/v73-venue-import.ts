@@ -24,16 +24,16 @@ import {
   toDensityObservations,
 } from '../src/services/safety/calibration/importers';
 import { validateVenueProfile, type VenueProfile } from '../src/services/safety/calibration/venue-calibration';
+import { buildSyntheticVenueProfile } from '../src/services/safety/calibration/synthetic-profile';
 
 const RUN_ID = process.env.V73_RUN_ID ?? new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.resolve(__dirname, '../../evaluation/v73', RUN_ID);
 const SCENARIO_PATH = path.resolve(__dirname, '../../data/scenarios/hankou-marshland-v752-base.json');
-const PROFILE_PATH = path.resolve(__dirname, '../../data/venues/hankou-synthetic-profile.json');
 const CSV_PATH = path.resolve(__dirname, '../../data/venues/fixtures/observations-sample.csv');
 const PUBLIC_CSV_PATH = path.resolve(__dirname, '../../data/venues/fixtures/public-sample.csv');
 
 const scenario = loadSafetyScenario(SCENARIO_PATH);
-const profile = JSON.parse(fs.readFileSync(PROFILE_PATH, 'utf8')) as VenueProfile;
+const profile = buildSyntheticVenueProfile(scenario);
 const scenarioText = fs.readFileSync(SCENARIO_PATH, 'utf8');
 const observationsText = fs.readFileSync(CSV_PATH, 'utf8');
 const publicText = fs.readFileSync(PUBLIC_CSV_PATH, 'utf8');

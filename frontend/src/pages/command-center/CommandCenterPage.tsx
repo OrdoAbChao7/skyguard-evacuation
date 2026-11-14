@@ -217,7 +217,7 @@ export default function CommandCenterPage() {
             <small>{status.risks.some(risk => risk.trusted) ? '个区域' : '无可信观测'}</small>
           </div>
         </div>
-        <div className="cc-kpi" data-tone={!error && status.state.publishable ? 'ok' : 'bad'}>
+        <div className="cc-kpi" data-value="text" data-tone={!error && status.state.publishable ? 'ok' : 'bad'}>
           <span className="cc-kpi-icon" aria-hidden="true"><SafetyCertificateOutlined /></span>
           <div>
             <span>可信方案</span>
@@ -225,7 +225,7 @@ export default function CommandCenterPage() {
             <small>方案状态 {status.state.state}</small>
           </div>
         </div>
-        <div className="cc-kpi" data-tone={status.inference_health.healthy ? 'ok' : 'bad'}>
+        <div className="cc-kpi" data-value="text" data-tone={status.inference_health.healthy ? 'ok' : 'bad'}>
           <span className="cc-kpi-icon" aria-hidden="true"><ApiOutlined /></span>
           <div>
             <span>推理链路</span>
@@ -317,10 +317,11 @@ export default function CommandCenterPage() {
             title="区域态势与疏散路线"
             subtitle={`时限 ${status.scenario.horizon_minutes} 分钟 · ${displayPlan ? `方案 ${displayPlan.plan_id}` : '暂无方案'}`}
           />
-          <div className="cc-map-wrap"><div className="cc-map-caption"><strong>场馆态势</strong><span>{scenario?.map?.caption ?? '合成场景 · 区域未空间标定'}</span></div><NetworkMap map={scenario?.map} status={status} selectedRegion={selectedRegion} onSelectRegion={selectRegion} allowRoutes={!error} zoom={mapZoom} setZoom={setMapZoom} center={mapCenter} setCenter={setMapCenter} showBackdrop={showBackdrop} layers={layers} />
+          <div className="cc-map-wrap"><NetworkMap map={scenario?.map} status={status} selectedRegion={selectedRegion} onSelectRegion={selectRegion} allowRoutes={!error} zoom={mapZoom} setZoom={setMapZoom} center={mapCenter} setCenter={setMapCenter} showBackdrop={showBackdrop} layers={layers} />
             <div className="cc-map-tools" aria-label="地图工具"><button type="button" title="放大" aria-label="放大地图" disabled={mapZoom >= MAP_MAX_ZOOM} onClick={() => setMapZoom(value => Math.min(MAP_MAX_ZOOM, value + MAP_ZOOM_STEP))}>+</button><button type="button" title="缩小" aria-label="缩小地图" disabled={mapZoom <= MAP_MIN_ZOOM} onClick={() => setMapZoom(value => Math.max(MAP_MIN_ZOOM, value - MAP_ZOOM_STEP))}>−</button><button type="button" onClick={() => setShowLayers(value => !value)} aria-expanded={showLayers} title="选择地图图层">图层</button><button type="button" onClick={() => { setMapZoom(MAP_MIN_ZOOM); setMapCenter(null); setSelectedRegion(null); }} title="重置视图">复位</button></div>
             {showLayers ? <div className="cc-layer-menu"><label><input type="checkbox" checked={showBackdrop} onChange={() => setShowBackdrop(value => !value)} />概念底图</label>{([['landmarks','场景地标'],['regions','模拟区域'],['risks','风险区域'],['corridors','通道与出口'],['validated','已验证路线'],['candidate','候选路线'],['incidents','事件标记']] as const).map(([key,label]) => <label key={key}><input type="checkbox" checked={layers[key]} onChange={() => setLayers(value => ({...value,[key]: !value[key]}))} />{label}</label>)}</div> : null}
             {selectedRegion ? <div className="cc-map-detail"><strong>{status.regions.find(region => region.id === selectedRegion)?.name}</strong><span>风险：{RISK_LABEL[status.risks.find(risk => risk.regionId === selectedRegion)?.level ?? 'unknown']}</span><span>人数：{status.risks.find(risk => risk.regionId === selectedRegion)?.count ?? '—'} · 密度：{status.risks.find(risk => risk.regionId === selectedRegion)?.density?.toFixed(2) ?? '—'}</span><span>置信度：{status.risks.find(risk => risk.regionId === selectedRegion)?.confidence ?? '—'} · 时效：{formatSince(status.observations.find(item => item.region_id === selectedRegion)?.observed_at)}</span><span>来源：{status.observations.find(item => item.region_id === selectedRegion)?.source ?? '无数据'}</span><button type="button" onClick={() => setSelectedRegion(null)}>关闭</button></div> : null}</div>
+          <div className="cc-map-caption"><strong>场馆态势</strong><span>{scenario?.map?.caption ?? '合成场景 · 区域未空间标定'} · 行：门区 / 滩顶 / 生态 / 亲水 · 点选区域查看详情</span></div>
           <Legend isCandidate={isCandidate} hasPlan={Boolean(displayPlan)} />
           <div className="cc-route-summary">
             {displayPlan ? (
@@ -573,6 +574,7 @@ export default function CommandCenterPage() {
         <MvpPanels
           selectedRegion={selectedRegion}
           onSelectRegion={id => { if (id) selectRegion(id); }}
+          onDataChanged={() => void refresh()}
         />
       </section>
       <footer className="cc-footer">

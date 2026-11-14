@@ -2,6 +2,9 @@
 
 > 目标：用可运行的系统证明三个创新，而不是念 PPT。
 > 全程使用合成数据；必须口头说明“非真实场馆/平台实测”。
+>
+> **前端实拍分镜与逐段操作见 [`DEMO_SCRIPT_FRONTEND.md`](DEMO_SCRIPT_FRONTEND.md)**；
+> 本文件保留为内容脚本，其中的测试数量等旧数字需按 [`PROJECT_STATUS.md`](PROJECT_STATUS.md) 更新后再引用。
 
 ## 0:00–0:45 问题与定位
 

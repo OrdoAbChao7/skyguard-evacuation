@@ -64,7 +64,7 @@
 | 路线稳定性 A-F（迟滞/切换惩罚/承诺/自适应） | `route-stability.ts`、`v72-stability-benchmark.ts`、`v72-stability.test.ts` | 切换 5261.8→4268.3（迟滞）→3334.3（惩罚/承诺）；完成 +0.05/+0.45–0.51；队列 +1.3k–2.7k；密度 +0.07–0.08 | 合成；参数未标定；非免费 |
 | 承诺式逐区域求解 + 紧急覆盖 | `stable-solver.ts`、`mpc-planner.ts`、`v72-redteam.test.ts` | 高需求冲突显式报告；运行中出口故障后 0 条路线使用故障出口；legacy 1.13 条 | 贪心多商品近似；冲突时拒绝 |
 | 双向通道共享容量修正 | `strategies.ts` 迭代共享；`v72-redteam` 8 轮随机需求 | 逐分钟容量复核通过；消除 220>180 超限 | 迭代启发式，非全局最优 |
-| 场馆标定流水线 | `venue-calibration.ts`、`v72-calibration.test.ts`、`hankou-synthetic-profile.json` | 合成档案 0 错误；合成冒充实测被拒绝；观测适配器拒绝离线/过期/未来时间戳 | 仅合成档案；未真实标定 |
+| 场馆标定流水线 | `venue-calibration.ts`、`synthetic-profile.ts`、`v72-calibration.test.ts` | 合成档案 0 错误；合成冒充实测被拒绝；观测适配器拒绝离线/过期/未来时间戳 | 仅合成档案；未真实标定 |
 | Shadow 回放压力 | `v72-shadow-stress.ts`、`ShadowSolver` 注入、`integrity` | 240 次：确定性 0 不一致；篡改 40/40 标记；异常/失败/预算回退 | 适配器层；未启用 |
 | ONNX 部署链路准备 | `backend/python/ascend/*`、`export_forecast_onnx.py`、`benchmark_onnx.py` | CPU p50≈0.015ms、max_abs_diff=0；ATC 模板 | CPUExecutionProvider；无 NPU |
 

@@ -63,7 +63,7 @@ test('HTTP MCP 与网页共享同一业务状态', { timeout: 30_000 }, async ()
     assert.equal(denied.status, 401);
     const allowed = await fetch(url, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', authorization: 'Bearer mcp-http-secret' },
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.MCP_HTTP_TOKEN ?? ''}` },
       body: '{}',
     });
     assert.notEqual(allowed.status, 401);

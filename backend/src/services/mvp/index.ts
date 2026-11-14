@@ -23,6 +23,7 @@ import { analyzeMultiRegion } from './multi-region';
 import { runUiDemo } from './demo';
 import { runWithAgentArts } from './agentarts-run';
 import { readExperimentSummary } from './experiment-summary';
+import { SimulationService, type SimulationStatus } from './simulation';
 
 export * from './prediction';
 export * from './voi';
@@ -74,6 +75,7 @@ export class MvpService {
   readonly registry: ToolRegistry;
   readonly agent: AgentService;
   readonly agentArts: AgentArtsClient;
+  readonly simulation: SimulationService;
 
   private runs = new Map<string, AgentRun>();
   private runOrder: string[] = [];
@@ -162,6 +164,8 @@ export class MvpService {
     this.restoreRuns();
     if (restoredState) this.applyRestoredState(restoredState);
     this.restoring = false;
+    // 仿真只依赖本服务的公开状态，不参与安全判定。
+    this.simulation = new SimulationService(this);
     // 首次启动且已配置统一状态文件：立即建立 revision=1 的可校验快照。
     if (this.stateStore && !restoredState) this.persistState();
   }
@@ -713,6 +717,33 @@ export class MvpService {
     return runUiDemo(this, kind, actor);
   }
 
+  // ---------------------------------------------------------------- 时间轴仿真
+  async startSimulation(actor: OpsActor, options: { autoplay?: boolean } = {}): Promise<SimulationStatus> {
+    this.resetAll(actor);
+    return this.simulation.start(actor, options);
+  }
+
+  stepSimulation(): Promise<SimulationStatus> {
+    return this.simulation.step();
+  }
+
+  pauseSimulation(): SimulationStatus {
+    return this.simulation.pause();
+  }
+
+  resumeSimulation(): Promise<SimulationStatus> {
+    return this.simulation.resume();
+  }
+
+  stopSimulation(): SimulationStatus {
+    this.simulation.abort();
+    return this.simulation.getStatus();
+  }
+
+  simulationStatus(): SimulationStatus {
+    return this.simulation.getStatus();
+  }
+
   /** 读取已生成的竞赛基准摘要（若文件不存在则返回 available=false）。 */
   getExperimentSummary(): Record<string, unknown> {
     return readExperimentSummary();
@@ -720,6 +751,8 @@ export class MvpService {
 
   // ---------------------------------------------------------------- 重置
   resetAll(actor: OpsActor = { username: 'system', role: 'admin' }): void {
+    // 任何全局重置都会终止进行中的仿真，避免旧剧本继续写入新状态。
+    this.simulation?.abort();
     const previousRestoring = this.restoring;
     this.restoring = true;
     try {

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { loadSafetyScenario } from '../../src/services/safety/scenario';
+import { buildSyntheticVenueProfile } from '../../src/services/safety/calibration/synthetic-profile';
 import {
   adaptAuthorizedRealRows,
   adaptPublicDatasetRows,
@@ -18,12 +19,11 @@ import {
 import { validateVenueProfile, type VenueProfile } from '../../src/services/safety/calibration/venue-calibration';
 
 const scenarioPath = path.resolve(__dirname, '../../../data/scenarios/hankou-mvp.json');
-const profilePath = path.resolve(__dirname, '../../../data/venues/hankou-synthetic-profile.json');
 const csvPath = path.resolve(__dirname, '../../../data/venues/fixtures/observations-sample.csv');
 const publicCsvPath = path.resolve(__dirname, '../../../data/venues/fixtures/public-sample.csv');
 
 function loadProfile(): VenueProfile {
-  return JSON.parse(fs.readFileSync(profilePath, 'utf8')) as VenueProfile;
+  return buildSyntheticVenueProfile(loadSafetyScenario(scenarioPath));
 }
 
 test('CSV 解析支持 BOM、引号、CRLF，并拒绝非法数值', () => {

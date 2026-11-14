@@ -3,7 +3,7 @@
 > **唯一事实来源（Single Source of Truth）**：本文件描述项目当前真实状态。  
 > 研发规则与长期目标见 [`AGENTS.md`](../AGENTS.md)；安全边界见 [`LIMITATIONS.md`](LIMITATIONS.md)、[`MVP_LIMITATIONS.md`](MVP_LIMITATIONS.md)；
 > 技术主张等级见 [`research/CLAIMS.md`](../research/CLAIMS.md)。  
-> 最后核对：2026-11-13（数据来自仓库文件与脚本，不复制旧报告）。
+> 最后核对：2026-11-14（数据来自仓库文件与脚本，不复制旧报告）。
 
 ## 1. 项目定位
 
@@ -790,3 +790,14 @@ Docker daemon/CI 实跑、第三方安全评审与演练。
 Docker daemon/CI 实跑、第三方安全评审与真实演练。
 
 **V7.5 定位：Research Prototype + Reproducible Synthetic Evidence；不是 Production Ready，也不是真实疏散效果验证。**
+
+### 2026-11-14：V7.6 演示层与参赛提交包
+
+- 默认场景为 `data/scenarios/hankou-mvp.json`（44 区域，合成/估算）；场景覆盖层、合成档案与迁移后的脚本已纳入测试。
+- 新增「系统仿真」面板与 9 步时间轴：合成观测写入 → 重算 → 四态 → 事件 → Agent → 人工审批/反馈 → 复核补采；观测显式标记 `simulation` / `sim-live`，不伪装真实数据，仿真本身不审批、不派发。
+- 修复复核补采语义：只补采过期且可信的 `sim-live` 观测，保留现场反馈、低置信与其他真实 provider；新增回归测试。
+- 验证（本机）：后端 **334/334**、前端 **17/17**；根 `npm test`、`npm run build`、后端 typecheck 通过；`verify:evidence` **178/178**；V7.2 基线快照 **299 文件**通过。
+- 新增提交包模板 [`SUBMISSION_PACKAGE.md`](SUBMISSION_PACKAGE.md) 与 `submission/VERIFICATION.md`；本轮改动已提交（2026-11-14），未打标签。
+- 已生成 `submission/SkyGuard-submission-20261114/` 与同名 zip（约 31 MB / 8.7 MB，462 个文件）；包内后端 **334/334**、前端 **17/17**、`npm run build` 通过（临时目录 + 已验证依赖，不随包分发）。
+- 提交包只保留后端证据测试与界面读取所需的最小 `evaluation/` 最终 run；开发默认口令与开发 JWT 密钥在包内已脱敏，包内不含 `.env`、`admin_config.json`、`node_modules`、审计日志或未授权图片。
+- 仍未验证：AgentArts 真实租户与 Trace、昇腾 NPU/CANN/OM、无人机、真实场馆/摄像机/授权数据、Docker/CI、第三方安全评审与真实演练。
