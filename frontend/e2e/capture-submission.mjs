@@ -109,6 +109,8 @@ try {
   summary.steps.push({ step: 'admin_login', ok: true });
 
   await page.goto(`${frontendUrl}/`, { waitUntil: 'networkidle' });
+  await page.waitForSelector('.cc-topbar', { timeout: 15000 });
+  await page.waitForFunction(() => !document.body.innerText.includes('无法加载场景'), null, { timeout: 15000 });
   await page.waitForTimeout(2200);
   await page.screenshot({ path: shotPath('01-command-center.png'), fullPage: false });
   summary.screenshots.push('01-command-center.png');
@@ -195,9 +197,12 @@ try {
   await resume.click();
   const finished = await waitSimulation(page, status => status.finished, 30000, '仿真完成');
   await page.waitForTimeout(1800);
-  await page.goto(`${frontendUrl}/`, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(2500);
+  // 不重新加载页面：结束时的 429 会让整页退回“无法加载场景”的加载页。
   await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForSelector('.cc-topbar', { timeout: 15000 });
+  await page.waitForFunction(() => !document.body.innerText.includes('无法加载场景'), null, { timeout: 15000 });
+  await page.waitForFunction(() => document.body.innerText.includes('常态运行'), null, { timeout: 15000 });
+  await page.waitForTimeout(1200);
   await page.screenshot({ path: shotPath('04-command-center-normal.png'), fullPage: false });
   summary.screenshots.push('04-command-center-normal.png');
   await page.locator('section.sim-panel').scrollIntoViewIfNeeded();

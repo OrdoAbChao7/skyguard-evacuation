@@ -44,3 +44,6 @@ __pycache__/
 submission/SkyGuard-submission-*/
 submission/*.zip
 submission/*.zip.sha256
+
+# 本地演示运行产物（可用 frontend/e2e/capture-submission.mjs 重跑）
+submission/demo-run-*/
