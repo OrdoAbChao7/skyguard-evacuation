@@ -8,6 +8,11 @@
  *
  * 运行：
  *   node frontend/e2e/capture-submission.mjs --out submission/screenshots
+ *   node frontend/e2e/capture-submission.mjs --out submission/demo-run --video --slowmo=300
+ *
+ * --video        同时录制管理员页（1600×1000）与工作人员页（430×920），
+ *                输出 video-admin.webm / video-staff.webm；需要 Playwright 自带 ffmpeg。
+ * --slowmo=<ms>  放慢每一步操作，便于录制回看（不影响断言与截图）。
  *
  * 该脚本会重置并运行一次合成仿真；只操作演示数据，不触碰真实数据。
  */
@@ -22,6 +27,10 @@ const outArg = process.argv.indexOf('--out');
 const outDir = path.resolve(root, outArg >= 0 ? process.argv[outArg + 1] : 'submission/screenshots');
 const frontendUrl = process.env.SKYGUARD_E2E_FRONTEND ?? 'http://localhost:5173';
 const adminPassword = process.env.SKYGUARD_ADMIN_PASSWORD;
+const videoEnabled = process.argv.includes('--video');
+const slowMoArg = process.argv.find(argument => argument.startsWith('--slowmo='));
+const slowMo = slowMoArg ? Math.max(0, Number(slowMoArg.split('=')[1]) || 0) : 0;
+const videoRawDir = path.join(outDir, 'video-raw');
 
 if (!adminPassword) {
   console.error('缺少 SKYGUARD_ADMIN_PASSWORD 环境变量；请在命令前临时设置，不要写入文件。');
@@ -40,20 +49,25 @@ function accessCodeFor(staffId) {
 }
 
 async function api(page, requestPath, init = {}) {
-  return page.evaluate(async ({ requestPath: target, init: options }) => {
-    const token = localStorage.getItem('admin_token') ?? '';
-    const headers = { ...(options.headers ?? {}), Authorization: `Bearer ${token}` };
-    if (options.body && !headers['Content-Type']) headers['Content-Type'] = 'application/json';
-    const response = await fetch(target, { ...options, headers });
-    const text = await response.text();
-    let json = null;
-    try {
-      json = text ? JSON.parse(text) : null;
-    } catch {
-      json = null;
-    }
-    return { status: response.status, ok: response.ok, json, text: text.slice(0, 400) };
-  }, { requestPath, init });
+  for (let attempt = 0; ; attempt += 1) {
+    const response = await page.evaluate(async ({ requestPath: target, init: options }) => {
+      const token = localStorage.getItem('admin_token') ?? '';
+      const headers = { ...(options.headers ?? {}), Authorization: `Bearer ${token}` };
+      if (options.body && !headers['Content-Type']) headers['Content-Type'] = 'application/json';
+      const response = await fetch(target, { ...options, headers });
+      const text = await response.text();
+      let json = null;
+      try {
+        json = text ? JSON.parse(text) : null;
+      } catch {
+        json = null;
+      }
+      return { status: response.status, ok: response.ok, json, text: text.slice(0, 400) };
+    }, { requestPath, init });
+    // 页面轮询与脚本请求叠加时可能触发 300 次/分钟限流；退避重试，不改变最终状态。
+    if (response.status !== 429 || attempt >= 5) return response;
+    await page.waitForTimeout(1500 * (attempt + 1));
+  }
 }
 
 async function waitSimulation(page, predicate, timeoutMs, label) {
@@ -79,14 +93,23 @@ const summary = {
   console_errors: [],
   rate_limited: 0,
   page_errors: [],
+  video: videoEnabled ? { enabled: true, files: [], errors: [] } : { enabled: false },
   passed: false,
 };
 
 let browser;
+let adminContext;
+let staffContext;
+let adminVideo;
+let staffVideo;
 try {
-  browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
-  const page = await context.newPage();
+  browser = await chromium.launch({ headless: true, slowMo });
+  adminContext = await browser.newContext({
+    viewport: { width: 1600, height: 1000 },
+    ...(videoEnabled ? { recordVideo: { dir: videoRawDir, size: { width: 1600, height: 1000 } } } : {}),
+  });
+  const page = await adminContext.newPage();
+  if (videoEnabled) adminVideo = page.video();
   page.on('console', message => {
     if (message.type() !== 'error') return;
     const text = message.text().slice(0, 500);
@@ -157,8 +180,12 @@ try {
   if (!staffId || !accessCode) throw new Error(`工单派发后没有可用工号：${JSON.stringify(assigned.json).slice(0, 400)}`);
   summary.steps.push({ step: 'work_order_approved_and_assigned', ok: true, order_id: target.id, order_type: target.type, staff_id: staffId });
 
-  const staffPage = await context.newPage();
-  await staffPage.setViewportSize({ width: 430, height: 920 });
+  staffContext = await browser.newContext({
+    viewport: { width: 430, height: 920 },
+    ...(videoEnabled ? { recordVideo: { dir: videoRawDir, size: { width: 430, height: 920 } } } : {}),
+  });
+  const staffPage = await staffContext.newPage();
+  if (videoEnabled) staffVideo = staffPage.video();
   staffPage.on('pageerror', error => summary.page_errors.push(String(error).slice(0, 500)));
   await staffPage.goto(`${frontendUrl}/staff`, { waitUntil: 'networkidle' });
   await staffPage.locator('label:has-text("工号") input').fill(staffId);
@@ -215,7 +242,31 @@ try {
 } catch (error) {
   summary.error = error instanceof Error ? error.message : String(error);
 } finally {
+  // 先关闭上下文让 Playwright 写完视频，再保存并清理原始录像。
+  if (adminContext) {
+    await adminContext.close().catch(() => {});
+    if (videoEnabled && adminVideo) {
+      try {
+        await adminVideo.saveAs(path.join(outDir, 'video-admin.webm'));
+        summary.video.files.push('video-admin.webm');
+      } catch (error) {
+        summary.video.errors.push(String(error).slice(0, 300));
+      }
+    }
+  }
+  if (staffContext) {
+    await staffContext.close().catch(() => {});
+    if (videoEnabled && staffVideo) {
+      try {
+        await staffVideo.saveAs(path.join(outDir, 'video-staff.webm'));
+        summary.video.files.push('video-staff.webm');
+      } catch (error) {
+        summary.video.errors.push(String(error).slice(0, 300));
+      }
+    }
+  }
   if (browser) await browser.close();
+  if (videoEnabled) fs.rmSync(videoRawDir, { recursive: true, force: true });
   fs.writeFileSync(path.join(outDir, 'CAPTURE.json'), `${JSON.stringify(summary, null, 2)}\n`);
 }
 
