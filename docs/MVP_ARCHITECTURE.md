@@ -47,6 +47,8 @@ backend/src/
     audit.ts
     observations.ts
     providers/{simulation,video,ascend}.ts
+  services/simulation/
+    crowd-flow.ts            场景驱动人群流仿真（合成数据，不参与安全判定）
   services/mvp/
     index.ts                 编排与单例
     prediction.ts            EMA + 线性预测
@@ -64,6 +66,7 @@ backend/src/
 frontend/src/pages/command-center/
   CommandCenterPage.tsx      既有大屏
   MvpPanels.tsx              预测/Agent/人员/审批/工单面板
+  CrowdSimulationPanel.tsx   算法人群仿真面板（合成数据 · 非实测）
 frontend/src/services/
   safetyApi.ts               既有安全 API 客户端
   mvpApi.ts                  MVP API 客户端
@@ -176,6 +179,27 @@ DroneBridgeService 复核：角色、工单状态、审批人、过期、人员�
 - 同一工单同一时间只允许一个有效派发，同一幂等键返回原记录；
 - 无人机单位与派发记录默认来自合成场景，`real_hardware_verified` 恒为 `false`；
 - 详细配置、契约与禁止表述见 [`DRONE_BRIDGE.md`](./DRONE_BRIDGE.md)。
+
+## 3.7 算法人群仿真
+
+```text
+data/scenarios/hankou-mvp.json（44 区域 / 78 通道 / 11 出口）
+      ▼
+CrowdFlowEngine（1 分钟离散；区域水库 + 通道/出口容量 + 最短路排队）
+      ├── CLI：npm run simulate:crowd → 回放 JSON + 摘要
+      └── API：POST /mvp/simulation/crowd-flow（admin / safety_operator）
+                ▼
+        逐区域逐分钟写入 source=simulation 观测
+                ▼
+        既有 safety.recompute → 规划 → 独立校验 → 四态状态机
+```
+
+- 仿真只生成**合成观测**，不判定安全、不审批、不派发、不控制现场资源；
+- 通道容量、出口容量、区域在留容量是硬约束，人数取整并逐步守恒；
+- 未知容量通道（`C_FLOOD_ESCAPE_UNKNOWN`）不参与路径；
+- 同一 seed 可复现；随机性只影响置信度噪声；
+- 前端面板与 CLI 都显式标注「合成数据 · 非实测」；
+- 模型、预设、命令与禁止表述见 [`CROWD_SIMULATION.md`](./CROWD_SIMULATION.md)。
 
 ## 4. 职责边界
 

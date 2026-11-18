@@ -153,6 +153,59 @@ export interface DroneDispatchResult {
   effective_status: string;
 }
 
+export interface CrowdFlowRegionSample {
+  region_id: string;
+  region_name: string;
+  count: number;
+  density: number;
+  confidence: number;
+  inflow: number;
+  outflow: number;
+  stranded: boolean;
+  capacity_limited: boolean;
+}
+
+export interface CrowdFlowSummary {
+  algorithm: string;
+  scenario_id: string;
+  scenario_version: string;
+  preset: 'normal' | 'gate_closure' | 'surge';
+  seed: number;
+  minutes: number;
+  step_seconds: number;
+  initial_total: number;
+  arrivals_total: number;
+  evacuated: number;
+  remaining_inside: number;
+  in_transit: number;
+  stranded: number;
+  conservation_ok: boolean;
+  peak_density: { region_id: string; region_name: string; density: number; count: number; at: string } | null;
+  peak_region_count: { region_id: string; region_name: string; count: number; at: string } | null;
+  peak_in_transit: number;
+  congested_samples: number;
+  exit_totals: Record<string, number>;
+  unresolved_regions: Array<{ region_id: string; count: number; reason: string }>;
+  events: string[];
+  assumptions: string[];
+}
+
+export interface CrowdFlowSimulationResult {
+  run_id: string;
+  summary: CrowdFlowSummary;
+  timeline: Array<{
+    minute: number;
+    at: string;
+    totals: { inside: number; in_transit: number; evacuated: number; stranded: number; arrivals: number };
+    events: string[];
+  }>;
+  latest_regions: CrowdFlowRegionSample[];
+  observations_ingested: number;
+  state: string;
+  plan_id?: string;
+  validation_valid?: boolean;
+}
+
 export interface AgentRun {
   run_id: string;
   mode: 'LOCAL_DEMO' | 'AGENTARTS_CONNECTED' | 'AGENTARTS_UNAVAILABLE';
@@ -398,6 +451,17 @@ export const mvpApi = {
     client.post<DroneDispatchResult>(
       '/mvp/drone-bridge/dispatches',
       { work_order_id: workOrderId, ...(uavUnitId ? { uav_unit_id: uavUnitId } : {}) },
+      { headers: adminHeaders() },
+    ).then(response => response.data),
+  runCrowdFlowSimulation: (options: {
+    minutes?: number;
+    seed?: number;
+    preset?: 'normal' | 'gate_closure' | 'surge';
+    ingest?: boolean;
+  } = {}) =>
+    client.post<CrowdFlowSimulationResult>(
+      '/mvp/simulation/crowd-flow',
+      options,
       { headers: adminHeaders() },
     ).then(response => response.data),
   staff: () => client.get<{ staff: StaffMember[] }>('/mvp/staff').then(response => response.data.staff),

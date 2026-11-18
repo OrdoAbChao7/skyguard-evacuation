@@ -7,6 +7,7 @@ import { AimOutlined } from '@ant-design/icons';
 import mvpApi, { type AgentRun, type DroneBridgeStatus, type MvpDashboard, type MultiRegionAnalysis, type V70ForecastPreview, type V70JointPreview, type WorkOrder } from '../../services/mvpApi';
 import safetyApi, { type V70MpcPreview } from '../../services/safetyApi';
 import SimulationPanel from './SimulationPanel';
+import CrowdSimulationPanel from './CrowdSimulationPanel';
 import './MvpPanels.css';
 
 interface Props {
@@ -676,6 +677,8 @@ export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChange
             {orders.length === 0 ? <p className="mvp-muted">当前筛选条件下没有工单。</p> : null}
           </div>
         </section>
+
+        <CrowdSimulationPanel onChanged={onDataChanged} />
 
         <section className="mvp-panel mvp-timeline-panel">
           <div className="mvp-panel-title"><h3>事件时间轴</h3><span>最近 {dashboard?.audit.length ?? 0} 条</span></div>

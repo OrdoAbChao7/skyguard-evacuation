@@ -38,6 +38,7 @@ SkyGuard 是面向**大型活动散场与城市滨水空间人群疏散**场景�
 | V7.5 | 低误报检测（双阈值/持续性/多传感器/SPRT/自适应 CUSUM）、区域选择性承诺、紧急状态机、多目标 Pareto、多传感器融合 fail-closed、V7.5 红队与证据 |
 | V7.6 | 系统仿真演示层、参赛提交包、实时视频流软件适配器（本机 HTTP 网络流验证；真实 RTSP 未验证） |
 | V7.7 | 无人机派发桥接（人工审批后 outbox/HTTP 观察任务请求；默认模拟，无航点/控制指令；真实平台未验证） |
+| V7.8 | 场景驱动算法人群仿真（合成数据；1 分钟离散流、容量硬约束、人数守恒；normal/gate_closure/surge；CLI + API + 前端面板；未标定） |
 
 **当前定位：Research Prototype Candidate（科研原型候选版本）+ 真实数据感知评测（单一公开数据集）+ V7.5 风险自适应研究，不是 Production Ready。**
 当前版本 `v7.5.0-research.1`（`VERSION`）；V7.2 基线仍由 `evaluation/v72/baseline_snapshot/` 固定。
@@ -820,3 +821,19 @@ Docker daemon/CI 实跑、第三方安全评审与真实演练。
 - 幂等键、工单占用、无人机单位占用、失败/过期语义、审计、可选 JSON 持久化已实现；HTTP 端点拒绝 userinfo、限制超时/响应体/重定向。
 - 新增 `backend/tests/mvp/drone-bridge.test.ts`（10 项）与前端桥接状态/派发按钮展示；后端 **358/358**、前端 **20/20**、两端构建通过。
 - 仍未验证：真实无人机平台/设备、真实空域审批、飞控/图传、观察回调；`real_hardware_verified` 恒为 false，默认 `simulated=true`。
+
+### 2026-11-18：V7.8 场景驱动算法人群仿真
+
+- 新增 [`docs/CROWD_SIMULATION.md`](CROWD_SIMULATION.md) 与 `backend/src/services/simulation/crowd-flow.ts`：
+  按 `hankou-mvp.json` 的 44 区域 / 78 通道 / 11 出口拓扑，用 1 分钟离散流模型生成逐区域人数序列；
+  通道/出口容量、区域在留容量为硬约束，人数取整并逐步守恒；同一 seed 可复现。
+- 新增 CLI `npm run simulate:crowd`：输出可被 `/mvp/replay/load` 加载的回放 JSON
+  （`data/replays/crowd-sim-<preset>.json`）与摘要（`data/simulations/`）；支持 `normal` / `gate_closure` / `surge`。
+- 新增 `POST /api/v1/mvp/simulation/crowd-flow`（仅 admin / safety_operator）：
+  把合成观测以 `source: 'simulation'`、`provider: 'crowd-flow-sim'` 写入安全域并触发重算，
+  返回守恒、疏散、在途、峰值密度、状态与方案；审计动作 `simulation.crowd_flow`。
+- 前端新增「算法人群仿真」面板：三种预设、守恒/疏散/在途/峰值密度指标与逐分钟总量，显式标注「合成数据 · 非实测」。
+- 测试：`backend/tests/simulation/crowd-flow.test.ts`（8 项）与 `backend/tests/mvp/crowd-simulation-api.test.ts`（1 项）；
+  后端 **367/367**、前端 **21/21**、两端构建通过。本机实测 API 返回守恒通过、写入 132 条观测、状态 `NORMAL`、独立校验通过。
+- 仍未标定：面积、通行能力、阈值、拥堵参数均来自场景配置或启发式；**不是经验证的人群动力学模型**，
+  不能据此声称真实精度、真实疏散时间或真实演练效果。`C_FLOOD_ESCAPE_UNKNOWN` 仍按未知不可用排除。

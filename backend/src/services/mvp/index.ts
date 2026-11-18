@@ -25,6 +25,12 @@ import { runUiDemo } from './demo';
 import { runWithAgentArts } from './agentarts-run';
 import { readExperimentSummary } from './experiment-summary';
 import { SimulationService, type SimulationStatus } from './simulation';
+import {
+  simulateCrowdFlow,
+  type CrowdFlowPreset,
+  type CrowdFlowRegionSample,
+  type CrowdFlowSummary,
+} from '../simulation/crowd-flow';
 
 export * from './prediction';
 export * from './voi';
@@ -509,6 +515,113 @@ export class MvpService {
       this.safety.recompute(actor, 'replay_step');
     }
     return { status: this.replay.status(), ingested: observations.length, observations };
+  }
+
+  // ---------------------------------------------------------------- 算法人群仿真
+  /**
+   * 运行场景驱动的算法人群仿真，并把生成的合成观测写入安全域。
+   *
+   * 边界：
+   *  - 仅 admin / safety_operator 可调用；
+   *  - 观测 source=simulation，evidence 明确标注 simulated，不能冒充实测；
+   *  - 仿真不审批、不派发、不控制任何现场资源；
+   *  - 安全结论仍由安全内核重新规划、独立校验和状态机给出。
+   */
+  runCrowdFlowSimulation(params: {
+    minutes?: number;
+    seed?: number;
+    preset?: CrowdFlowPreset;
+    ingest?: boolean;
+  }, actor: OpsActor): {
+    run_id: string;
+    summary: CrowdFlowSummary;
+    timeline: Array<{
+      minute: number;
+      at: string;
+      totals: { inside: number; in_transit: number; evacuated: number; stranded: number; arrivals: number };
+      events: string[];
+    }>;
+    latest_regions: CrowdFlowRegionSample[];
+    observations_ingested: number;
+    state: string;
+    plan_id?: string;
+    validation_valid?: boolean;
+  } {
+    if (actor.role !== 'admin' && actor.role !== 'safety_operator') {
+      throw new Error('只有管理员或安全运维可以运行算法人群仿真');
+    }
+    const minutes = params.minutes ?? this.scenario.config.horizon_minutes;
+    const startAt = new Date(Date.now() - minutes * 60_000);
+    const result = simulateCrowdFlow(this.scenario, {
+      minutes,
+      seed: params.seed,
+      preset: params.preset,
+      start_at: startAt,
+    });
+    const runId = `SIM-${randomUUID().slice(0, 8).toUpperCase()}`;
+    let ingested = 0;
+    if (params.ingest !== false) {
+      for (const sample of result.samples) {
+        for (const region of sample.regions) {
+          const scenarioRegion = this.scenario.regions.find(item => item.id === region.region_id);
+          this.safety.ingestObservation({
+            regionId: region.region_id,
+            count: region.count,
+            confidence: region.confidence,
+            source: 'simulation',
+            provider: 'crowd-flow-sim',
+            modelVersion: 'crowd-flow/1.0.0',
+            calibrationVersion: `simulation/${scenarioRegion?.camera.calibration_version ?? 'uncalibrated'}`,
+            observedAt: new Date(sample.at),
+            evidence: {
+              simulated: true,
+              algorithm: result.summary.algorithm,
+              seed: result.summary.seed,
+              preset: result.summary.preset,
+              minute: sample.minute,
+              density: region.density,
+              note: '算法仿真生成的合成观测，不是实测，也不是视频推理结果',
+            },
+          }, actor);
+          ingested += 1;
+        }
+      }
+    }
+    const recompute = ingested > 0 ? this.safety.recompute(actor, 'simulation.crowd_flow') : null;
+    this.audit.record({
+      actor: actor.username,
+      role: actor.role,
+      action: 'simulation.crowd_flow',
+      entity_type: 'scenario',
+      entity_id: this.scenario.scenario_id,
+      summary: `运行算法人群仿真 ${runId}：${result.summary.preset} · ${result.summary.minutes} 分钟 · 疏散 ${result.summary.evacuated}/${result.summary.initial_total + result.summary.arrivals_total}`,
+      result: result.summary.conservation_ok ? 'success' : 'failure',
+      after: {
+        run_id: runId,
+        seed: result.summary.seed,
+        preset: result.summary.preset,
+        observations_ingested: ingested,
+        conservation_ok: result.summary.conservation_ok,
+        peak_density: result.summary.peak_density,
+        state: recompute?.snapshot.state ?? null,
+      },
+    });
+    const latest = result.samples[result.samples.length - 1];
+    return {
+      run_id: runId,
+      summary: result.summary,
+      timeline: result.samples.map(sample => ({
+        minute: sample.minute,
+        at: sample.at,
+        totals: sample.totals,
+        events: sample.events,
+      })),
+      latest_regions: latest?.regions ?? [],
+      observations_ingested: ingested,
+      state: recompute?.snapshot.state ?? this.safety.getStatus().state.state,
+      plan_id: recompute?.plan?.plan_id,
+      validation_valid: recompute?.validation?.valid,
+    };
   }
 
   // ---------------------------------------------------------------- Agent

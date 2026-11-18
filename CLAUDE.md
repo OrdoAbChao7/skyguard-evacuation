@@ -40,6 +40,7 @@ npm test
 npm run build
 npm run demo
 npm run demo:mvp
+npm run simulate:crowd
 npm run benchmark:competition
 npm run benchmark:v70
 npm run benchmark:v71

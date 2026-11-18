@@ -7,6 +7,10 @@ data/audit/
 data/admin_config.json
 data/*.json
 
+# 算法人群仿真运行产物（可用 npm run simulate:crowd 重新生成）
+data/replays/crowd-sim-*.json
+data/simulations/
+
 # 环境变量与密钥
 .env
 .env.*

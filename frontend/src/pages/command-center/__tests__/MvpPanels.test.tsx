@@ -23,6 +23,7 @@ const mocks = vi.hoisted(() => ({
   v70Mpc: vi.fn(),
   droneBridgeStatus: vi.fn(),
   droneDispatch: vi.fn(),
+  runCrowdFlowSimulation: vi.fn(),
 }));
 
 vi.mock('../../../services/mvpApi', () => ({ default: mocks }));
@@ -114,6 +115,56 @@ const droneBridgeStatus = {
   last_dispatch: null,
   errors: [],
   notes: ['默认 outbox 模式只生成派发包'],
+};
+
+const crowdFlowResult = {
+  run_id: 'SIM-TEST',
+  summary: {
+    algorithm: 'crowd-flow-v1',
+    scenario_id: 'hankou-mvp-v1',
+    scenario_version: '7.6.0',
+    preset: 'normal' as const,
+    seed: 42,
+    minutes: 10,
+    step_seconds: 60,
+    initial_total: 18000,
+    arrivals_total: 0,
+    evacuated: 14371,
+    remaining_inside: 3032,
+    in_transit: 597,
+    stranded: 0,
+    conservation_ok: true,
+    peak_density: {
+      region_id: 'R_GATE_04_PLAZA',
+      region_name: '洞庭门集散门区',
+      density: 0.13,
+      count: 596,
+      at: new Date().toISOString(),
+    },
+    peak_region_count: {
+      region_id: 'R_S01_L1_CREST',
+      region_name: '江汉门滩顶主平台',
+      count: 1800,
+      at: new Date().toISOString(),
+    },
+    peak_in_transit: 5974,
+    congested_samples: 5,
+    exit_totals: { GATE_01_G01: 2000 },
+    unresolved_regions: [],
+    events: [],
+    assumptions: ['合成数据'],
+  },
+  timeline: [{
+    minute: 1,
+    at: new Date().toISOString(),
+    totals: { inside: 12026, in_transit: 5974, evacuated: 0, stranded: 0, arrivals: 0 },
+    events: [],
+  }],
+  latest_regions: [],
+  observations_ingested: 440,
+  state: 'NORMAL',
+  plan_id: 'PLAN-TEST',
+  validation_valid: true,
 };
 
 const run = {
@@ -262,6 +313,20 @@ describe('MVP 指挥面板', () => {
     expect(button).toBeEnabled();
     await userEvent.click(button);
     expect(mocks.droneDispatch).toHaveBeenCalledWith('WO-UAV-1');
+  });
+
+  it('管理员可运行算法人群仿真并展示守恒与疏散结果', async () => {
+    localStorage.setItem('admin_token', 'test-admin-token');
+    mocks.runCrowdFlowSimulation.mockResolvedValue(crowdFlowResult);
+    render(<MvpPanels selectedRegion="R_S04_L1_CREST" onSelectRegion={() => {}} />);
+    const button = await screen.findByRole('button', { name: '运行 10 分钟仿真' });
+    expect(button).toBeEnabled();
+    await userEvent.click(button);
+    expect(mocks.runCrowdFlowSimulation).toHaveBeenCalledWith({ preset: 'normal', minutes: 10, seed: 42 });
+    expect(await screen.findByText(/SIM-TEST/)).toBeInTheDocument();
+    expect(screen.getByText('人数守恒')).toBeInTheDocument();
+    expect(screen.getByText('14371')).toBeInTheDocument();
+    expect(screen.getByText(/合成数据，不是实测/)).toBeInTheDocument();
   });
 
   it('未从地图点选区域时默认使用首个预测区域，运行 Agent 仍可用', async () => {

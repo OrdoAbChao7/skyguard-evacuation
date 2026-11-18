@@ -284,6 +284,23 @@ export function createMvpRouter(): Router {
     res.json(getMvpService().replay.status());
   }));
 
+  // ---------------------------------------------------------------- 算法人群仿真
+  const CrowdFlowBody = z.object({
+    minutes: z.number().int().positive().max(60).optional(),
+    seed: z.number().int().min(0).max(2_147_483_647).optional(),
+    preset: z.enum(['normal', 'gate_closure', 'surge']).optional(),
+    /** false 时只生成结果、不写入安全域观测；默认 true。 */
+    ingest: z.boolean().optional(),
+  });
+  router.post('/simulation/crowd-flow', ...operatorOnly, handle((req, res) => {
+    const parsed = CrowdFlowBody.safeParse(req.body ?? {});
+    if (!parsed.success) {
+      fail(res, 400, 'INVALID_BODY', '参数格式不正确', parsed.error.flatten());
+      return;
+    }
+    res.status(201).json(getMvpService().runCrowdFlowSimulation(parsed.data, actorOf(req)));
+  }));
+
   // ---------------------------------------------------------------- 人员与工单
   router.get('/staff', handle((_req, res) => {
     res.json({ staff: getMvpService().ops.listStaff() });
