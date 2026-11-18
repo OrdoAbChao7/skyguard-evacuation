@@ -8,7 +8,7 @@
  * 避免把"像素里的前景块数量"包装成"已标定的人数"。
  */
 import path from 'node:path';
-import { execFile } from 'node:child_process';
+import { PYTHON_BIN, runPython } from './python-runner';
 import type {
   CrowdInferenceProvider,
   CrowdInferenceRequest,
@@ -19,7 +19,6 @@ import type {
 import { ProviderUnavailableError } from './types';
 
 const SCRIPT_PATH = path.resolve(__dirname, '../../../../python/crowd_service.py');
-const PYTHON_BIN = process.env.SKYGUARD_PYTHON || 'python';
 
 interface CrowdServiceOutput {
   ok?: boolean;
@@ -33,23 +32,6 @@ interface CrowdServiceOutput {
   warnings?: string[];
   limitations?: string[];
   method?: string;
-}
-
-function runPython(args: string[], timeoutMs = 120000): Promise<{ stdout: string; stderr: string }> {
-  return new Promise((resolve, reject) => {
-    execFile(
-      PYTHON_BIN,
-      args,
-      { timeout: timeoutMs, maxBuffer: 8 * 1024 * 1024, windowsHide: true },
-      (error, stdout, stderr) => {
-        if (error) {
-          reject(Object.assign(error, { stdout, stderr }));
-          return;
-        }
-        resolve({ stdout, stderr });
-      },
-    );
-  });
 }
 
 export class RecordedVideoCrowdProvider implements CrowdInferenceProvider {

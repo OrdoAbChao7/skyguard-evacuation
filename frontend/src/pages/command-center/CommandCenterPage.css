@@ -972,6 +972,16 @@
   font-size: 8.5px;
   letter-spacing: .14em;
 }
+.cc-video-online {
+  margin-top: 4px;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  border-radius: 999px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: .14em;
+}
 @keyframes cc-scan { to { top: 120%; } }
 
 .cc-video-thumbs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }

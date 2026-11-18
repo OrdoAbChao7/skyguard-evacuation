@@ -21,6 +21,8 @@ const mocks = vi.hoisted(() => ({
   v70Forecast: vi.fn(),
   v70Joint: vi.fn(),
   v70Mpc: vi.fn(),
+  droneBridgeStatus: vi.fn(),
+  droneDispatch: vi.fn(),
 }));
 
 vi.mock('../../../services/mvpApi', () => ({ default: mocks }));
@@ -89,6 +91,31 @@ const dashboard = {
   generated_at: new Date().toISOString(),
 };
 
+const droneBridgeStatus = {
+  mode: 'outbox',
+  configured: true,
+  transport: 'outbox',
+  simulated: true,
+  verified_on_this_host: false,
+  real_hardware_verified: false,
+  transport_verified: false,
+  endpoint: null,
+  ttl_minutes: 15,
+  pending_dispatches: 0,
+  active_units: 0,
+  uav_units: [{
+    id: 'UAV_HANKOU_01',
+    name: '江汉关—粤汉码头段空中巡逻无人机',
+    status: 'available',
+    source: 'synthetic_uav_fleet',
+    verified: false,
+    active: false,
+  }],
+  last_dispatch: null,
+  errors: [],
+  notes: ['默认 outbox 模式只生成派发包'],
+};
+
 const run = {
   run_id: 'RUN-TEST',
   mode: 'LOCAL_DEMO',
@@ -141,6 +168,7 @@ describe('MVP 指挥面板', () => {
   beforeEach(() => {
     Object.values(mocks).forEach(mock => (mock as ReturnType<typeof vi.fn>).mockReset());
     mocks.dashboard.mockResolvedValue(dashboard);
+    mocks.droneBridgeStatus.mockResolvedValue(droneBridgeStatus);
     mocks.runAgent.mockResolvedValue(run);
     mocks.experiments.mockResolvedValue({
       available: false, generated_at: null, experiments: {}, report_path: 'evaluation/COMPETITION_REPORT.md', note: '合成数据',
@@ -189,6 +217,53 @@ describe('MVP 指挥面板', () => {
     expect(screen.getByText('洞庭门滩顶现场核查')).toBeInTheDocument();
   });
 
+  it('展示无人机桥接状态并明确标注模拟与未实机验证', async () => {
+    render(<MvpPanels selectedRegion="R_S04_L1_CREST" onSelectRegion={() => {}} />);
+    await waitFor(() => expect(screen.getByText(/无人机桥接 · 出站队列/)).toBeInTheDocument());
+    expect(screen.getByText(/模拟任务，不控制真机/)).toBeInTheDocument();
+    expect(screen.getByText(/未实机验证/)).toBeInTheDocument();
+  });
+
+  it('仅对已指派的无人机工单显示派发按钮，并由管理员调用桥接 API', async () => {
+    localStorage.setItem('admin_token', 'test-admin-token');
+    mocks.dashboard.mockResolvedValue({
+      ...dashboard,
+      work_orders: [{
+        ...dashboard.work_orders[0],
+        id: 'WO-UAV-1',
+        type: 'uav_observation',
+        title: '无人机空中观测',
+        status: 'ASSIGNED',
+        assigned_staff_id: 'STAFF_GATE_08',
+      }],
+    });
+    mocks.droneDispatch.mockResolvedValue({
+      dispatch: {
+        dispatch_id: 'DSP-TEST',
+        work_order_id: 'WO-UAV-1',
+        status: 'QUEUED',
+        effective_status: 'QUEUED',
+        transport: 'outbox',
+        simulated: true,
+        delivered: false,
+        created_at: new Date().toISOString(),
+        expires_at: new Date().toISOString(),
+        created_by: { username: 'admin', role: 'admin' },
+        uav_unit: { id: 'UAV_HANKOU_01', name: '江汉关—粤汉码头段空中巡逻无人机', verified: false },
+        assigned_operator: { staff_id: 'STAFF_GATE_08', name: '演示人员' },
+        external_id: null,
+        error: null,
+      },
+      duplicate: false,
+      effective_status: 'QUEUED',
+    });
+    render(<MvpPanels selectedRegion="R_S04_L1_CREST" onSelectRegion={() => {}} />);
+    const button = await screen.findByRole('button', { name: '无人机派发' });
+    expect(button).toBeEnabled();
+    await userEvent.click(button);
+    expect(mocks.droneDispatch).toHaveBeenCalledWith('WO-UAV-1');
+  });
+
   it('未从地图点选区域时默认使用首个预测区域，运行 Agent 仍可用', async () => {
     render(<MvpPanels selectedRegion={null} onSelectRegion={() => {}} />);
     await waitFor(() => expect(screen.getByText('LOCAL DEMO')).toBeInTheDocument());
@@ -235,6 +310,7 @@ describe('V7 研究预览', () => {
   beforeEach(() => {
     Object.values(mocks).forEach(mock => (mock as ReturnType<typeof vi.fn>).mockReset());
     mocks.dashboard.mockResolvedValue(dashboard);
+    mocks.droneBridgeStatus.mockResolvedValue(droneBridgeStatus);
     mocks.multiRegion.mockResolvedValue({ available: false, reason: '测试未配置' });
     mocks.experiments.mockResolvedValue({ available: false, generated_at: null, experiments: {}, report_path: 'x', note: '合成' });
     mocks.v70Forecast.mockResolvedValue({

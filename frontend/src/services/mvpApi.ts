@@ -105,6 +105,54 @@ export interface WorkOrder {
   history: Array<{ ts: string; status: WorkOrderStatus; actor: string; role: string; note?: string }>;
 }
 
+export interface DroneDispatchSummary {
+  dispatch_id: string;
+  work_order_id: string;
+  status: 'QUEUED' | 'SENT' | 'FAILED';
+  effective_status: 'QUEUED' | 'SENT' | 'FAILED' | 'EXPIRED';
+  transport: 'outbox' | 'http';
+  simulated: boolean;
+  delivered: boolean;
+  created_at: string;
+  expires_at: string;
+  created_by: { username: string; role: string };
+  uav_unit: { id: string; name: string; verified: boolean };
+  assigned_operator: { staff_id: string; name: string };
+  external_id: string | null;
+  error: string | null;
+}
+
+export interface DroneBridgeStatus {
+  mode: 'outbox' | 'http' | 'disabled';
+  configured: boolean;
+  transport: 'outbox' | 'http' | null;
+  simulated: boolean;
+  verified_on_this_host: boolean;
+  real_hardware_verified: boolean;
+  transport_verified: boolean;
+  endpoint: string | null;
+  ttl_minutes: number;
+  pending_dispatches: number;
+  active_units: number;
+  uav_units: Array<{
+    id: string;
+    name: string;
+    status: string;
+    source: string;
+    verified: boolean;
+    active: boolean;
+  }>;
+  last_dispatch: DroneDispatchSummary | null;
+  errors: string[];
+  notes: string[];
+}
+
+export interface DroneDispatchResult {
+  dispatch: DroneDispatchSummary;
+  duplicate: boolean;
+  effective_status: string;
+}
+
 export interface AgentRun {
   run_id: string;
   mode: 'LOCAL_DEMO' | 'AGENTARTS_CONNECTED' | 'AGENTARTS_UNAVAILABLE';
@@ -341,6 +389,17 @@ export const mvpApi = {
   workOrders: (status?: string) =>
     client.get<{ work_orders: WorkOrder[] }>('/mvp/work-orders', { params: status ? { status } : {} })
       .then(response => response.data.work_orders),
+  droneBridgeStatus: () =>
+    client.get<DroneBridgeStatus>('/mvp/drone-bridge/status').then(response => response.data),
+  droneDispatches: (limit = 10) =>
+    client.get<{ dispatches: DroneDispatchSummary[] }>('/mvp/drone-bridge/dispatches', { params: { limit } })
+      .then(response => response.data.dispatches),
+  droneDispatch: (workOrderId: string, uavUnitId?: string) =>
+    client.post<DroneDispatchResult>(
+      '/mvp/drone-bridge/dispatches',
+      { work_order_id: workOrderId, ...(uavUnitId ? { uav_unit_id: uavUnitId } : {}) },
+      { headers: adminHeaders() },
+    ).then(response => response.data),
   staff: () => client.get<{ staff: StaffMember[] }>('/mvp/staff').then(response => response.data.staff),
   approve: (id: string, note: string) =>
     client.post(`/mvp/work-orders/${id}/approve`, { note }, { headers: adminHeaders() }).then(response => response.data.work_order as WorkOrder),

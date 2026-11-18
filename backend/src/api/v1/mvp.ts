@@ -52,11 +52,14 @@ export function createMvpRouter(): Router {
         const status = Number.isInteger(error.status) && error.status! >= 400 && error.status! < 500
           ? error.status!
           : 500;
-        const code = status === 409
+        const explicitCode = typeof (error as { code?: unknown }).code === 'string'
+          ? (error as unknown as { code: string }).code
+          : null;
+        const code = explicitCode ?? (status === 409
           ? (error.name === 'IdempotencyConflictError'
             ? 'IDEMPOTENCY_CONFLICT'
             : error.name === 'ResourceUnavailableError' ? 'RESOURCE_UNAVAILABLE' : 'CONFLICT')
-          : 'MVP_API_ERROR';
+          : 'MVP_API_ERROR');
         const exposeDetail = securityConfig().errorDetail;
         fail(res, status, code, status >= 500 && !exposeDetail ? '服务器内部错误' : error.message);
       });
@@ -369,6 +372,40 @@ export function createMvpRouter(): Router {
   router.post('/work-orders/:id/cancel', ...operatorOnly, handle((req, res) => {
     const reason = typeof req.body?.reason === 'string' ? req.body.reason : '';
     res.json({ work_order: getMvpService().ops.cancel(paramOf(req, 'id'), actorOf(req), reason) });
+  }));
+
+  // ---------------------------------------------------------------- 无人机桥接
+  // 只读状态与派发记录不含端点凭据；派发包只能由管理员/安全运维显式生成。
+  router.get('/drone-bridge/status', handle((_req, res) => {
+    res.json(getMvpService().droneBridge.status());
+  }));
+
+  router.get('/drone-bridge/dispatches', handle((req, res) => {
+    const limit = req.query.limit ? Number(req.query.limit) : 20;
+    res.json({ dispatches: getMvpService().droneBridge.list(Number.isFinite(limit) ? limit : 20) });
+  }));
+
+  const DroneDispatchBody = z.object({
+    work_order_id: z.string().min(1),
+    uav_unit_id: z.string().min(1).optional(),
+    idempotency_key: z.string().min(1).max(100).optional(),
+  });
+  router.post('/drone-bridge/dispatches', ...operatorOnly, handle(async (req, res) => {
+    const parsed = DroneDispatchBody.safeParse(req.body);
+    if (!parsed.success) {
+      fail(res, 400, 'INVALID_BODY', '无人机派发参数格式不正确', parsed.error.flatten());
+      return;
+    }
+    const result = await getMvpService().droneBridge.dispatch(
+      parsed.data.work_order_id,
+      actorOf(req),
+      {
+        uav_unit_id: parsed.data.uav_unit_id,
+        idempotency_key: parsed.data.idempotency_key,
+      },
+    );
+    const status = result.dispatch.status === 'FAILED' ? 502 : result.duplicate ? 200 : 201;
+    res.status(status).json(result);
   }));
 
   // ---------------------------------------------------------------- 运维

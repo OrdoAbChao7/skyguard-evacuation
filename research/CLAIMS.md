@@ -259,3 +259,33 @@
 5. C79 必须写「离线膝点上界」与「约束选择退回无承诺」；
 6. C80 必须同时报告可用率损失与 fail-closed 语义；
 7. C82 必须写「Docker 未验证、AgentArts stub、无 NPU」。
+
+## V7.6 新增主张（2026-11-18）
+
+> 证据：`backend/tests/safety/streams.test.ts`、`live-video-provider.test.ts`、`safety-api-stream.test.ts`；
+> 本机 HTTP 网络流由真实生成的 AVI 提供，不是 RTSP 摄像头。
+
+| # | 主张 | 证据 | 状态 | 边界 |
+| --- | --- | --- | --- | --- |
+| C84 | 实时视频流适配器可读取 RTSP/RTMP/HTTP(S) 网络流、写入 `live_video` 观测，并在断流/配置错误/禁用时明确拒绝 | `crowd_service.py --stream`；`providers/live-video.ts`；`streams.ts`；3 组测试（注册表、provider、HTTP API）；本机 HTTP 网络流实测 | PARTIALLY_SUPPORTED | **本机验证的是 HTTP 网络流**；真实 RTSP 摄像头未验证；无精度/MAE 主张；浏览器不能直接播放 RTSP；CPU OpenCV，不是昇腾 |
+
+### V7.6 引用规则
+
+1. C84 必须同时写「HTTP 网络流验证、真实 RTSP 摄像头未验证、无精度主张」；
+2. 不得把实时流适配器写成「已接入真实摄像头」或「实时监测」；
+3. 不得把 `live_video` 观测写成绕过四态/独立校验的旁路。
+
+## V7.7 新增主张（2026-11-18）
+
+> 证据：`backend/tests/mvp/drone-bridge.test.ts`；HTTP 测试使用本机 mock 端点，不是真实无人机平台。
+
+| # | 主张 | 证据 | 状态 | 边界 |
+| --- | --- | --- | --- | --- |
+| C85 | 已审批、已指派给具备 `uav_operation` 技能人员的 `uav_observation` 工单，可由授权人工显式生成无人机观察派发包；默认 outbox 不联网，HTTP 模式可发送观察任务请求；Agent/staff、未审批、无技能人员、无可用单位、重复派发均显式拒绝 | `drone-bridge.ts`；`POST/GET /api/v1/mvp/drone-bridge/*`；10 项测试（权限、审批、技能、单位、幂等、HTTP 成功/失败、持久化、API）；本机 mock HTTP 端点 | PARTIALLY_SUPPORTED | **真实无人机平台/设备未验证**；默认 `simulated=true`，`real_hardware_verified=false`；派发包不含航点/速度/控制指令；不能声称“已控制无人机”；观察回传仍走人工工单反馈 |
+
+### V7.7 引用规则
+
+1. C85 必须同时写「本机 mock 端点验证、真实无人机平台未验证、默认模拟、无飞控指令」；
+2. 不得把桥接写成「无人机自动派发」「自主起飞」或「已接入真实无人机平台」；
+3. 不得把 `uav_observation` 工单反馈写成真实无人机测量精度；
+4. 不得删除“人工审批 + 持证操作员执行”的边界。

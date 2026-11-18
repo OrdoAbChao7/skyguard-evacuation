@@ -14,6 +14,9 @@
  *                输出 video-admin.webm / video-staff.webm；需要 Playwright 自带 ffmpeg。
  * --slowmo=<ms>  放慢每一步操作，便于录制回看（不影响断言与截图）。
  *
+ * 录制前建议用 `RATE_LIMIT_MAX=5000 npm run dev` 启动（仅本地录制；生产保持默认），
+ * 并关闭其它正在轮询的大屏标签，避免画面出现“请求过于频繁”的红色错误条。
+ *
  * 该脚本会重置并运行一次合成仿真；只操作演示数据，不触碰真实数据。
  */
 import fs from 'node:fs';
@@ -94,6 +97,7 @@ const summary = {
   rate_limited: 0,
   page_errors: [],
   video: videoEnabled ? { enabled: true, files: [], errors: [] } : { enabled: false },
+  clean: false,
   passed: false,
 };
 
@@ -131,6 +135,10 @@ try {
   await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 15000 });
   summary.steps.push({ step: 'admin_login', ok: true });
 
+  // 先清空上一次运行留下的观测，再进入大屏，保证首帧是真正的冷启动。
+  const reset = await api(page, '/api/v1/mvp/reset', { method: 'POST', body: '{}' });
+  if (!reset.ok) throw new Error(`重置 MVP 失败：${reset.status} ${reset.text}`);
+
   await page.goto(`${frontendUrl}/`, { waitUntil: 'networkidle' });
   await page.waitForSelector('.cc-topbar', { timeout: 15000 });
   await page.waitForFunction(() => !document.body.innerText.includes('无法加载场景'), null, { timeout: 15000 });
@@ -138,8 +146,6 @@ try {
   await page.screenshot({ path: shotPath('01-command-center.png'), fullPage: false });
   summary.screenshots.push('01-command-center.png');
 
-  const reset = await api(page, '/api/v1/mvp/reset', { method: 'POST', body: '{}' });
-  if (!reset.ok) throw new Error(`重置 MVP 失败：${reset.status} ${reset.text}`);
   const start = await api(page, '/api/v1/mvp/simulation/start', {
     method: 'POST',
     body: JSON.stringify({ autoplay: true }),
@@ -238,7 +244,11 @@ try {
   summary.screenshots.push('05-simulation-finished.png');
   summary.steps.push({ step: 'simulation_finished', ok: true, state: finished.state });
 
-  summary.passed = summary.page_errors.length === 0;
+  // 限流会在画面里留下“请求过于频繁”的红色错误条，录制素材应视为不合格。
+  summary.clean = summary.page_errors.length === 0
+    && summary.console_errors.length === 0
+    && summary.rate_limited === 0;
+  summary.passed = summary.clean;
 } catch (error) {
   summary.error = error instanceof Error ? error.message : String(error);
 } finally {

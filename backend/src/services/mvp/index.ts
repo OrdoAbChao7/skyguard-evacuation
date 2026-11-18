@@ -12,6 +12,7 @@ import { loadSafetyScenario } from '../safety/scenario';
 import { getSafetyService } from '../safety';
 import { PredictionService, type PredictionResult } from './prediction';
 import { OpsService, WorkOrderCreateSchema, type OpsActor } from './ops';
+import { DroneBridgeService } from './drone-bridge';
 import { ReplayService, allCameraHealth, replayObservationInputs, type ReplayStatus } from './ingest';
 import { createToolDefinitions, ToolRegistry, type ToolContext } from './tools';
 import { AgentService, type AgentRun } from './agent';
@@ -28,6 +29,7 @@ import { SimulationService, type SimulationStatus } from './simulation';
 export * from './prediction';
 export * from './voi';
 export * from './ops';
+export * from './drone-bridge';
 export * from './ingest';
 export * from './tools';
 export * from './agent';
@@ -71,6 +73,7 @@ export class MvpService {
   readonly audit: AuditLog;
   readonly prediction: PredictionService;
   readonly ops: OpsService;
+  readonly droneBridge: DroneBridgeService;
   readonly replay: ReplayService;
   readonly registry: ToolRegistry;
   readonly agent: AgentService;
@@ -119,6 +122,11 @@ export class MvpService {
       fn => this.withTransaction(fn),
       () => this.assertStateWritable(),
     );
+    this.droneBridge = new DroneBridgeService({
+      scenario: this.scenario,
+      ops: this.ops,
+      audit: this.audit,
+    });
 
     const context: ToolContext = {
       scenario: this.scenario,
@@ -758,6 +766,7 @@ export class MvpService {
     try {
       this.safety.reset(actor);
       this.ops.reset();
+      this.droneBridge.reset();
       this.replay.reset();
       this.runs.clear();
       this.runOrder = [];

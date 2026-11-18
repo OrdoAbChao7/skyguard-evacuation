@@ -443,6 +443,18 @@
   font-weight: 600;
 }
 
+.cc-root .mvp-drone-bridge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel-2) 30%, transparent);
+}
+
 .cc-root .mvp-staff-session {
   display: flex;
   align-items: center;
