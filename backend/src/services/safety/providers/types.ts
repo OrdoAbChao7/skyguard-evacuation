@@ -14,7 +14,7 @@ export interface ProviderCheck {
 
 export interface ProviderStatus {
   id: string;
-  kind: 'simulation' | 'recorded_video' | 'ascend';
+  kind: 'simulation' | 'recorded_video' | 'live_video' | 'ascend';
   /** 该 provider 产出的观测在系统中的来源标签。 */
   source: ObservationSource;
   available: boolean;
@@ -25,11 +25,26 @@ export interface ProviderStatus {
   notes: string[];
 }
 
+export interface NormalizedRoi {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 export interface CrowdInferenceRequest {
   region: Region;
   videoPath?: string;
+  /** 实时流模式下由服务端注册表解析，调用方不能直接传 URL 到 HTTP API。 */
+  streamId?: string;
+  streamUrl?: string;
+  roi?: NormalizedRoi;
   maxFrames?: number;
   sampleEvery?: number;
+  maxSeconds?: number;
+  openTimeoutMs?: number;
+  readTimeoutMs?: number;
+  reconnectAttempts?: number;
   observedAt?: Date;
 }
 

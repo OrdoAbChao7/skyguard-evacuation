@@ -190,7 +190,7 @@ export interface AuditEntry {
 
 export interface ProviderStatus {
   id: string;
-  kind: 'simulation' | 'recorded_video' | 'ascend';
+  kind: 'simulation' | 'recorded_video' | 'live_video' | 'ascend';
   source: string;
   available: boolean;
   verified_on_this_host: boolean;

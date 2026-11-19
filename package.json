@@ -15,6 +15,7 @@
     "bench": "npm run bench:safety --prefix backend",
     "dev": "node scripts/dev.mjs",
     "demo:mvp": "npm run demo:mvp --prefix backend",
+    "simulate:crowd": "npm run simulate:crowd --prefix backend --",
     "experiments:mvp": "npm run experiments:mvp --prefix backend",
     "mcp": "npm run mcp --prefix backend",
     "benchmark:competition": "npm run benchmark:competition --prefix backend",

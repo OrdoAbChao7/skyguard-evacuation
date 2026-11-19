@@ -9,6 +9,7 @@ import path from 'node:path';
 import { loadSafetyScenario } from './scenario';
 import { SafetyDecisionService } from './decision-service';
 import { RecordedVideoCrowdProvider } from './providers/video';
+import { LiveVideoCrowdProvider } from './providers/live-video';
 import { AscendCrowdProvider } from './providers/ascend';
 
 export * from './types';
@@ -19,10 +20,13 @@ export { decideSafetyState } from './state-machine';
 export { planEvacuation } from './planning/evacuation-planner';
 export { parseIncidentText } from './nl-incident';
 export { RecordedVideoCrowdProvider } from './providers/video';
+export { LiveVideoCrowdProvider } from './providers/live-video';
 export { AscendCrowdProvider } from './providers/ascend';
 export { SimulationCrowdProvider } from './providers/simulation';
+export { getStreamRegistry, loadStreamRegistry, findStreamDefinition, redactStreamUrl, sanitizeStreamText } from './streams';
 
 const videoProvider = new RecordedVideoCrowdProvider();
+const liveVideoProvider = new LiveVideoCrowdProvider();
 const ascendProvider = new AscendCrowdProvider();
 
 let instance: SafetyDecisionService | null = null;
@@ -63,5 +67,5 @@ export function resetSafetyServiceForTests(): void {
 }
 
 export function getProviders() {
-  return { video: videoProvider, ascend: ascendProvider };
+  return { video: videoProvider, live: liveVideoProvider, ascend: ascendProvider };
 }

@@ -13,7 +13,7 @@
 | C06 | 预测在突增场景仍脆弱 | 实验 B：自适应 MAE 25.1/59.5/79.7；覆盖率 91%/84%/79% | 已验证（局限） | 不得声称真实精度 |
 | C07 | MCP 15 工具可被标准客户端调用 | `mcp.test.ts` 官方 SDK 客户端 | 已验证 | AgentArts 是否支持 stdio MCP 未确认 |
 | C08 | AgentArts 适配器按官方运行时契约调用、可探测、失败不伪装、有界多步 | `agentarts.test.ts`（官方路径/会话头/`query`+`inputs`/`data.text`）、`agentarts-runtime.test.ts`（多步/重复调用/等待人工） | 已验证（本地 stub） | **未实机连接**；无真实租户与平台 Trace |
-| C09 | 昇腾边云路径已实现 | 仅 provider 探针与外部推理契约 | 未验证 | 无 NPU/CANN/`.om` |
+| C09 | 昇腾边云路径已实现 | provider 探针 + 外部推理契约 + `POST /api/v1/safety/observations/ascend` 写观测入口；3 项 API 测试（成功接线/不可用 fail-closed/权限参数） | 未验证 | 无 NPU/CANN/`.om`；`verified_on_this_host` 仍为 false |
 | C10 | 无人机观察已实现 | 工单请求 + 审批 + 模拟反馈 | 部分验证 | 无真实无人机/飞控 |
 | C11 | 人群计数精度（公开数据集） | ShanghaiTech Part A test，P2PNet 官方权重：MAE 57.24/RMSE 96.04/NAE 0.1319；二次复跑一致 | PARTIALLY_SUPPORTED | 公开数据集/官方权重，非自训练模型或真实场馆；许可未核验 |
 | C12 | 已接入华为云 AgentArts | 无租户/凭证/官方 API 文档 | 禁止表述 | 只能写适配器与 Runbook |
@@ -259,3 +259,49 @@
 5. C79 必须写「离线膝点上界」与「约束选择退回无承诺」；
 6. C80 必须同时报告可用率损失与 fail-closed 语义；
 7. C82 必须写「Docker 未验证、AgentArts stub、无 NPU」。
+
+## V7.6 新增主张（2026-11-18）
+
+> 证据：`backend/tests/safety/streams.test.ts`、`live-video-provider.test.ts`、`safety-api-stream.test.ts`；
+> 本机 HTTP 网络流由真实生成的 AVI 提供，不是 RTSP 摄像头。
+
+| # | 主张 | 证据 | 状态 | 边界 |
+| --- | --- | --- | --- | --- |
+| C84 | 实时视频流适配器可读取 RTSP/RTMP/HTTP(S) 网络流、写入 `live_video` 观测，并在断流/配置错误/禁用时明确拒绝 | `crowd_service.py --stream`；`providers/live-video.ts`；`streams.ts`；3 组测试（注册表、provider、HTTP API）；本机 HTTP 网络流实测 | PARTIALLY_SUPPORTED | **本机验证的是 HTTP 网络流**；真实 RTSP 摄像头未验证；无精度/MAE 主张；浏览器不能直接播放 RTSP；CPU OpenCV，不是昇腾 |
+
+### V7.6 引用规则
+
+1. C84 必须同时写「HTTP 网络流验证、真实 RTSP 摄像头未验证、无精度主张」；
+2. 不得把实时流适配器写成「已接入真实摄像头」或「实时监测」；
+3. 不得把 `live_video` 观测写成绕过四态/独立校验的旁路。
+
+## V7.7 新增主张（2026-11-18）
+
+> 证据：`backend/tests/mvp/drone-bridge.test.ts`；HTTP 测试使用本机 mock 端点，不是真实无人机平台。
+
+| # | 主张 | 证据 | 状态 | 边界 |
+| --- | --- | --- | --- | --- |
+| C85 | 已审批、已指派给具备 `uav_operation` 技能人员的 `uav_observation` 工单，可由授权人工显式生成无人机观察派发包；默认 outbox 不联网，HTTP 模式可发送观察任务请求；Agent/staff、未审批、无技能人员、无可用单位、重复派发均显式拒绝 | `drone-bridge.ts`；`POST/GET /api/v1/mvp/drone-bridge/*`；10 项测试（权限、审批、技能、单位、幂等、HTTP 成功/失败、持久化、API）；本机 mock HTTP 端点 | PARTIALLY_SUPPORTED | **真实无人机平台/设备未验证**；默认 `simulated=true`，`real_hardware_verified=false`；派发包不含航点/速度/控制指令；不能声称“已控制无人机”；观察回传仍走人工工单反馈 |
+
+### V7.7 引用规则
+
+1. C85 必须同时写「本机 mock 端点验证、真实无人机平台未验证、默认模拟、无飞控指令」；
+2. 不得把桥接写成「无人机自动派发」「自主起飞」或「已接入真实无人机平台」；
+3. 不得把 `uav_observation` 工单反馈写成真实无人机测量精度；
+4. 不得删除“人工审批 + 持证操作员执行”的边界。
+
+## V7.8 新增主张（2026-11-18）
+
+> 证据：`backend/tests/simulation/crowd-flow.test.ts`、`backend/tests/mvp/crowd-simulation-api.test.ts`；
+> 数据由 `crowd-flow-v1` 算法在合成场景 `hankou-mvp.json` 上生成，不是实测，也不是视频推理结果。
+
+| # | 主张 | 证据 | 状态 | 边界 |
+| --- | --- | --- | --- | --- |
+| C86 | 场景驱动的人群流仿真可在 44 区域 / 78 通道 / 11 出口拓扑上生成逐分钟人数序列，并满足人数守恒、通道/出口容量与未知容量排除等硬约束；同一 seed 可复现；合成观测可经既有安全链路重算 | `services/simulation/crowd-flow.ts`；`npm run simulate:crowd`；`POST /api/v1/mvp/simulation/crowd-flow`；8 项引擎测试 + 1 项 API 测试；本机实测 132 条观测、守恒通过、状态 NORMAL、校验通过 | **HEURISTIC（合成，未标定）** | 不是经验证的人群动力学模型；面积/容量/阈值/拥堵参数未现场标定；未建模恐慌、逆行、跌倒、天气与出口外空间；不得声称真实精度、真实疏散时间或真实演练效果；仿真不参与安全判定 |
+
+### V7.8 引用规则
+
+1. C86 必须同时写「合成数据、启发式模型、未现场标定、不是实测」；
+2. 不得把仿真结果写成「真实演练」「实测疏散时间」「预测精度」或「容量设计依据」；
+3. 不得把 `source: 'simulation'` 的观测写成真实摄像头/视频推理结果；
+4. 必须说明安全结论仍由独立校验器与四态状态机给出，仿真本身不做安全判定。

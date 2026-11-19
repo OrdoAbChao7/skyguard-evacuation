@@ -105,6 +105,107 @@ export interface WorkOrder {
   history: Array<{ ts: string; status: WorkOrderStatus; actor: string; role: string; note?: string }>;
 }
 
+export interface DroneDispatchSummary {
+  dispatch_id: string;
+  work_order_id: string;
+  status: 'QUEUED' | 'SENT' | 'FAILED';
+  effective_status: 'QUEUED' | 'SENT' | 'FAILED' | 'EXPIRED';
+  transport: 'outbox' | 'http';
+  simulated: boolean;
+  delivered: boolean;
+  created_at: string;
+  expires_at: string;
+  created_by: { username: string; role: string };
+  uav_unit: { id: string; name: string; verified: boolean };
+  assigned_operator: { staff_id: string; name: string };
+  external_id: string | null;
+  error: string | null;
+}
+
+export interface DroneBridgeStatus {
+  mode: 'outbox' | 'http' | 'disabled';
+  configured: boolean;
+  transport: 'outbox' | 'http' | null;
+  simulated: boolean;
+  verified_on_this_host: boolean;
+  real_hardware_verified: boolean;
+  transport_verified: boolean;
+  endpoint: string | null;
+  ttl_minutes: number;
+  pending_dispatches: number;
+  active_units: number;
+  uav_units: Array<{
+    id: string;
+    name: string;
+    status: string;
+    source: string;
+    verified: boolean;
+    active: boolean;
+  }>;
+  last_dispatch: DroneDispatchSummary | null;
+  errors: string[];
+  notes: string[];
+}
+
+export interface DroneDispatchResult {
+  dispatch: DroneDispatchSummary;
+  duplicate: boolean;
+  effective_status: string;
+}
+
+export interface CrowdFlowRegionSample {
+  region_id: string;
+  region_name: string;
+  count: number;
+  density: number;
+  confidence: number;
+  inflow: number;
+  outflow: number;
+  stranded: boolean;
+  capacity_limited: boolean;
+}
+
+export interface CrowdFlowSummary {
+  algorithm: string;
+  scenario_id: string;
+  scenario_version: string;
+  preset: 'normal' | 'gate_closure' | 'surge';
+  seed: number;
+  minutes: number;
+  step_seconds: number;
+  initial_total: number;
+  arrivals_total: number;
+  evacuated: number;
+  remaining_inside: number;
+  in_transit: number;
+  stranded: number;
+  conservation_ok: boolean;
+  peak_density: { region_id: string; region_name: string; density: number; count: number; at: string } | null;
+  peak_region_count: { region_id: string; region_name: string; count: number; at: string } | null;
+  peak_in_transit: number;
+  congested_samples: number;
+  exit_totals: Record<string, number>;
+  unresolved_regions: Array<{ region_id: string; count: number; reason: string }>;
+  events: string[];
+  assumptions: string[];
+}
+
+export interface CrowdFlowSimulationResult {
+  run_id: string;
+  summary: CrowdFlowSummary;
+  timeline: Array<{
+    minute: number;
+    at: string;
+    totals: { inside: number; in_transit: number; evacuated: number; stranded: number; arrivals: number };
+    events: string[];
+  }>;
+  latest_regions: CrowdFlowRegionSample[];
+  observations_ingested: number;
+  state: string;
+  plan_id?: string;
+  validation_valid?: boolean;
+}
+
 export interface AgentRun {
   run_id: string;
   mode: 'LOCAL_DEMO' | 'AGENTARTS_CONNECTED' | 'AGENTARTS_UNAVAILABLE';
@@ -341,6 +442,28 @@ export const mvpApi = {
   workOrders: (status?: string) =>
     client.get<{ work_orders: WorkOrder[] }>('/mvp/work-orders', { params: status ? { status } : {} })
       .then(response => response.data.work_orders),
+  droneBridgeStatus: () =>
+    client.get<DroneBridgeStatus>('/mvp/drone-bridge/status').then(response => response.data),
+  droneDispatches: (limit = 10) =>
+    client.get<{ dispatches: DroneDispatchSummary[] }>('/mvp/drone-bridge/dispatches', { params: { limit } })
+      .then(response => response.data.dispatches),
+  droneDispatch: (workOrderId: string, uavUnitId?: string) =>
+    client.post<DroneDispatchResult>(
+      '/mvp/drone-bridge/dispatches',
+      { work_order_id: workOrderId, ...(uavUnitId ? { uav_unit_id: uavUnitId } : {}) },
+      { headers: adminHeaders() },
+    ).then(response => response.data),
+  runCrowdFlowSimulation: (options: {
+    minutes?: number;
+    seed?: number;
+    preset?: 'normal' | 'gate_closure' | 'surge';
+    ingest?: boolean;
+  } = {}) =>
+    client.post<CrowdFlowSimulationResult>(
+      '/mvp/simulation/crowd-flow',
+      options,
+      { headers: adminHeaders() },
+    ).then(response => response.data),
   staff: () => client.get<{ staff: StaffMember[] }>('/mvp/staff').then(response => response.data.staff),
   approve: (id: string, note: string) =>
     client.post(`/mvp/work-orders/${id}/approve`, { note }, { headers: adminHeaders() }).then(response => response.data.work_order as WorkOrder),

@@ -61,6 +61,9 @@ export default function CommandCenterPage() {
     target: '',
     description: '',
   });
+  // 实时流适配器状态来自 /safety/providers；浏览器不能直接播放 RTSP，
+  // 这里只说明服务端推理链路是否可用，不伪装成可播放画面。
+  const liveProvider = providers.find(provider => provider.kind === 'live_video');
 
   const refresh = useCallback(async () => {
     try {
@@ -381,7 +384,7 @@ export default function CommandCenterPage() {
           <h4 className="cc-subtitle">独立校验结果</h4>
           <ValidationPanel validation={status.validation} candidateShown={isCandidate} />
           <h4 className="cc-subtitle">风险告警 · {status.incidents.length} 条</h4><div className="cc-alert-summary">{status.incidents.length ? status.incidents.slice(0,4).map(incident => <button key={incident.id} type="button" onClick={() => { const c = status.corridors.find(item => incident.affected.corridor_ids.includes(item.id)); const e = status.exits.find(item => incident.affected.exit_ids.includes(item.id)); const id = incident.affected.region_ids[0] ?? c?.from_region_id ?? e?.region_id; if (id) selectRegion(id); }}><span className={`cc-alert-dot severity-${incident.severity}`} /><strong>{incident.type}</strong><span>{formatAffected(incident.affected)}</span><small>{incident.status} · {formatTime(incident.reported_at)}</small></button>) : <p className="cc-muted">暂无事件告警</p>}</div>
-          <div className="cc-video"><h4>视频与感知画面 <span className="cc-muted">视频源未接入</span></h4><div className="cc-video-empty"><span className="cc-video-signal" aria-hidden="true"><EyeOutlined /></span><strong>{status.regions.find(region => region.id === videoRegion)?.name ?? '请选择监测区域'}</strong><span>无可播放视频 · 非实时画面</span><small className="cc-video-offline">SIGNAL OFFLINE</small></div><div className="cc-video-thumbs" aria-label="选择监测区域">{status.regions.slice(0,4).map(region => <button type="button" key={region.id} className={videoRegion === region.id ? 'selected' : ''} aria-pressed={videoRegion === region.id} onClick={() => setVideoRegion(region.id)}><EyeOutlined /><span>{region.name}</span><small>未接入</small></button>)}</div><div className="cc-video-foot">来源：未配置视频流 · 时间：—</div></div>
+          <div className="cc-video"><h4>视频与感知画面 <span className="cc-muted">{liveProvider?.verified_on_this_host ? '实时流本机已跑通' : liveProvider?.available ? '实时流适配器可用' : '视频源未接入'}</span></h4><div className="cc-video-empty"><span className="cc-video-signal" aria-hidden="true"><EyeOutlined /></span><strong>{status.regions.find(region => region.id === videoRegion)?.name ?? '请选择监测区域'}</strong><span>{liveProvider?.available ? '服务端可读 RTSP/RTMP · 浏览器不回放 RTSP' : '无可播放视频 · 非实时画面'}</span><small className={liveProvider?.available ? 'cc-video-online' : 'cc-video-offline'}>{liveProvider?.available ? 'STREAM ADAPTER READY' : 'SIGNAL OFFLINE'}</small></div><div className="cc-video-thumbs" aria-label="选择监测区域">{status.regions.slice(0,4).map(region => <button type="button" key={region.id} className={videoRegion === region.id ? 'selected' : ''} aria-pressed={videoRegion === region.id} onClick={() => setVideoRegion(region.id)}><EyeOutlined /><span>{region.name}</span><small>未接入</small></button>)}</div><div className="cc-video-foot">{liveProvider?.available ? '来源：实时流适配器（OpenCV/FFmpeg） · 浏览器播放需 HLS/WebRTC 网关' : '来源：未配置视频流 · 时间：—'}</div></div>
 
           <h4 className="cc-subtitle">出口分配</h4>
           <ExitAllocation status={status} plan={displayPlan} />

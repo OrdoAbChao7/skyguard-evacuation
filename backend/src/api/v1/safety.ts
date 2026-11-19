@@ -9,16 +9,18 @@
 import { Router, type NextFunction, type Request, type Response } from 'express';
 import { z } from 'zod';
 import { verifyToken } from './auth';
-import { EvacuationPlanSchema } from '../../services/safety/types';
+import { EvacuationPlanSchema, type Region } from '../../services/safety/types';
 import { listScenarioFiles, getScenarioFileName } from '../../services/safety/scenario';
 import { resetMvpServiceForTests } from '../../services/mvp';
 import {
   getProviders,
   getSafetyService,
+  getStreamRegistry,
   parseIncidentText,
   resetSafetyServiceForTests,
+  sanitizeStreamText,
 } from '../../services/safety';
-import { ProviderUnavailableError } from '../../services/safety/providers/types';
+import { ProviderUnavailableError, type CrowdInferenceProvider } from '../../services/safety/providers/types';
 import { IncidentTransitionError } from '../../services/safety/incidents';
 import { buildCongestionPreview, buildMpcPreview } from '../../services/v70/research';
 import { shadowConfig, shadowComparisonsOf } from '../../services/safety/planning/v7-adapter';
@@ -64,6 +66,67 @@ function fail(res: Response, status: number, code: string, message: string, deta
   res.status(status).json({ error: { code, message, detail } });
 }
 
+interface InferenceRouteInput {
+  videoPath: string;
+  maxFrames?: number;
+  sampleEvery?: number;
+  recompute?: boolean;
+}
+
+/**
+ * 视频类推理的统一写观测路径。
+ *
+ * CPU 视频与昇腾 NPU 共用同一套可信度、时效、独立校验与四态链路；
+ * provider 不可用时返回 503，不写 0 人观测冒充安全。
+ */
+async function runInferenceObservation(
+  req: Request,
+  res: Response,
+  provider: CrowdInferenceProvider,
+  region: Region,
+  input: InferenceRouteInput,
+  trigger: string,
+): Promise<void> {
+  const service = getSafetyService();
+  try {
+    const inference = await provider.infer({
+      region,
+      videoPath: input.videoPath,
+      maxFrames: input.maxFrames,
+      sampleEvery: input.sampleEvery,
+    });
+    service.setInferenceHealth(true);
+    const observation = service.ingestObservation(
+      {
+        regionId: region.id,
+        count: inference.count,
+        confidence: inference.confidence,
+        source: 'recorded_video',
+        provider: inference.provider,
+        modelVersion: inference.modelVersion,
+        calibrationVersion: inference.calibrationVersion,
+        evidence: { ...inference.evidence, warnings: inference.warnings },
+      },
+      actorOf(req),
+    );
+    const result = input.recompute === false ? undefined : service.recompute(actorOf(req), trigger);
+    res.status(201).json({
+      observation,
+      inference,
+      state: (result?.snapshot ?? service.getStatus().state).state,
+      plan_id: result?.plan?.plan_id,
+      validation_valid: result?.validation?.valid,
+    });
+  } catch (error) {
+    if (error instanceof ProviderUnavailableError) {
+      service.setInferenceHealth(false, error.message);
+      fail(res, 503, 'PROVIDER_UNAVAILABLE', error.message, error.checks);
+      return;
+    }
+    fail(res, 500, 'VIDEO_INFERENCE_FAILED', (error as Error).message);
+  }
+}
+
 const ObservationBody = z.object({
   region_id: z.string().min(1),
   count: z.number().nonnegative(),
@@ -90,6 +153,22 @@ const VideoBody = z.object({
   video_path: z.string().min(1),
   max_frames: z.number().int().positive().max(2000).optional(),
   sample_every: z.number().int().positive().max(300).optional(),
+  recompute: z.boolean().optional(),
+});
+
+const AscendBody = z.object({
+  region_id: z.string().min(1),
+  video_path: z.string().min(1),
+  max_frames: z.number().int().positive().max(2000).optional(),
+  recompute: z.boolean().optional(),
+});
+
+const StreamBody = z.object({
+  /** 只接受服务端注册表中的 stream_id；不接受 URL。 */
+  stream_id: z.string().min(1),
+  max_frames: z.number().int().positive().max(600).optional(),
+  sample_every: z.number().int().positive().max(60).optional(),
+  max_seconds: z.number().positive().max(120).optional(),
   recompute: z.boolean().optional(),
 });
 
@@ -195,20 +274,45 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
 
   router.get('/providers', async (_req, res) => {
     try {
-      const { video, ascend } = getProviders();
+      const { video, live, ascend } = getProviders();
       const service = getSafetyService();
-      const [videoStatus, ascendStatus, simulationStatus] = await Promise.all([
+      const [videoStatus, liveStatus, ascendStatus, simulationStatus] = await Promise.all([
         video.status(),
+        live.status(),
         ascend.status(),
         service.simulationProvider.status(),
       ]);
       res.json({
-        providers: [simulationStatus, videoStatus, ascendStatus],
+        providers: [simulationStatus, videoStatus, liveStatus, ascendStatus],
         inference_health: service.getStatus().inference_health,
       });
     } catch (error) {
       fail(res, 500, 'PROVIDER_STATUS_FAILED', (error as Error).message);
     }
+  });
+
+  /** 实时流配置元数据；不返回完整 URL 或凭据。 */
+  router.get('/streams', (_req, res) => {
+    const registry = getStreamRegistry();
+    const scenario = getSafetyService().getScenario();
+    res.json({
+      configured: registry.streams.length > 0,
+      source: registry.source,
+      streams: registry.streams.map(stream => {
+        const region = scenario.regions.find(item => item.id === stream.regionId);
+        return {
+          id: stream.id,
+          label: stream.label,
+          region_id: stream.regionId,
+          region_name: region?.name ?? null,
+          enabled: stream.enabled,
+          roi: stream.roi ?? null,
+          calibration_version: region?.camera.calibration_version ?? null,
+        };
+      }),
+      errors: registry.errors,
+      note: '仅返回配置元数据；完整流地址与凭据只保存在服务端，不通过 API 返回。',
+    });
   });
 
   // ------------------------------------------------------- V7 研究预览（只读）
@@ -346,12 +450,91 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
       return;
     }
     const { video } = getProviders();
+    await runInferenceObservation(req, res, video, region, {
+      videoPath: parsed.data.video_path,
+      maxFrames: parsed.data.max_frames,
+      sampleEvery: parsed.data.sample_every,
+      recompute: parsed.data.recompute,
+    }, 'observation.video');
+  });
+
+  /**
+   * 昇腾 NPU 推理观测。
+   *
+   * 调用 `SKYGUARD_ASCEND_CMD` 指定的外部推理程序处理视频；CANN、npu-smi、
+   * 推理命令或 .om 模型任一缺失都会 fail-closed 返回 503，不写 0 人观测。
+   * 推理结果仍走可信度、时效、独立校验与四态状态机，不因“用了 NPU”而提权。
+   */
+  router.post('/observations/ascend', ...writeGuard, async (req, res) => {
+    const parsed = AscendBody.safeParse(req.body);
+    if (!parsed.success) {
+      fail(res, 400, 'INVALID_INPUT', '昇腾观测参数不符合契约', parsed.error.issues.map(issue => issue.path.join('.')));
+      return;
+    }
+    const service = getSafetyService();
+    const region = service.getScenario().regions.find(item => item.id === parsed.data.region_id);
+    if (!region) {
+      fail(res, 400, 'UNKNOWN_REGION', `区域不存在：${parsed.data.region_id}`);
+      return;
+    }
+    const { ascend } = getProviders();
+    await runInferenceObservation(req, res, ascend, region, {
+      videoPath: parsed.data.video_path,
+      maxFrames: parsed.data.max_frames,
+      recompute: parsed.data.recompute,
+    }, 'observation.ascend');
+  });
+
+  /**
+   * 实时视频流观测。
+   *
+   * 调用方只提交 stream_id；URL 由服务端注册表解析，避免 SSRF 和凭据进入请求/日志。
+   * 未配置、配置无效、流被禁用、流不可读都明确失败，不返回 0 人冒充安全。
+   */
+  router.post('/observations/stream', ...writeGuard, async (req, res) => {
+    const parsed = StreamBody.safeParse(req.body);
+    if (!parsed.success) {
+      fail(res, 400, 'INVALID_INPUT', '实时流观测参数不符合契约', parsed.error.issues.map(issue => issue.path.join('.')));
+      return;
+    }
+
+    const registry = getStreamRegistry();
+    if (registry.errors.length > 0) {
+      fail(res, 503, 'STREAM_CONFIG_INVALID', '实时流配置无效，已拒绝使用', registry.errors);
+      return;
+    }
+    if (registry.streams.length === 0) {
+      fail(res, 503, 'STREAM_NOT_CONFIGURED', '尚未配置实时视频流');
+      return;
+    }
+    const stream = registry.streams.find(item => item.id === parsed.data.stream_id);
+    if (!stream) {
+      fail(res, 404, 'UNKNOWN_STREAM', `未配置该实时流：${parsed.data.stream_id}`);
+      return;
+    }
+    if (!stream.enabled) {
+      fail(res, 409, 'STREAM_DISABLED', `实时流已禁用：${stream.id}`);
+      return;
+    }
+
+    const service = getSafetyService();
+    const region = service.getScenario().regions.find(item => item.id === stream.regionId);
+    if (!region) {
+      fail(res, 400, 'UNKNOWN_REGION', `实时流绑定的区域不存在：${stream.regionId}`);
+      return;
+    }
+
+    const { live } = getProviders();
     try {
-      const inference = await video.infer({
+      const inference = await live.infer({
         region,
-        videoPath: parsed.data.video_path,
-        maxFrames: parsed.data.max_frames,
-        sampleEvery: parsed.data.sample_every,
+        streamId: stream.id,
+        streamUrl: stream.url,
+        roi: stream.roi,
+        maxFrames: parsed.data.max_frames ?? stream.maxFrames,
+        sampleEvery: parsed.data.sample_every ?? stream.sampleEvery,
+        maxSeconds: parsed.data.max_seconds ?? stream.maxSeconds,
+        reconnectAttempts: 2,
       });
       service.setInferenceHealth(true);
       const observation = service.ingestObservation(
@@ -359,7 +542,7 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
           regionId: region.id,
           count: inference.count,
           confidence: inference.confidence,
-          source: 'recorded_video',
+          source: 'live_video',
           provider: inference.provider,
           modelVersion: inference.modelVersion,
           calibrationVersion: inference.calibrationVersion,
@@ -367,10 +550,11 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
         },
         actorOf(req),
       );
-      const result = parsed.data.recompute === false ? undefined : service.recompute(actorOf(req), 'observation.video');
+      const result = parsed.data.recompute === false ? undefined : service.recompute(actorOf(req), 'observation.stream');
       res.status(201).json({
         observation,
         inference,
+        stream: { id: stream.id, label: stream.label, region_id: stream.regionId },
         state: (result?.snapshot ?? service.getStatus().state).state,
         plan_id: result?.plan?.plan_id,
         validation_valid: result?.validation?.valid,
@@ -381,7 +565,7 @@ export function createSafetyRouter(options: SafetyRouterOptions = {}): Router {
         fail(res, 503, 'PROVIDER_UNAVAILABLE', error.message, error.checks);
         return;
       }
-      fail(res, 500, 'VIDEO_INFERENCE_FAILED', (error as Error).message);
+      fail(res, 500, 'STREAM_INFERENCE_FAILED', sanitizeStreamText((error as Error).message));
     }
   });
 

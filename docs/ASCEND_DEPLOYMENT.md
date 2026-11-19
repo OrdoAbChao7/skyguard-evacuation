@@ -8,7 +8,8 @@
   - 环境探针：CANN toolkit、`npu-smi`、`SKYGUARD_ASCEND_CMD`、`SKYGUARD_ASCEND_MODEL`；
   - 外部推理契约：stdin JSON → stdout JSON，Zod 校验；
   - 不可用时抛 `ProviderUnavailableError`，不伪造设备/延迟。
-- 大屏 provider 状态会如实显示 `available=false`。
+- 写观测入口：`POST /api/v1/safety/observations/ascend`。成功后写入 `source=recorded_video` 观测并触发重算；CANN、`npu-smi`、推理命令或 `.om` 模型任一缺失返回 503，**不写 0 人观测**。
+- 大屏 provider 状态会如实显示 `available=false`；`verified_on_this_host` 在拿到实机证据前保持 `false`。
 
 ## 2. 目标架构
 
@@ -35,7 +36,25 @@
    - 输入 `{region_id, camera_id, roi, video_path, model_path, max_frames}`；
    - 输出 `{ok, count, confidence, model_version, device}`；
 6. 设置 `SKYGUARD_ASCEND_CMD` / `SKYGUARD_ASCEND_MODEL`；
-7. 调用 `GET /api/v1/safety/providers` 确认 `ascend.available=true`。
+7. 调用 `GET /api/v1/safety/providers` 确认 `ascend.available=true`；
+8. 调用 `POST /api/v1/safety/observations/ascend` 写入一次真实推理观测。
+
+```http
+POST /api/v1/safety/observations/ascend
+Authorization: Bearer <admin-or-safety-operator-jwt>
+Content-Type: application/json
+
+{
+  "region_id": "R_GATE_02_PLAZA",
+  "video_path": "/data/samples/gate-02.mp4",
+  "max_frames": 30,
+  "recompute": true
+}
+```
+
+成功返回 `201`，`observation.source=recorded_video`、`observation.provider=ascend-npu-v1`，
+`inference.evidence` 包含设备与模型路径；随后仍由可信度、时效、独立校验与四态状态机判定。
+环境未就绪返回 `503 PROVIDER_UNAVAILABLE`，不会写入观测，也不会回退成 CPU 结果冒充昇腾。
 
 ## 4. 性能与可靠性采集（未执行）
 

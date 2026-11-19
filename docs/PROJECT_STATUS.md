@@ -3,7 +3,7 @@
 > **唯一事实来源（Single Source of Truth）**：本文件描述项目当前真实状态。  
 > 研发规则与长期目标见 [`AGENTS.md`](../AGENTS.md)；安全边界见 [`LIMITATIONS.md`](LIMITATIONS.md)、[`MVP_LIMITATIONS.md`](MVP_LIMITATIONS.md)；
 > 技术主张等级见 [`research/CLAIMS.md`](../research/CLAIMS.md)。  
-> 最后核对：2026-11-14（数据来自仓库文件与脚本，不复制旧报告）。
+> 最后核对：2026-11-18（数据来自仓库文件与脚本，不复制旧报告）。
 
 ## 1. 项目定位
 
@@ -36,6 +36,9 @@ SkyGuard 是面向**大型活动散场与城市滨水空间人群疏散**场景�
 | V7.3 | 自适应稳定性/振荡惩罚/风险加权/动态容量、JSON-CSV-视频-公开-授权导入、Shadow 运营验证、AgentArts 幂等、ONNX checker/OM 元数据、系统红队 |
 | V7.4 | 执行感知承诺门控、Pareto 份额扫描、风险触发承诺释放、区域选择性承诺、Surge/regime 检测对照、标定质量（时钟/缺失/可靠性/动态计划）、生产检查与浏览器 E2E |
 | V7.5 | 低误报检测（双阈值/持续性/多传感器/SPRT/自适应 CUSUM）、区域选择性承诺、紧急状态机、多目标 Pareto、多传感器融合 fail-closed、V7.5 红队与证据 |
+| V7.6 | 系统仿真演示层、参赛提交包、实时视频流软件适配器（本机 HTTP 网络流验证；真实 RTSP 未验证） |
+| V7.7 | 无人机派发桥接（人工审批后 outbox/HTTP 观察任务请求；默认模拟，无航点/控制指令；真实平台未验证） |
+| V7.8 | 场景驱动算法人群仿真（合成数据；1 分钟离散流、容量硬约束、人数守恒；normal/gate_closure/surge；CLI + API + 前端面板；未标定） |
 
 **当前定位：Research Prototype Candidate（科研原型候选版本）+ 真实数据感知评测（单一公开数据集）+ V7.5 风险自适应研究，不是 Production Ready。**
 当前版本 `v7.5.0-research.1`（`VERSION`）；V7.2 基线仍由 `evaluation/v72/baseline_snapshot/` 固定。
@@ -155,6 +158,14 @@ SkyGuard 是面向**大型活动散场与城市滨水空间人群疏散**场景�
 - 单张图人数→区域密度必须经过面积与摄像机标定；未标定输入会被压置信度并触发 DEGRADED。
 - 单机位回放展示数据（CityStreet C3）已接入前端，但**只有展示链路**：60 帧、13 区域、无真值，
   不能用于精度评测，也不与场景的 zones/corridors/exits 对应。
+- 实时视频流软件适配器（V7.6）：`crowd_service.py --stream` + `live-video.ts` +
+  `POST /api/v1/safety/observations/stream`；API 只接受服务端注册表的 `stream_id`，
+  URL/凭据脱敏，配置错误、断流、禁用都 fail-closed。本机用 HTTP 网络流（生成视频）验证，
+  **真实 RTSP 摄像头未验证**；浏览器不能直接播放 RTSP，需要 HLS/WebRTC 网关。
+- 无人机派发桥接（V7.7）：只接受已审批、已指派给具备 `uav_operation` 技能人员的
+  `uav_observation` 工单；默认 `outbox` 只生成派发包，`http` 模式可向配置端点发送观察任务请求；
+  派发包不含航点/速度/控制指令，Agent 与 staff 不能调用。场景无人机单位为合成状态，
+  **真实无人机平台/设备未验证**。
 
 ## 5. 当前外部阻塞
 
@@ -163,12 +174,13 @@ SkyGuard 是面向**大型活动散场与城市滨水空间人群疏散**场景�
 | AgentArts 真实租户/凭证/官方 API | **未接入**；官方运行时调用契约已实现并有 stub 契约测试，无真实租户与已发布运行时 |
 | 昇腾 NPU/CANN/`.om` | **未实机**；仅探针与推理契约 |
 | 真实场馆测绘与标定人流 | **无**；场景为合成 |
+| 真实 RTSP 摄像头 | **未验证**；软件适配器已实现并用本机 HTTP 网络流测试，无真实摄像头/地址 |
 | 公开数据集评测 | **ShanghaiTech Part A 已完成**；NWPU-Crowd/UCF-QNRF/Part B 未运行；数据集许可未核验 |
 | 感知回放数据的真值标注 | **无**；CityStreet C3 派生点位无逐帧标注，不能报精度 |
 | 航拍底图许可 | **未核验**；`orthophoto-z20.jpg` 不随仓库分发，需部署方自行确认许可 |
 | Docker / CI 实机验证 | Docker daemon 未启动；CI 未在真实仓库运行 |
 | 专业消防安全评审与真实演练 | **无** |
-| AgentArts/昇腾/无人机实机结果 | **未验证**，不得对外宣称 |
+| AgentArts/昇腾/无人机实机结果 | **未验证**，不得对外宣称；无人机仅完成人工审批后的软件桥接与本地 mock 端点测试 |
 
 来源 URL 审计：38 条中 28 条可达；S15/S18 华为页面 404，8 条 403/网络失败，详见
 [`research/SOURCE_AUDIT.md`](../research/SOURCE_AUDIT.md)。
@@ -801,3 +813,37 @@ Docker daemon/CI 实跑、第三方安全评审与真实演练。
 - 已生成 `submission/SkyGuard-submission-20261114/` 与同名 zip（约 31 MB / 8.7 MB，462 个文件）；包内后端 **334/334**、前端 **17/17**、`npm run build` 通过（临时目录 + 已验证依赖，不随包分发）。
 - 提交包只保留后端证据测试与界面读取所需的最小 `evaluation/` 最终 run；开发默认口令与开发 JWT 密钥在包内已脱敏，包内不含 `.env`、`admin_config.json`、`node_modules`、审计日志或未授权图片。
 - 仍未验证：AgentArts 真实租户与 Trace、昇腾 NPU/CANN/OM、无人机、真实场馆/摄像机/授权数据、Docker/CI、第三方安全评审与真实演练。
+
+### 2026-11-18：V7.7 无人机派发桥接
+
+- 新增 [`docs/DRONE_BRIDGE.md`](DRONE_BRIDGE.md) 与 `backend/src/services/mvp/drone-bridge.ts`：仅对已审批、已指派给具备 `uav_operation` 技能人员的 `uav_observation` 工单生成派发包。
+- 默认 `outbox` 只写派发包，不联网；`http` 模式只向配置端点发送观察任务请求，不含航点/速度/控制指令；Agent 与 staff 被服务层和 API 双重拒绝。
+- 幂等键、工单占用、无人机单位占用、失败/过期语义、审计、可选 JSON 持久化已实现；HTTP 端点拒绝 userinfo、限制超时/响应体/重定向。
+- 新增 `backend/tests/mvp/drone-bridge.test.ts`（10 项）与前端桥接状态/派发按钮展示；后端 **358/358**、前端 **20/20**、两端构建通过。
+- 仍未验证：真实无人机平台/设备、真实空域审批、飞控/图传、观察回调；`real_hardware_verified` 恒为 false，默认 `simulated=true`。
+
+### 2026-11-18：V7.8 场景驱动算法人群仿真
+
+- 新增 [`docs/CROWD_SIMULATION.md`](CROWD_SIMULATION.md) 与 `backend/src/services/simulation/crowd-flow.ts`：
+  按 `hankou-mvp.json` 的 44 区域 / 78 通道 / 11 出口拓扑，用 1 分钟离散流模型生成逐区域人数序列；
+  通道/出口容量、区域在留容量为硬约束，人数取整并逐步守恒；同一 seed 可复现。
+- 新增 CLI `npm run simulate:crowd`：输出可被 `/mvp/replay/load` 加载的回放 JSON
+  （`data/replays/crowd-sim-<preset>.json`）与摘要（`data/simulations/`）；支持 `normal` / `gate_closure` / `surge`。
+- 新增 `POST /api/v1/mvp/simulation/crowd-flow`（仅 admin / safety_operator）：
+  把合成观测以 `source: 'simulation'`、`provider: 'crowd-flow-sim'` 写入安全域并触发重算，
+  返回守恒、疏散、在途、峰值密度、状态与方案；审计动作 `simulation.crowd_flow`。
+- 前端新增「算法人群仿真」面板：三种预设、守恒/疏散/在途/峰值密度指标与逐分钟总量，显式标注「合成数据 · 非实测」。
+- 测试：`backend/tests/simulation/crowd-flow.test.ts`（8 项）与 `backend/tests/mvp/crowd-simulation-api.test.ts`（1 项）；
+  后端 **367/367**、前端 **21/21**、两端构建通过。本机实测 API 返回守恒通过、写入 132 条观测、状态 `NORMAL`、独立校验通过。
+- 仍未标定：面积、通行能力、阈值、拥堵参数均来自场景配置或启发式；**不是经验证的人群动力学模型**，
+  不能据此声称真实精度、真实疏散时间或真实演练效果。`C_FLOOD_ESCAPE_UNKNOWN` 仍按未知不可用排除。
+
+### 2026-11-18：昇腾推理写观测 API
+
+- 新增 `POST /api/v1/safety/observations/ascend`：调用 `SKYGUARD_ASCEND_CMD` 指定的外部推理程序，
+  成功后写入 `source=recorded_video`、`provider=ascend-npu-v1` 的观测并触发重算；
+  CANN、`npu-smi`、推理命令或 `.om` 模型任一缺失返回 `503 PROVIDER_UNAVAILABLE`，不写 0 人观测。
+- CPU 视频与昇腾共用同一套写观测、可信度、时效、独立校验与四态链路；昇腾不因硬件身份获得额外信任。
+- 新增 `backend/tests/safety/safety-api-ascend.test.ts`（3 项：成功接线、不可用 fail-closed、权限/区域/参数）；
+  后端 **370/370**、前端 **21/21**、两端构建通过。
+- 仍未实机：本机无 NPU/CANN/`.om`；`verified_on_this_host` 保持 `false`，不能声称“昇腾已实机验证”。

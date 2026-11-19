@@ -7,6 +7,10 @@ data/audit/
 data/admin_config.json
 data/*.json
 
+# 算法人群仿真运行产物（可用 npm run simulate:crowd 重新生成）
+data/replays/crowd-sim-*.json
+data/simulations/
+
 # 环境变量与密钥
 .env
 .env.*
@@ -47,3 +51,7 @@ submission/*.zip.sha256
 
 # 本地演示运行产物（可用 frontend/e2e/capture-submission.mjs 重跑）
 submission/demo-run-*/
+
+# 自动录屏产物（体积大，不随仓库分发；原始录像目录在脚本结束后应被清理）
+submission/**/video-*.webm
+submission/**/video-raw/

@@ -4,9 +4,10 @@
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AimOutlined } from '@ant-design/icons';
-import mvpApi, { type AgentRun, type MvpDashboard, type MultiRegionAnalysis, type V70ForecastPreview, type V70JointPreview, type WorkOrder } from '../../services/mvpApi';
+import mvpApi, { type AgentRun, type DroneBridgeStatus, type MvpDashboard, type MultiRegionAnalysis, type V70ForecastPreview, type V70JointPreview, type WorkOrder } from '../../services/mvpApi';
 import safetyApi, { type V70MpcPreview } from '../../services/safetyApi';
 import SimulationPanel from './SimulationPanel';
+import CrowdSimulationPanel from './CrowdSimulationPanel';
 import './MvpPanels.css';
 
 interface Props {
@@ -55,6 +56,7 @@ function pct(value: number | null): string {
 
 export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChanged }: Props) {
   const [dashboard, setDashboard] = useState<MvpDashboard | null>(null);
+  const [droneBridge, setDroneBridge] = useState<DroneBridgeStatus | null>(null);
   const [experiments, setExperiments] = useState<Awaited<ReturnType<typeof mvpApi.experiments>> | null>(null);
   const [multi, setMulti] = useState<MultiRegionAnalysis | null>(null);
   const [v70, setV70] = useState<{
@@ -88,8 +90,12 @@ export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChange
 
   const refresh = useCallback(async () => {
     try {
-      const next = await mvpApi.dashboard();
+      const [next, bridge] = await Promise.all([
+        mvpApi.dashboard(),
+        mvpApi.droneBridgeStatus().catch(() => null),
+      ]);
       setDashboard(next);
+      setDroneBridge(bridge);
       setError(null);
     } catch (caught) {
       setError(`无法读取 MVP 态势：${errorMessage(caught)}`);
@@ -241,6 +247,23 @@ export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChange
 
   function renderOrderActions(order: WorkOrder) {
     const isAssignedToMe = order.assigned_staff_id === staffSession.id && Boolean(staffSession.token);
+    const canDispatchDrone = order.type === 'uav_observation'
+      && (order.status === 'ASSIGNED' || order.status === 'ACCEPTED');
+    const droneDispatchButton = canDispatchDrone ? (
+      <button
+        type="button"
+        className="primary"
+        disabled={busy !== null || droneBridge?.mode === 'disabled' || !localStorage.getItem('admin_token')}
+        title={!localStorage.getItem('admin_token') ? '需要管理员或安全运维登录' : '生成派发包；不会自动起飞'}
+        onClick={() => void act(
+          'drone-dispatch',
+          () => mvpApi.droneDispatch(order.id),
+          `已生成无人机派发包 ${order.id}`,
+        )}
+      >
+        无人机派发
+      </button>
+    ) : null;
     switch (order.status) {
       case 'PENDING_APPROVAL':
         return (
@@ -261,12 +284,14 @@ export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChange
       case 'ASSIGNED':
         return (
           <div className="mvp-actions">
+            {droneDispatchButton}
             <button type="button" disabled={busy !== null || !isAssignedToMe} title={isAssignedToMe ? '' : '需以被指派的工作人员身份登录'} onClick={() => void act('accept', () => mvpApi.accept(order.id), `已接单 ${order.id}`)}>接单</button>
           </div>
         );
       case 'ACCEPTED':
         return (
           <div className="mvp-actions">
+            {droneDispatchButton}
             <button type="button" disabled={busy !== null || !isAssignedToMe} onClick={() => void act('start', () => mvpApi.start(order.id), `开始执行 ${order.id}`)}>开始执行</button>
           </div>
         );
@@ -582,6 +607,19 @@ export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChange
             </div>
           </div>
 
+          {droneBridge ? (
+            <div className="mvp-drone-bridge">
+              <span className={`mvp-chip ${droneBridge.mode === 'disabled' || !droneBridge.configured ? 'bad' : droneBridge.simulated ? 'warn' : 'ok'}`}>
+                无人机桥接 · {droneBridge.mode === 'http' ? 'HTTP 适配器' : droneBridge.mode === 'outbox' ? '出站队列' : '未启用'}
+              </span>
+              <span className="mvp-muted mvp-small">
+                {droneBridge.simulated ? '模拟任务，不控制真机' : '实机任务'} · {droneBridge.real_hardware_verified ? '实机已验证' : '未实机验证'} · 可用无人机 {droneBridge.uav_units.filter(unit => unit.status === 'available' && !unit.active).length} · 待处理派发 {droneBridge.pending_dispatches}
+                {droneBridge.last_dispatch ? ` · 最近 ${droneBridge.last_dispatch.dispatch_id} ${droneBridge.last_dispatch.effective_status}` : ''}
+              </span>
+              {droneBridge.errors.length > 0 ? <span className="mvp-error-inline">{droneBridge.errors.join('；')}</span> : null}
+            </div>
+          ) : null}
+
           <div className="mvp-staff-session">
             {staffSession.token ? (
               <>
@@ -639,6 +677,8 @@ export default function MvpPanels({ selectedRegion, onSelectRegion, onDataChange
             {orders.length === 0 ? <p className="mvp-muted">当前筛选条件下没有工单。</p> : null}
           </div>
         </section>
+
+        <CrowdSimulationPanel onChanged={onDataChanged} />
 
         <section className="mvp-panel mvp-timeline-panel">
           <div className="mvp-panel-title"><h3>事件时间轴</h3><span>最近 {dashboard?.audit.length ?? 0} 条</span></div>
