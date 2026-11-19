@@ -93,6 +93,9 @@ assessObservation → 可信 / 过期 / 低置信 / 无效
         └──► 摄像头健康（在线 / 降级 / 离线 / 未知）
 ```
 
+CPU 视频、实时流与昇腾 NPU 三条推理路径都通过 `ingestObservation` 写入；
+昇腾入口为 `POST /api/v1/safety/observations/ascend`，CANN/`npu-smi`/推理命令/`.om` 任一缺失时 fail-closed，不写 0 人观测。
+
 ### 3.2 安全内核
 
 ```text

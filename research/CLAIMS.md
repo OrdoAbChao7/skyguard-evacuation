@@ -13,7 +13,7 @@
 | C06 | 预测在突增场景仍脆弱 | 实验 B：自适应 MAE 25.1/59.5/79.7；覆盖率 91%/84%/79% | 已验证（局限） | 不得声称真实精度 |
 | C07 | MCP 15 工具可被标准客户端调用 | `mcp.test.ts` 官方 SDK 客户端 | 已验证 | AgentArts 是否支持 stdio MCP 未确认 |
 | C08 | AgentArts 适配器按官方运行时契约调用、可探测、失败不伪装、有界多步 | `agentarts.test.ts`（官方路径/会话头/`query`+`inputs`/`data.text`）、`agentarts-runtime.test.ts`（多步/重复调用/等待人工） | 已验证（本地 stub） | **未实机连接**；无真实租户与平台 Trace |
-| C09 | 昇腾边云路径已实现 | 仅 provider 探针与外部推理契约 | 未验证 | 无 NPU/CANN/`.om` |
+| C09 | 昇腾边云路径已实现 | provider 探针 + 外部推理契约 + `POST /api/v1/safety/observations/ascend` 写观测入口；3 项 API 测试（成功接线/不可用 fail-closed/权限参数） | 未验证 | 无 NPU/CANN/`.om`；`verified_on_this_host` 仍为 false |
 | C10 | 无人机观察已实现 | 工单请求 + 审批 + 模拟反馈 | 部分验证 | 无真实无人机/飞控 |
 | C11 | 人群计数精度（公开数据集） | ShanghaiTech Part A test，P2PNet 官方权重：MAE 57.24/RMSE 96.04/NAE 0.1319；二次复跑一致 | PARTIALLY_SUPPORTED | 公开数据集/官方权重，非自训练模型或真实场馆；许可未核验 |
 | C12 | 已接入华为云 AgentArts | 无租户/凭证/官方 API 文档 | 禁止表述 | 只能写适配器与 Runbook |

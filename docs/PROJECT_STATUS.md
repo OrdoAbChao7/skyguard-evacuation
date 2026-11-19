@@ -837,3 +837,13 @@ Docker daemon/CI 实跑、第三方安全评审与真实演练。
   后端 **367/367**、前端 **21/21**、两端构建通过。本机实测 API 返回守恒通过、写入 132 条观测、状态 `NORMAL`、独立校验通过。
 - 仍未标定：面积、通行能力、阈值、拥堵参数均来自场景配置或启发式；**不是经验证的人群动力学模型**，
   不能据此声称真实精度、真实疏散时间或真实演练效果。`C_FLOOD_ESCAPE_UNKNOWN` 仍按未知不可用排除。
+
+### 2026-11-18：昇腾推理写观测 API
+
+- 新增 `POST /api/v1/safety/observations/ascend`：调用 `SKYGUARD_ASCEND_CMD` 指定的外部推理程序，
+  成功后写入 `source=recorded_video`、`provider=ascend-npu-v1` 的观测并触发重算；
+  CANN、`npu-smi`、推理命令或 `.om` 模型任一缺失返回 `503 PROVIDER_UNAVAILABLE`，不写 0 人观测。
+- CPU 视频与昇腾共用同一套写观测、可信度、时效、独立校验与四态链路；昇腾不因硬件身份获得额外信任。
+- 新增 `backend/tests/safety/safety-api-ascend.test.ts`（3 项：成功接线、不可用 fail-closed、权限/区域/参数）；
+  后端 **370/370**、前端 **21/21**、两端构建通过。
+- 仍未实机：本机无 NPU/CANN/`.om`；`verified_on_this_host` 保持 `false`，不能声称“昇腾已实机验证”。
