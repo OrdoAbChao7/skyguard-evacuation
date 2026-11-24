@@ -1,0 +1,4 @@
+# Keep checksum-covered inputs stable across Git checkouts.
+*.py -text
+data_prep/rpee_recordings.csv -text
+datasets/samples/**/*.txt -text

@@ -1,0 +1,12 @@
+group,lighting_bin,density_bin,dataset,test_status,label_type,frozen_test_samples,sample_pairs_in_repo,license,source
+A,day,low,Cchead,no_test_samples,head_box_with_track_id,0,1,CC BY-NC 4.0,https://www.kaggle.com/datasets/sunkailai/cchead
+A,day,low,RPEE-Heads,ready,head_box,16,0,CC BY-SA 4.0,https://doi.org/10.34735/ped.2024.2
+B,day,medium,Cchead,ready,head_box_with_track_id,1888,1,CC BY-NC 4.0,https://www.kaggle.com/datasets/sunkailai/cchead
+B,day,medium,RPEE-Heads,no_test_samples,head_box,0,1,CC BY-SA 4.0,https://doi.org/10.34735/ped.2024.2
+C,day,high,RPEE-Heads,ready,head_box,48,1,CC BY-SA 4.0,https://doi.org/10.34735/ped.2024.2
+D,night_or_dark,low,RGBT-CC,pending_license,person_point,97,0,pending,https://github.com/chen-judge/RGBTCrowdCounting
+D,night_or_dark,low,RPEE-Heads,ready,head_box,12,0,CC BY-SA 4.0,https://doi.org/10.34735/ped.2024.2
+E,night_or_dark,medium,RGBT-CC,pending_license,person_point,204,0,pending,https://github.com/chen-judge/RGBTCrowdCounting
+E,night_or_dark,medium,RPEE-Heads,ready,head_box,35,1,CC BY-SA 4.0,https://doi.org/10.34735/ped.2024.2
+F,night_or_dark,high,RGBT-CC,pending_license,person_point,84,0,pending,https://github.com/chen-judge/RGBTCrowdCounting
+F,night_or_dark,high,RPEE-Heads,no_test_samples,head_box,0,1,CC BY-SA 4.0,https://doi.org/10.34735/ped.2024.2

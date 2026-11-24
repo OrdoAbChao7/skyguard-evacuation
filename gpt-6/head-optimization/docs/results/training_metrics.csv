@@ -1,0 +1,14 @@
+phase,model,group,epoch,samples,box_loss,class_loss,dfl_loss,count_mae,box_precision_iou50,box_recall_iou50
+epoch_training,round1,,1,4003,1.9208,0.69368,0.70533,,,
+epoch_training,round1,,2,4003,1.78796,0.63237,0.69725,,,
+epoch_training,round2,,1,4003,1.95576,0.7586,0.74088,,,
+epoch_training,round2,,2,4003,1.83254,0.68475,0.72961,,,
+paired_development,original,A,,1561,,,,11.241512,0.669073,0.354858
+paired_development,round1,A,,1561,,,,1.828956,0.812362,0.785720
+paired_development,round2,A,,1561,,,,2.212684,0.832888,0.776698
+paired_development,original,B,,3911,,,,16.191511,0.692686,0.384221
+paired_development,round1,B,,3911,,,,2.786755,0.829585,0.780516
+paired_development,round2,B,,3911,,,,3.544873,0.843035,0.766262
+paired_development,original,all,,5472,,,,14.779423,0.687946,0.378113
+paired_development,round1,all,,5472,,,,2.513523,0.825923,0.781599
+paired_development,round2,all,,5472,,,,3.164839,0.840881,0.768433

@@ -1,0 +1,14 @@
+/datasets/*
+!/datasets/README.md
+!/datasets/scene_catalog.csv
+!/datasets/samples/
+/weights/
+/runs/
+/outputs/
+/.venv/
+__pycache__/
+*.pt
+*.pth
+*.onnx
+*.mp4
+*.zip
