@@ -3,6 +3,7 @@
  *
  * 覆盖：运维权限、配置元数据脱敏、真实网络流推理写回、未知/禁用/未配置/配置错误。
  * 网络流由本机 HTTP 服务提供，不是真实 RTSP 摄像头；测试结论只到“链路可用”。
+ * 缺少 OpenCV/FFmpeg 时，网络流推理用例显式跳过；权限与拒绝路径仍会执行。
  */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -10,7 +11,7 @@ import path from 'node:path';
 import test from 'node:test';
 import jwt from 'jsonwebtoken';
 import { jsonBody, startTestServer, type TestServer } from '../helpers/api-fixtures';
-import { resetSafetyServiceForTests } from '../../src/services/safety';
+import { getProviders, resetSafetyServiceForTests } from '../../src/services/safety';
 import { resetStreamRegistryForTests } from '../../src/services/safety/streams';
 import { SECRET } from '../../src/api/v1/auth';
 import { REPO_SCENARIO_PATH } from './fixtures';
@@ -44,7 +45,53 @@ function viewerToken(): string {
   return jwt.sign({ username: 'viewer-7', role: 'viewer' }, SECRET, { expiresIn: '1h' });
 }
 
-test('实时流观测写入 live_video，配置元数据不泄漏完整 URL', async () => {
+test('实时流配置元数据脱敏，不泄漏完整 URL 与凭据', async () => {
+  process.env.SKYGUARD_STREAMS = JSON.stringify([
+    {
+      id: 'cam-main',
+      label: '主入口',
+      region_id: 'R_MAIN',
+      url: 'rtsp://10.0.0.9:554/live?token=stream-secret',
+      max_frames: 15,
+      sample_every: 1,
+      max_seconds: 10,
+    },
+  ]);
+
+  const server = await startSafetyServer();
+  try {
+    const metadata = await server.request('/api/v1/safety/streams');
+    assert.equal(metadata.status, 200);
+    assert.equal(metadata.body.configured, true);
+    assert.equal(metadata.body.streams[0].id, 'cam-main');
+    assert.equal(metadata.body.streams[0].label, '主入口');
+    assert.equal(metadata.body.streams[0].region_id, 'R_MAIN');
+    assert.ok(metadata.body.streams[0].region_name, '应解析出绑定区域的名称');
+    assert.ok(!('url' in metadata.body.streams[0]), 'API 不得返回完整 URL');
+    assert.ok(!JSON.stringify(metadata.body).includes('10.0.0.9'), 'API 不得泄漏流主机地址');
+    assert.ok(!JSON.stringify(metadata.body).includes('stream-secret'), 'API 不得泄漏 query 凭据');
+
+    const providers = await server.request('/api/v1/safety/providers');
+    assert.equal(providers.status, 200);
+    const live = providers.body.providers.find((provider: any) => provider.kind === 'live_video');
+    assert.ok(live, 'provider 列表必须包含实时流 provider');
+    assert.equal(live.source, 'live_video');
+  } finally {
+    await server.close();
+    delete process.env.SKYGUARD_STREAMS;
+    resetStreamRegistryForTests();
+  }
+});
+
+test('实时流观测写入 live_video，网络解码与推理链路可用', async (t) => {
+  // 与 safety-providers.test.ts 一致：缺少 OpenCV/FFmpeg 时显式跳过，绝不伪装通过。
+  const liveStatus = await getProviders().live.status();
+  if (!liveStatus.available) {
+    const failed = liveStatus.checks.filter(check => !check.ok).map(check => check.name).join(', ');
+    t.skip(`实时流 provider 不可用（${failed}），跳过视频生成与网络流推理；本机链路验证需要 OpenCV/FFmpeg`);
+    return;
+  }
+
   const { dir, videoPath } = makeTempStreamVideo();
   const videoServer = await serveVideo(videoPath);
   process.env.SKYGUARD_STREAMS = JSON.stringify([
@@ -62,22 +109,6 @@ test('实时流观测写入 live_video，配置元数据不泄漏完整 URL', as
   const server = await startSafetyServer();
   try {
     const admin = await authHeaders(server);
-
-    const metadata = await server.request('/api/v1/safety/streams');
-    assert.equal(metadata.status, 200);
-    assert.equal(metadata.body.configured, true);
-    assert.equal(metadata.body.streams[0].id, 'cam-main');
-    assert.equal(metadata.body.streams[0].label, '主入口');
-    assert.equal(metadata.body.streams[0].region_id, 'R_MAIN');
-    assert.ok(metadata.body.streams[0].region_name, '应解析出绑定区域的名称');
-    assert.ok(!('url' in metadata.body.streams[0]), 'API 不得返回完整 URL');
-    assert.ok(!JSON.stringify(metadata.body).includes('127.0.0.1'), 'API 不得泄漏流主机地址');
-
-    const providers = await server.request('/api/v1/safety/providers');
-    assert.equal(providers.status, 200);
-    const live = providers.body.providers.find((provider: any) => provider.kind === 'live_video');
-    assert.ok(live, 'provider 列表必须包含实时流 provider');
-    assert.equal(live.source, 'live_video');
 
     const response = await server.request('/api/v1/safety/observations/stream', {
       ...jsonBody({ stream_id: 'cam-main', recompute: false }),
