@@ -1,0 +1,15 @@
+/datasets/*
+!/datasets/README.md
+!/datasets/scene_catalog.csv
+!/datasets/samples/
+/weights/
+/runs/
+/outputs/
+/.venv/
+__pycache__/
+*.pt
+*.pth
+*.onnx
+*.mp4
+!/demos/wildtrack-7cam-head-replay/video-head/*.mp4
+*.zip

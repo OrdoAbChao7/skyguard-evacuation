@@ -1,0 +1,15 @@
+group,path,frames,total_seconds,fps,p95_count_ready_ms,input,device
+A,count,8,0.372008,21.504891,52.519380,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+A,video,8,1.324247,6.041169,69.348755,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+B,count,112,5.306288,21.107033,52.027930,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+B,video,112,5.610122,19.963916,52.512010,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+C,count,31,2.606606,11.892860,95.540900,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+C,video,31,3.214732,9.643107,98.726150,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+D,count,6,0.254545,23.571434,44.491700,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+D,video,6,0.358507,16.736061,45.004550,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+E,count,23,1.020399,22.540191,47.050120,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+E,video,23,1.288256,17.853597,53.407010,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+F,count,51,0.589540,86.508184,13.829400,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+F,video,51,0.640588,79.614329,13.926750,sampled_source_jpegs,NVIDIA GeForce RTX 4060 Laptop GPU
+B_contiguous,count,750,33.672202,22.273566,48.806195,continuous_1080p25_source_frames,NVIDIA GeForce RTX 4060 Laptop GPU
+B_contiguous,video,750,46.065816,16.281053,84.399335,continuous_1080p25_source_frames,NVIDIA GeForce RTX 4060 Laptop GPU

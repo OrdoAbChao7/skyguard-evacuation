@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WILDTRACK 七机位</title>
+<style>
+*{box-sizing:border-box}
+:root{color-scheme:dark}
+body{margin:0;padding:12px;background:#101820;color:#eaf1f7;font:15px system-ui,sans-serif}
+nav{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+button{border:1px solid #567087;border-radius:5px;background:#22374a;color:inherit;font:inherit;padding:5px 13px;cursor:pointer}
+button:disabled{opacity:.6;cursor:default}
+input[type=range]{flex:1;min-width:70px}
+output{font-variant-numeric:tabular-nums}
+.wall{display:grid;grid-template-columns:1.15fr 1fr;gap:12px;height:calc(100dvh - 66px)}
+.feeds{display:grid;min-height:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:6px}
+.tile,.map{background:#0b1219;border:1px solid #2b4253;border-radius:6px;overflow:hidden;position:relative;min-height:0}
+.tile:last-child{grid-column:1/-1;width:calc(50% - 3px);justify-self:center}
+.tile video,.map svg{position:absolute;inset:0;width:100%;height:100%}
+.tile video{object-fit:contain}
+.name,.total{position:absolute;z-index:1;padding:3px 7px;background:#121d27e8;border-radius:4px;font-weight:650}
+.name{top:5px;left:5px}
+.total{top:7px;right:7px}
+#status{margin-left:auto;color:#ffb1a0}
+@media(max-width:880px){.wall{grid-template-columns:1fr;height:auto}.feeds{height:min(68vh,680px)}.map{min-height:70vh}}
+</style>
+<body>
+<nav aria-label="回放">
+  <button id="play" disabled>播放</button>
+  <input id="time" type="range" min="0" max="15.015" value="0" step="0.001" aria-label="播放时间" disabled>
+  <output id="clock">0.00 / 15.02 s</output>
+  <span id="status" role="status" hidden></span>
+</nav>
+<main class="wall">
+  <div class="feeds" id="feeds" aria-label="七路视频"></div>
+  <section class="map" aria-label="七路汇总热力">
+    <output id="total" class="total"></output>
+    <svg viewBox="0 0 1150 1230" role="img" aria-label="广场人流热力与分区">
+      <defs><radialGradient id="heat"><stop stop-color="#ff5828" stop-opacity=".77"/>
+      <stop offset="1" stop-color="#ff5828" stop-opacity="0"/></radialGradient></defs>
+      <image href="./polyterrasse-close.jpg" width="1150" height="1230"></image>
+      <g id="zones"></g><g id="points"></g>
+      <text x="36" y="1210" fill="#fff" stroke="#121d27" stroke-width="3" paint-order="stroke" font-size="19">© swisstopo</text>
+    </svg>
+  </section>
+</main>
+<script src="replay-data.js"></script>
+<script>
+const data=window.replayData, get=id=>document.getElementById(id);
+const svgNS='http://www.w3.org/2000/svg';
+const colors=Object.fromEntries(data.cameras.map(c=>[c.id,c.color]));
+const videos=[];
+const fps=30000/1001, tick=15/fps, durationTotal=450/fps;
+let index=-1, seekingTogether=false;
+function svg(tag,attrs){
+  const element=document.createElementNS(svgNS,tag);
+  for(const [key,value] of Object.entries(attrs))element.setAttribute(key,value);
+  return element;
+}
+function path(rings,color,opacity){
+  return svg('path',{d:rings.map(ring=>'M'+ring.map(p=>p.join(',')).join(' L')+' Z').join(' '),
+    fill:color,'fill-rule':'evenodd','fill-opacity':opacity,stroke:color,'stroke-width':2});
+}
+function status(text){const node=get('status');node.textContent=text;node.hidden=!text;}
+function draw(next){
+  index=next;
+  const frame=data.frames[index], points=[];
+  for(const p of frame.points){
+    const [cx,cy]=p.map_px;
+    points.push(svg('circle',{cx,cy,r:18,fill:'url(#heat)'}),
+      svg('circle',{cx,cy,r:4.8,fill:'#101820',stroke:colors[p.camera],'stroke-width':2.6}));
+  }
+  get('points').replaceChildren(...points);
+  get('total').textContent=frame.points.length+' 人';
+}
+function update(time){
+  const clamped=Math.min(durationTotal,Math.max(0,time));
+  get('time').value=clamped;
+  get('clock').value=clamped.toFixed(2)+' / 15.02 s';
+  const next=Math.min(data.frames.length-1,Math.max(0,Math.floor((clamped+.00001)/tick)));
+  if(index!==next)draw(next);
+}
+for(const c of data.cameras){
+  const tile=document.createElement('section');tile.className='tile';
+  const name=document.createElement('span');name.className='name';name.textContent=c.id;
+  const video=document.createElement('video');
+  video.muted=true;video.playsInline=true;video.preload='auto';video.src='video-head/'+c.id+'.mp4';
+  video.setAttribute('aria-label',c.id);
+  tile.append(video,name);get('feeds').append(tile);videos.push(video);
+  video.addEventListener('error',()=>status(c.id+' 无法加载'));
+}
+const master=videos[0];
+get('zones').replaceChildren(...data.cameras.map(c=>path(c.zone_outline,c.color,.11)),
+  path([data.official_boundary],'#a8deff',0),
+  path(data.southwest.candidate,'#ffc85d',.61),path(data.southwest.unknown,'#ff6770',.68));
+
+function align(time, always){
+  for(const v of videos){
+    const limit=Number.isFinite(v.duration)?Math.max(0,v.duration-.002):durationTotal-.002;
+    const target=Math.min(Math.max(0,time),limit);
+    if(always || (!v.seeking&&Math.abs(v.currentTime-target)>.06))v.currentTime=target;
+  }
+}
+async function play(){
+  const start=master.ended?0:master.currentTime;
+  align(start,true);
+  update(start);
+  try{await Promise.all(videos.map(v=>v.play()));status('');}
+  catch{videos.forEach(v=>v.pause());status('播放未启动');}
+}
+function pauseAll(){
+  videos.forEach(v=>v.pause());
+  align(master.currentTime,true);
+  update(master.currentTime);
+}
+get('play').onclick=()=>{if(master.paused)play();else pauseAll();};
+get('time').oninput=()=>{
+  const time=Number(get('time').value);
+  seekingTogether=true;
+  align(time,true);
+  update(time);
+};
+get('time').onchange=()=>{
+  const time=Number(get('time').value);
+  align(time,true);
+  update(time);
+  seekingTogether=false;
+};
+master.addEventListener('seeked',()=>{seekingTogether=false;update(master.currentTime);});
+master.addEventListener('playing',()=>{get('play').textContent='暂停';});
+master.addEventListener('pause',()=>{get('play').textContent='播放';});
+master.addEventListener('ended',()=>{videos.forEach(v=>v.pause());update(durationTotal);get('play').textContent='播放';});
+if('requestVideoFrameCallback' in master){
+  const onFrame=(_,sample)=>{
+    if(!seekingTogether&&!master.seeking){
+      update(sample.mediaTime);
+      if(!master.paused)align(sample.mediaTime,false);
+    }
+    master.requestVideoFrameCallback(onFrame);
+  };
+  master.requestVideoFrameCallback(onFrame);
+}else master.addEventListener('timeupdate',()=>{
+  if(!seekingTogether&&!master.seeking){
+    update(master.currentTime);
+    if(!master.paused)align(master.currentTime,false);
+  }
+});
+Promise.all(videos.map(v=>v.readyState>=2?Promise.resolve():
+  new Promise(resolve=>v.addEventListener('loadeddata',resolve,{once:true})))).then(()=>{
+    align(0,true);
+    get('play').disabled=false;get('time').disabled=false;
+  });
+draw(0);
+</script>
+</body>
+</html>

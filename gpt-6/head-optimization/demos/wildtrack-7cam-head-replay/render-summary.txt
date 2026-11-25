@@ -1,0 +1,7 @@
+C1: 450 frames, 19186 head boxes (pre-2F 19575), 27.6s -> D:\文档\ChatGPT\华为ict\gpt-6\outputs\wildtrack-c2-ground-v1\coverage\aggregate\dedup\video-head\C1.mp4
+C2: 450 frames, 3173 head boxes (pre-2F 3265), 14.6s -> D:\文档\ChatGPT\华为ict\gpt-6\outputs\wildtrack-c2-ground-v1\coverage\aggregate\dedup\video-head\C2.mp4
+C3: 450 frames, 10556 head boxes (pre-2F 10766), 18.5s -> D:\文档\ChatGPT\华为ict\gpt-6\outputs\wildtrack-c2-ground-v1\coverage\aggregate\dedup\video-head\C3.mp4
+C4: 450 frames, 6578 head boxes (pre-2F 6727), 17.4s -> D:\文档\ChatGPT\华为ict\gpt-6\outputs\wildtrack-c2-ground-v1\coverage\aggregate\dedup\video-head\C4.mp4
+C5: 450 frames, 8187 head boxes (pre-2F 8414), 17.7s -> D:\文档\ChatGPT\华为ict\gpt-6\outputs\wildtrack-c2-ground-v1\coverage\aggregate\dedup\video-head\C5.mp4
+C6: 450 frames, 13532 head boxes (pre-2F 13880), 20.7s -> D:\文档\ChatGPT\华为ict\gpt-6\outputs\wildtrack-c2-ground-v1\coverage\aggregate\dedup\video-head\C6.mp4
+C7: 450 frames, 10300 head boxes (pre-2F 10473), 19.5s -> D:\文档\ChatGPT\华为ict\gpt-6\outputs\wildtrack-c2-ground-v1\coverage\aggregate\dedup\video-head\C7.mp4
