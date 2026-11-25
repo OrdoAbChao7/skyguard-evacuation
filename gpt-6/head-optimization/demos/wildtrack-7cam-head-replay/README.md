@@ -64,7 +64,7 @@
 
 本演示同时使用以下两版权重（均不随 Git 仓库提交，核对信息见 [`../../models/MODEL_CARD.md`](../../models/MODEL_CARD.md)）：
 - **原版 YOLOv8s-Head (`v8s-head.pt`)**：SHA-256 `1467b10e30a05be6a05950190e5efe30b50681270cb7baf6115ec96806b25964`（22.5 MB，AGPL-3.0）。
-- **模型二 (`round2-v1/trained/weights/last.pt`)**：SHA-256 `48e20da23a4c645bf29d47e4da1ae0ec52b9e0220e610d96fbc8c5336ddc6e7e`（111.7 MB，超过 GitHub 单文件 100 MB 上限，计划通过 Release 附件 `skyguard-yolov8s-head-round2.pt` 分发，需同步完成许可证与源码合规核对）。
+- **模型二 (`skyguard-yolov8s-head-round2.pt`)**：SHA-256 `48e20da23a4c645bf29d47e4da1ae0ec52b9e0220e610d96fbc8c5336ddc6e7e`（111.7 MB，超过 GitHub 单文件 100 MB 上限，已发布为 Release 附件：[直接下载](https://github.com/imsquner/skyguard-evacuation/releases/download/head-model-round2-v1/skyguard-yolov8s-head-round2.pt)）。
 
 ## 下一步计划
 
