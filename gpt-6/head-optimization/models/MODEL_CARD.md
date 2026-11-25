@@ -8,4 +8,4 @@
 - 原始权重声明 AGPL-3.0。模型二公开分发需核对适用的许可证通知、完整对应源码和数据使用范围。[Ultralytics 发布指导](https://docs.ultralytics.com/help/contributing/#licensing-and-open-source-obligations)
 - 本地复测环境为 Windows、Python 3.12.7、Ultralytics 8.4.216、PyTorch 2.12.1+cu130、OpenCV 4.10.0、RTX 4060 Laptop。
 
-默认输入 640，置信度 0.25。B 组使用重叠切块，C 组采用切块加全图大头补检。F 的本地暗光高人数抽测仍有显著漏计。适用条件见 [数据适配](../docs/DATASET_ADAPTATION.md) 和 [精度结果](../docs/results/six_scene_accuracy.csv)。
+默认输入 640，置信度 0.25。B 组使用重叠切块，C 组采用切块加全图大头补检。F 的本地暗光高人数抽测仍有显著漏计。在 WILDTRACK 多机位近景测试中，模型二对近景大尺寸人头存在尺度偏移（易将衣裤/肢体误检为小框），多视角回放中建议结合相机标定几何尺度过滤，并与原版 `v8s-head.pt` 按近/远景分带融合（详见 [WILDTRACK 七机位回放](../demos/wildtrack-7cam-head-replay/README.md)）。适用条件见 [数据适配](../docs/DATASET_ADAPTATION.md) 和 [精度结果](../docs/results/six_scene_accuracy.csv)。

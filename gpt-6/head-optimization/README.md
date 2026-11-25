@@ -7,6 +7,8 @@
 - [工作清单和局限](WORKLOG.md)
 - [两轮微调与复跑入口](docs/TRAINING.md)
 - [三套监控数据适配与回放](docs/DATASET_ADAPTATION.md)
+- [多机位设计、核心创新点与跨版本精度汇总](docs/DESIGN_AND_INNOVATIONS.md)
+- [WILDTRACK 七机位逐帧人头框回放演示](demos/wildtrack-7cam-head-replay/README.md)（独立 7 路带框视频 + 同屏地图）
 - [精度汇总](docs/results/six_scene_accuracy.csv) · [速度汇总](docs/results/six_scene_speed.csv)
 
 五轮留出抽样中，A～E 的平均人数 MAE 从模型二全图的 17.15 降至按场景推理的 9.08 人/张。F 暗光高人数本地计数仍为 169.46 人/张。附带样例用于查看开发数据格式。正式评测所需原始数据、冻结协议和本地权重见对应文档。

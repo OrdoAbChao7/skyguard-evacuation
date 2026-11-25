@@ -11,4 +11,5 @@ __pycache__/
 *.pth
 *.onnx
 *.mp4
+!/demos/wildtrack-7cam-head-replay/video-head/*.mp4
 *.zip
