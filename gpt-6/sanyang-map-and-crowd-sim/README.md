@@ -2,9 +2,10 @@
 
 本目录为 `gpt-6` 组于 **2026-11-25** 新增的独立交付包（与既有 `gpt-6/head-optimization/` 严格分离），面向主系统地图接入、28 机位视野仿真与下游人流预测/疏散联调。
 
-> **完整 24 小时原始模拟大表（CSV / JSONL，约 3.5 GB 原始文本，压缩包 764 MB）统一托管在 GitHub Release**：
-> <https://github.com/imsquner/skyguard-vision/releases/tag/v2026.11.25-sanyang-crowd-sim>
+> **完整 24 小时原始模拟大表（CSV / JSONL，约 3.5 GB 原始文本）不随仓库分发，当前也没有公开下载地址**。
+> 需要全量数据时，请按下文「复现」一节用固定种子 `20261115` 重跑脚本生成（输出写入 `out/`，不入库）；
 > 本仓库仅收录轻量化核心地图、28 机位配置、可复现脚本、字段样例、离线交互回放页及 30 秒成型演示视频（合计约 35 MB）。
+> 若后续提供公开下载，将在此处更新地址，不再依赖仓库外的 Release 链接。
 
 > **数据性质**：本包内全部人流、机位观测与热力结果均为**合成模拟**（`seed=20261115`），不是真实摄录或实测客流；
 > 底图中的 28 台摄像头是虚拟机位，其中 UAV-01 为模拟补盲机位，**未接入任何真实无人机**。
@@ -45,7 +46,7 @@
 
 1. **看视频与交互页**：直接打开 `demos/sanyang_24h_sat_topo_demo.webm` 或用 Chrome/Edge 打开 `demos/sanyang_sat_topo_replay.html`。
 2. **看地图对接契约**：阅读 `map-v2/队友对接说明.md` 与 `map-v2/teammate_gate_alignment.json`。
-3. **看数据字段样例**：直接查看 `crowd-sim/samples/` 下的 CSV/JSONL 样例；如需全量 24h 数据，从上方 Release 地址下载，或按下节顺序重跑脚本。
+3. **看数据字段样例**：直接查看 `crowd-sim/samples/` 下的 CSV/JSONL 样例；如需全量 24h 数据，按下节顺序重跑脚本生成。
 
 ## 复现（脚本顺序与环境变量）
 
