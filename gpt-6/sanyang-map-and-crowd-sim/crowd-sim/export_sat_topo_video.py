@@ -6,7 +6,8 @@ SkyGuard · 汉口江滩三阳段 z18 卫星图 + 动态流动地形人流热力
 - 左侧：真实 z18 卫星底图 + 仅 28 机位可见观测生成的地形等高热力图（人越多越红 + 山体阴影 + 等高线）
         + 28 机位 FOV 扇区 + 动态人流速度矢量箭头 + 闸口标识；
 - 右侧仪表盘：实时北京时间时钟、阶段标题、24h 实时人流曲线（带移动游标）、关键统计指标与地形密度色带图例。
-使用 GStreamer (pngdec -> vp9enc -> mp4mux) 编码输出标准 MP4 视频，并校验封装完整性。
+使用 GStreamer (pngdec -> vp9enc -> webmmux) 编码输出 WebM/VP9 视频
+（`sanyang_24h_sat_topo_demo.webm`），导出后校验 EBML 封装头，避免把空文件或半截文件当成成品。
 """
 from __future__ import annotations
 
@@ -286,6 +287,14 @@ def main():
             "!", "filesink", f"location={out_webm}",
         ]
         subprocess.run(cmd, check=True)
+        # 校验 EBML 封装头：WebM/Matroska 文件必须以 0x1A45DFA3 开头，
+        # 否则说明编码被中断，产物不能当作成品分发。
+        with out_webm.open("rb") as fh:
+            magic = fh.read(4)
+        if magic != b"\x1a\x45\xdf\xa3":
+            raise RuntimeError(
+                f"{out_webm.name} 不是合法的 WebM/EBML 容器（文件头 {magic.hex()}），编码可能已中断"
+            )
         sz_mb = out_webm.stat().st_size / (1024 * 1024)
         print(f"[DONE] Exported {out_webm.name} ({sz_mb:.2f} MB, 30s @ 12fps) in {time.time() - t_all:.1f}s")
     finally:

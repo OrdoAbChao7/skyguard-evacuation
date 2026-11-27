@@ -102,6 +102,15 @@ LOWEST_TIER_SOURCE_ELEV_M = 16.0
 LOWEST_TIER_DECLARED_ELEV_M = 23.0
 LOWEST_TIER_LINKS = ("RW-LINK-S", "RW-LINK-M", "RW-LINK-N")
 
+# 观测断轨阈值（秒）。三条数据流的采样间隔不同，阈值按「允许丢失的采样帧数」定义，
+# 全部集中在这里，不再散落成各处魔法数字：
+#   单机位局部 track_id_local（5s 采样） → 8s，允许丢 1 帧
+#   1Hz 跨机位融合 track（1s 采样）      → 6s，允许丢 6 帧
+#   24h 融合 track（30s 采样）           → 35s，允许丢 1 帧
+TRACK_GAP_LOCAL_CAM_S = 8.0
+TRACK_GAP_FUSED_1HZ_S = 6.0
+TRACK_GAP_FUSED_24H_S = 35.0
+
 # 两个 15 分钟 1Hz 精细切片（北京时间秒数）
 PEAK_WINDOWS = {
     "chrysanthemum": {
@@ -131,6 +140,74 @@ ZONES_META = [
     ("Z12_RIVER_WALK_23M", "三级滨江亲水步道(RIVER_WALK)", 23.0),
 ]
 ZONE_ID_TO_IDX = {z[0]: i for i, z in enumerate(ZONES_META)}
+
+
+def fallback_zone_idx(tier_idx: int) -> int:
+    """格点没有语义分区时的按层回落分区（全天统计与 1Hz 切片共用，避免两套口径）。"""
+    return 3 if tier_idx == 1 else (9 if tier_idx == 2 else (11 if tier_idx == 3 else 0))
+
+
+def _largest_component_masks(walkable: list[bytearray], vlinks) -> list[bytearray]:
+    """在「同层 8 邻域 + 竖向连接」构成的导航图上求最大连通块，返回每层的 0/1 掩码。
+
+    不能只按单层判断连通性：G09/G08/G07 闸口平台只通过竖向连接接入主区，
+    单独看某一层会把整片闸口误判成孤岛。
+    """
+    total = GRID_W * GRID_H
+    ids = []
+    node_cell = []
+    for ti, w in enumerate(walkable):
+        arr = array.array("i", [-1]) * total
+        for c in range(total):
+            if w[c]:
+                arr[c] = len(node_cell)
+                node_cell.append((ti, c))
+        ids.append(arr)
+
+    parent = array.array("i", range(len(node_cell)))
+
+    def find(x: int) -> int:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a: int, b: int) -> None:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[rb] = ra
+
+    # 8 邻域只需检查 E / SW / S / SE 四个方向，对称性覆盖全部邻接
+    for ti in range(len(walkable)):
+        arr = ids[ti]
+        for c in range(total):
+            u = arr[c]
+            if u < 0:
+                continue
+            cy, cx = divmod(c, GRID_W)
+            for dx_, dy_ in ((1, 0), (-1, 1), (0, 1), (1, 1)):
+                nx, ny = cx + dx_, cy + dy_
+                if 0 <= nx < GRID_W and 0 <= ny < GRID_H:
+                    v = arr[ny * GRID_W + nx]
+                    if v >= 0:
+                        union(u, v)
+
+    for t1, g1, t2, g2, _cost, _name in vlinks:
+        u = ids[t1][g1[1] * GRID_W + g1[0]]
+        v = ids[t2][g2[1] * GRID_W + g2[0]]
+        if u >= 0 and v >= 0:
+            union(u, v)
+
+    sizes: dict[int, int] = defaultdict(int)
+    for i in range(len(node_cell)):
+        sizes[find(i)] += 1
+    best_root = max(sizes, key=sizes.get)
+
+    masks = [bytearray(total) for _ in walkable]
+    for i, (ti, c) in enumerate(node_cell):
+        if find(i) == best_root:
+            masks[ti][c] = 1
+    return masks
 
 
 # ---------------------------------------------------------------------------
@@ -356,21 +433,28 @@ def build_environment():
             if g25 and g23:
                 vertical_links.append((2, g25, 3, g23, 14.0, name))
 
-    # 辅助：寻找指定层最近的可通行格
-    def snap_walkable(t_idx: int, gx: int, gy: int, max_r: int = 12) -> tuple[int, int]:
+    # 辅助：寻找指定层最近的可通行格（mask 非空时只接受掩码内的格点）
+    def snap_walkable(t_idx: int, gx: int, gy: int, max_r: int = 12, mask: bytearray | None = None) -> tuple[int, int]:
         w = walkable[t_idx]
-        if 0 <= gx < GRID_W and 0 <= gy < GRID_H and w[gy * GRID_W + gx]:
+
+        def ok(nx: int, ny: int) -> bool:
+            if not (0 <= nx < GRID_W and 0 <= ny < GRID_H):
+                return False
+            c = ny * GRID_W + nx
+            return bool(w[c]) and (mask is None or bool(mask[c]))
+
+        if ok(gx, gy):
             return gx, gy
         for r in range(1, max_r + 1):
             for dx_ in range(-r, r + 1):
                 for dy_ in (-r, r):
                     nx, ny = gx + dx_, gy + dy_
-                    if 0 <= nx < GRID_W and 0 <= ny < GRID_H and w[ny * GRID_W + nx]:
+                    if ok(nx, ny):
                         return nx, ny
             for dy_ in range(-r + 1, r):
                 for dx_ in (-r, r):
                     nx, ny = gx + dx_, gy + dy_
-                    if 0 <= nx < GRID_W and 0 <= ny < GRID_H and w[ny * GRID_W + nx]:
+                    if ok(nx, ny):
                         return nx, ny
         raise RuntimeError(f"Cannot snap walkable cell at tier {t_idx} ({gx},{gy})")
 
@@ -553,6 +637,20 @@ def build_navigation(env: dict):
         gx, gy = snap(ti, *loc_to_grid(lx, ly), max_r=16)
         anchors[name] = (ti, gx, gy)
 
+    # 吸附可能把锚点落到孤立的可通行小岛上（MONUMENT_PLAZA 曾落到 1 格孤岛），
+    # 这会让所有进出该锚点的路径在 Dijkstra 里静默缺失、行人在 append_leg 里瞬移。
+    # 这里把不在主连通块上的锚点重新吸附到同层主连通块的最近格点。
+    main_comp = _largest_component_masks(walkable, env["vlinks"])
+    resnapped = []
+    for name, (ti, gx, gy) in list(anchors.items()):
+        if main_comp[ti][gy * GRID_W + gx]:
+            continue
+        nx, ny = snap(ti, gx, gy, max_r=24, mask=main_comp[ti])
+        resnapped.append(f"{name}({gx},{gy})->({nx},{ny})")
+        anchors[name] = (ti, nx, ny)
+    if resnapped:
+        print(f"[Nav] 锚点落在孤立小岛，已重新吸附到主连通块: {', '.join(resnapped)}")
+
     # 建竖向邻接表
     vadj = defaultdict(list)
     for t1, (gx1, gy1), t2, (gx2, gy2), cost, _ in env["vlinks"]:
@@ -653,8 +751,17 @@ def build_navigation(env: dict):
                     cells.append(grid_to_loc(nx, ny))
         poi_cells[name] = cells if cells else [grid_to_loc(gx, gy)]
 
-    print(f"[Nav] {len(anchors)} anchors, {len(paths)} valid paths built in {time.time() - t0:.2f}s")
-    return {"anchors": anchors, "paths": paths, "poi_cells": poi_cells}
+    # 连通性自检：任何一个锚点对不可达，都会让行人在该段静默瞬移，必须显式暴露出来
+    missing_pairs = [
+        (a, b) for a in anchor_names for b in anchor_names
+        if a != b and (a, b) not in paths
+    ]
+    expected = len(anchor_names) * (len(anchor_names) - 1)
+    print(f"[Nav] {len(anchors)} anchors, {len(paths)}/{expected} valid paths built in {time.time() - t0:.2f}s")
+    if missing_pairs:
+        preview = ", ".join(f"{a}->{b}" for a, b in missing_pairs[:6])
+        print(f"[Nav] WARNING: {len(missing_pairs)} 个锚点对不可达，这些路段会被跳过: {preview}{' ...' if len(missing_pairs) > 6 else ''}")
+    return {"anchors": anchors, "paths": paths, "poi_cells": poi_cells, "missing_pairs": missing_pairs}
 
 
 # ---------------------------------------------------------------------------
@@ -886,9 +993,13 @@ def generate_agents(env: dict, nav: dict) -> list[Agent]:
                 return jx, jy
         return lx, ly
 
+    # 记录被跳过的路段：锚点对不可达时 append_leg 会整段跳过，行人会在两端之间瞬移
+    skipped_legs: dict[tuple[str, str], int] = defaultdict(int)
+
     def append_leg(ts, xs, ys, tiers, states, src: str, dst: str, speed: float, lat_bias: float, state_label: str):
         pts = paths.get((src, dst))
         if not pts or len(pts) < 2:
+            skipped_legs[(src, dst)] += 1
             return
         cur_t = ts[-1]
         for i in range(1, len(pts)):
@@ -1050,6 +1161,12 @@ def generate_agents(env: dict, nav: dict) -> list[Agent]:
             agents.append(Agent(pid, prof, entry, exit_g, stops[0], ts, xs, ys, tiers, states))
 
     assert max_total_dwell_s < 1200.0, f"Violation: agent dwell {max_total_dwell_s}s >= 20min!"
+    if skipped_legs:
+        pairs = sorted(skipped_legs)
+        print(
+            f"[Sim] WARNING: {sum(skipped_legs.values())} 段路径因锚点对不可达被跳过"
+            f"（{len(pairs)} 对，如 {pairs[:6]}），这些行人在两端之间是瞬移的"
+        )
     print(
         f"[Sim] Generated {len(agents):,} unique agents (person_id) in {time.time() - t0:.2f}s | "
         f"MAX single-spot pause={max_single_dwell_s:.1f}s, MAX total pause/person={max_total_dwell_s:.1f}s (< 20min OK!)"
@@ -1177,7 +1294,9 @@ def run_exports(env: dict, agents: list[Agent]):
         ts_utc = format_utc_iso(sec)
         curr_zone_of_agent: dict[str, int] = {}
 
-        # 为 24h HTML 帧均匀抽样（若人数 > 850，按步长抽样以保浏览器 60fps 丝滑）
+        # 为 24h HTML 帧均匀抽样（若人数 > 850，按步长抽样以保浏览器 60fps 丝滑）。
+        # 抽样必须按 person_id 稳定取模：若按当帧 active 下标取模，同一人会在相邻帧
+        # 命中/不命中交替，搜索 person_id 高亮时出现闪烁。
         stride_html = max(1, len(active) // 850) if is_5min else 1
 
         for ai, a in enumerate(active):
@@ -1186,7 +1305,7 @@ def run_exports(env: dict, agents: list[Agent]):
             if 0 <= gx < GRID_W and 0 <= gy < GRID_H:
                 cidx = gy * GRID_W + gx
                 zv = zone_grid[ti][cidx]
-                z_idx = (zv - 1) if zv > 0 else (3 if ti == 1 else (9 if ti == 2 else (11 if ti == 3 else 0)))
+                z_idx = (zv - 1) if zv > 0 else fallback_zone_idx(ti)
                 cams_here = cell_cams[ti][cidx]
             else:
                 z_idx = 0
@@ -1225,7 +1344,7 @@ def run_exports(env: dict, agents: list[Agent]):
             if is_snap:
                 snap_pts.append((lx, ly, ti, a.profile))
 
-            if is_5min and (ai % stride_html == 0):
+            if is_5min and (int(a.pid[1:]) % stride_html == 0):
                 html_pts.append([round(lx, 1), round(ly, 1), ti, a.profile[0], a.pid])
 
         # 处理本窗口离场人员的流出计数
@@ -1392,7 +1511,7 @@ def run_exports(env: dict, agents: list[Agent]):
                     if 0 <= gx < GRID_W and 0 <= gy < GRID_H:
                         cidx = gy * GRID_W + gx
                         zv = zone_grid[ti][cidx]
-                        z_idx = (zv - 1) if zv > 0 else 3
+                        z_idx = (zv - 1) if zv > 0 else fallback_zone_idx(ti)
                         cams_here = cell_cams[ti][cidx]
                     else:
                         z_idx = 0
@@ -1420,7 +1539,7 @@ def run_exports(env: dict, agents: list[Agent]):
                             continue
                         cmap = cam_active_map[ci]
                         prev = cmap.get(a.pid)
-                        if prev is None or (sec - prev[1]) > 8:
+                        if prev is None or (sec - prev[1]) > TRACK_GAP_LOCAL_CAM_S:
                             tid = next_local_id[ci]
                             next_local_id[ci] += 1
                         else:
@@ -2212,7 +2331,7 @@ def write_summary_and_readme(env: dict, res: dict):
 | `sanyang_camera_coverage_peak.png` | 28 台虚拟摄像头在 19:45 最高峰的视场真值与模拟观测对比图 |
 | `person_manifest.csv` | 全天所有独立 `person_id` 的入园/出园时间、门洞、画像与主逛区 |
 | `region_stats_5s.csv` | 全天 24 小时、每 5 秒（17,280 窗口）× 12 分区的人数、密度、进出流量与平均速度 |
-| `region_state_batch_5s.jsonl` | 兼容 `region_state_batch.schema.json` 的 5 秒全区状态批次流 |
+| `region_state_batch_5s.jsonl` | 5 秒全区状态批次流（每行一条记录），字段契约见 `crowd-sim/region_state_batch.schema.json` |
 | `camera_stats_28cams_5s.csv` | 28 台虚拟摄像头全天 24 小时每 5 秒的视场真值与模拟观测统计 |
 | `trajectories_24h_30s.csv` | 全天 24 小时每 30 秒的逐人 `person_id` 位置/高程/速度/分区快照（{sm['trajectories_24h_30s_rows']:,} 行） |
 | `trajectories_peak_chrysanthemum_1hz.csv` | 菊花会下午高峰（15:30–15:45）1Hz 逐人 `person_id` 精细轨迹 |

@@ -5,7 +5,9 @@ SkyGuard · 28 机位「真实摄像头观测视角」融合数据集与动态�
 从已生成的三阳核心演示段真值轨迹与 28 机位逐人观测中，构建严格贴近真实感知的：
 1. 盲区不可见（仅保留至少被 1 台在线摄像头视场 + 同高程层覆盖且未被遮挡漏检的观测点）；
 2. 重叠视场去重融合（同一时刻被多台相机看到时，按最高置信度选主相机，避免重复计数）；
-3. 真实断轨重编（行人走出盲区超过 6 秒后重新进入视野，分配新的观测 track_id，保留 person_id_gt 作评测对照）；
+3. 断轨重编（行人走出盲区后超过断轨阈值才重新被观测到，就分配新的观测 track_id，保留
+   person_id_gt 作评测对照）：1Hz 融合 6s、24h 融合 35s、单机位局部 track 8s，
+   三处阈值统一定义在 build_sanyang_crowd_sim.TRACK_GAP_* 常量里；
 4. 独立离线 HTML5 交互回放页 `sanyang_camera_observed_replay.html`：
    - 默认仅渲染摄像头真实观测到的移动点（走出 FOV 扇区立即消失！）
    - 支持点击任意单个摄像头隔离查看、开关 UAV-01 补盲、或切换「叠暗灰真值」对照盲区！
@@ -76,7 +78,7 @@ def fuse_1hz_peak(env: dict, key: str, label: str, start_sec: int, end_sec: int)
             uav_only = 1 if (len(obs_list) == 1 and ci == uav_idx) else 0
 
             prev = fused_tid_map.get(pid)
-            if prev is None or (sec - prev[1]) > 6:
+            if prev is None or (sec - prev[1]) > sim.TRACK_GAP_FUSED_1HZ_S:
                 ftid = next_fused_tid
                 next_fused_tid += 1
             else:
@@ -270,7 +272,7 @@ def build_24h_camera_observed_30s(env: dict):
             uav_only = 1 if (len(cams_here) == 1 and primary_ci == uav_idx) else 0
 
             prev = fused_tid_map.get(pid)
-            if prev is None or (sec - prev[1]) > 35:
+            if prev is None or (sec - prev[1]) > sim.TRACK_GAP_FUSED_24H_S:
                 ftid = next_tid
                 next_tid += 1
             else:
@@ -524,7 +526,7 @@ def build_camera_observed_html(env: dict, html_24h: list, peak_chry: dict, peak_
     <div class="tip">
       • <b>盲区完全不可见</b>：行人走出摄像头扇区或处于不同高程层遮挡时立即消失。<br/>
       • <b>重叠视场自动融合</b>：多台相机同时拍到同一人时去重为 1 个观测点。<br/>
-      • <b>断轨重编 ID</b>：人走出盲区超过 6 秒再进入下一个相机，会获得新的局部 <code>track_id</code>。<br/>
+      • <b>断轨重编 ID</b>：人走出盲区后超过断轨阈值才重新被观测到，会获得新的 <code>track_id</code>——1Hz 融合视图为 6 秒，24h 融合视图按 30 秒采样为 35 秒，单机位局部 <code>track_id_local</code> 为 8 秒。<br/>
       • <b>定位噪声 + 偶发漏检</b>：叠加 ±0.22m 实测级定位抖动与 4% 遮挡漏检。<br/>
       • 取消勾选顶部「开启 UAV-01 补盲」，可直观对比无人机补盲前后的区别！
     </div>

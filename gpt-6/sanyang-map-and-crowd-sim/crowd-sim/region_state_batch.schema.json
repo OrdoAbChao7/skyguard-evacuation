@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/OrdoAbChao7/skyguard-evacuation/gpt-6/sanyang-map-and-crowd-sim/crowd-sim/region_state_batch.schema.json",
+  "title": "SkyGuard 三阳段 5 秒全区状态批次记录",
+  "description": "region_state_batch_5s.jsonl 的每行一条记录。数据为合成模拟（seed=20261115），不是真实摄录或实测客流；people_count_observed 与 observation_status=synthetic_ground_truth 表示这里是仿真真值，不是视觉检测结果。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "scene_id",
+    "camera_id",
+    "timestamp_utc",
+    "timestamp_bj",
+    "window_seconds",
+    "coordinate_frame_id",
+    "calibration_version",
+    "total_people",
+    "regions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "scene_id": {
+      "type": "string",
+      "description": "场景标识，当前固定为 hankou_sanyang_chrysanthemum_24h"
+    },
+    "camera_id": {
+      "type": "string",
+      "description": "数据来源标识；FUSED_28CAMS_GT 表示 28 机位融合的仿真真值，不是单台相机"
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "description": "批次窗口起始时刻（UTC），格式 YYYY-MM-DDTHH:MM:SSZ"
+    },
+    "timestamp_bj": {
+      "type": "string",
+      "description": "批次窗口起始时刻（北京时间 UTC+8），与 region_stats_5s.csv 的 timestamp_bj 对齐"
+    },
+    "window_seconds": {
+      "type": "integer",
+      "const": 5,
+      "description": "统计窗口长度（秒）"
+    },
+    "coordinate_frame_id": {
+      "type": "string",
+      "description": "平面坐标参考系；当前固定为 EPSG:32650（UTM 50N）"
+    },
+    "calibration_version": {
+      "type": "string",
+      "description": "机位标定版本；sanyang_v2_riverwalk 对应 map-v2/sanyang_cameras_v1.json"
+    },
+    "total_people": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "该窗口全园在园人数（仿真真值）"
+    },
+    "regions": {
+      "type": "array",
+      "description": "12 个语义分区，顺序与 ZONES_META 一致",
+      "items": {
+        "type": "object",
+        "required": [
+          "region_id",
+          "walkable_area_m2",
+          "people_count_observed",
+          "people_count_estimated",
+          "density_persons_m2",
+          "inflow_count",
+          "outflow_count",
+          "mean_speed_mps",
+          "mean_velocity_xy_mps",
+          "valid_track_count",
+          "observation_status",
+          "quality"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "region_id": {
+            "type": "string",
+            "enum": [
+              "Z01_G09_GATE",
+              "Z02_G08_GATE",
+              "Z03_G07_GATE",
+              "Z04_SANYANG_ENTRY_PLAZA",
+              "Z05_CHRYSANTHEMUM_MAIN",
+              "Z06_MONUMENT_GARDEN",
+              "Z07_YIYUAN_PLAZA",
+              "Z08_GREENWAY_CORRIDOR",
+              "Z09_TIER2_NORTH_PLAZA",
+              "Z10_TIER2_PROMENADE",
+              "Z11_TIER2_SOUTH_PLAZA",
+              "Z12_RIVER_WALK_23M"
+            ]
+          },
+          "walkable_area_m2": {
+            "type": "number",
+            "minimum": 0,
+            "description": "该分区可通行面积（平方米）；Z12_RIVER_WALK_23M 的 16.0m/23.0m 高程尚未核实（unverified_16m_vs_23m）"
+          },
+          "people_count_observed": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "仿真真值人数；不是视觉观测计数"
+          },
+          "people_count_estimated": {
+            "type": "number",
+            "minimum": 0,
+            "description": "人数估计值；当前与 people_count_observed 相同（未建模观测误差）"
+          },
+          "density_persons_m2": {
+            "type": "number",
+            "minimum": 0,
+            "description": "人数 / walkable_area_m2；面积为 0 的分区写 0"
+          },
+          "inflow_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "本窗口进入该分区的人次"
+          },
+          "outflow_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "本窗口离开该分区的人次"
+          },
+          "mean_speed_mps": {
+            "type": "number",
+            "minimum": 0,
+            "description": "分区内平均速度（米/秒）；无人时为 0"
+          },
+          "mean_velocity_xy_mps": {
+            "type": "array",
+            "description": "分区内平均速度矢量 [vx, vy]（米/秒，EPSG:32650 坐标轴方向）",
+            "prefixItems": [
+              { "type": "number" },
+              { "type": "number" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "valid_track_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "参与统计的有效轨迹数；当前等于 people_count_observed"
+          },
+          "observation_status": {
+            "type": "string",
+            "enum": ["synthetic_ground_truth"],
+            "description": "数据性质；本数据集全部为仿真真值，任何下游引用必须保留该标注"
+          },
+          "quality": {
+            "type": "string",
+            "enum": ["ok"],
+            "description": "质量标记；仿真数据不区分遮挡/漏检，恒为 ok"
+          }
+        }
+      }
+    }
+  }
+}
