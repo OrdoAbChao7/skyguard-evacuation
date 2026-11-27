@@ -15,7 +15,7 @@
 | 路径 | 文件数 | 核心内容 |
 | :--- | ---: | :--- |
 | `map-v2/` | 10 | 汉口江滩全段四级高程 GeoJSON（`EPSG:32650` & `WGS84`，`G01–G14` 闸口对齐契约）、23m 季节性亲水步道 `RIVER_WALK`、三阳核心演示段 28 台虚拟摄像头配置 `sanyang_cameras_v1.json` 与覆盖布局图 |
-| `crowd-sim/` | 12 | 5 个纯 Python 3.10 + Pillow 可复现脚本（固定种子 `20261115`）、统计汇总 `summary.json` 及 `samples/` 下 6 份 CSV/JSONL 字段样例 |
+| `crowd-sim/` | 13 | 5 个纯 Python 3.10 + Pillow 可复现脚本（固定种子 `20261115`）、统计汇总 `summary.json`、`region_state_batch.schema.json` 字段契约及 `samples/` 下 6 份 CSV/JSONL 字段样例 |
 | `demos/` | 4 | 30 秒高清演示视频 `sanyang_24h_sat_topo_demo.webm`、卫星地形离线交互回放页 `sanyang_sat_topo_replay.html`、三时段卫星地形对比图及 24h 人流曲线图 |
 
 ## 关键仿真指标（金秋菊花会情景日 `2026-11-15`）
