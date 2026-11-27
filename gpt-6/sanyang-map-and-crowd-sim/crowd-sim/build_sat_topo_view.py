@@ -8,7 +8,15 @@ SkyGuard · 真实 z18 卫星底图 + 宏观地形图风格（人越多越红 + 
    + 经典地形图色带（低密度浅绿 -> 黄 -> 橙 -> 高密度深红）+ 清晰等密线（等高线）；
 3. 导出：
    - sanyang_sat_topo_showcase.png（三时段卫星地形热力对照图：07:30 晨练 / 15:35 菊花会 / 19:35 晚饭后）
-   - sanyang_sat_topo_replay.html（零依赖离线交互网页：真实卫星图 + 实时地形热力 + 等高线 + 1Hz 观测移动点 + UAV-01 补盲开关）
+   - sanyang_sat_topo_terrain_replay.html（零依赖离线交互网页：卫星图/四级高程底图可切换 + 实时地形热力
+     + 等高线 + 1Hz 观测移动点 + UAV-01 补盲开关）
+
+前置条件：
+   - 先运行 build_camera_observed_view.py，生成本脚本读取的
+     `<out>/camera_observed_replay_payload.json`（1Hz 与 24h 观测帧的 JSON 中间产物）。
+   - z18 卫星底图 `sanyang_sat_z18.jpg/.json` 不随仓库分发，需放到
+     `<package>/map-v2/satellite/`（或由 `SKYGUARD_SAT_DIR` 指向的目录）。
+     缺图时本脚本会给出明确报错，而不是直接抛给 Pillow。
 """
 from __future__ import annotations
 
@@ -17,6 +25,7 @@ import csv
 import io
 import json
 import math
+import os
 import sys
 import time
 from collections import defaultdict
@@ -29,14 +38,25 @@ sys.path.insert(0, str(HERE))
 import build_sanyang_crowd_sim as sim
 
 OUT_DIR = sim.OUT_DIR
-PILOT_DIR = sim.BASE_DIR / "现场地图转换" / "三阳广场高程样板"
-SAT_JPG = PILOT_DIR / "sanyang_sat_z18.jpg"
-SAT_META = PILOT_DIR / "sanyang_sat_z18.json"
+# 卫星底图不随仓库分发（体积大且来源受限），默认从 map-v2/satellite/ 读取。
+SAT_DIR = Path(os.environ.get("SKYGUARD_SAT_DIR", sim.MAP_V2_DIR / "satellite")).resolve()
+SAT_JPG = SAT_DIR / "sanyang_sat_z18.jpg"
+SAT_META = SAT_DIR / "sanyang_sat_z18.json"
+
+# 上游 build_camera_observed_view.py 写出的 JSON 中间产物（本脚本不再解析它生成的 HTML）
+CAM_PAYLOAD_JSON = OUT_DIR / "camera_observed_replay_payload.json"
 
 # ---------------------------------------------------------------------------
 # 1. 精确 z18 卫星图重投影（PIL Image.MESH 8x16 子网格，C 速度 + 厘米级精度）
 # ---------------------------------------------------------------------------
 def warp_satellite_to_local_pil(frame: sim.LocalFrame, out_w: int, out_h: int) -> Image.Image:
+    missing = [p for p in (SAT_JPG, SAT_META) if not p.is_file()]
+    if missing:
+        raise SystemExit(
+            "缺少 z18 卫星底图（不随仓库分发）：\n  " + "\n  ".join(str(p) for p in missing)
+            + f"\n请把 sanyang_sat_z18.jpg / sanyang_sat_z18.json 放到 {SAT_DIR}，"
+              "或用环境变量 SKYGUARD_SAT_DIR 指向包含它们的目录。"
+        )
     sat_img = Image.open(str(SAT_JPG)).convert("RGB")
     meta = json.loads(SAT_META.read_text(encoding="utf-8"))
     z = meta["zoom"]
@@ -303,12 +323,18 @@ def build_showcase_png(env: dict, sat_panel_base: Image.Image, snaps: dict[str, 
 # 4. 交互式真实卫星底图 + 实时地形等高热力图 HTML5 回放页
 # ---------------------------------------------------------------------------
 def build_sat_topo_html(env: dict, sat_img_570: Image.Image):
-    """直接复用 sanyang_camera_observed_replay.html 里已经打包好的 1Hz/24h 观测帧数据，升级为卫星+地形图实时渲染！"""
-    src_html = (OUT_DIR / "sanyang_camera_observed_replay.html").read_text(encoding="utf-8")
-    marker = "const DATA = "
-    i0 = src_html.index(marker) + len(marker)
-    i1 = src_html.index(";\nconst TIER_COL", i0)
-    data = json.loads(src_html[i0:i1])
+    """复用 build_camera_observed_view.py 写出的 1Hz/24h 观测帧 JSON，渲染为卫星+地形图实时页面。
+
+    早期版本是从 `sanyang_camera_observed_replay.html` 里按字符串标记抠 JSON，既依赖脚本执行
+    顺序，又会被载荷内容里的同名标记串截断；现在改为读取独立 JSON 中间产物。
+    """
+    if not CAM_PAYLOAD_JSON.is_file():
+        raise SystemExit(
+            f"缺少 {CAM_PAYLOAD_JSON}\n"
+            "请先运行 crowd-sim/build_camera_observed_view.py（它会写出 camera_observed_replay_payload.json），"
+            "再运行本脚本。"
+        )
+    data = json.loads(CAM_PAYLOAD_JSON.read_text(encoding="utf-8"))
 
     # 将高清晰 z18 卫星图编码为 JPEG base64 嵌入（~140 KB，高清又轻量！）
     buf = io.BytesIO()
@@ -686,7 +712,9 @@ satImg.onload = render;
 </body>
 </html>
 """
-    out_html = OUT_DIR / "sanyang_sat_topo_replay.html"
+    # 注意：文件名与 build_flowing_sat_topo.py 的 sanyang_sat_topo_replay.html 区分开，
+    # 否则后跑的脚本会静默覆盖先跑的产物。
+    out_html = OUT_DIR / "sanyang_sat_topo_terrain_replay.html"
     out_html.write_text(html, encoding="utf-8")
     print(f"[Viz] Saved {out_html.name} ({out_html.stat().st_size / 1024:.0f} KB)")
 

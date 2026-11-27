@@ -599,6 +599,9 @@ satImg.onload = () => {{ render(); startTimer(); }};
 </body>
 </html>
 """
+    # 本文件产出的是「动态流动」版回放页（demos/ 中随仓库分发的那份）。
+    # build_sat_topo_view.py 的静态地形版产出 sanyang_sat_topo_terrain_replay.html，
+    # 两者文件名必须保持不同，否则会互相覆盖。
     out_html = OUT_DIR / "sanyang_sat_topo_replay.html"
     out_html.write_text(html, encoding="utf-8")
     print(f"[Viz] Upgraded flowing {out_html.name} ({out_html.stat().st_size / 1024:.0f} KB)")

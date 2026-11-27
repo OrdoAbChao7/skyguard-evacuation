@@ -2,13 +2,18 @@
 """
 SkyGuard · 汉口江滩三阳核心演示段（G07–G09）24 小时人流与 28 机位模拟数据生成器
 ================================================================================
-基于已核验的四级高程底图（31.0m / 28.8m / 25.0m / 23.0m RIVER_WALK）与清洗后的
+基于 V2.1 四级高程底图（31.0m / 28.8m / 25.0m，以及源数据标 16.0m、现场尚未核实的
+最低亲水层，按 23.0m RIVER_WALK 季节性开放，状态 `unverified_16m_vs_23m`）与清洗后的
 28 台虚拟摄像头（27 固定 + 1 UAV-01），生成符合汉口江滩日常时间规律并叠加
 「三阳广场金秋菊花会」下午大客流情景的 24 小时个体级（带全局唯一 person_id）
 模拟人流数据集、5 秒区域统计、28 机位观测统计、两个 15 分钟 1Hz 高峰精细切片，
 以及静态验收图与离线 HTML5 交互回放页。
 
 纯 Python 3.10 + Pillow 实现，零第三方科学计算依赖，固定随机种子可完全复现。
+
+运行方式（所有路径相对本文件定位，不再依赖作者机器上的绝对目录）：
+    python crowd-sim/build_sanyang_crowd_sim.py
+输出目录默认 `<package>/out/`，可用环境变量 `SKYGUARD_SIM_OUT` 覆盖。
 """
 from __future__ import annotations
 
@@ -30,16 +35,44 @@ from PIL import Image, ImageDraw, ImageFont
 # ---------------------------------------------------------------------------
 # 路径与全局配置
 # ---------------------------------------------------------------------------
-BASE_DIR = Path("/mnt/d/文档/ChatGPT/华为ict/gpt-6")
-MAP_V2_DIR = BASE_DIR / "现场地图转换" / "汉口江滩全段高程V2"
-DEMO_DIR = MAP_V2_DIR / "三阳核心演示段"
-OUT_DIR = BASE_DIR / "三阳广场人流模拟"
+# 全部路径相对本文件定位：PACKAGE_DIR = <repo>/gpt-6/sanyang-map-and-crowd-sim
+# 输入底图随仓库分发在 map-v2/；输出默认落在 out/（全量约 3.5 GB，不入库，可用环境变量覆盖）。
+PACKAGE_DIR = Path(__file__).resolve().parents[1]
+MAP_V2_DIR = PACKAGE_DIR / "map-v2"
+OUT_DIR = Path(os.environ.get("SKYGUARD_SIM_OUT", PACKAGE_DIR / "out")).resolve()
 
 UTM_GEOJSON = MAP_V2_DIR / "hankou_full_4tier_utm50n.geojson"
-RIVERWALK_GEOJSON = DEMO_DIR / "river_walk_seasonal_utm50n.geojson"
-CAMERAS_JSON = DEMO_DIR / "sanyang_cameras_v1.json"
-FONT_PATH = "/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf"
-LATIN_FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+RIVERWALK_GEOJSON = MAP_V2_DIR / "river_walk_seasonal_utm50n.geojson"
+CAMERAS_JSON = MAP_V2_DIR / "sanyang_cameras_v1.json"
+
+# 中文字体按平台候选，可用 SKYGUARD_FONT_CJK / SKYGUARD_FONT_LATIN 覆盖；
+# 全部缺失时退化为 Pillow 默认字体（图表不会崩，但中文会显示为方块）。
+FONT_CANDIDATES = (
+    os.environ.get("SKYGUARD_FONT_CJK", ""),
+    "/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf",
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "C:/Windows/Fonts/msyh.ttc",
+    "C:/Windows/Fonts/simhei.ttf",
+    "/System/Library/Fonts/PingFang.ttc",
+)
+FONT_PATH = next((p for p in FONT_CANDIDATES if p and Path(p).is_file()), "")
+LATIN_FONT_CANDIDATES = (
+    os.environ.get("SKYGUARD_FONT_LATIN", ""),
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    "C:/Windows/Fonts/arial.ttf",
+    "/System/Library/Fonts/Helvetica.ttc",
+)
+LATIN_FONT_PATH = next((p for p in LATIN_FONT_CANDIDATES if p and Path(p).is_file()), "")
+
+
+def check_inputs() -> None:
+    """缺失输入底图时给出可执行的提示，而不是裸的 FileNotFoundError。"""
+    missing = [p for p in (UTM_GEOJSON, RIVERWALK_GEOJSON, CAMERAS_JSON) if not p.is_file()]
+    if missing:
+        raise SystemExit(
+            "缺少输入底图：\n  " + "\n  ".join(str(p) for p in missing)
+            + f"\n请在仓库内运行（{PACKAGE_DIR / 'map-v2'} 应存在）。"
+        )
 
 SEED = 20261115
 SIM_DATE_STR = "2026-11-15"  # 模拟日期（北京时间，金秋菊花会周末）
@@ -55,6 +88,19 @@ GRID_H = int(round((Y_MAX_LOC - Y_MIN_LOC) / CELL_M))
 
 TIERS = (31.0, 28.8, 25.0, 23.0)
 TIER_TO_IDX = {t: i for i, t in enumerate(TIERS)}
+
+# 最低亲水层（源 GeoJSON 标 16.0m，现场尚未核实究竟是 16.0m 还是 23.0m）：
+#   seasonal（默认）= 按「秋季低水位季节性开放」纳入 23.0m 滨江亲水步道，并在 summary/README 标注 unverified；
+#   closed         = 与 map-v2/hankou_full_connectivity_audit.md 的 active_baseline 一致，封控不纳入可通行面。
+# 该层不是已核验数据，任何引用本数据集的下游都必须保留 provenance 标注。
+LOWEST_TIER_POLICY = os.environ.get("SKYGUARD_LOWEST_TIER", "seasonal").strip().lower()
+if LOWEST_TIER_POLICY not in ("seasonal", "closed"):
+    raise SystemExit(f"SKYGUARD_LOWEST_TIER 只接受 seasonal | closed，收到 {LOWEST_TIER_POLICY!r}")
+LOWEST_TIER_ENABLED = LOWEST_TIER_POLICY == "seasonal"
+LOWEST_TIER_STATUS = "unverified_16m_vs_23m"
+LOWEST_TIER_SOURCE_ELEV_M = 16.0
+LOWEST_TIER_DECLARED_ELEV_M = 23.0
+LOWEST_TIER_LINKS = ("RW-LINK-S", "RW-LINK-M", "RW-LINK-N")
 
 # 两个 15 分钟 1Hz 精细切片（北京时间秒数）
 PEAK_WINDOWS = {
@@ -181,6 +227,7 @@ def rasterize_geojson_geom(draw: ImageDraw.ImageDraw, geom: dict, frame: LocalFr
 
 def build_environment():
     t0 = time.time()
+    check_inputs()
     gj = json.loads(UTM_GEOJSON.read_text(encoding="utf-8"))
     feats = gj["features"]
 
@@ -216,8 +263,9 @@ def build_environment():
     y_cut_s = gates_loc["G07"][1] - 110.0  # ~ -406.8
     y_cut_n = gates_loc["G09"][1] + 135.0  # ~ +363.5
 
-    # 栅格化四级可通行面（31.0 / 28.8 / 25.0 / 23.0）
-    # 注意：原始 GeoJSON 中最低层标为 16.0m，V2 已升级为 23.0m 并叠加 RIVER_WALK
+    # 栅格化可通行面（31.0 / 28.8 / 25.0 / 23.0）
+    # 源 GeoJSON 里最低层标 elevation_m=16.0；本数据集按 LOWEST_TIER_POLICY 决定是否
+    # 以 23.0m 名义开放（seasonal）还是保持封控（closed），两种情形都保留原始高程记录。
     tier_imgs = {t: Image.new("L", (GRID_W, GRID_H), 0) for t in TIERS}
     tier_draws = {t: ImageDraw.Draw(img) for t, img in tier_imgs.items()}
 
@@ -226,15 +274,18 @@ def build_environment():
         cls = p.get("class")
         if cls in ("plaza", "flat_corridor_area"):
             elev = float(p["elevation_m"])
-            target_t = 23.0 if elev == 16.0 else elev
+            target_t = LOWEST_TIER_DECLARED_ELEV_M if elev == LOWEST_TIER_SOURCE_ELEV_M else elev
+            if target_t == LOWEST_TIER_DECLARED_ELEV_M and not LOWEST_TIER_ENABLED:
+                continue
             if target_t in tier_draws:
                 rasterize_geojson_geom(tier_draws[target_t], ft["geometry"], frame, 1)
 
-    # 叠加 23.0m 季节性滨江亲水步道 RIVER_WALK
-    rw_gj = json.loads(RIVERWALK_GEOJSON.read_text(encoding="utf-8"))
-    for ft in rw_gj["features"]:
-        if ft["properties"].get("geometry_role") == "walkable_strip":
-            rasterize_geojson_geom(tier_draws[23.0], ft["geometry"], frame, 1)
+    # 叠加 23.0m 季节性滨江亲水步道 RIVER_WALK（仅在最低层开放时纳入）
+    if LOWEST_TIER_ENABLED:
+        rw_gj = json.loads(RIVERWALK_GEOJSON.read_text(encoding="utf-8"))
+        for ft in rw_gj["features"]:
+            if ft["properties"].get("geometry_role") == "walkable_strip":
+                rasterize_geojson_geom(tier_draws[23.0], ft["geometry"], frame, 1)
 
     # 裁剪至三阳核心段 [y_cut_s, y_cut_n]
     gy_s = max(0, int((y_cut_s - Y_MIN_LOC) / CELL_M))
@@ -284,22 +335,26 @@ def build_environment():
                     p0, p1 = p1, p0
                 vertical_links.append((1, loc_to_grid(*p0), 2, loc_to_grid(*p1), 10.0, vid))
 
-    # 25.0m <-> 23.0m 季节性低水位开放连接（南/中/北三处滨江亲水踏步，供秋季菊花会低水位通行）
-    for name, ly in (("RW-LINK-S", -292.0), ("RW-LINK-M", -125.0), ("RW-LINK-N", 228.0)):
-        # 在该 y 处寻找 25.0m 最东侧可通行格与 23.0m 最西侧可通行格
-        gy = int((ly - Y_MIN_LOC) / CELL_M)
-        g25 = None
-        g23 = None
-        for gx in range(GRID_W - 1, -1, -1):
-            if walkable[2][gy * GRID_W + gx]:
-                g25 = (gx, gy)
-                break
-        for gx in range(GRID_W):
-            if walkable[3][gy * GRID_W + gx]:
-                g23 = (gx, gy)
-                break
-        if g25 and g23:
-            vertical_links.append((2, g25, 3, g23, 14.0, name))
+    # 25.0m <-> 23.0m 季节性低水位连接：南/中/北三处，仅在最低亲水层开放时生成。
+    # 注意：这三处连接不是源 GeoJSON 里的实测台阶，是「秋季低水位可通行」情景假设，
+    # 与 map-v2/hankou_full_connectivity_audit.md 中 ST-SY 保持关闭的保守口径不同，
+    # 因此只在 LOWEST_TIER_POLICY=seasonal 时启用，并在 summary.json 里如实标注。
+    if LOWEST_TIER_ENABLED:
+        for name, ly in zip(LOWEST_TIER_LINKS, (-292.0, -125.0, 228.0)):
+            # 在该 y 处寻找 25.0m 最东侧可通行格与 23.0m 最西侧可通行格
+            gy = int((ly - Y_MIN_LOC) / CELL_M)
+            g25 = None
+            g23 = None
+            for gx in range(GRID_W - 1, -1, -1):
+                if walkable[2][gy * GRID_W + gx]:
+                    g25 = (gx, gy)
+                    break
+            for gx in range(GRID_W):
+                if walkable[3][gy * GRID_W + gx]:
+                    g23 = (gx, gy)
+                    break
+            if g25 and g23:
+                vertical_links.append((2, g25, 3, g23, 14.0, name))
 
     # 辅助：寻找指定层最近的可通行格
     def snap_walkable(t_idx: int, gx: int, gy: int, max_r: int = 12) -> tuple[int, int]:
@@ -410,9 +465,28 @@ def build_environment():
     # 转为不可变 tuple 以加速查表
     cell_cams = [[tuple(x) for x in layer] for layer in cell_cams_tmp]
 
+    lowest_tier_area = zone_areas[ZONE_ID_TO_IDX["Z12_RIVER_WALK_23M"]]
+    lowest_tier_provenance = {
+        "zone_id": "Z12_RIVER_WALK_23M",
+        "declared_elevation_m": LOWEST_TIER_DECLARED_ELEV_M,
+        "source_elevation_m": LOWEST_TIER_SOURCE_ELEV_M,
+        "status": LOWEST_TIER_STATUS,
+        "policy": LOWEST_TIER_POLICY,
+        "included": LOWEST_TIER_ENABLED,
+        "walkable_area_m2": round(lowest_tier_area, 1),
+        "vertical_links": [n for n in LOWEST_TIER_LINKS
+                           if any(v[5] == n for v in snapped_vlinks)],
+        "note": (
+            "最低亲水层现场尚未核实 16.0m/23.0m 两个标高，"
+            "map-v2/hankou_full_connectivity_audit.md 的 active_baseline 中保持封控；"
+            "本数据集按 seasonal 情景纳入，引用时必须保留该 provenance。"
+        ),
+    }
+
     print(
         f"[Env] Grid {GRID_W}x{GRID_H} ({CELL_M}m) built in {time.time() - t0:.2f}s | "
-        f"Total walkable={sum(zone_areas):.0f} m2 | Vertical links={len(snapped_vlinks)}"
+        f"Total walkable={sum(zone_areas):.0f} m2 | Vertical links={len(snapped_vlinks)} | "
+        f"Lowest tier={LOWEST_TIER_POLICY} ({lowest_tier_area:.0f} m2, {LOWEST_TIER_STATUS})"
     )
     return {
         "frame": frame,
@@ -427,6 +501,7 @@ def build_environment():
         "cell_cams": cell_cams,
         "cam_visible_area": cam_visible_area,
         "snap_walkable": snap_walkable,
+        "lowest_tier": lowest_tier_provenance,
     }
 
 
@@ -464,11 +539,14 @@ def build_navigation(env: dict):
         "T2_PROM_NORTH": (2, 34.0, 95.0),
         "T2_PROM_MID": (2, 34.0, -75.0),
         "T2_SOUTH_PLAZA": (2, 65.0, -292.0),
-        # 23.0m 滨江亲水步道 RIVER_WALK
+        # 23.0m 滨江亲水步道 RIVER_WALK（仅在最低亲水层开放时可用）
         "RW_NORTH": (3, 145.0, 210.0),
         "RW_MID": (3, 142.0, -50.0),
         "RW_SOUTH": (3, 140.0, -275.0),
     }
+    if not LOWEST_TIER_ENABLED:
+        for name in ("RW_NORTH", "RW_MID", "RW_SOUTH"):
+            anchors_def.pop(name, None)
 
     anchors = {}
     for name, (ti, lx, ly) in anchors_def.items():
@@ -892,7 +970,10 @@ def generate_agents(env: dict, nav: dict) -> list[Agent]:
 
         if prof == "pass_through":
             exit_g = "SEC_S" if entry == "SEC_N" else "SEC_N"
-            mid_poi = weighted_choice(rng, [("GREENWAY_MID", 0.45), ("T2_PROM_MID", 0.30), ("RW_MID", 0.25)])
+            mid_poi = weighted_choice(rng, [
+                (k, w) for k, w in (("GREENWAY_MID", 0.45), ("T2_PROM_MID", 0.30), ("RW_MID", 0.25))
+                if k in nav["anchors"]
+            ])
             speed = rng.uniform(1.10, 1.50) * peak_congestion
             stops = [mid_poi]
             plaza_brief_pause_s = 0.0
@@ -930,6 +1011,12 @@ def generate_agents(env: dict, nav: dict) -> list[Agent]:
             else:
                 speed = rng.uniform(0.80, 1.18) * peak_congestion
                 plaza_brief_pause_s = rng.uniform(15.0, 60.0) if rng.random() < 0.25 else 0.0
+
+        # 最低亲水层封控（SKYGUARD_LOWEST_TIER=closed）时 RW_* 锚点已被移除，
+        # 这里把环线里引用到的失效节点剔除；seasonal 模式下该过滤是空操作。
+        stops = [s for s in stops if s in nav["anchors"]]
+        if not stops or (prof != "pass_through" and len(stops) < 2):
+            continue
 
         # 组装纯流动路径
         et, egx, egy = nav["anchors"][entry]
@@ -2068,6 +2155,10 @@ def write_summary_and_readme(env: dict, res: dict):
         "crs_metric": "EPSG:32650",
         "crs_geographic": "WGS84",
         "total_walkable_area_m2": round(sum(env["zone_areas"]), 1),
+        "total_walkable_area_m2_excluding_lowest_tier": round(
+            sum(env["zone_areas"]) - env["lowest_tier"]["walkable_area_m2"], 1
+        ),
+        "lowest_tier_provenance": env["lowest_tier"],
         "zones": [
             {"zone_id": z[0], "zone_name": z[1], "elevation_m": z[2], "walkable_area_m2": round(env["zone_areas"][i], 1)}
             for i, z in enumerate(ZONES_META)
@@ -2079,10 +2170,28 @@ def write_summary_and_readme(env: dict, res: dict):
     (OUT_DIR / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 
     sm = res["summary_metrics"]
+    lt = env["lowest_tier"]
+    if lt["included"]:
+        lowest_tier_note = (
+            f"- **最低亲水层状态**：该层源数据标 `{lt['source_elevation_m']:.1f}m`、现场尚未核实究竟是 "
+            f"`{lt['source_elevation_m']:.1f}m` 还是 `{lt['declared_elevation_m']:.1f}m`（`{lt['status']}`）。"
+            f"本次以 `{lt['policy']}` 策略运行，纳入 `{lt['walkable_area_m2']:,.0f} m²`，并生成 "
+            f"`{'/'.join(lt['vertical_links'])}` 三处季节性连接（**情景假设，非源数据实测台阶**）。"
+            f"`map-v2/hankou_full_connectivity_audit.md` 的 `active_baseline` 口径下该层保持封控，"
+            f"引用本数据集时必须保留此标注。"
+        )
+    else:
+        lowest_tier_note = (
+            f"- **最低亲水层状态**：该层源数据标 `{lt['source_elevation_m']:.1f}m`、现场尚未核实究竟是 "
+            f"`{lt['source_elevation_m']:.1f}m` 还是 `{lt['declared_elevation_m']:.1f}m`（`{lt['status']}`）。"
+            f"本次以 `{lt['policy']}` 策略运行，该层**不纳入**可通行面，与 "
+            f"`map-v2/hankou_full_connectivity_audit.md` 的 `active_baseline` 一致。"
+        )
     readme = f"""# 汉口江滩 · 三阳核心演示段 24 小时人流与 28 机位模拟数据集
 
 - **情景设定**：`{SIM_DATE_STR}`（北京时间 00:00–24:00），日常汉口江滩时间规律 + **三阳广场金秋菊花会下午大客流** + **晚饭后全天最高峰**。
 - **底图来源**：严格约束在 `hankou_full_4tier_utm50n.geojson` 四级高程可通行面（`31.0m` / `28.8m` / `25.0m` / `23.0m RIVER_WALK`）内，仅经合法坡道/台阶跨层。
+{lowest_tier_note}
 - **机位来源**：直接读取 `sanyang_cameras_v1.json` 清洗后的 28 台虚拟摄像头（27 固定 + `UAV-01`）。
 
 ## 核心统计
@@ -2117,6 +2226,8 @@ def write_summary_and_readme(env: dict, res: dict):
 
 def main():
     t_all = time.time()
+    check_inputs()
+    print(f"[Env] inputs={MAP_V2_DIR} | out={OUT_DIR} | lowest_tier={LOWEST_TIER_POLICY}")
     env = build_environment()
     nav = build_navigation(env)
     agents = generate_agents(env, nav)

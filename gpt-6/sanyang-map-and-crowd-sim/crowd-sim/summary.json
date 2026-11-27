@@ -5,6 +5,22 @@
   "crs_metric": "EPSG:32650",
   "crs_geographic": "WGS84",
   "total_walkable_area_m2": 77964.0,
+  "total_walkable_area_m2_excluding_lowest_tier": 66496.0,
+  "lowest_tier_provenance": {
+    "zone_id": "Z12_RIVER_WALK_23M",
+    "declared_elevation_m": 23.0,
+    "source_elevation_m": 16.0,
+    "status": "unverified_16m_vs_23m",
+    "policy": "seasonal",
+    "included": true,
+    "walkable_area_m2": 11468.0,
+    "vertical_links": [
+      "RW-LINK-S",
+      "RW-LINK-M",
+      "RW-LINK-N"
+    ],
+    "note": "最低亲水层现场尚未核实 16.0m/23.0m 两个标高，map-v2/hankou_full_connectivity_audit.md 的 active_baseline 中保持封控；本数据集按 seasonal 情景纳入，引用时必须保留该 provenance。"
+  },
   "zones": [
     {
       "zone_id": "Z01_G09_GATE",

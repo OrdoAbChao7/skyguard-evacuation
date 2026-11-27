@@ -437,6 +437,14 @@ def build_camera_observed_html(env: dict, html_24h: list, peak_chry: dict, peak_
         "day_24h": html_24h,
     }
 
+    # 同一份 payload 另存为 JSON，供 build_sat_topo_view.py 等下游直接读取，
+    # 避免从生成的 HTML 里按字符串标记抠 JSON（脆弱且带隐藏的执行顺序依赖）。
+    payload_path = OUT_DIR / "camera_observed_replay_payload.json"
+    payload_path.write_text(
+        json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
+    )
+    print(f"[Obs] Saved {payload_path.name} ({payload_path.stat().st_size / 1024:.0f} KB)")
+
     html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
