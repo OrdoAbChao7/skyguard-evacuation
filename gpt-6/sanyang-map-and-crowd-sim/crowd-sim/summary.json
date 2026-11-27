@@ -98,28 +98,28 @@
   "cameras_count": 28,
   "metrics": {
     "total_unique_persons": 73005,
-    "morning_peak": 1203,
-    "lunch_valley_min": 82,
-    "afternoon_chrysanthemum_peak": 4923,
+    "morning_peak": 1250,
+    "lunch_valley_min": 98,
+    "afternoon_chrysanthemum_peak": 5596,
     "afternoon_peak_time_bj": "15:52",
-    "evening_all_day_peak": 8083,
+    "evening_all_day_peak": 8818,
     "evening_peak_time_bj": "20:12",
-    "trajectories_24h_30s_rows": 4566516
+    "trajectories_24h_30s_rows": 5067441
   },
   "peak_1hz_slices": {
     "chrysanthemum": {
       "label": "菊花会下午高峰",
       "window_bj": "2026-11-15T15:30:00+08:00 ~ 2026-11-15T15:45:00+08:00",
-      "unique_persons": 6579,
-      "trajectory_rows_1hz": 4216476,
-      "camera_track_rows_1hz": 1765645
+      "unique_persons": 6968,
+      "trajectory_rows_1hz": 4681479,
+      "camera_track_rows_1hz": 1846724
     },
     "evening": {
       "label": "晚饭后全天最高峰",
       "window_bj": "2026-11-15T19:30:00+08:00 ~ 2026-11-15T19:45:00+08:00",
-      "unique_persons": 9612,
-      "trajectory_rows_1hz": 6228074,
-      "camera_track_rows_1hz": 2603536
+      "unique_persons": 9959,
+      "trajectory_rows_1hz": 6603236,
+      "camera_track_rows_1hz": 2650011
     }
   }
 }
