@@ -1,0 +1,125 @@
+{
+  "scene_id": "hankou_sanyang_chrysanthemum_24h",
+  "sim_date_bj": "2026-11-15",
+  "seed": 20261115,
+  "crs_metric": "EPSG:32650",
+  "crs_geographic": "WGS84",
+  "total_walkable_area_m2": 77964.0,
+  "total_walkable_area_m2_excluding_lowest_tier": 66496.0,
+  "lowest_tier_provenance": {
+    "zone_id": "Z12_RIVER_WALK_23M",
+    "declared_elevation_m": 23.0,
+    "source_elevation_m": 16.0,
+    "status": "unverified_16m_vs_23m",
+    "policy": "seasonal",
+    "included": true,
+    "walkable_area_m2": 11468.0,
+    "vertical_links": [
+      "RW-LINK-S",
+      "RW-LINK-M",
+      "RW-LINK-N"
+    ],
+    "note": "最低亲水层现场尚未核实 16.0m/23.0m 两个标高，map-v2/hankou_full_connectivity_audit.md 的 active_baseline 中保持封控；本数据集按 seasonal 情景纳入，引用时必须保留该 provenance。"
+  },
+  "zones": [
+    {
+      "zone_id": "Z01_G09_GATE",
+      "zone_name": "三阳门闸口区",
+      "elevation_m": 31.0,
+      "walkable_area_m2": 268.0
+    },
+    {
+      "zone_id": "Z02_G08_GATE",
+      "zone_name": "防洪纪念碑闸口区",
+      "elevation_m": 31.0,
+      "walkable_area_m2": 100.0
+    },
+    {
+      "zone_id": "Z03_G07_GATE",
+      "zone_name": "一元门闸口区",
+      "elevation_m": 31.0,
+      "walkable_area_m2": 744.0
+    },
+    {
+      "zone_id": "Z04_SANYANG_ENTRY_PLAZA",
+      "zone_name": "三阳门入口大道与北广场",
+      "elevation_m": 28.8,
+      "walkable_area_m2": 9200.0
+    },
+    {
+      "zone_id": "Z05_CHRYSANTHEMUM_MAIN",
+      "zone_name": "三阳广场中心主展区(菊花会核心)",
+      "elevation_m": 28.8,
+      "walkable_area_m2": 12544.0
+    },
+    {
+      "zone_id": "Z06_MONUMENT_GARDEN",
+      "zone_name": "防洪纪念碑林荫游园区",
+      "elevation_m": 28.8,
+      "walkable_area_m2": 10936.0
+    },
+    {
+      "zone_id": "Z07_YIYUAN_PLAZA",
+      "zone_name": "一元门南广场",
+      "elevation_m": 28.8,
+      "walkable_area_m2": 6452.0
+    },
+    {
+      "zone_id": "Z08_GREENWAY_CORRIDOR",
+      "zone_name": "一级平台沿江绿道主干",
+      "elevation_m": 28.8,
+      "walkable_area_m2": 6772.0
+    },
+    {
+      "zone_id": "Z09_TIER2_NORTH_PLAZA",
+      "zone_name": "二级平台三阳亲水大平台",
+      "elevation_m": 25.0,
+      "walkable_area_m2": 8092.0
+    },
+    {
+      "zone_id": "Z10_TIER2_PROMENADE",
+      "zone_name": "二级平台中段沿江步道",
+      "elevation_m": 25.0,
+      "walkable_area_m2": 4988.0
+    },
+    {
+      "zone_id": "Z11_TIER2_SOUTH_PLAZA",
+      "zone_name": "二级平台一元门观景台",
+      "elevation_m": 25.0,
+      "walkable_area_m2": 6400.0
+    },
+    {
+      "zone_id": "Z12_RIVER_WALK_23M",
+      "zone_name": "三级滨江亲水步道(RIVER_WALK)",
+      "elevation_m": 23.0,
+      "walkable_area_m2": 11468.0
+    }
+  ],
+  "cameras_count": 28,
+  "metrics": {
+    "total_unique_persons": 73005,
+    "morning_peak": 1203,
+    "lunch_valley_min": 82,
+    "afternoon_chrysanthemum_peak": 4923,
+    "afternoon_peak_time_bj": "15:52",
+    "evening_all_day_peak": 8083,
+    "evening_peak_time_bj": "20:12",
+    "trajectories_24h_30s_rows": 4566516
+  },
+  "peak_1hz_slices": {
+    "chrysanthemum": {
+      "label": "菊花会下午高峰",
+      "window_bj": "2026-11-15T15:30:00+08:00 ~ 2026-11-15T15:45:00+08:00",
+      "unique_persons": 6579,
+      "trajectory_rows_1hz": 4216476,
+      "camera_track_rows_1hz": 1765645
+    },
+    "evening": {
+      "label": "晚饭后全天最高峰",
+      "window_bj": "2026-11-15T19:30:00+08:00 ~ 2026-11-15T19:45:00+08:00",
+      "unique_persons": 9612,
+      "trajectory_rows_1hz": 6228074,
+      "camera_track_rows_1hz": 2603536
+    }
+  }
+}

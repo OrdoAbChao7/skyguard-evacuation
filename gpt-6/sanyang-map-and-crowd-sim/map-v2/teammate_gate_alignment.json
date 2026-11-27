@@ -1,0 +1,278 @@
+{
+  "schema_version": "hankou_gate_alignment_v1.1_confirmed",
+  "authority_policy": "物理自南向北序 G01-G14 为唯一主基准；官方认可门名为准；G05/G08/G12 作为新增独立出口节点接入；14 座闸口入园坡道开放试跑，最低亲水层(16m/23m)保持封控(0%)",
+  "physical_order_south_to_north": [
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09",
+    "G10",
+    "G11",
+    "G12",
+    "G13",
+    "G14"
+  ],
+  "teammate_physical_order_south_to_north": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S09",
+    "S08",
+    "S10",
+    "S11"
+  ],
+  "confirmed_alignment_decisions": [
+    {
+      "code": "PHYSICAL_ORDER_AUTHORITATIVE",
+      "decision": "优先按物理自南向北序 G01-G14 串接；队友侧 S08(五福门)/S09(四唯门) 按物理顺序 S07->S09->S08->S10 对齐"
+    },
+    {
+      "code": "S02_OFFICIAL_NAME",
+      "teammate_id": "S02",
+      "physical_gate_id": "G02",
+      "official_name": "临江门 (天津路闸口)",
+      "teammate_legacy_alias": "华清门",
+      "decision": "统一采用官方认可门名「临江门」，保留 teammate_legacy_alias 仅作旧名对照"
+    },
+    {
+      "code": "ADD_NEW_LEDGER_EXITS",
+      "physical_gate_ids": [
+        "G05",
+        "G08",
+        "G12"
+      ],
+      "names": [
+        "大智门 (42+335, 6m)",
+        "防洪纪念碑闸口 (42+925, 26m)",
+        "长春门 (44+051, 5.87m)"
+      ],
+      "teammate_action": "add_new_exit_node",
+      "decision": "三座官方台账闸口均作为新增独立出口节点接入仿真路网"
+    },
+    {
+      "code": "GATE_RAMPS_AND_WATERFRONT_POLICY",
+      "decision": "14 座闸口入园坡道(RM-G01..G14)全部按开放口径试跑(仍保留待现场复核坡度/净宽标签)；最低亲水层 ST-SY 保持关闭(0%可达)，待现场核实下口与铺装后再开放"
+    }
+  ],
+  "gates": [
+    {
+      "physical_gate_id": "G01",
+      "teammate_segment_id": "S01",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "江汉门 (南门/武汉关方向)",
+      "official_pile": "41+399",
+      "official_structural_width_m": 30.0,
+      "estimated_ped_opening_m": 12.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.295958,
+        30.583415
+      ]
+    },
+    {
+      "physical_gate_id": "G02",
+      "teammate_segment_id": "S02",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": "华清门",
+      "name": "临江门 (天津路闸口)",
+      "official_pile": "41+490",
+      "official_structural_width_m": 12.0,
+      "estimated_ped_opening_m": 10.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.295713,
+        30.585182
+      ]
+    },
+    {
+      "physical_gate_id": "G03",
+      "teammate_segment_id": "S03",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "兰陵门 (兰陵路闸口)",
+      "official_pile": "41+686",
+      "official_structural_width_m": 9.0,
+      "estimated_ped_opening_m": 9.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.296569,
+        30.586778
+      ]
+    },
+    {
+      "physical_gate_id": "G04",
+      "teammate_segment_id": "S04",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "洞庭门 (黎黄陂路闸口)",
+      "official_pile": "42+191",
+      "official_structural_width_m": 25.5,
+      "estimated_ped_opening_m": 10.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.297374,
+        30.588577
+      ]
+    },
+    {
+      "physical_gate_id": "G05",
+      "teammate_segment_id": null,
+      "teammate_action": "add_new_exit_node",
+      "teammate_legacy_alias": null,
+      "name": "大智门 (车站路闸口)",
+      "official_pile": "42+335",
+      "official_structural_width_m": 6.0,
+      "estimated_ped_opening_m": 6.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.298814,
+        30.591695
+      ]
+    },
+    {
+      "physical_gate_id": "G06",
+      "teammate_segment_id": "S05",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "粤汉码头闸口 (蔡锷路方向)",
+      "official_pile": "42+475",
+      "official_structural_width_m": 12.76,
+      "estimated_ped_opening_m": 10.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.299243,
+        30.592592
+      ]
+    },
+    {
+      "physical_gate_id": "G07",
+      "teammate_segment_id": "S06",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "一元门 (一元路口)",
+      "official_pile": null,
+      "official_structural_width_m": null,
+      "estimated_ped_opening_m": 10.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.299939,
+        30.594004
+      ]
+    },
+    {
+      "physical_gate_id": "G08",
+      "teammate_segment_id": null,
+      "teammate_action": "add_new_exit_node",
+      "teammate_legacy_alias": null,
+      "name": "防洪纪念碑闸口 (二曜路方向)",
+      "official_pile": "42+925",
+      "official_structural_width_m": 26.0,
+      "estimated_ped_opening_m": 4.5,
+      "status": "open",
+      "mapped_lonlat": [
+        114.301168,
+        30.596385
+      ]
+    },
+    {
+      "physical_gate_id": "G09",
+      "teammate_segment_id": "S07",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "三阳门 (三阳路闸口)",
+      "official_pile": "43+176",
+      "official_structural_width_m": 26.0,
+      "estimated_ped_opening_m": 14.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.30239,
+        30.59824
+      ]
+    },
+    {
+      "physical_gate_id": "G10",
+      "teammate_segment_id": "S09",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "四唯门 (四唯路口)",
+      "official_pile": null,
+      "official_structural_width_m": null,
+      "estimated_ped_opening_m": 8.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.303219,
+        30.599744
+      ]
+    },
+    {
+      "physical_gate_id": "G11",
+      "teammate_segment_id": "S08",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "五福门 (五福路闸口)",
+      "official_pile": "43+536",
+      "official_structural_width_m": 7.5,
+      "estimated_ped_opening_m": 7.5,
+      "status": "open",
+      "mapped_lonlat": [
+        114.304083,
+        30.601157
+      ]
+    },
+    {
+      "physical_gate_id": "G12",
+      "teammate_segment_id": null,
+      "teammate_action": "add_new_exit_node",
+      "teammate_legacy_alias": null,
+      "name": "长春门 (张自忠路闸口)",
+      "official_pile": "44+051",
+      "official_structural_width_m": 5.87,
+      "estimated_ped_opening_m": 5.87,
+      "status": "open",
+      "mapped_lonlat": [
+        114.306676,
+        30.605325
+      ]
+    },
+    {
+      "physical_gate_id": "G13",
+      "teammate_segment_id": "S10",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "永清门 (芦沟桥路闸口)",
+      "official_pile": "44+376",
+      "official_structural_width_m": 11.56,
+      "estimated_ped_opening_m": 11.56,
+      "status": "open",
+      "mapped_lonlat": [
+        114.308526,
+        30.608167
+      ]
+    },
+    {
+      "physical_gate_id": "G14",
+      "teammate_segment_id": "S11",
+      "teammate_action": "map_existing",
+      "teammate_legacy_alias": null,
+      "name": "黄浦门 (麻阳街/黄浦大街)",
+      "official_pile": "44+536",
+      "official_structural_width_m": 12.27,
+      "estimated_ped_opening_m": 12.0,
+      "status": "open",
+      "mapped_lonlat": [
+        114.309894,
+        30.610215
+      ]
+    }
+  ]
+}
